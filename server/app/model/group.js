@@ -1,6 +1,9 @@
 module.exports = mongoose => {
     const GroupSchema = new mongoose.Schema({
-        name: String,
+        name: {
+            type: String,
+            unique: true
+        },
         createTime: String,
         modifiedTime: String,
         desc: String

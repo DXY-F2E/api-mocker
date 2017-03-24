@@ -5,7 +5,10 @@ module.exports = mongoose => {
             type: ObjectId,
             ref: 'group'
         },
-        name: String,
+        name: {
+            type: String,
+            unique: true
+        },
         createTime: String,
         modifiedTime: String,
         url: String,
