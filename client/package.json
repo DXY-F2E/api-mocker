@@ -11,6 +11,7 @@
     "fix": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {
+    "element-ui": "1.2.5",
     "vue": "^2.2.2",
     "vue-router": "^2.2.0"
   },
