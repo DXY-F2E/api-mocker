@@ -1,4 +1,4 @@
-
+const groupModel = require('../model/group.js');
 
 module.exports = app => {
     class HomeController extends app.Controller {
