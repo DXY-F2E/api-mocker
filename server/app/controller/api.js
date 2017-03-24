@@ -9,7 +9,7 @@ module.exports = app => {
                                        .skip(offset)
                                        .limit(limit)
                                        .exec()
-            this.body = { resources }
+            this.ctx.body = { resources }
             this.ctx.status = 200
         }
         * getGroupAll () {
@@ -52,7 +52,7 @@ module.exports = app => {
                 group: groupId
             })).save()
 
-            this.ctx.body = 204
+            this.ctx.status = 204
         }
     }
     return ApiController
