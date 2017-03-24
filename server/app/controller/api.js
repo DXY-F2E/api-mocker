@@ -27,6 +27,19 @@ module.exports = app => {
             this.ctx.body = { resources }
             this.ctx.status = 200
         }
+        * modifyApi () {
+            const { groupId, apiId } = this.ctx.params
+            const { body } = this.ctx.request
+            assert(groupId, 403, 'invalid groupId')
+            assert(apiId, 403, 'invalid apiId')
+
+            yield app.model.api.findOneAndUpdate({
+                group: groupId,
+                _id: apiId
+            }, body).exec()
+
+            this.ctx.status = 204
+        }
         * getApi () {
             const { groupId, apiId } = this.ctx.params
             assert(groupId, 403, 'invalid groupId')

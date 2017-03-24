@@ -9,4 +9,5 @@ module.exports = app => {
     app.get('/server/api/:groupId', 'api.getGroupAll')
     app.get('/server/api/:groupId/:apiId', 'api.getApi')
     app.post('/server/api/:groupId', 'api.createApi')
+    app.put('/server/api/:groupId/:apiId', 'api.modifyApi')
 }
