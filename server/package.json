@@ -7,7 +7,8 @@
     "egg": "^1.0.0",
     "egg-cors": "1.0.0",
     "egg-mongoose": "1.1.1",
-    "http-assert": "1.2.0"
+    "http-assert": "1.2.0",
+    "ramda": "0.23.0"
   },
   "devDependencies": {
     "@dxy/eslint-config-dxy-base": "1.2.1",
