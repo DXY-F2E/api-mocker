@@ -1,4 +1,5 @@
 const R = require('ramda')
+const util = require('../util.js')
 const assert = require('http-assert')
 
 module.exports = app => {
@@ -60,10 +61,13 @@ module.exports = app => {
             assert(groupId, 403, 'invalie groupId')
             assert(body.name, 403, 'required name')
             assert(body.dsl, 403, 'required dsl')
+
+            const nextUrl = yield util.generateApiURL(app)
             
             yield new app.model.api(R.merge(body, {
                 createTime: Date.now(),
-                group: groupId
+                group: groupId,
+                url: nextUrl
             })).save()
 
             this.ctx.status = 204

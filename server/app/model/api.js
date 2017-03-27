@@ -11,7 +11,10 @@ module.exports = mongoose => {
         },
         createTime: String,
         modifiedTime: String,
-        url: String,
+        url: {
+            type: String,
+            unique: true
+        },
         dsl: Object,
         options: {
             method: String,
