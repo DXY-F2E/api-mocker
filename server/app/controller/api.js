@@ -64,13 +64,13 @@ module.exports = app => {
 
             const nextUrl = yield util.generateApiURL(app)
             
-            yield new app.model.api(R.merge(body, {
+            this.ctx.body = yield new app.model.api(R.merge(body, {
                 createTime: Date.now(),
                 group: groupId,
                 url: nextUrl
             })).save()
 
-            this.ctx.status = 204
+            this.ctx.status = 200
         }
     }
     return ApiController
