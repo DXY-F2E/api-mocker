@@ -1,4 +1,5 @@
 const R = require('ramda')
+const assert = require('http-assert')
 
 module.exports = app => {
     class ApiController extends app.Controller {
