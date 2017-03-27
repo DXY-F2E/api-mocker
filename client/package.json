@@ -11,9 +11,12 @@
     "fix": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {
+    "axios": "0.15.3",
+    "brace": "0.10.0",
     "element-ui": "1.2.5",
     "vue": "^2.2.2",
-    "vue-router": "^2.2.0"
+    "vue-router": "^2.2.0",
+    "vuex": "2.2.1"
   },
   "devDependencies": {
     "@dxy/eslint-config-dxy-base": "1.2.1",
