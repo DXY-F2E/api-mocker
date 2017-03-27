@@ -5,11 +5,17 @@ module.exports = mongoose => {
             type: ObjectId,
             ref: 'group'
         },
-        name: String,
+        name: {
+            type: String,
+            unique: true
+        },
         desc: String,
         createTime: String,
         modifiedTime: String,
-        url: String,
+        url: {
+            type: String,
+            unique: true
+        },
         dsl: Object,
         options: {
             method: String,

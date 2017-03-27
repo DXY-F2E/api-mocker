@@ -1,4 +1,6 @@
 const R = require('ramda')
+const util = require('../util.js')
+const assert = require('http-assert')
 
 module.exports = app => {
     class ApiController extends app.Controller {
@@ -9,7 +11,7 @@ module.exports = app => {
                                        .skip(offset)
                                        .limit(limit)
                                        .exec()
-            this.body = { resources }
+            this.ctx.body = { resources }
             this.ctx.status = 200
         }
         * getGroupAll () {
@@ -26,6 +28,19 @@ module.exports = app => {
             
             this.ctx.body = { resources }
             this.ctx.status = 200
+        }
+        * modifyApi () {
+            const { groupId, apiId } = this.ctx.params
+            const { body } = this.ctx.request
+            assert(groupId, 403, 'invalid groupId')
+            assert(apiId, 403, 'invalid apiId')
+
+            yield app.model.api.findOneAndUpdate({
+                group: groupId,
+                _id: apiId
+            }, body).exec()
+
+            this.ctx.status = 204
         }
         * getApi () {
             const { groupId, apiId } = this.ctx.params
@@ -46,13 +61,16 @@ module.exports = app => {
             assert(groupId, 403, 'invalie groupId')
             assert(body.name, 403, 'required name')
             assert(body.dsl, 403, 'required dsl')
+
+            const nextUrl = yield util.generateApiURL(app)
             
             yield new app.model.api(R.merge(body, {
                 createTime: Date.now(),
-                group: groupId
+                group: groupId,
+                url: nextUrl
             })).save()
 
-            this.ctx.body = 204
+            this.ctx.status = 204
         }
     }
     return ApiController
