@@ -9,6 +9,7 @@ module.exports = mongoose => {
             type: String,
             unique: true
         },
+        desc: String,
         createTime: String,
         modifiedTime: String,
         url: {

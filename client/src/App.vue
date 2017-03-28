@@ -11,6 +11,14 @@ export default {
     name: 'app',
     components: {
         AppHeader
+    },
+    methods: {
+        getGroups() {
+            this.$store.dispatch('GET_GROUPS');
+        }
+    },
+    mounted() {
+        this.getGroups();
     }
 };
 </script>

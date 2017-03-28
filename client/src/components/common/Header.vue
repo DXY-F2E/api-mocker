@@ -1,16 +1,16 @@
 <template>
   <div class="header">
     <el-row type="flex" >
-        <el-col :span="0" class="logo"><h1>丁香园 API Mocker</h1></el-col>
+        <el-col :span="0" class="logo"><h1>DXY API Mocker</h1></el-col>
         <el-col :span="24">
             <el-menu theme="dark"
-                     :default-active="activeIndex"
+                     :default-active="$route.path"
                      class="el-menu-demo grid-content"
                      mode="horizontal"
                      :router="true"
                      @select="handleSelect">
               <el-menu-item index="/">接口列表</el-menu-item>
-              <el-menu-item index="/create">创建接口</el-menu-item>
+              <el-menu-item index="/edit">创建接口</el-menu-item>
             </el-menu>
         </el-col>
     </el-row>
@@ -40,6 +40,12 @@ export default {
 .el-menu {
     border-radius: 0;
     /*float: right;*/
+}
+.el-menu-item.is-active {
+    border-bottom: 5px solid #20a0ff;
+}
+.el-menu--horizontal .el-menu-item {
+  margin-right: 20px;
 }
 .logo {
     width: 200px;
