@@ -16,7 +16,7 @@ function renderer (inject, debug = false) {
         const answer = R.map(function (renderArray) {
             return R.reduce(function (oripattern, item) {
                 if (typeof item.pattern === 'string')
-                    return oripattern.replace(item.model, inject[item.pattern])
+                    return oripattern.replace(item.model, inject[item.pattern.trim()])
                 else
                     return oripattern.replace(item.model, item.pattern)
             }, R.head(renderArray).oripattern, renderArray)
