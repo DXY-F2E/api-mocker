@@ -1,6 +1,12 @@
 import R from 'ramda'
 import { compile, debugCompile } from './compiler'
 
+/**
+* 
+* @param {Object} inject a symbol table
+* @param {bool} default is false
+* @returns {Function} renderTemplate
+*/
 function renderer (inject, debug = false) {
     return function (obj){
         if (debug) {
@@ -24,9 +30,6 @@ function renderer (inject, debug = false) {
     }
 }
 
-console.log(renderer({id: 'wo'},true)({
-    one: '${id}world'
-}))
 export default renderer
 
 
