@@ -14,7 +14,7 @@ export default {
     },
     methods: {
         getGroups() {
-            this.$store.dispatch('GET_GROUPS');
+            this.$store.dispatch('getGroups');
         }
     },
     mounted() {

@@ -37,16 +37,26 @@ export default {
     data() {
         return {
             typeList: ['String', 'Number', 'Object', 'Array'],
-            params: [
-                {
-                    key: null,
-                    type: 'String',
-                    required: true
-                }
-            ]
+            params: this.initParams()
         };
     },
+    watch: {
+        params: {
+            handler(val) {
+                this.$store.commit('UPDATE_API_PARAMS', val);
+            },
+            deep: true
+        }
+    },
     methods: {
+        updateParams() {
+            window.console.log('change');
+        },
+        initParams() {
+            window.console.log('init data');
+            const params = this.$store.state.api.options.params;
+            return JSON.parse(JSON.stringify(params));
+        },
         addParam(idx) {
             const param = {
                 key: null,
