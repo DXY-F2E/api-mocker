@@ -7,6 +7,7 @@
     "egg": "^1.0.0",
     "egg-cors": "1.0.0",
     "egg-mongoose": "1.1.1",
+    "egg-redis": "1.0.1",
     "http-assert": "1.2.0",
     "ramda": "0.23.0"
   },
