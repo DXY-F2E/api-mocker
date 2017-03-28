@@ -63,13 +63,14 @@ module.exports = app => {
             assert(body.dsl, 403, 'required dsl')
 
             const nextUrl = yield util.generateApiURL(app)
-            
-            this.ctx.body = yield new app.model.api(R.merge(body, {
+
+            const resources = yield new app.model.api(R.merge(body, {
                 createTime: Date.now(),
                 group: groupId,
                 url: nextUrl
             })).save()
 
+            this.ctx.body = { resources }
             this.ctx.status = 200
         }
     }
