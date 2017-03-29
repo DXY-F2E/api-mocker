@@ -19,7 +19,12 @@ module.exports = mongoose => {
         dsl: Object,
         options: {
             method: String,
-            headers: {}
+            headers: {},
+            params: [{
+                key: String,
+                required: Boolean,
+                type: String
+            }]
         }
     })
 
