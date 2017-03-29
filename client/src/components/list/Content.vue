@@ -31,20 +31,10 @@ export default {
             this.query = query;
         }
     },
-    mounted() {
-        const { groupId } = this.$route.params;
-        if (groupId) {
-            this.$store.dispatch('getGroupApi', groupId);
-        }
-    },
     computed: {
         apiList() {
-            const { groupId } = this.$route.params;
             const query = this.query;
             let apiList = this.$store.state.apiList;
-            if (groupId) {
-                apiList = this.$store.state.apis[groupId] || [];
-            }
             if (query) {
                 apiList = R.filter(
                     R.anyPass(

@@ -6,7 +6,7 @@
                     <span @click="handleClickGroup">组列表</span>
                     <i class="el-icon-plus title-icon" @click="handleClickShowDialog"></i>
                 </template>
-                <el-menu-item v-for="group in groups" :index="group._id" @click="handleClickGroup(group)">
+                <el-menu-item v-for="group in groups" :index="group._id" @click="handleClickGroup(group)" :key="group._id">
                     <i class="el-icon-minus"></i>{{group.name}}
                 </el-menu-item>
             </el-menu-item-group>
@@ -32,9 +32,13 @@
      methods: {
          handleClickGroup(group) {
              if (group && group._id) {
-                 this.$router.push(`/list/${group._id}`);
+                 this.$store.dispatch('getGroupApi', group._id).then(() => {
+                     this.$router.push(`/list/${group._id}`);
+                 });
              } else {
-                 this.$router.replace('/');
+                 this.$store.dispatch('getApiList').then(() => {
+                     this.$router.replace('/');
+                 });
              }
          },
          handleClickCreateGroup(groupName) {

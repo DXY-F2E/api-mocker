@@ -13,7 +13,7 @@ export default {
         };
     },
     watch: {
-        query(val, oval) {
+        query(val) {
             this.$emit('query', val);
         }
     }
