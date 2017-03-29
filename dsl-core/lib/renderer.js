@@ -12,6 +12,12 @@ var _compiler = require('./compiler');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+* 
+* @param {Object} inject a symbol table
+* @param {bool} default is false
+* @returns {Function} renderTemplate
+*/
 function renderer(inject) {
     var debug = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
@@ -22,7 +28,7 @@ function renderer(inject) {
         var compile = debug ? _compiler.debugCompile : compile;
         var answer = _ramda2.default.map(function (renderArray) {
             return _ramda2.default.reduce(function (oripattern, item) {
-                if (typeof item.pattern === 'string') return oripattern.replace(item.model, inject[item.pattern]);else return oripattern.replace(item.model, item.pattern);
+                if (typeof item.pattern === 'string') return oripattern.replace(item.model, inject[item.pattern.trim()]);else return oripattern.replace(item.model, item.pattern);
             }, _ramda2.default.head(renderArray).oripattern, renderArray);
         }, compile(obj));
 
@@ -34,7 +40,4 @@ function renderer(inject) {
     };
 }
 
-console.log(renderer({ id: 'wo' }, true)({
-    one: '${id}world'
-}));
 exports.default = renderer;

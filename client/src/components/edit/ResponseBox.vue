@@ -10,9 +10,36 @@ import * as ace from 'brace';
 import 'brace/mode/json';
 
 export default {
+    computed: {
+        collect() {
+            return this.$store.state.collect;
+        }
+    },
+    methods: {
+        validate() {
+            try {
+                JSON.parse(this.editor.getValue());
+                return true;
+            } catch (err) {
+                this.$message.error('response 未正确填写');
+                return false;
+            }
+        },
+        initDsl() {
+            const dsl = this.$store.state.api.dsl;
+            if (dsl !== undefined) {
+                this.dsl = JSON.parse(JSON.stringify(dsl));
+                this.editor.setValue(JSON.stringify(this.dsl, null, '\t'));
+            }
+            this.editor.getSession().on('change', () => {
+                this.$store.commit('UPDATE_API_DSL', this.editor.getValue());
+            });
+        }
+    },
     mounted() {
         this.editor = ace.edit('json-editor');
         this.editor.getSession().setMode('ace/mode/json');
+        this.initDsl();
     }
 };
 </script>
