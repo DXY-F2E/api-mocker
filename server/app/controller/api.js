@@ -77,6 +77,12 @@ module.exports = app => {
             this.ctx.body = { resources }
             this.ctx.status = 200
         }
+        * delete () {
+            yield app.model.remove({
+                _id: this.ctx.params.apiId
+            })
+            this.ctx.status = 204
+        }
     }
     return ApiController
 }
