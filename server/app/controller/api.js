@@ -8,6 +8,7 @@ module.exports = app => {
             let { limit = 30, offset = 0, order = false} = this.ctx.query
             const resources = yield app.model.api
                                        .find({})
+                                       .sort({modifiedTime: -1, createTime: -1})
                                        .skip(offset)
                                        .limit(limit)
                                        .exec()
@@ -22,10 +23,11 @@ module.exports = app => {
             
             const resources = yield app.model.api
                                        .find({group: groupId})
+                                       .sort({modifiedTime: -1, createTime: -1})
                                        .skip(offset)
                                        .limit(limit)
                                        .exec()
-            
+
             this.ctx.body = { resources }
             this.ctx.status = 200
         }
@@ -39,6 +41,8 @@ module.exports = app => {
                 group: groupId,
                 _id: apiId
             }, R.merge(body, {modifiedTime: Date.now()} )).exec()
+            
+            yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}).exec()
 
             this.ctx.body = { resources }
         }
