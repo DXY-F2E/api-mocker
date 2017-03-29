@@ -2,6 +2,9 @@ const mutations = {
     INIT_GROUPS(state, groups) {
         state.groups = groups;
     },
+    CREATE_GROUP_SUCCESS(state, data) {
+        state.groups = state.groups.concat(data);
+    },
     INIT_API(state, api) {
         state.api = api;
     },
@@ -37,5 +40,4 @@ const mutations = {
         state.editor = editor;
     }
 };
-
 export default mutations;

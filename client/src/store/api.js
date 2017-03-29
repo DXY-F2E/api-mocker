@@ -1,6 +1,7 @@
 import R from 'ramda';
+const domain = 'http://localhost:7001';
 export default R.map((url) => {
-    return 'http://localhost:7001'.concat(url);
+    return `${domain}${url}`;
 })({
     GROUPS: '/server/group',
     GROUP: '/server/group/:groupId',
