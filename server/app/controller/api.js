@@ -35,12 +35,12 @@ module.exports = app => {
             assert(groupId, 403, 'invalid groupId')
             assert(apiId, 403, 'invalid apiId')
 
-            yield app.model.api.findOneAndUpdate({
+            const resources = yield app.model.api.findOneAndUpdate({
                 group: groupId,
                 _id: apiId
             }, body).exec()
 
-            this.ctx.status = 204
+            this.ctx.body = { resources }
         }
         * getApi () {
             const { groupId, apiId } = this.ctx.params
