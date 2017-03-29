@@ -49,9 +49,9 @@ export default {
                 apiList = R.filter(
                     R.anyPass(
                         [
-                            R.compose(R.contains(query), R.prop('name')),
+                            R.compose(R.contains(query), R.propOr('', 'name')),
                             R.compose(R.contains(query), R.propOr('', 'desc')),
-                            R.compose(R.contains(query), R.prop('url')),
+                            R.compose(R.contains(query), R.propOr('', 'url')),
                             R.compose(R.contains(query), R.pathOr('', ['options', 'method']))
                         ]), apiList);
             }
