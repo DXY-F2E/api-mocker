@@ -4,6 +4,8 @@ const state = {
     collect: false,
     validate: false,
     apiList: [],
+    editor: {},
+    dsl: '',
     api: apiInit
 };
 

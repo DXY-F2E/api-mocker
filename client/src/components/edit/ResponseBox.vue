@@ -11,14 +11,8 @@ import 'brace/mode/json';
 
 export default {
     computed: {
-        dsl: {
-            get() {
-                window.console.log('get dsl value');
-                return this.$store.state.api.dsl;
-            },
-            set(val) {
-                window.console.log(val);
-            }
+        dsl() {
+            return this.$store.state.api.dsl;
         }
     },
     methods: {
@@ -31,22 +25,30 @@ export default {
                 return false;
             }
         },
+        init() {
+            const JsonEditor = ace.edit('json-editor');
+            JsonEditor.getSession().setMode('ace/mode/json');
+            // this.initDsl();
+            this.$store.commit('INIT_EDITOR', JsonEditor);
+            window.console.log(JsonEditor);
+        },
         initDsl() {
             const dsl = this.$store.state.api.dsl;
-            window.console.log(dsl);
             if (dsl !== undefined) {
-                this.dsl = JSON.parse(JSON.stringify(dsl));
-                this.editor.setValue(JSON.stringify(this.dsl, null, '\t'));
+                this.editor.setValue(JSON.stringify(dsl, null, '\t'));
             }
-            this.editor.getSession().on('change', () => {
-                this.$store.commit('UPDATE_API_DSL', this.editor.getValue());
-            });
+            // this.editor.getSession().on('change', () => {
+            //     this.$store.commit('UPDATE_API_DSL', this.editor.getValue());
+            //     // this.dsl = this.editor.getValue();
+            // });
         }
     },
     mounted() {
-        this.editor = ace.edit('json-editor');
-        this.editor.getSession().setMode('ace/mode/json');
-        this.initDsl();
+        this.JsonEditor = ace.edit('json-editor');
+        this.JsonEditor.getSession().setMode('ace/mode/json');
+        // this.initDsl();
+        // this.$store.commit('INIT_EDITOR', this.JsonEditor);
+        // window.console.log(this.JsonEditor);
     }
 };
 </script>
