@@ -7,7 +7,7 @@
                 <el-option label="PUT" value="put"></el-option>
                 <el-option label="DELETE" value="delete"></el-option>
             </el-select>
-            <el-button slot="append" @click="saveApi()">Save</el-button>
+            <el-button slot="append" @click="validate()">Save</el-button>
         </el-input>
         <confirm ref="confirmBox"></confirm>
     </div>
@@ -15,6 +15,7 @@
 
 <script>
 import Confirm from './Confirm';
+import { mapActions } from 'vuex';
 export default {
     components: {
         Confirm
@@ -25,12 +26,27 @@ export default {
         };
     },
     methods: {
-        saveApi() {
-            if (this.api.id !== undefined) {
-                this.$store.dispatch('saveApi');
-            } else {
-                this.$refs.confirmBox.isShowDialog = true;
-            }
+        ...mapActions([
+            'validateApi',
+            'saveApi'
+        ]),
+        save() {
+            this.saveApi().then(res => {
+                this.$message('保存成功');
+                this.$store.commit('UPDATE_API', res.data.resources);
+            }).catch(err => {
+                window.console.log(err.response);
+                this.$message.error(`创建失败:${err.response.data.message}`);
+            });
+        },
+        validate() {
+            this.validateApi().then(rs => {
+                if (rs.status) {
+                    this.save();
+                } else {
+                    this.$message.error(rs.msg);
+                }
+            });
         }
     },
     computed: {

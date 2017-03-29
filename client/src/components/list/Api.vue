@@ -1,14 +1,14 @@
 <template>
-    <el-card class="box-card">
+    <el-card class="box-card" @click.native="editApi(data)">
       <div slot="header" class="clearfix">
         <span>{{data.name}}</span>
         <!-- <el-button type="primary" icon="edit" size="small" class="edit-api"></el-button> -->
       </div>
       <div class="text item">
-          <label>地址：</label><input v-model="data.url" readonly />
+          <label>URL:</label><input v-model="data.url" readonly />
       </div>
       <div class="text item">
-          <label>作者：</label>{{data.author}}
+          <label>Method:</label>{{data.options.method}}
       </div>
     </el-card>
 </template>
@@ -18,6 +18,12 @@ export default {
         data: {
             type: Object,
             require: true
+        }
+    },
+    methods: {
+        editApi(api) {
+            this.$store.commit('UPDATE_API', api);
+            this.$router.push(`/edit/${api.group}/${api._id}`);
         }
     }
 };
@@ -54,6 +60,7 @@ export default {
 }
 .item label {
     color: #475669;
+    margin-right: 5px;
 }
 .item input {
     border: none;

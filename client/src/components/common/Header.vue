@@ -10,7 +10,7 @@
                      :router="true"
                      @select="handleSelect">
               <el-menu-item index="/">接口列表</el-menu-item>
-              <el-menu-item index="/edit">创建接口</el-menu-item>
+              <el-menu-item index="/edit" @click.native="createApi()">创建接口</el-menu-item>
             </el-menu>
         </el-col>
     </el-row>
@@ -27,6 +27,9 @@ export default {
     methods: {
         handleSelect(key, keyPath) {
             window.console.log(key, keyPath);
+        },
+        createApi() {
+            this.$store.dispatch('initApi');
         }
     }
 };
@@ -36,6 +39,7 @@ export default {
     padding: 0 40px;
     background-color: #324157;
     text-align: left;
+    min-width: 550px;
 }
 .el-menu {
     border-radius: 0;

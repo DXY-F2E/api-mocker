@@ -1,23 +1,9 @@
-const apiInit = {
-    url: null,
-    name: '',
-    group: '',
-    desc: null,
-    options: {
-        method: 'get',
-        params: [
-            {
-                key: null,
-                type: 'String',
-                required: true
-            }
-        ]
-    }
-};
+import apiInit from './apiInitData';
 const state = {
     groups: [],
     collect: false,
     validate: false,
+    apiList: [],
     api: apiInit
 };
 

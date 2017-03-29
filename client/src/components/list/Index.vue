@@ -14,6 +14,14 @@ export default {
     components: {
         NavMenu,
         MainContent
+    },
+    methods: {
+        getApiList() {
+            this.$store.dispatch('getApiList');
+        }
+    },
+    mounted() {
+        this.getApiList();
     }
 };
 </script>

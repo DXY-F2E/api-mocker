@@ -20,35 +20,10 @@ export default {
         Search,
         Api
     },
-    data() {
-        return {
-            apiList: [
-                {
-                    id: '1',
-                    url: '/api/get/356',
-                    name: '这是一个测试接口',
-                    author: 'zhangfx@dxy.cn'
-                },
-                {
-                    id: '2',
-                    url: '/api/put/789',
-                    name: '这是一个put接口',
-                    author: 'zhangfx@dxy.cn'
-                },
-                {
-                    id: '3',
-                    url: '/api/post/2387428374',
-                    name: '这是一个名字很长很长很长很长的接口接口',
-                    author: 'lqw@dxy.cn'
-                },
-                {
-                    id: '4',
-                    url: '/api/get/356',
-                    name: '这是一个测试接口',
-                    author: 'lqw@dxy.cn'
-                }
-            ]
-        };
+    computed: {
+        apiList() {
+            return this.$store.state.apiList;
+        }
     }
 };
 </script>

@@ -14,6 +14,11 @@ export default new Router({
         },
         {
             path: '/edit',
+            name: 'Create',
+            component: Edit
+        },
+        {
+            path: '/edit/:groupId/:apiId',
             name: 'Edit',
             component: Edit
         }

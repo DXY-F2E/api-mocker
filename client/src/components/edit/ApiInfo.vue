@@ -1,0 +1,69 @@
+<template>
+    <div class="api-info el-col">
+        <el-form>
+            <el-form-item label="接口名称">
+                <el-input auto-complete="off" v-model="name"></el-input>
+            </el-form-item>
+            <el-form-item label="所在分组">
+                <div class="group-select">
+                    <el-row type="flex" >
+                        <el-col :span="24">
+                            <el-select placeholder="请选择活动区域" v-model="group">
+                                <el-option v-for="group in groups"
+                                           :key="group._id"
+                                           :label="group.name"
+                                           :value="group._id">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                    </el-row>
+                </div>
+            </el-form-item>
+            <el-form-item label="接口描述">
+                <el-input type="textarea" v-model="desc" placeholder="选填"></el-input>
+            </el-form-item>
+        </el-form>
+    </div>
+</template>
+
+<script>
+export default {
+    computed: {
+        groups() {
+            return this.$store.state.groups;
+        },
+        name: {
+            get() {
+                return this.$store.state.api.name;
+            },
+            set(value) {
+                this.$store.commit('UPDATE_API_NAME', value);
+            }
+        },
+        desc: {
+            get() {
+                return this.$store.state.api.desc;
+            },
+            set(value) {
+                this.$store.commit('UPDATE_API_DESC', value);
+            }
+        },
+        group: {
+            get() {
+                return this.$store.state.api.group;
+            },
+            set(value) {
+                this.$store.commit('UPDATE_API_GROUP', value);
+            }
+        }
+    }
+};
+</script>
+<style>
+.api-info {
+    padding: 20px;
+    width: 288px;
+    min-width: 288px;
+    background-color: #eef1f6;
+}
+</style>

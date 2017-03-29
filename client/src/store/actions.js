@@ -1,35 +1,66 @@
 import axios from 'axios';
-
+import apiInit from './apiInitData';
+const ROOT = 'http://127.0.0.1:7001/server';
+const isEmpty = function(val) {
+    return val === undefined || val.trim() === '' || val === null;
+};
 const actions = {
     getGroups({ commit }) {
-        // const ROOT = 'http://127.0.0.1:7001';
-        const url = 'http://127.0.0.1:7001/server/group';
-        axios.get(url).then(response => {
-            // success callback
-            commit('INIT_GROUPS', response.data.resources);
-        }, response => {
-            window.console.log(response);
-            // error callback
+        const url = `${ROOT}/group`;
+        axios.get(url).then(res => {
+            commit('INIT_GROUPS', res.data.resources);
+        }, res => {
+            window.console.log(res);
         });
     },
-    saveApi(context) {
-        window.console.log(context.state.api);
-        return true;
-    },
-    createApi(context, cb) {
-        window.console.log(context.state.api);
-        const api = context.state.api;
-        const url = `http://127.0.0.1:7001/server/api/${api.group}`;
-        axios.post(url, api).then(response => {
-            // success callback
-            window.console.log('success');
-            window.console.log(response.data);
-            context.commit('UPDATE_API', response.data);
-            cb.success();
-        }).catch(error => {
-            cb.fail(error.response.data.message);
+    getApiList({ commit }) {
+        axios.get(`${ROOT}/api`).then(res => {
+            commit('INIT_API_LIST', res.data.resources);
+        }, res => {
+            window.console.log(res);
         });
-        return true;
+    },
+    getApi({ commit }, params) {
+        // axios.get(`${ROOT}/api/${params.groupId}/${params.apiId}`).then(res => {
+        //     commit('UPDATE_API', res.data.resources);
+        // }, res => {
+        //     window.console.log(res);
+        // });
+        return axios.get(`${ROOT}/api/${params.groupId}/${params.apiId}`);
+    },
+    updateApi({ state }) {
+        const api = state.api;
+        return axios.put(`${ROOT}/api/${api.group}/${api._id}`, api);
+    },
+    saveApi({ dispatch, state }) {
+        if (state.api._id) {
+            return dispatch('updateApi');
+        } else {
+            return dispatch('createApi');
+        }
+    },
+    createApi({ state }) {
+        return axios.post(`${ROOT}/api/${state.api.group}`, state.api);
+    },
+    initApi({ commit }) {
+        commit('INIT_API', apiInit);
+    },
+    validateApi({ state }) {
+        if (isEmpty(state.api.name)) {
+            return {
+                status: false,
+                msg: '接口名不能为空'
+            };
+        } else if (isEmpty(state.api.group)) {
+            return {
+                status: false,
+                msg: '接口分组不能为空'
+            };
+        } else {
+            return {
+                status: true
+            };
+        }
     }
 };
 
