@@ -2,26 +2,19 @@
   <div class="content">
     <el-row type="flex" class="list-content">
         <nav-menu></nav-menu>
-        <main-content></main-content>
+        <router-view></router-view>
     </el-row>
   </div>
 </template>
 
 <script>
 import NavMenu from './Menu';
-import MainContent from './Content';
 export default {
     components: {
-        NavMenu,
-        MainContent
-    },
-    methods: {
-        getApiList() {
-            this.$store.dispatch('getApiList');
-        }
+        NavMenu
     },
     mounted() {
-        this.getApiList();
+        this.$store.dispatch('getApiList');
     }
 };
 </script>

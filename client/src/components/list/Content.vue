@@ -2,7 +2,7 @@
     <el-col :span="24">
         <div class="content-wrap">
             <div id="content">
-                <search></search>
+                <search @query="onQuery"></search>
                 <ul class="api-list">
                     <li v-for="api in apiList">
                         <api :data="api"></api>
@@ -15,14 +15,41 @@
 <script>
 import Search from './Search';
 import Api from './Api';
+import R from 'ramda';
 export default {
     components: {
         Search,
         Api
     },
+    data() {
+        return {
+            query: ''
+        };
+    },
+    methods: {
+        onQuery(query) {
+            this.query = query;
+        }
+    },
     computed: {
         apiList() {
-            return this.$store.state.apiList;
+            const { groupId } = this.$route.params;
+            const query = this.query;
+            let apiList = this.$store.state.apiList;
+            if (groupId) {
+                apiList = R.filter(R.propEq('group', groupId), apiList);
+            }
+            if (query) {
+                apiList = R.filter(
+                    R.anyPass(
+                        [
+                            R.compose(R.contains(query), R.prop('name')),
+                            R.compose(R.contains(query), R.propOr('', 'desc')),
+                            R.compose(R.contains(query), R.prop('url')),
+                            R.compose(R.contains(query), R.pathOr('', ['options', 'method']))
+                        ]), apiList);
+            }
+            return apiList;
         }
     }
 };
