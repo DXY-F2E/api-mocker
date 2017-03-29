@@ -47,6 +47,13 @@ export default {
     },
     mounted() {
         this.initApi();
+    },
+    watch: {
+        $route(to, from) {
+            if (from.name === 'Create' && to.name === 'Edit' && !this.loading) {
+                this.initApi();
+            }
+        }
     }
 };
 </script>

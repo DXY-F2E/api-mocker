@@ -35,6 +35,9 @@ const mutations = {
     },
     UPDATE_API(state, data) {
         state.api = data;
+    },
+    INIT_EDITOR(state, editor) {
+        state.editor = editor;
     }
 };
 export default mutations;
