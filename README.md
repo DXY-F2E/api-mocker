@@ -4,15 +4,20 @@
 
 ## Install
 
-``` bash
-# 安装npm包
-npm install cascading-comp-vue
+安装依赖外部命令(`mongod`)
 
-# 运行demo
-npm run dev
+`make install`
 
-```
-## How to Use
 
-``` html
+## 开发启动(dev)
+
+### Client
+
+`make client`
+
+### Server
+
+`make server`
+
+## 发布启动(prods)
 

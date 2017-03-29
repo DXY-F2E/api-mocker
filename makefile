@@ -17,12 +17,10 @@ prerequ-program:
 dsl-core:
 	cd dsl-core  && npm install && npm run build
 
-server:|prerequ-program dsl-core
+server:|dsl-core
 	cd server && npm install && npm run dev
 
 client:|dsl-core
 	cd client && npm install && npm run dev
 
-
-
-
+install:|prerequ-program

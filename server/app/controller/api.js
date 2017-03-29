@@ -38,7 +38,7 @@ module.exports = app => {
             const resources = yield app.model.api.findOneAndUpdate({
                 group: groupId,
                 _id: apiId
-            }, body).exec()
+            }, R.merge(body, {modifiedTime: Date.now()} )).exec()
 
             this.ctx.body = { resources }
         }
