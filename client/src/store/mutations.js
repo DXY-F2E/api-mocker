@@ -6,10 +6,7 @@ const mutations = {
         state.groups = state.groups.concat(data);
     },
     GET_GROUP_API(state, data) {
-        state.apis = {
-            ...state.apis,
-            ...data
-        };
+        state.apiList = data;
     },
     INIT_API(state, api) {
         state.api = api;

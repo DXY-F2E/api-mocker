@@ -1,9 +1,9 @@
 <template>
-  <div class="api-box el-col">
-      <url-box></url-box>
-      <request-box></request-box>
-      <response-box></response-box>
-  </div>
+    <div class="api-box el-col">
+        <url-box></url-box>
+        <request-box></request-box>
+        <response-box></response-box>
+    </div>
 </template>
 
 <script>
