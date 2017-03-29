@@ -35,9 +35,11 @@ const actions = {
     updateApi({ state }) {
         const api = state.api;
         const { group, _id} = api;
-        return axios.put(API.API.replace(':groupId', group).replace(':apiId', _id));
+        return axios.put(API.API.replace(':groupId', group).replace(':apiId', _id), state.api);
     },
     saveApi({ dispatch, state }) {
+        window.console.log('保存API');
+        window.console.log(state.api);
         if (state.api._id) {
             return dispatch('updateApi');
         } else {
@@ -45,7 +47,7 @@ const actions = {
         }
     },
     createApi({ state }) {
-        return axios.post(API.GROUP_APIS.replace(':groupId', state.api));
+        return axios.post(API.GROUP_APIS.replace(':groupId', state.api.group), state.api);
     },
     initApi({ commit }) {
         commit('INIT_API', apiInit);

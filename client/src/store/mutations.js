@@ -24,11 +24,7 @@ const mutations = {
         state.api.options.method = method;
     },
     UPDATE_API_DSL(state, dsl) {
-        try {
-            state.api.dsl = JSON.parse(dsl);
-        } catch (err) {
-            return false;
-        }
+        state.api.dsl = dsl;
     },
     UPDATE_API_NAME(state, name) {
         state.api.name = name;

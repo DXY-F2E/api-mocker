@@ -11,8 +11,13 @@ import 'brace/mode/json';
 
 export default {
     computed: {
-        dsl() {
-            return this.$store.state.api.dsl;
+        apiId() {
+            return this.$store.state.api._id;
+        }
+    },
+    watch: {
+        apiId() {
+            this.setValue();
         }
     },
     methods: {
@@ -25,30 +30,32 @@ export default {
                 return false;
             }
         },
-        init() {
-            const JsonEditor = ace.edit('json-editor');
-            JsonEditor.getSession().setMode('ace/mode/json');
-            // this.initDsl();
-            this.$store.commit('INIT_EDITOR', JsonEditor);
-            window.console.log(JsonEditor);
-        },
-        initDsl() {
+        setValue() {
             const dsl = this.$store.state.api.dsl;
             if (dsl !== undefined) {
                 this.editor.setValue(JSON.stringify(dsl, null, '\t'));
+            } else {
+                this.editor.setValue('');
             }
-            // this.editor.getSession().on('change', () => {
-            //     this.$store.commit('UPDATE_API_DSL', this.editor.getValue());
-            //     // this.dsl = this.editor.getValue();
-            // });
+        },
+        initDsl() {
+            this.setValue();
+            this.editor.getSession().on('change', () => {
+                let dsl = this.editor.getValue();
+                try {
+                    dsl = JSON.parse(dsl);
+                    window.console.log('更新DSL');
+                    this.$store.commit('UPDATE_API_DSL', dsl);
+                } catch (err) {
+                    return false;
+                }
+            });
         }
     },
     mounted() {
-        this.JsonEditor = ace.edit('json-editor');
-        this.JsonEditor.getSession().setMode('ace/mode/json');
-        // this.initDsl();
-        // this.$store.commit('INIT_EDITOR', this.JsonEditor);
-        // window.console.log(this.JsonEditor);
+        this.editor = ace.edit('json-editor');
+        this.editor.getSession().setMode('ace/mode/json');
+        this.initDsl();
     }
 };
 </script>

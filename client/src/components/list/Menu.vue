@@ -19,7 +19,7 @@
 </template>
 <script>
  import createGroupDialog from '../../dialog/create-group';
- 
+
  export default {
      components: {
          'create-group-dialog': createGroupDialog

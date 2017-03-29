@@ -42,7 +42,7 @@ module.exports = app => {
                 _id: apiId
             }, R.merge(body, {modifiedTime: Date.now()} )).exec()
             
-            yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}).exec()
+            yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
 
             this.ctx.body = { resources }
         }

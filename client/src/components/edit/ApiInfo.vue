@@ -4,11 +4,11 @@
             <el-form-item label="接口名称">
                 <el-input auto-complete="off" v-model="name"></el-input>
             </el-form-item>
-            <el-form-item label="所在分组">
+            <el-form-item label="接口分组">
                 <div class="group-select">
                     <el-row type="flex" >
                         <el-col :span="24">
-                            <el-select placeholder="请选择活动区域" v-model="group">
+                            <el-select placeholder="请选择分组" v-model="group">
                                 <el-option v-for="group in groups"
                                            :key="group._id"
                                            :label="group.name"
@@ -20,7 +20,7 @@
                 </div>
             </el-form-item>
             <el-form-item label="接口描述">
-                <el-input type="textarea" v-model="desc" placeholder="选填"></el-input>
+                <el-input type="textarea" v-model="desc" placeholder="选填" :rows="4"></el-input>
             </el-form-item>
         </el-form>
     </div>
@@ -65,5 +65,17 @@ export default {
     width: 288px;
     min-width: 288px;
     background-color: #eef1f6;
+}
+.group-select {
+    display: inline-block;
+    width: 100%;
+}
+.group-select .el-icon-plus {
+    width: 50px;
+    line-height: 36px;
+}
+.group-select .el-select .el-input__inner,
+.group-select .el-select {
+    width: 100%;
 }
 </style>

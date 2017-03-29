@@ -37,8 +37,13 @@ export default {
     data() {
         return {
             typeList: ['String', 'Number', 'Object', 'Array'],
-            params: this.initParams()
+            params: this.getInitParams()
         };
+    },
+    computed: {
+        apiId() {
+            return this.$store.state.api._id;
+        }
     },
     watch: {
         params: {
@@ -46,15 +51,15 @@ export default {
                 this.$store.commit('UPDATE_API_PARAMS', JSON.parse(JSON.stringify(val)));
             },
             deep: true
+        },
+        apiId() {
+            this.params = this.getInitParams();
         }
     },
     methods: {
-        updateParams() {
-            window.console.log('change');
-        },
-        initParams() {
+        getInitParams() {
             const params = this.$store.state.api.options.params;
-            if (params) {
+            if (params && params.length > 0) {
                 return JSON.parse(JSON.stringify(params));
             } else {
                 return [{

@@ -20,11 +20,7 @@ module.exports = mongoose => {
         options: {
             method: String,
             headers: {},
-            params: [{
-                key: String,
-                required: Boolean,
-                type: String
-            }]
+            params: []
         }
     })
 
