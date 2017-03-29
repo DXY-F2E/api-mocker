@@ -29,7 +29,7 @@ export default {
             if (this.$route.name === 'Edit' && this.$route.params.apiId !== this.api._id) {
                 // this.$store.dispatch('getApi');
                 this.getApi(this.$route.params).then(res => {
-                    this.$store.commit('UPDATE_API', res.data.resources[0]);
+                    this.$store.commit('UPDATE_API', res.data.resources);
                     this.loading = false;
                 }).catch(err => {
                     this.$message.error(`获取数据失败:${err.res.data.message}`);

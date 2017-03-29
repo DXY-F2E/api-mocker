@@ -4,9 +4,9 @@
             <el-tab-pane label="Params" name="params">
                 <params></params>
             </el-tab-pane>
-            <el-tab-pane label="Body" name="body">
+            <!-- <el-tab-pane label="Body" name="body">
                 <req-body></req-body>
-            </el-tab-pane>
+            </el-tab-pane> -->
         </el-tabs>
     </div>
 </template>

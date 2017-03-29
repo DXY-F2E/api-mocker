@@ -13,12 +13,8 @@
 </template>
 
 <script>
-import Confirm from './Confirm';
 import { mapActions } from 'vuex';
 export default {
-    components: {
-        Confirm
-    },
     data() {
         return {
             isShowDialog: false
@@ -32,6 +28,7 @@ export default {
         save() {
             this.saveApi().then(res => {
                 this.$message('保存成功');
+                window.console.log(res);
                 this.$store.commit('UPDATE_API', res.data.resources);
             }).catch(err => {
                 window.console.log(err.response);

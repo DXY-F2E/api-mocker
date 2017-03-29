@@ -34,12 +34,10 @@ module.exports = app => {
             const { body } = this.ctx.request
             assert(groupId, 403, 'invalid groupId')
             assert(apiId, 403, 'invalid apiId')
-
             const resources = yield app.model.api.findOneAndUpdate({
                 group: groupId,
                 _id: apiId
-            }, R.merge(body, {modifiedTime: Date.now()} )).exec()
-
+            }, R.merge(body, {modifiedTime: Date.now()}), {new: true}).exec()
             this.ctx.body = { resources }
         }
         * getApi () {
@@ -48,7 +46,7 @@ module.exports = app => {
             assert(apiId, 403, 'invalid apiId')
             
             const resources = yield app.model.api
-                                       .find({group: groupId, _id:apiId})
+                                       .findOne({group: groupId, _id:apiId})
                                        .exec()
             
             this.ctx.body = { resources }

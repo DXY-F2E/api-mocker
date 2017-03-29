@@ -4,7 +4,6 @@ const state = {
     collect: false,
     validate: false,
     apiList: [],
-    dsl: '',
     api: apiInit
 };
 

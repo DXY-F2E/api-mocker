@@ -1,7 +1,11 @@
 <template>
-    <el-card class="box-card" @click.native="editApi(data)">
+    <el-card class="card-box" @click.native="editApi(data)">
       <div slot="header" class="clearfix">
-        <span>{{data.name}}</span>
+        <span class="name">{{data.name}}</span>
+        <el-button-group>
+          <el-button size="mini" icon="share" @click.native.stop="copy()"></el-button>
+          <el-button size="mini" icon="delete"></el-button>
+        </el-button-group>
         <!-- <el-button type="primary" icon="edit" size="small" class="edit-api"></el-button> -->
       </div>
       <div class="text item">
@@ -24,6 +28,9 @@ export default {
         editApi(api) {
             this.$store.commit('UPDATE_API', api);
             this.$router.push(`/edit/${api.group}/${api._id}`);
+        },
+        copy() {
+            window.console.log(this.data.url);
         }
     }
 };
@@ -50,11 +57,6 @@ export default {
     padding: 8px 20px;
     /*line-height: 50px;*/
 }
-.el-card .el-card__header > div {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
 .item {
     color: #8492A6;
 }
@@ -72,5 +74,31 @@ export default {
     max-width: 130px;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.card-box .clearfix {
+    height: 22px;
+    line-height: 22px;
+}
+.card-box .name {
+    width: 140px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card-box .el-button-group {
+    float: right;
+    margin-right: -10px;
+}
+.card-box .el-button-group .el-button:focus,
+.card-box .el-button-group button {
+    background-color: #F9FAFC;
+    color: #8492A6;
+    border-color: #bfcbd9;
+}
+.card-box .el-button-group .el-button:hover {
+    /*border-color: #E5E9F2;*/
+    background-color: #E5E9F2;
+    color: #475669;
 }
 </style>

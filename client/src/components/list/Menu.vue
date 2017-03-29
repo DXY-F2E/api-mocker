@@ -19,7 +19,7 @@
 </template>
 <script>
  import createGroupDialog from '../../dialog/create-group';
- 
+
  export default {
      components: {
          'create-group-dialog': createGroupDialog
@@ -34,7 +34,7 @@
              this.$store.dispatch('createGroup', { name: groupName}).then(() => {
                  this.showCreateDialog = false;
              }).catch((e) => {
-                 console.log('error', e);
+                 window.console.log('error', e);
              });
          },
          handleClickClose() {
