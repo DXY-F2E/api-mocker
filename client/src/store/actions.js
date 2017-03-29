@@ -25,7 +25,7 @@ const actions = {
     },
     getGroupApi({ commit }, groupId) {
         return axios.get(API.GROUP_APIS.replace(':groupId', groupId)).then((response) => {
-            commit('GET_GROUP_API', { [groupId]: response.data.resources});
+            commit('GET_GROUP_API', response.data.resources);
         });
     },
     getApi({ commit }, params) {
