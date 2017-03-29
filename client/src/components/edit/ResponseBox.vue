@@ -44,8 +44,8 @@ export default {
         }
     },
     mounted() {
-        this.JsonEditor = ace.edit('json-editor');
-        this.JsonEditor.getSession().setMode('ace/mode/json');
+        this.$store.editor = ace.edit('json-editor');
+        this.$store.editor.getSession().setMode('ace/mode/json');
         // this.initDsl();
         // this.$store.commit('INIT_EDITOR', this.JsonEditor);
         // window.console.log(this.JsonEditor);

@@ -9,7 +9,6 @@
             </el-select>
             <el-button slot="append" @click="validate()">Save</el-button>
         </el-input>
-        <confirm ref="confirmBox"></confirm>
     </div>
 </template>
 
