@@ -1,12 +1,12 @@
 <template>
     <el-col :span="0" class="menu-nav">
-        <el-menu default-active="group" class="el-menu-vertical">
-            <el-menu-item-group>
+        <el-menu :default-active="$route.params.groupId" class="el-menu-vertical">
+            <el-menu-item-group >
                 <template slot="title">
-                    组列表
+                    <span @click="handleClickGroup">组列表</span>
                     <i class="el-icon-plus title-icon" @click="handleClickShowDialog"></i>
                 </template>
-                <el-menu-item v-for="group in groups" :key="group._id" :index="group._id" >
+                <el-menu-item v-for="group in groups" :index="group._id" @click="handleClickGroup(group)">
                     <i class="el-icon-minus"></i>{{group.name}}
                 </el-menu-item>
             </el-menu-item-group>
@@ -30,6 +30,13 @@
          };
      },
      methods: {
+         handleClickGroup(group) {
+             if (group && group._id) {
+                 this.$router.push(`/list/${group._id}`);
+             } else {
+                 this.$router.replace('/');
+             }
+         },
          handleClickCreateGroup(groupName) {
              this.$store.dispatch('createGroup', { name: groupName}).then(() => {
                  this.showCreateDialog = false;

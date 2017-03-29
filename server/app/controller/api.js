@@ -8,6 +8,7 @@ module.exports = app => {
             let { limit = 30, offset = 0, order = false} = this.ctx.query
             const resources = yield app.model.api
                                        .find({})
+                                       .sort({modifiedTime: -1, createTime: -1})
                                        .skip(offset)
                                        .limit(limit)
                                        .exec()
@@ -22,10 +23,11 @@ module.exports = app => {
             
             const resources = yield app.model.api
                                        .find({group: groupId})
+                                       .sort({modifiedTime: -1, createTime: -1})
                                        .skip(offset)
                                        .limit(limit)
                                        .exec()
-            
+
             this.ctx.body = { resources }
             this.ctx.status = 200
         }
@@ -34,10 +36,14 @@ module.exports = app => {
             const { body } = this.ctx.request
             assert(groupId, 403, 'invalid groupId')
             assert(apiId, 403, 'invalid apiId')
+
             const resources = yield app.model.api.findOneAndUpdate({
                 group: groupId,
                 _id: apiId
-            }, R.merge(body, {modifiedTime: Date.now()}), {new: true}).exec()
+            }, R.merge(body, {modifiedTime: Date.now()} )).exec()
+            
+            yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
+
             this.ctx.body = { resources }
         }
         * getApi () {
@@ -46,7 +52,7 @@ module.exports = app => {
             assert(apiId, 403, 'invalid apiId')
             
             const resources = yield app.model.api
-                                       .findOne({group: groupId, _id:apiId})
+                                       .find({group: groupId, _id:apiId})
                                        .exec()
             
             this.ctx.body = { resources }

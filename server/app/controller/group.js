@@ -4,11 +4,9 @@ const R = require('ramda')
 module.exports = app =>{
     class GroupController extends app.Controller {
         * getAll () {
-            const { offset, limit } = this.ctx.query
             const resources = yield app.model.group
                                        .find({})
-                                       .skip(offset)
-                                       .limit(limit)
+                                       .sort({modifiedTime: -1, createTime: -1})
                                        .exec()
             
             this.ctx.body = { resources }

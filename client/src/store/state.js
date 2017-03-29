@@ -5,6 +5,9 @@ const state = {
     validate: false,
     apiList: [],
     api: apiInit
+    editor: {},
+    dsl: '',
+    apis: {}
 };
 
 export default state;

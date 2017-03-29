@@ -1,9 +1,8 @@
 <template>
     <el-input
-        placeholder="请输入api地址、创建人邮箱进行搜索"
+        placeholder="请输入api地址、名称、方法"
         icon="search"
-        v-model="query"
-        :on-icon-click="handleIconClick">
+        v-model="query">
     </el-input>
 </template>
 <script>
@@ -13,9 +12,9 @@ export default {
             query: null
         };
     },
-    methods: {
-        handleIconClick(ev) {
-            window.console.log(ev);
+    watch: {
+        query(val, oval) {
+            this.$emit('query', val);
         }
     }
 };
