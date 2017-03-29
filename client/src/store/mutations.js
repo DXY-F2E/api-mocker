@@ -4,6 +4,7 @@ const mutations = {
     },
     CREATE_GROUP_SUCCESS(state, data) {
         state.groups = state.groups.concat(data);
+    },
     INIT_API(state, api) {
         state.api = api;
     },
