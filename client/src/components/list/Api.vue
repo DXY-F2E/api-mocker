@@ -3,13 +3,13 @@
       <div slot="header" class="clearfix">
         <span class="name">{{data.name}}</span>
         <el-button-group>
-          <el-button size="mini" icon="share" @click.native.stop="copy()"></el-button>
-          <el-button size="mini" icon="delete"></el-button>
+          <el-button size="mini" icon="document" @click.native.stop="copy()"></el-button>
+          <el-button size="mini" icon="delete" @click.native.stop="deleteApi()"></el-button>
         </el-button-group>
         <!-- <el-button type="primary" icon="edit" size="small" class="edit-api"></el-button> -->
       </div>
       <div class="text item">
-          <label>URL:</label><input v-model="data.url" readonly />
+          <label>URL:</label><input v-model="data.url" readonly :id="data._id" />
       </div>
       <div class="text item">
           <label>Method:</label>{{data.options.method}}
@@ -30,7 +30,14 @@ export default {
             this.$router.push(`/edit/${api.group}/${api._id}`);
         },
         copy() {
-            window.console.log(this.data.url);
+            const input = document.getElementById(this.data._id);
+            input.select();
+            document.execCommand('copy');
+            input.blur();
+            this.$message.success('复制接口链接成功');
+        },
+        deleteApi() {
+            window.console.log(this.data._id);
         }
     }
 };
@@ -39,7 +46,7 @@ export default {
 .el-card {
     cursor: pointer;
     transition: all 0.2s ease;
-    width: 238px;
+    width: 219px;
     overflow: hidden;
 }
 .el-card:hover {
@@ -89,6 +96,10 @@ export default {
 .card-box .el-button-group {
     float: right;
     margin-right: -10px;
+    display: none;
+}
+.card-box:hover .el-button-group {
+    display: inline-block;
 }
 .card-box .el-button-group .el-button:focus,
 .card-box .el-button-group button {

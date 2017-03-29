@@ -27,7 +27,7 @@ export default {
         ]),
         save() {
             this.saveApi().then(res => {
-                this.$message('保存成功');
+                this.$message.success('保存成功');
                 window.console.log(res);
                 this.$store.commit('UPDATE_API', res.data.resources);
             }).catch(err => {
