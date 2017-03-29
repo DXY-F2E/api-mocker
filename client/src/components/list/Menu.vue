@@ -53,8 +53,8 @@
 </script>
 <style>
 .menu-nav {
-    width: 225px;
-    min-width: 225px;
+    width: 288px;
+    min-width: 288px;
     background-color: #eef1f6;
 }
 .el-menu-item-group > ul li i {

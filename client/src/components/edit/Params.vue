@@ -43,7 +43,7 @@ export default {
     watch: {
         params: {
             handler(val) {
-                this.$store.commit('UPDATE_API_PARAMS', val);
+                this.$store.commit('UPDATE_API_PARAMS', JSON.parse(JSON.stringify(val)));
             },
             deep: true
         }
@@ -53,9 +53,16 @@ export default {
             window.console.log('change');
         },
         initParams() {
-            window.console.log('init data');
             const params = this.$store.state.api.options.params;
-            return JSON.parse(JSON.stringify(params));
+            if (params) {
+                return JSON.parse(JSON.stringify(params));
+            } else {
+                return [{
+                    key: null,
+                    type: 'String',
+                    required: true
+                }];
+            }
         },
         addParam(idx) {
             const param = {
@@ -98,6 +105,7 @@ export default {
     width: 37px;
     cursor: pointer;
     float: left;
+    text-align: center;
 }
 .params-box .control .grid-content i:hover {
     background-color: #EFF2F7;

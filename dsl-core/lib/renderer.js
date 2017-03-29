@@ -25,12 +25,12 @@ function renderer(inject) {
         if (debug) {
             console.log('renderer: ', obj);
         }
-        var compile = debug ? _compiler.debugCompile : compile;
+        var _compile = debug ? _compiler.debugCompile : _compiler.compile;
         var answer = _ramda2.default.map(function (renderArray) {
             return _ramda2.default.reduce(function (oripattern, item) {
                 if (typeof item.pattern === 'string') return oripattern.replace(item.model, inject[item.pattern.trim()]);else return oripattern.replace(item.model, item.pattern);
             }, _ramda2.default.head(renderArray).oripattern, renderArray);
-        }, compile(obj));
+        }, _compile(obj));
 
         return _ramda2.default.reduce(function (result, pair) {
             var path = _ramda2.default.split('.', _ramda2.default.head(pair));

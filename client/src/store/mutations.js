@@ -4,9 +4,14 @@ const mutations = {
     },
     CREATE_GROUP_SUCCESS(state, data) {
         state.groups = state.groups.concat(data);
+    INIT_API(state, api) {
+        state.api = api;
+    },
+    INIT_API_LIST(state, apiList) {
+        state.apiList = apiList;
     },
     UPDATE_API_PARAMS(state, params) {
-        state.api.options.params = JSON.parse(JSON.stringify(params));
+        state.api.options.params = params;
     },
     UPDATE_API_METHOD(state, method) {
         state.api.options.method = method;

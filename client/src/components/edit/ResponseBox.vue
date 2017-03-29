@@ -11,8 +11,14 @@ import 'brace/mode/json';
 
 export default {
     computed: {
-        collect() {
-            return this.$store.state.collect;
+        dsl: {
+            get() {
+                window.console.log('get dsl value');
+                return this.$store.state.api.dsl;
+            },
+            set(val) {
+                window.console.log(val);
+            }
         }
     },
     methods: {
@@ -27,6 +33,7 @@ export default {
         },
         initDsl() {
             const dsl = this.$store.state.api.dsl;
+            window.console.log(dsl);
             if (dsl !== undefined) {
                 this.dsl = JSON.parse(JSON.stringify(dsl));
                 this.editor.setValue(JSON.stringify(this.dsl, null, '\t'));
