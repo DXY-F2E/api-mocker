@@ -12,7 +12,7 @@ function renderer (inject, debug = false) {
         if (debug) {
             console.log('renderer: ', obj)
         }
-        const compile = debug ? debugCompile : compile
+        const _compile = debug ? debugCompile : compile
         const answer = R.map(function (renderArray) {
             return R.reduce(function (oripattern, item) {
                 if (typeof item.pattern === 'string')
@@ -20,7 +20,7 @@ function renderer (inject, debug = false) {
                 else
                     return oripattern.replace(item.model, item.pattern)
             }, R.head(renderArray).oripattern, renderArray)
-        },compile(obj))
+        }, _compile(obj))
 
         return R.reduce(function (result, pair) {
             const path = R.split('.', R.head(pair))
