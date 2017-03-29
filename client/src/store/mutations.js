@@ -2,6 +2,9 @@ const mutations = {
     INIT_GROUPS(state, groups) {
         state.groups = groups;
     },
+    CREATE_GROUP_SUCCESS(state, data) {
+        state.groups = state.groups.concat(data);
+    },
     UPDATE_API_PARAMS(state, params) {
         state.api.options.params = JSON.parse(JSON.stringify(params));
     },
@@ -28,5 +31,4 @@ const mutations = {
         state.api = data;
     }
 };
-
 export default mutations;

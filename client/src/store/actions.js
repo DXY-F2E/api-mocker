@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import API from './api';
 const actions = {
     getGroups({ commit }) {
         // const ROOT = 'http://127.0.0.1:7001';
@@ -10,6 +10,11 @@ const actions = {
         }, response => {
             window.console.log(response);
             // error callback
+        });
+    },
+    createGroup({commit}, payload) {
+        return axios.post(API.GROUPS, payload).then(response => {
+            commit('CREATE_GROUP_SUCCESS', response.data.resources);
         });
     },
     saveApi(context) {
