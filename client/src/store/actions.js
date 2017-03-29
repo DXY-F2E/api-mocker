@@ -6,8 +6,9 @@ const isEmpty = function(val) {
 };
 const actions = {
     getGroups({ commit }) {
-        axios.get(API.GROUPS).then(res => {
+        return axios.get(API.GROUPS).then(res => {
             commit('INIT_GROUPS', res.data.resources);
+            return res.data.resources;
         }, res => {
             window.console.log(res);
         });
@@ -20,6 +21,11 @@ const actions = {
     getApiList({ commit }) {
         return axios.get(API.APIS).then(res => {
             commit('INIT_API_LIST', res.data.resources);
+        });
+    },
+    getGroupApi({ commit }, groupId) {
+        return axios.get(API.GROUP_APIS.replace(':groupId', groupId)).then((response) => {
+            commit('GET_GROUP_API', { [groupId]: response.data.resources});
         });
     },
     getApi({ commit }, params) {

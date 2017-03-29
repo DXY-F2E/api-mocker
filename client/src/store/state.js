@@ -6,7 +6,8 @@ const state = {
     apiList: [],
     editor: {},
     dsl: '',
-    api: apiInit
+    api: apiInit,
+    apis: {}
 };
 
 export default state;

@@ -6,7 +6,6 @@
     </el-row>
   </div>
 </template>
-
 <script>
 import NavMenu from './Menu';
 export default {
@@ -14,7 +13,10 @@ export default {
         NavMenu
     },
     mounted() {
-        this.$store.dispatch('getApiList');
+        Promise.all([
+            this.$store.dispatch('getGroups'),
+            this.$store.dispatch('getApiList')
+        ]);
     }
 };
 </script>
