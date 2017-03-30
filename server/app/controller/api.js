@@ -37,6 +37,8 @@ module.exports = app => {
             assert(groupId, 403, 'invalid groupId')
             assert(apiId, 403, 'invalid apiId')
 
+            delete body._id;
+
             const resources = yield app.model.api.findOneAndUpdate({
                 group: groupId,
                 _id: apiId
