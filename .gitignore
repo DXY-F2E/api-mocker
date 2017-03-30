@@ -1,2 +1,5 @@
 node_modules/
 ~*
+dist/
+npm-debug*
+dsl-core/lib/

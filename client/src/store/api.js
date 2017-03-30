@@ -1,7 +1,7 @@
 import R from 'ramda';
 import config from '../../config';
 
-const domain = process.env === 'production' ? config.prod.ajax : config.dev.ajax;
+const domain = process.env === 'development' ? config.dev.ajax : config.build.ajax;
 
 export default R.map((url) => {
     return `${domain}${url}`;
