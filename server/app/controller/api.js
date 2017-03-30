@@ -18,9 +18,9 @@ module.exports = app => {
         * getGroupAll () {
             const { groupId } = this.ctx.params
             const { limit = 30, offset = 0} = this.ctx.query
-            
+
             assert(groupId, 403, 'invalid groupId')
-            
+
             const resources = yield app.model.api
                                        .find({group: groupId, isDeleted: false})
                                        .sort({modifiedTime: -1, createTime: -1})
@@ -41,7 +41,7 @@ module.exports = app => {
                 group: groupId,
                 _id: apiId
             }, R.merge(body, {modifiedTime: Date.now()} )).exec()
-            
+
             yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
 
             this.ctx.body = { resources }
@@ -50,18 +50,18 @@ module.exports = app => {
             const { groupId, apiId } = this.ctx.params
             assert(groupId, 403, 'invalid groupId')
             assert(apiId, 403, 'invalid apiId')
-            
+
             const resources = yield app.model.api
                                        .findOne({group: groupId, _id:apiId, isDeleted: false})
                                        .exec()
-            
+
             this.ctx.body = { resources }
             this.ctx.status = 200
         }
         * createApi () {
             const { groupId } = this.ctx.params
             const { body } = this.ctx.request
-            
+
             assert(groupId, 403, 'invalie groupId')
             assert(body.name, 403, 'required name')
             assert(body.dsl, 403, 'required dsl')
@@ -80,6 +80,10 @@ module.exports = app => {
         }
         * delete () {
             const { groupId } = this.ctx.params
+
+            assert(groupId, 403, 'invalie groupId')
+            assert(groupId === 'undefined', 403, 'groupId is undefined')
+
             yield app.model.api.update({
                 _id: this.ctx.params.apiId
             }, {
