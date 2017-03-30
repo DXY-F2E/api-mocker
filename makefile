@@ -34,10 +34,10 @@ prod_server:|dsl-core
 	cd server && npm install && npm start
 prod_client:|dsl-core
 	cd client && npm install && npm run build
-	if [ ! `test -d dist` ]; then \
+	if [ ! -d dist ]; then \
 		mkdir dist; \
 	else \
-		rm -f ./dist/*; \
+		rm -rf ./dist/*; \
 	fi
 	cp -rf client/dist/* ./dist/
 # 开发模式
