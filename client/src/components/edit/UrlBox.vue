@@ -67,4 +67,8 @@ export default {
 .url-box .el-select .el-input__inner {
     width: 100px;
 }
+.url-box .el-input__inner:focus:hover,
+.url-box .el-input__inner:focus {
+    border-color: #bfcbd9;
+}
 </style>

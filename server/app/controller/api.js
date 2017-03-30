@@ -52,7 +52,7 @@ module.exports = app => {
             assert(apiId, 403, 'invalid apiId')
             
             const resources = yield app.model.api
-                                       .find({group: groupId, _id:apiId})
+                                       .findOne({group: groupId, _id:apiId})
                                        .exec()
             
             this.ctx.body = { resources }
