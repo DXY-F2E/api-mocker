@@ -22,9 +22,22 @@ $(DSL_LIBS): $(DSL_SRC)
 
 dsl-core: $(DSL_LIBS)
 
+# 开发模式
 server:|dsl-core
 	cd server && npm install && npm run dev
 
+
+prod_server:|dsl-core
+	cd server && npm install && npm start
+prod_client:|dsl-core
+	cd client && npm install && npm run build
+	if [ ! `test -d dist` ]; then \
+		mkdir dist; \
+	else \
+		rm -f ./dist/*; \
+	fi
+	cp -rf client/dist/* ./dist/
+# 开发模式
 client:|dsl-core
 	cd client && npm install && npm run dev
 

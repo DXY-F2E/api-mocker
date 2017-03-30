@@ -21,3 +21,14 @@
 
 ## 发布启动(prods)
 
+### Client
+
+`make prod_client`
+
+资源文件会放在`./dist/`下面(注: 不是 `./client/dist`)，直接进行nginx托管即可
+
+### Server
+
+`make prod_server`
+
+使用pm2启动server, 端口号为7001
