@@ -7,7 +7,7 @@ module.exports = app => {
         * getAll () {
             let { limit = 30, offset = 0, order = false} = this.ctx.query
             const resources = yield app.model.api
-                                       .find({isDelete: false})
+                                       .find({isDeleted: false})
                                        .sort({modifiedTime: -1, createTime: -1})
                                        .skip(offset)
                                        .limit(limit)
@@ -22,7 +22,7 @@ module.exports = app => {
             assert(groupId, 403, 'invalid groupId')
             
             const resources = yield app.model.api
-                                       .find({group: groupId, isDelete: false})
+                                       .find({group: groupId, isDeleted: false})
                                        .sort({modifiedTime: -1, createTime: -1})
                                        .skip(offset)
                                        .limit(limit)
@@ -52,7 +52,7 @@ module.exports = app => {
             assert(apiId, 403, 'invalid apiId')
             
             const resources = yield app.model.api
-                                       .findOne({group: groupId, _id:apiId, isDelete: false})
+                                       .findOne({group: groupId, _id:apiId, isDeleted: false})
                                        .exec()
             
             this.ctx.body = { resources }
@@ -73,16 +73,19 @@ module.exports = app => {
                 group: groupId,
                 url: nextUrl
             })).save()
+            yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
 
             this.ctx.body = { resources }
             this.ctx.status = 200
         }
         * delete () {
+            const { groupId } = this.ctx.params
             yield app.model.api.update({
                 _id: this.ctx.params.apiId
             }, {
-                isDelete: true
+                isDeleted: true
             })
+            yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
             this.ctx.status = 204
         }
     }

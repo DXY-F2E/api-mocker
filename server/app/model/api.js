@@ -28,7 +28,7 @@ module.exports = mongoose => {
             headers: {},
             params: []
         },
-        isDelete: {
+        isDeleted: {
             type: Boolean,
             default: false
         }
