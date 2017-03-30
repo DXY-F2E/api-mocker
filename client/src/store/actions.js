@@ -32,8 +32,8 @@ const actions = {
         const {groupId, apiId} = params;
         return axios.get(API.API.replace(':groupId', groupId).replace(':apiId', apiId));
     },
-    deleteApi({ state }) {
-        const { group, _id} = state.api;
+    deleteApi({ state }, api) {
+        const { group, _id} = api;
         return axios.delete(API.API.replace(':groupId', group).replace(':apiId', _id));
     },
     updateApi({ state }) {

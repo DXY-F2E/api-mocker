@@ -3,8 +3,7 @@ const state = {
     groups: [],
     apiList: [],
     api: apiInit,
-    dsl: '',
-    apis: {}
+    dsl: ''
 };
 
 export default state;

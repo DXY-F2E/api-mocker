@@ -37,6 +37,16 @@ export default {
             this.$message.success('复制接口链接成功');
         },
         deleteApi() {
+            this.$store.dispatch('deleteApi', this.data).then(() => {
+                this.$message.success('删除成功');
+            }).catch(err => {
+                if (err.response.data) {
+                    this.$message.error(err.response.data.message);
+                } else {
+                    this.$message.error(err.response.statusText);
+                }
+                window.console.log(err.response);
+            });
             window.console.log(this.data._id);
         }
     }
