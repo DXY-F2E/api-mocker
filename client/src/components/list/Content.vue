@@ -35,13 +35,20 @@ export default {
         apiList() {
             const query = this.query;
             let apiList = this.$store.state.apiList;
+            const propOr = R.curry((d, prop, obj) => {
+                if (prop in obj) {
+                    return obj[prop] || d;
+                } else {
+                    return d;
+                }
+            });
             if (query) {
                 apiList = R.filter(
                     R.anyPass(
                         [
-                            R.compose(R.contains(query), R.propOr('', 'name')),
-                            R.compose(R.contains(query), R.propOr('', 'desc')),
-                            R.compose(R.contains(query), R.propOr('', 'url')),
+                            R.compose(R.contains(query), propOr('', 'name')),
+                            R.compose(R.contains(query), propOr('', 'desc')),
+                            R.compose(R.contains(query), propOr('', 'url')),
                             R.compose(R.contains(query), R.pathOr('', ['options', 'method']))
                         ]), apiList);
             }
