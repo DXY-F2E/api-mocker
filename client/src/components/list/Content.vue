@@ -61,9 +61,11 @@ export default {
 }
 .content > .el-row{
     height: 100%;
+    position: relative;
 }
 .content > .el-row > .el-col {
     height: 100%;
+    position: relative;
     overflow-y: auto;
 }
 .api-list {

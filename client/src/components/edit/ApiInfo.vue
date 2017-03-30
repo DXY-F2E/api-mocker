@@ -23,6 +23,9 @@
                 <el-input type="textarea" v-model="desc" placeholder="选填" :rows="4"></el-input>
             </el-form-item>
         </el-form>
+        <p class="issue">
+            <a href="http://gitlab.dxy.net/f2e/api-mocker/issues" target="_blank">Click For Help</a>
+        </p>
     </div>
 </template>
 
@@ -81,5 +84,17 @@ export default {
 .group-select .el-select .el-input__inner,
 .group-select .el-select {
     width: 100%;
+}
+.issue {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    width: 100%;
+}
+.issue a {
+    color: #99A9BF;
+    font-size: 12px;
 }
 </style>
