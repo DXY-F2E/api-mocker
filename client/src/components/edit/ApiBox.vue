@@ -25,6 +25,6 @@ export default {
 </script>
 <style>
 .api-box {
-    margin: 20px;
+    padding: 20px;
 }
 </style>
