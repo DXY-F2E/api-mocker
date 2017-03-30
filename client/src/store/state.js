@@ -1,7 +1,7 @@
 import apiInit from './apiInitData';
 import config from '../../config';
 
-const domain = process.env === 'production' ? config.prod.ajax : config.dev.ajax;
+const domain = process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax;
 
 const state = {
     groups: [],
