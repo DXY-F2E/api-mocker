@@ -13,7 +13,7 @@ export default new Router({
             redirect: '/list'
         },
         {
-            path: '/edit',
+            path: '/create',
             name: 'Create',
             component: Edit
         },
@@ -24,13 +24,14 @@ export default new Router({
         },
         {
             path: '/list',
-            name: 'List',
             component: List,
             children: [{
                 path: '',
+                name: 'AllList',
                 component: ListContent
             }, {
                 path: ':groupId',
+                name: 'GruopList',
                 component: ListContent
             }]
         }

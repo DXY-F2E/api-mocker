@@ -4,13 +4,13 @@
         <el-col :span="0" class="logo"><h1>DXY API Mocker</h1></el-col>
         <el-col :span="24">
             <el-menu theme="dark"
-                     :default-active="$route.path"
+                     :default-active="$route.name"
                      class="el-menu-demo grid-content"
                      mode="horizontal"
                      :router="true"
                      @select="handleSelect">
-              <el-menu-item index="/list">接口列表</el-menu-item>
-              <el-menu-item index="/edit" @click.native="createApi()">创建接口</el-menu-item>
+              <el-menu-item index="AllList" :route="{name: 'AllList'}">接口列表</el-menu-item>
+              <el-menu-item index="Create" :route="{name: 'Create'}" @click.native="createApi()">创建接口</el-menu-item>
             </el-menu>
         </el-col>
     </el-row>
