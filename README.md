@@ -6,29 +6,29 @@
 
 安装依赖外部命令(`mongod`)
 
-`make install`
+* `make install`
 
 
 ## 开发启动(dev)
 
 ### Client
 
-`make client`
+* `make client`
 
 ### Server
 
-`make server`
+* `make server`
 
 ## 发布启动(prods)
 
 ### Client
 
-`make prod_client`
+* `make prod_client`
 
 资源文件会放在`./dist/`下面(注: 不是 `./client/dist`)，直接进行nginx托管即可
 
 ### Server
 
-`make prod_server`
+* `make prod_server`
 
 使用pm2启动server, 端口号为7001
