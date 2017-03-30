@@ -1,9 +1,12 @@
 SHELL := /bin/bash
 
-.PHONY: dsl-core prerequ-program client server
+.PHONY: dsl-core prerequ-program client server prod_server prod_client
 
 DSL_SRC = $(wildcard dsl-core/src/*.js)
 DSL_LIBS = $(DSL_SRC:dsl-core/src/%=dsl-core/lib/%)
+
+install:|prerequ-program
+
 
 define require_install
 	if test "$(shell which $(1))" = ""; \
@@ -40,5 +43,3 @@ prod_client:|dsl-core
 # 开发模式
 client:|dsl-core
 	cd client && npm install && npm run dev
-
-install:|prerequ-program
