@@ -4,6 +4,9 @@
             <el-tab-pane label="Params" name="params">
                 <params></params>
             </el-tab-pane>
+            <el-tab-pane label="Advanced" name="advanced">
+                <advanced></advanced>
+            </el-tab-pane>
             <!-- <el-tab-pane label="Body" name="body">
                 <req-body></req-body>
             </el-tab-pane> -->
@@ -14,9 +17,11 @@
 <script>
 import Params from './Params';
 import ReqBody from './Body';
+import Advanced from './Advanced';
 export default {
     components: {
         Params,
+        Advanced,
         ReqBody
     },
     data() {

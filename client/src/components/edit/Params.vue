@@ -47,8 +47,8 @@ export default {
     },
     watch: {
         params: {
-            handler(val) {
-                this.$store.commit('UPDATE_API_PARAMS', JSON.parse(JSON.stringify(val)));
+            handler() {
+                this.$store.commit('UPDATE_API_PARAMS', this.getParams());
             },
             deep: true
         },
@@ -57,6 +57,15 @@ export default {
         }
     },
     methods: {
+        getParams() {
+            const params = JSON.parse(JSON.stringify(this.params));
+            params.forEach((v, idx) => {
+                if (v.key === null || v.key.trim() === '') {
+                    params.splice(idx, 1);
+                }
+            });
+            return params;
+        },
         getInitParams() {
             const params = this.$store.state.api.options.params;
             if (params && params.length > 0) {

@@ -1,6 +1,13 @@
 <template>
     <div class="response-box">
-        <div class="hd">Response</div>
+        <div class="hd">Response
+            <el-tooltip placement="top">
+              <div slot="content">
+                  可使用 ${param} ，返回自定义数据
+              </div>
+              <el-button size="mini">Tip</el-button>
+            </el-tooltip>
+        </div>
         <div id="json-editor"></div>
     </div>
 </template>
@@ -13,12 +20,18 @@ export default {
     computed: {
         apiId() {
             return this.$store.state.api._id;
+        },
+        params() {
+            return this.$store.state.api.params;
         }
     },
     watch: {
         apiId() {
             this.setValue();
         }
+    },
+    beforeDestory() {
+        window.console.log('destory');
     },
     methods: {
         validate() {
@@ -33,7 +46,7 @@ export default {
         setValue() {
             const dsl = this.$store.state.api.dsl;
             if (dsl !== undefined) {
-                this.editor.setValue(JSON.stringify(dsl, null, '\t'));
+                this.editor.setValue(JSON.stringify(dsl, null, '\t'), 1);
             } else {
                 this.editor.setValue('');
             }
@@ -70,6 +83,11 @@ export default {
     line-height: 36px;
     font-size: 16px;
     color: #C0CCDA;
+    padding: 8px 0;
+    line-height: 22px;
+}
+.response-box .hd button {
+    float: right;
 }
 #json-editor {
     height: 300px;

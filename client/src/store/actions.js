@@ -30,16 +30,23 @@ const actions = {
     },
     getApi({ commit }, params) {
         const {groupId, apiId} = params;
-        return axios.get(API.API.replace(':groupId', groupId).replace(':apiId', apiId));
+        return axios.get(API.API.replace(':groupId', groupId).replace(':apiId', apiId)).then(res => {
+            commit('UPDATE_API', res.data.resources);
+            // commit('MERGE_API');
+        });
     },
-    deleteApi({ state }, api) {
-        const { group, _id} = api;
-        return axios.delete(API.API.replace(':groupId', group).replace(':apiId', _id));
+    deleteApi({ state, commit }, payload) {
+        const { group, _id} = payload.api;
+        return axios.delete(API.API.replace(':groupId', group).replace(':apiId', _id)).then(() => {
+            commit('DELETE_API', payload.index);
+        });
     },
-    updateApi({ state }) {
+    updateApi({ state, commit }) {
         const api = state.api;
         const { group, _id} = api;
-        return axios.put(API.API.replace(':groupId', group).replace(':apiId', _id), state.api);
+        return axios.put(API.API.replace(':groupId', group).replace(':apiId', _id), state.api).then(res => {
+            commit('UPDATE_API', res.data.resources);
+        });
     },
     saveApi({ dispatch, state }) {
         window.console.log('保存API');
@@ -50,8 +57,10 @@ const actions = {
             return dispatch('createApi');
         }
     },
-    createApi({ state }) {
-        return axios.post(API.GROUP_APIS.replace(':groupId', state.api.group), state.api);
+    createApi({ state, commit }) {
+        return axios.post(API.GROUP_APIS.replace(':groupId', state.api.group), state.api).then(res => {
+            commit('UPDATE_API', res.data.resources);
+        });
     },
     initApi({ commit }) {
         commit('INIT_API', apiInit);
