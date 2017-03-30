@@ -10,8 +10,14 @@ module.exports = mongoose => {
             unique: true
         },
         desc: String,
-        createTime: String,
-        modifiedTime: String,
+        createTime: {
+            type: String,
+            default: Date.now
+        },
+        modifiedTime: {
+            type: String,
+            default: Date.now
+        },
         url: {
             type: String,
             unique: true
@@ -21,6 +27,10 @@ module.exports = mongoose => {
             method: String,
             headers: {},
             params: []
+        },
+        isDelete: {
+            type: Boolean,
+            default: false
         }
     })
 

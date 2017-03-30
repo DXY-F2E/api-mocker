@@ -7,7 +7,7 @@ module.exports = app => {
         * getAll () {
             let { limit = 30, offset = 0, order = false} = this.ctx.query
             const resources = yield app.model.api
-                                       .find({})
+                                       .find({isDelete: false})
                                        .sort({modifiedTime: -1, createTime: -1})
                                        .skip(offset)
                                        .limit(limit)
@@ -22,7 +22,7 @@ module.exports = app => {
             assert(groupId, 403, 'invalid groupId')
             
             const resources = yield app.model.api
-                                       .find({group: groupId})
+                                       .find({group: groupId, isDelete: false})
                                        .sort({modifiedTime: -1, createTime: -1})
                                        .skip(offset)
                                        .limit(limit)
@@ -52,7 +52,7 @@ module.exports = app => {
             assert(apiId, 403, 'invalid apiId')
             
             const resources = yield app.model.api
-                                       .findOne({group: groupId, _id:apiId})
+                                       .findOne({group: groupId, _id:apiId, isDelete: false})
                                        .exec()
             
             this.ctx.body = { resources }
@@ -78,8 +78,10 @@ module.exports = app => {
             this.ctx.status = 200
         }
         * delete () {
-            yield app.model.remove({
+            yield app.model.api.update({
                 _id: this.ctx.params.apiId
+            }, {
+                isDelete: true
             })
             this.ctx.status = 204
         }
