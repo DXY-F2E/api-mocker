@@ -3,7 +3,7 @@
       <div slot="header" class="clearfix">
         <span class="name">{{data.name}}</span>
         <el-button-group>
-          <el-button size="mini" icon="document" @click.native.stop="copy()"></el-button>
+          <copy-button size="mini" icon="document" :copy-data="copyData"></copy-button>
           <el-button size="mini" icon="delete" @click.native.stop="deleteApi()"></el-button>
         </el-button-group>
         <!-- <el-button type="primary" icon="edit" size="small" class="edit-api"></el-button> -->
@@ -17,37 +17,60 @@
     </el-card>
 </template>
 <script>
+import CopyButton from '../common/CopyButton';
 export default {
+    components: {
+        CopyButton
+    },
     props: {
         data: {
             type: Object,
             require: true
+        },
+        index: {
+            type: Number,
+            require: true
         }
+    },
+    data() {
+        return {
+            copyData: this.$store.state.serverRoot + this.data.url
+        };
     },
     methods: {
         editApi(api) {
             this.$store.commit('UPDATE_API', api);
             this.$router.push(`/edit/${api.group}/${api._id}`);
         },
-        copy() {
-            const input = document.getElementById(this.data._id);
-            input.select();
-            document.execCommand('copy');
-            input.blur();
-            this.$message.success('复制接口链接成功');
-        },
-        deleteApi() {
-            this.$store.dispatch('deleteApi', this.data).then(() => {
+        confirmDelete() {
+            this.$store.dispatch('deleteApi', {
+                api: this.data,
+                index: this.index
+            }).then(() => {
                 this.$message.success('删除成功');
             }).catch(err => {
-                if (err.response.data) {
+                if (err.response && err.response.data) {
                     this.$message.error(err.response.data.message);
                 } else {
-                    this.$message.error(err.response.statusText);
+                    this.$message.error(err);
                 }
-                window.console.log(err.response);
+                window.console.log(err);
             });
             window.console.log(this.data._id);
+        },
+        deleteApi() {
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.confirmDelete();
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
         }
     }
 };
@@ -107,6 +130,7 @@ export default {
     float: right;
     margin-right: -10px;
     display: none;
+    cursor: pointer;
 }
 .card-box:hover .el-button-group {
     display: inline-block;

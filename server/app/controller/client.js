@@ -1,5 +1,8 @@
 const renderer = require('../../../dsl-core/index.js').renderer
 const R = require('ramda')
+const sleep = (ms) => {
+  return cb => setTimeout(cb, ms)
+}
 module.exports = app => {
     class ClientController extends app.Controller {
         // get/:id
@@ -7,6 +10,8 @@ module.exports = app => {
             const { id }= this.ctx.params
             const document = yield app.model.api.findOne({url: `/client/${id}`, "options.method": /get/i}).exec()
             if (document) {
+                const delay = document.options.delay || 0
+                yield sleep(delay)
                 this.ctx.body = renderer(this.ctx.request.query)(document.dsl)
             }
         }

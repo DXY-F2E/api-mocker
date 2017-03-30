@@ -71,15 +71,16 @@
 .el-menu-item-group > ul li i {
     visibility: hidden;
  }
- .title-icon {
-     position: relative;
-     right: 0;
-     margin: 2px;
-     transform: rotate(0deg);
-     transform-origin: 50% 50%;
-     transition: transform .3s;
- }
- .title-icon:hover {
-     transform: rotate(90deg);
- }
+.title-icon {
+    position: relative;
+    right: 0;
+    margin: 2px;
+    transform: rotate(0deg);
+    transform-origin: 50% 50%;
+    transition: transform .3s;
+    cursor: pointer;
+}
+.title-icon:hover {
+    transform: rotate(90deg);
+}
 </style>

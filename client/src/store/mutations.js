@@ -1,3 +1,4 @@
+import apiInitData from './apiInitData';
 const mutations = {
     INIT_GROUPS(state, groups) {
         state.groups = groups;
@@ -32,8 +33,18 @@ const mutations = {
     UPDATE_API_DESC(state, desc) {
         state.api.desc = desc;
     },
+    UPDATE_API_DELAY(state, delay) {
+        state.api.options.delay = delay;
+    },
     UPDATE_API(state, data) {
         state.api = data;
+    },
+    MERGE_API(state) {
+        window.console.log('MERGE_API');
+        state.api = Object.assign(apiInitData, state.api);
+    },
+    DELETE_API(state, apiIdx) {
+        state.apiList.splice(apiIdx, 1);
     },
     INIT_EDITOR(state, editor) {
         state.editor = editor;

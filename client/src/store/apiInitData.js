@@ -5,6 +5,7 @@ export default {
     desc: null,
     options: {
         method: 'get',
+        delay: 0,
         params: [
             {
                 key: null,

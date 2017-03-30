@@ -85,13 +85,19 @@ export default {
 .group-select .el-select {
     width: 100%;
 }
+.api-info .el-form {
+    /*margin-bottom: 30px;*/
+    min-height: 100%;
+    padding-bottom: 50px;
+}
 .issue {
-    position: absolute;
+    /*position: absolute;
+    width: 100%;
     bottom: 20px;
     left: 0;
-    right: 0;
+    right: 0;*/
     text-align: center;
-    width: 100%;
+    margin-top: -30px;
 }
 .issue a {
     color: #99A9BF;

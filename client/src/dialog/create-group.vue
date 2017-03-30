@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="创建Group" v-model="visited">
+    <el-dialog title="创建Group" v-model="visited" :show-close="false">
         <el-form>
             <el-input v-model="input" placeholder="输入分组名称"></el-input>
         </el-form>

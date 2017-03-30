@@ -7,6 +7,8 @@
                 <el-option label="PUT" value="put"></el-option>
                 <el-option label="DELETE" value="delete"></el-option>
             </el-select>
+            <!-- <el-button slot="append">Copy</el-button> -->
+            <copy-button slot="append" :copy-data="url" :disabled="creating">Copy</copy-button>
             <el-button slot="append" @click="validate()">Save</el-button>
         </el-input>
     </div>
@@ -14,7 +16,11 @@
 
 <script>
 import { mapActions } from 'vuex';
+import CopyButton from '../common/CopyButton';
 export default {
+    components: {
+        CopyButton
+    },
     data() {
         return {
             isShowDialog: false
@@ -26,12 +32,10 @@ export default {
             'saveApi'
         ]),
         save() {
-            this.saveApi().then(res => {
+            this.saveApi().then(() => {
                 this.$message.success('保存成功');
-                window.console.log(res);
-                this.$store.commit('UPDATE_API', res.data.resources);
             }).catch(err => {
-                window.console.log(err.response);
+                window.console.log(err);
                 this.$message.error(`创建失败:${err.response.data.message}`);
             });
         },
@@ -49,8 +53,11 @@ export default {
         api() {
             return this.$store.state.api;
         },
+        creating() {
+            return this.$store.state.api._id === undefined;
+        },
         url() {
-            return this.$store.state.api.url;
+            return this.api.url ? this.$store.state.serverRoot + this.api.url : '';
         },
         method: {
             get() {
@@ -67,8 +74,31 @@ export default {
 .url-box .el-select .el-input__inner {
     width: 100px;
 }
-.url-box .el-input__inner:focus:hover,
+.url-box .el-input__inner:hover,
 .url-box .el-input__inner:focus {
     border-color: #bfcbd9;
+}
+.url-box .control{
+    width: 80px;
+    text-align: right;
+}
+.url-box .el-input-group__append {
+    padding: 0;
+}
+.url-box .el-input-group__append .el-button:last-child {
+    border-right: 0;
+}
+.url-box .el-input-group__append .el-button {
+    display: inline-block;
+    vertical-align: middle;
+    border-right: 1px solid #bfcbd9;
+    margin: 0px;
+    border-radius: 0;
+}
+.url-box .el-input-group__append .el-button.is-disabled {
+    border-color: #bfcbd9;
+    border-left: none;
+    background-color: #eef1f6;
+    color: #bfcbd9;
 }
 </style>

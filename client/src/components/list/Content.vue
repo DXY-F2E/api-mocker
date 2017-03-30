@@ -4,8 +4,8 @@
             <div id="content">
                 <search @query="onQuery"></search>
                 <ul class="api-list">
-                    <li v-for="api in apiList">
-                        <api :data="api"></api>
+                    <li v-for="(api, idx) in apiList">
+                        <api :data="api" :index="idx"></api>
                     </li>
                 </ul>
             </div>
