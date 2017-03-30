@@ -61,10 +61,17 @@ export default {
 .content-wrap {
     padding: 20px;
     background-color: #F9FAFC;
-    height: 100%;
+    min-height: 100%;
 }
 .content {
     text-align: left;
+}
+.content > .el-row{
+    height: 100%;
+}
+.content > .el-row > .el-col {
+    height: 100%;
+    overflow-y: auto;
 }
 .api-list {
     margin: 10px -10px;

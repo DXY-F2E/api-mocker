@@ -66,6 +66,10 @@ export default {
     min-width: 288px;
     background-color: #eef1f6;
 }
+.api-info .el-textarea__inner,
+.api-info .el-input__inner {
+    background-color: #F9FAFC;
+}
 .group-select {
     display: inline-block;
     width: 100%;
