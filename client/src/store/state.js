@@ -12,7 +12,7 @@ const state = {
     apiPage: {
         count: 0,
         limit: 30,
-        offset: 1
+        page: 0
     },
     serverRoot: domain,
     dsl: ''

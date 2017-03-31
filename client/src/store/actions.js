@@ -23,13 +23,13 @@ const actions = {
             } else {
                 req = axios.get(`${API.APIS}?q=${q}`);
             }
-            commit('SEARCH_BEGIN');
+            commit('FETCH_BEGIN');
             return req.then(response => {
                 if (searchLastTime === mytime) {
-                    commit('SEARCH_SUCCESS', response.data.resources);
+                    commit('FETCH_SUCCESS', response.data.resources);
                 }
             }).catch(() => {
-                commit('SEARCH_FAILED');
+                commit('FETCH_FAILED');
             });
         };
     })(),
@@ -39,11 +39,16 @@ const actions = {
         });
     },
     getApiList({ commit }, payload) {
+        commit('FETCH_BEGIN');
         return axios.get(API.APIS, {
             params: payload
         }).then(res => {
+            commit('FETCH_SUCCESS');
             commit('INIT_API_LIST', res.data.resources);
             commit('UPDATE_API_PAGE', res.data.pages);
+        }).catch(err => {
+            commit('FETCH_FAILED');
+            throw err;
         });
     },
     getGroupApi({ commit }, groupId) {

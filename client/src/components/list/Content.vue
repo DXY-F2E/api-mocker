@@ -1,14 +1,16 @@
 <template>
     <el-col :span="24">
         <div class="content-wrap">
-            <div id="content" v-loading="apiListLoading">
+            <div id="content">
                 <search @query="onQuery"></search>
-                <ul class="api-list">
-                    <li v-for="(api, idx) in apiList">
-                        <api :data="api" :index="idx"></api>
-                    </li>
-                </ul>
-                <page-nav :page-data="apiPage"></page-nav>
+                <div class="api-list-box">
+                    <ul class="api-list" v-loading="apiListLoading">
+                        <li v-for="(api, idx) in apiList">
+                            <api :data="api" :index="idx"></api>
+                        </li>
+                    </ul>
+                </div>
+                <page-nav></page-nav>
             </div>
         </div>
     </el-col>
@@ -66,7 +68,7 @@ export default {
     position: relative;
     overflow-y: auto;
 }
-.api-list {
+.api-list-box {
     /*margin: 10px -10px;*/
     /*width: 100%;*/
     position: absolute;
@@ -75,6 +77,9 @@ export default {
     overflow-y: auto;
     left: 10px;
     right: 10px;
+}
+.api-list {
+    min-height: 100%;
 }
 .api-list li {
     display: inline-block;
