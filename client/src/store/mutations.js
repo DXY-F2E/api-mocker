@@ -39,6 +39,9 @@ const mutations = {
     UPDATE_API(state, data) {
         state.api = data;
     },
+    UPDATE_API_PAGE(state, data) {
+        state.apiPage = data;
+    },
     DELETE_API(state, apiIdx) {
         state.apiList.splice(apiIdx, 1);
     },

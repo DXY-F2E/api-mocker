@@ -8,6 +8,7 @@
                         <api :data="api" :index="idx"></api>
                     </li>
                 </ul>
+                <page-nav :page-data="pageData"></page-nav>
             </div>
         </div>
     </el-col>
@@ -16,9 +17,11 @@
 import Search from './Search';
 import Api from './Api';
 import R from 'ramda';
+import PageNav from './PageNav';
 export default {
     components: {
         Search,
+        PageNav,
         Api
     },
     data() {
@@ -32,6 +35,9 @@ export default {
         }
     },
     computed: {
+        pageData() {
+            return this.$store.state.apiPage;
+        },
         apiList() {
             const query = this.query;
             let apiList = this.$store.state.apiList;
@@ -62,6 +68,7 @@ export default {
     padding: 20px;
     background-color: #F9FAFC;
     min-height: 100%;
+    position: relative;
 }
 .content {
     text-align: left;
@@ -76,7 +83,14 @@ export default {
     overflow-y: auto;
 }
 .api-list {
-    margin: 10px -10px;
+    /*margin: 10px -10px;*/
+    /*width: 100%;*/
+    position: absolute;
+    top: 65px;
+    bottom: 90px;
+    overflow-y: auto;
+    left: 10px;
+    right: 10px;
 }
 .api-list li {
     display: inline-block;

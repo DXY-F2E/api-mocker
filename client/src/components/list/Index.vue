@@ -14,7 +14,6 @@ export default {
     },
     mounted() {
         Promise.all([
-            this.$store.dispatch('getGroups'),
             this.$store.dispatch('getApiList')
         ]);
     }

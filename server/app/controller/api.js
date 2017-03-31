@@ -5,7 +5,9 @@ const assert = require('http-assert')
 module.exports = app => {
     class ApiController extends app.Controller {
         * getAll () {
-            let { limit = 30, offset = 0, order = false} = this.ctx.query
+            let { limit = 5, offset = 0, order = false} = this.ctx.query
+            offset = Number(offset)
+            limit = Number(limit)
             const resources = yield app.model.api
                                        .find({isDeleted: false})
                                        .sort({modifiedTime: -1, createTime: -1})
@@ -20,6 +22,8 @@ module.exports = app => {
         * getGroupAll () {
             const { groupId } = this.ctx.params
             const { limit = 30, offset = 0} = this.ctx.query
+            offset = Number(offset)
+            limit = Number(limit)
 
             assert(groupId, 403, 'invalid groupId')
 

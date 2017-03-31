@@ -17,9 +17,12 @@ const actions = {
             commit('CREATE_GROUP_SUCCESS', response.data.resources);
         });
     },
-    getApiList({ commit }) {
-        return axios.get(API.APIS).then(res => {
+    getApiList({ commit }, payload) {
+        return axios.get(API.APIS, {
+            params: payload
+        }).then(res => {
             commit('INIT_API_LIST', res.data.resources);
+            commit('UPDATE_API_PAGE', res.data.pages);
         });
     },
     getGroupApi({ commit }, groupId) {
