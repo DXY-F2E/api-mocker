@@ -31,7 +31,7 @@ export default {
             this.$store.dispatch('getApiList', {
                 page: currentPage,
                 limit: this.pageData.limit
-            }).catch(err => {
+            }).catch(() => {
                 this.$message.error('加载数据失败');
             });
         }
