@@ -29,7 +29,8 @@ export default {
             window.console.log(key, keyPath);
         },
         createApi() {
-            this.$store.dispatch('initApi');
+            window.console.log('initApi');
+            this.$store.commit('INIT_API');
         }
     }
 };
