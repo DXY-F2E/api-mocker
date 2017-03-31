@@ -64,7 +64,8 @@ module.exports = app => {
                     {url: reg},
                     {desc: reg},
                     {'options.method': reg},
-                ]
+                ],
+                group: groupId
             }).count().exec()
             this.ctx.body = { resources , pages: { page, limit, count}}
             this.ctx.status = 200
