@@ -12,7 +12,9 @@ module.exports = app => {
                                        .skip(offset)
                                        .limit(limit)
                                        .exec()
-            this.ctx.body = { resources }
+
+            const count = yield app.model.api.find({}).count().exec()
+            this.ctx.body = { resources , pages: { limit, offset, count}}
             this.ctx.status = 200
         }
         * getGroupAll () {
@@ -28,7 +30,8 @@ module.exports = app => {
                                        .limit(limit)
                                        .exec()
 
-            this.ctx.body = { resources }
+            const count = yield app.model.api.find({}).count().exec()
+            this.ctx.body = { resources , pages: { offset, limit, count}}
             this.ctx.status = 200
         }
         * modifyApi () {
