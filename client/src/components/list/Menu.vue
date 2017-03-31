@@ -32,7 +32,7 @@
      methods: {
          handleClickGroup(group) {
              if (group && group._id) {
-                 this.$store.dispatch('getGroupApi', group._id).then(() => {
+                 this.$store.dispatch('getGroupApi', { groupId: group._id }).then(() => {
                      this.$router.push(`/list/${group._id}`);
                  });
              } else {

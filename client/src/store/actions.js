@@ -1,15 +1,12 @@
 import axios from 'axios';
 import API from './api';
-const isEmpty = function(val) {
-    return val === undefined || val.trim() === '' || val === null;
-};
+import R from 'ramda';
+
 const actions = {
     getGroups({ commit }) {
         return axios.get(API.GROUPS).then(res => {
-            commit('INIT_GROUPS', res.data.resources);
+            commit('FETCH_GROUPS_SUCCESS', res.data.resources);
             return res.data.resources;
-        }, res => {
-            window.console.log(res);
         });
     },
     search: (() => {
@@ -39,13 +36,11 @@ const actions = {
         });
     },
     getApiList({ commit }, payload) {
-        const pages = payload || {
-            page: 1,
-            limit: 16
-        };
         commit('FETCH_BEGIN');
         return axios.get(API.APIS, {
-            params: pages
+            page: 1,
+            limit: 16,
+            ...payload
         }).then(res => {
             commit('FETCH_SUCCESS', res.data);
         }).catch(err => {
@@ -53,17 +48,20 @@ const actions = {
             throw err;
         });
     },
-    getGroupApi({ commit }, groupId) {
+    getGroupApi({ commit }, payload) {
+        const { groupId } = payload;
         commit('FETCH_BEGIN');
         return axios.get(API.GROUP_APIS.replace(':groupId', groupId)).then((response) => {
             commit('FETCH_SUCCESS', response.data);
+        }).catch(e => {
+            commit('FETCH_FAILED');
+            throw e;
         });
     },
-    getApi({ commit }, params) {
-        const {groupId, apiId} = params;
+    getApi({ commit }, payload) {
+        const {groupId, apiId} = payload;
         return axios.get(API.API.replace(':groupId', groupId).replace(':apiId', apiId)).then(res => {
             commit('UPDATE_API', res.data.resources);
-            // commit('MERGE_API');
         });
     },
     deleteApi({ state, commit }, payload) {
@@ -72,6 +70,13 @@ const actions = {
             commit('DELETE_API', payload.index);
         });
     },
+    saveApi({ dispatch, state }) {
+        if (state.api._id) {
+            return dispatch('updateApi');
+        } else {
+            return dispatch('createApi');
+        }
+    },
     updateApi({ state, commit }) {
         const api = state.api;
         const { group, _id} = api;
@@ -79,36 +84,10 @@ const actions = {
             commit('UPDATE_API', res.data.resources);
         });
     },
-    saveApi({ dispatch, state }) {
-        window.console.log('保存API');
-        window.console.log(state.api);
-        if (state.api._id) {
-            return dispatch('updateApi');
-        } else {
-            return dispatch('createApi');
-        }
-    },
     createApi({ state, commit }) {
         return axios.post(API.GROUP_APIS.replace(':groupId', state.api.group), state.api).then(res => {
             commit('UPDATE_API', res.data.resources);
         });
-    },
-    validateApi({ state }) {
-        if (isEmpty(state.api.name)) {
-            return {
-                status: false,
-                msg: '接口名不能为空'
-            };
-        } else if (isEmpty(state.api.group)) {
-            return {
-                status: false,
-                msg: '接口分组不能为空'
-            };
-        } else {
-            return {
-                status: true
-            };
-        }
     }
 };
 

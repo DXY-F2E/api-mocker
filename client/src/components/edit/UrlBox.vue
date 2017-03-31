@@ -17,6 +17,7 @@
 <script>
 import { mapActions } from 'vuex';
 import CopyButton from '../common/CopyButton';
+import { validateApi } from '../../util';
 export default {
     components: {
         CopyButton
@@ -40,13 +41,12 @@ export default {
             });
         },
         validate() {
-            this.validateApi().then(rs => {
-                if (rs.status) {
-                    this.save();
-                } else {
-                    this.$message.error(rs.msg);
-                }
-            });
+            const { status, msg } = validateApi(this.api);
+            if (status) {
+                this.save();
+            } else {
+                this.$message.error(msg);
+            }
         }
     },
     computed: {
@@ -64,7 +64,7 @@ export default {
                 return this.$store.state.api.options.method;
             },
             set(value) {
-                this.$store.commit('UPDATE_API_METHOD', value);
+                this.$store.commit('UPDATE_API_PROPS', ['method', value]);
             }
         }
     }

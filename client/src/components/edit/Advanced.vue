@@ -26,8 +26,7 @@ export default {
             if (isNaN(value)) {
                 value = 0;
             }
-            window.console.log(value);
-            this.$store.commit('UPDATE_API_DELAY', value);
+            this.$store.commit('UPDATE_API_PROPS', ['options.delay', value]);
         }
     }
 };

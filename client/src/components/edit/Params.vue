@@ -48,7 +48,8 @@ export default {
     watch: {
         params: {
             handler() {
-                this.$store.commit('UPDATE_API_PARAMS', this.getParams());
+                this.$store.commit('UPDATE_API_PROPS',
+                                   ['options.params', this.getParams()]);
             },
             deep: true
         },
