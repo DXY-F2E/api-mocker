@@ -3,6 +3,18 @@ const mutations = {
     INIT_GROUPS(state, groups) {
         state.groups = groups;
     },
+    SEARCH_SUCCESS(state, data) {
+        state.apiList = data;
+        state.apiListSuccess = true;
+        state.apiListLoading = false;
+    },
+    SEARCH_BEGIN(state) {
+        state.apiListLoading = true;
+    },
+    SEARCH_FAILED(state) {
+        state.apiListLoading = false;
+        state.apiListSuccess = false;
+    },
     CREATE_GROUP_SUCCESS(state, data) {
         state.groups = state.groups.concat(data);
     },

@@ -12,6 +12,27 @@ const actions = {
             window.console.log(res);
         });
     },
+    search: (() => {
+        let searchLastTime = null;
+        return function({ commit }, payload) {
+            const { groupId, q } = payload;
+            let req;
+            const mytime = searchLastTime = Date.now();
+            if (groupId) {
+                req = axios.get(`${API.GROUP_APIS.replace(':groupId', groupId)}?q=${q}`);
+            } else {
+                req = axios.get(`${API.APIS}?q=${q}`);
+            }
+            commit('SEARCH_BEGIN');
+            return req.then(response => {
+                if (searchLastTime === mytime) {
+                    commit('SEARCH_SUCCESS', response.data.resources);
+                }
+            }).catch(() => {
+                commit('SEARCH_FAILED');
+            });
+        };
+    })(),
     createGroup({commit}, payload) {
         return axios.post(API.GROUPS, payload).then(response => {
             commit('CREATE_GROUP_SUCCESS', response.data.resources);

@@ -1,7 +1,7 @@
 <template>
     <el-col :span="24">
         <div class="content-wrap">
-            <div id="content">
+            <div id="content" v-loading="apiListLoading">
                 <search @query="onQuery"></search>
                 <ul class="api-list">
                     <li v-for="(api, idx) in apiList">
@@ -15,7 +15,7 @@
 <script>
 import Search from './Search';
 import Api from './Api';
-import R from 'ramda';
+import { mapState } from 'vuex';
 export default {
     components: {
         Search,
@@ -29,32 +29,19 @@ export default {
     methods: {
         onQuery(query) {
             this.query = query;
+            if (this.inputShakeTime) {
+                return;
+            }
+            this.inputShakeTime = setTimeout(() => {
+                this.$store.dispatch('search', {
+                    groupId: this.$route.params.groupId,
+                    q: this.query
+                });
+                this.inputShakeTime = null;
+            }, 500);
         }
     },
-    computed: {
-        apiList() {
-            const query = this.query;
-            let apiList = this.$store.state.apiList;
-            const propOr = R.curry((d, prop, obj) => {
-                if (prop in obj) {
-                    return obj[prop] || d;
-                } else {
-                    return d;
-                }
-            });
-            if (query) {
-                apiList = R.filter(
-                    R.anyPass(
-                        [
-                            R.compose(R.contains(query), propOr('', 'name')),
-                            R.compose(R.contains(query), propOr('', 'desc')),
-                            R.compose(R.contains(query), propOr('', 'url')),
-                            R.compose(R.contains(query), R.pathOr('', ['options', 'method']))
-                        ]), apiList);
-            }
-            return apiList;
-        }
-    }
+    computed: mapState(['apiList', 'apiListLoading', 'apiListSuccess'])
 };
 </script>
 <style>

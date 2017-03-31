@@ -5,32 +5,64 @@ const assert = require('http-assert')
 module.exports = app => {
     class ApiController extends app.Controller {
         * getAll () {
-            let { limit = 30, offset = 0, order = false} = this.ctx.query
+            let { limit = 30, offset = 0, order = false, q = '.*'} = this.ctx.query
+            const reg = new RegExp(`.*${q}.*`, 'i')
             const resources = yield app.model.api
-                                       .find({isDeleted: false})
+                                       .find({
+                                           isDeleted: false,
+                                           "$or": [
+                                               {name: reg},
+                                               {url: reg},
+                                               {desc: reg},
+                                               {'options.method': reg},
+                                           ]
+                                       })
                                        .sort({modifiedTime: -1, createTime: -1})
                                        .skip(offset)
                                        .limit(limit)
                                        .exec()
 
-            const count = yield app.model.api.find({}).count().exec()
+            const count = yield app.model.api.find({
+                "$or": [
+                    {name: reg},
+                    {url: reg},
+                    {desc: reg},
+                    {'options.method': reg},
+                ]
+            }).count().exec()
             this.ctx.body = { resources , pages: { limit, offset, count}}
             this.ctx.status = 200
         }
         * getGroupAll () {
             const { groupId } = this.ctx.params
-            const { limit = 30, offset = 0} = this.ctx.query
+            const { limit = 30, offset = 0, q='.*'} = this.ctx.query
 
+            const reg = new RegExp(`.*${q}.*`, 'i')
             assert(groupId, 403, 'invalid groupId')
-
             const resources = yield app.model.api
-                                       .find({group: groupId, isDeleted: false})
+                                       .find({
+                                           group: groupId,
+                                           isDeleted: false,
+                                           "$or": [
+                                               {name: reg},
+                                               {url: reg},
+                                               {desc: reg},
+                                               {'options.method': reg},
+                                           ]
+                                       })
                                        .sort({modifiedTime: -1, createTime: -1})
                                        .skip(offset)
                                        .limit(limit)
                                        .exec()
 
-            const count = yield app.model.api.find({}).count().exec()
+            const count = yield app.model.api.find({
+                "$or": [
+                    {name: reg},
+                    {url: reg},
+                    {desc: reg},
+                    {'options.method': reg},
+                ]
+            }).count().exec()
             this.ctx.body = { resources , pages: { offset, limit, count}}
             this.ctx.status = 200
         }
