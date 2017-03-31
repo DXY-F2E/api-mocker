@@ -122,7 +122,7 @@ module.exports = app => {
             const { groupId } = this.ctx.params
 
             assert(groupId, 403, 'invalie groupId')
-            assert(groupId === 'undefined', 403, 'groupId is undefined')
+            assert(groupId !== 'undefined', 403, 'groupId is undefined')
 
             yield app.model.api.update({
                 _id: this.ctx.params.apiId
