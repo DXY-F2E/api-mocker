@@ -40,7 +40,7 @@ export default {
                 return this.$store.state.api.name;
             },
             set(value) {
-                this.$store.commit('UPDATE_API_NAME', value);
+                this.$store.commit('UPDATE_API_PROPS', ['name', value]);
             }
         },
         desc: {
@@ -48,7 +48,7 @@ export default {
                 return this.$store.state.api.desc;
             },
             set(value) {
-                this.$store.commit('UPDATE_API_DESC', value);
+                this.$store.commit('UPDATE_API_PROPS', ['desc', value]);
             }
         },
         group: {
@@ -56,7 +56,7 @@ export default {
                 return this.$store.state.api.group;
             },
             set(value) {
-                this.$store.commit('UPDATE_API_GROUP', value);
+                this.$store.commit('UPDATE_API_PROPS', ['group', value]);
             }
         }
     }

@@ -15,7 +15,7 @@ export default {
     mounted() {
         const groupId = this.$route.params.groupId;
         Promise.all([
-            groupId ? this.$store.dispatch('getGroupApi', groupId) : this.$store.dispatch('getApiList')
+            groupId ? this.$store.dispatch('getGroupApi', { groupId }) : this.$store.dispatch('getApiList')
         ]);
     }
 };

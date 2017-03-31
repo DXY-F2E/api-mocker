@@ -8,7 +8,7 @@
                      class="el-menu-demo grid-content"
                      mode="horizontal"
                      :router="true"
-                     @select="handleSelect">
+                     >
               <el-menu-item index="AllList" :route="{name: 'AllList'}">接口列表</el-menu-item>
               <el-menu-item index="Create" :route="{name: 'Create'}" @click.native="createApi()">创建接口</el-menu-item>
             </el-menu>
@@ -25,11 +25,7 @@ export default {
         };
     },
     methods: {
-        handleSelect(key, keyPath) {
-            window.console.log(key, keyPath);
-        },
         createApi() {
-            window.console.log('initApi');
             this.$store.commit('INIT_API');
         }
     }

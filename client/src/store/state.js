@@ -9,13 +9,14 @@ const state = {
     apiListLoading: false,
     apiListSuccess: false,
     api: apiInit(),
+    apiCreateing: false,
     apiPage: {
         count: 0,
         limit: 0,
         page: 0
     },
     serverRoot: domain,
-    dsl: ''
+    dsl: null
 };
 
 export default state;

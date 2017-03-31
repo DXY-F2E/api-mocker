@@ -1,6 +1,7 @@
 import apiInit from './apiInitData';
+import R from 'ramda';
 const mutations = {
-    INIT_GROUPS(state, groups) {
+    FETCH_GROUPS_SUCCESS(state, groups) {
         state.groups = groups;
     },
     FETCH_SUCCESS(state, data) {
@@ -25,42 +26,20 @@ const mutations = {
     INIT_API(state) {
         state.api = apiInit();
     },
-    INIT_API_LIST(state, apiList) {
-        state.apiList = apiList;
-    },
-    UPDATE_API_PARAMS(state, params) {
-        state.api.options.params = params;
-    },
-    UPDATE_API_METHOD(state, method) {
-        state.api.options.method = method;
-    },
-    UPDATE_API_DSL(state, dsl) {
-        state.api.dsl = dsl;
-    },
-    UPDATE_API_NAME(state, name) {
-        state.api.name = name;
-    },
-    UPDATE_API_GROUP(state, group) {
-        state.api.group = group;
-    },
-    UPDATE_API_DESC(state, desc) {
-        state.api.desc = desc;
-    },
-    UPDATE_API_DELAY(state, delay) {
-        state.api.options.delay = delay;
+    UPDATE_API_PROPS(state, propValuePair) {
+        const api = state.api || {};
+        const prop = R.head(propValuePair);
+        const value = R.last(propValuePair);
+        state.api = R.assocPath(prop.split('.'), value, api);
     },
     UPDATE_API(state, data) {
         state.api = data;
     },
     UPDATE_API_PAGE(state, data) {
         state.apiPage = data;
-        window.console.log('UPDATE_API_PAGE');
     },
     DELETE_API(state, apiIdx) {
         state.apiList.splice(apiIdx, 1);
-    },
-    INIT_EDITOR(state, editor) {
-        state.editor = editor;
     }
 };
 export default mutations;

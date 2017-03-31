@@ -58,8 +58,7 @@ export default {
                 let dsl = this.editor.getValue();
                 try {
                     dsl = JSON.parse(dsl);
-                    window.console.log('更新DSL');
-                    this.$store.commit('UPDATE_API_DSL', dsl);
+                    this.$store.commit('UPDATE_API_PROPS', ['dsl', dsl]);
                 } catch (err) {
                     return false;
                 }
