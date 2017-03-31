@@ -6,7 +6,7 @@ const domain = process.env.NODE_ENV === 'development' ? config.dev.ajax : config
 const state = {
     groups: [],
     apiList: [],
-    api: apiInit,
+    api: apiInit(),
     serverRoot: domain,
     dsl: ''
 };

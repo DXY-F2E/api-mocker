@@ -1,6 +1,5 @@
 import axios from 'axios';
 import API from './api';
-import apiInit from './apiInitData';
 const isEmpty = function(val) {
     return val === undefined || val.trim() === '' || val === null;
 };
@@ -61,9 +60,6 @@ const actions = {
         return axios.post(API.GROUP_APIS.replace(':groupId', state.api.group), state.api).then(res => {
             commit('UPDATE_API', res.data.resources);
         });
-    },
-    initApi({ commit }) {
-        commit('INIT_API', apiInit);
     },
     validateApi({ state }) {
         if (isEmpty(state.api.name)) {

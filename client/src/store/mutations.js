@@ -1,4 +1,4 @@
-import apiInitData from './apiInitData';
+import apiInit from './apiInitData';
 const mutations = {
     INIT_GROUPS(state, groups) {
         state.groups = groups;
@@ -9,8 +9,8 @@ const mutations = {
     GET_GROUP_API(state, data) {
         state.apiList = data;
     },
-    INIT_API(state, api) {
-        state.api = api;
+    INIT_API(state) {
+        state.api = apiInit();
     },
     INIT_API_LIST(state, apiList) {
         state.apiList = apiList;
@@ -38,10 +38,6 @@ const mutations = {
     },
     UPDATE_API(state, data) {
         state.api = data;
-    },
-    MERGE_API(state) {
-        window.console.log('MERGE_API');
-        state.api = Object.assign(apiInitData, state.api);
     },
     DELETE_API(state, apiIdx) {
         state.apiList.splice(apiIdx, 1);
