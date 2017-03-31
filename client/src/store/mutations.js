@@ -40,6 +40,9 @@ const mutations = {
     },
     DELETE_API(state, apiIdx) {
         state.apiList.splice(apiIdx, 1);
+    },
+    UPDATE_DSL_STATUS(state, status) {
+        state.isDslRight = status;
     }
 };
 export default mutations;

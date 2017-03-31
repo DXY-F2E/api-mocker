@@ -59,7 +59,9 @@ export default {
                 try {
                     dsl = JSON.parse(dsl);
                     this.$store.commit('UPDATE_API_PROPS', ['dsl', dsl]);
+                    this.$store.commit('UPDATE_DSL_STATUS', true);
                 } catch (err) {
+                    this.$store.commit('UPDATE_DSL_STATUS', false);
                     return false;
                 }
             });

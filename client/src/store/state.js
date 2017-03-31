@@ -16,7 +16,7 @@ const state = {
         page: 0
     },
     serverRoot: domain,
-    dsl: null
+    isDslRight: true
 };
 
 export default state;

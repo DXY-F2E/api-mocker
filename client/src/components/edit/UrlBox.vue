@@ -29,7 +29,6 @@ export default {
     },
     methods: {
         ...mapActions([
-            'validateApi',
             'saveApi'
         ]),
         save() {
@@ -50,7 +49,7 @@ export default {
             });
         },
         validate() {
-            const { status, msg } = validateApi(this.api);
+            const { status, msg } = validateApi(this.$store.state);
             if (status) {
                 this.save();
             } else {
