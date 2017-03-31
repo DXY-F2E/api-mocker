@@ -1,4 +1,3 @@
-
 module.exports = app => {
     app.get('/', 'home.index');
     app.get('/server/group', 'group.getAll')
@@ -14,4 +13,6 @@ module.exports = app => {
 
     app.get('/client/:id', 'client.show')
     app.post('/client/:id', 'client.create')
+    app.put('/client/:id', 'client.put')
+    app.delete('/client/:id', 'client.delete')
 }
