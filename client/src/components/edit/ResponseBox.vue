@@ -7,6 +7,7 @@
               </div>
               <el-button size="mini">Tip</el-button>
             </el-tooltip>
+            <el-button size="mini" @click="parseEditor()">Parse</el-button>
         </div>
         <div id="json-editor"></div>
     </div>
@@ -63,6 +64,15 @@ export default {
                     return false;
                 }
             });
+        },
+        parseEditor() {
+            let dsl = this.editor.getValue();
+            try {
+                dsl = JSON.parse(dsl);
+                this.editor.setValue(JSON.stringify(dsl, null, '\t'), 1);
+            } catch (err) {
+                this.$message.error('请正确填写JSON');
+            }
         }
     },
     mounted() {
@@ -88,6 +98,7 @@ export default {
 }
 .response-box .hd button {
     float: right;
+    margin-right: 10px;
 }
 #json-editor {
     height: 300px;
