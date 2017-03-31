@@ -26,7 +26,7 @@ const actions = {
             commit('FETCH_BEGIN');
             return req.then(response => {
                 if (searchLastTime === mytime) {
-                    commit('FETCH_SUCCESS', response.data.resources);
+                    commit('FETCH_SUCCESS', response.data);
                 }
             }).catch(() => {
                 commit('FETCH_FAILED');
@@ -47,17 +47,16 @@ const actions = {
         return axios.get(API.APIS, {
             params: pages
         }).then(res => {
-            commit('FETCH_SUCCESS');
-            commit('INIT_API_LIST', res.data.resources);
-            commit('UPDATE_API_PAGE', res.data.pages);
+            commit('FETCH_SUCCESS', res.data);
         }).catch(err => {
             commit('FETCH_FAILED');
             throw err;
         });
     },
     getGroupApi({ commit }, groupId) {
+        commit('FETCH_BEGIN');
         return axios.get(API.GROUP_APIS.replace(':groupId', groupId)).then((response) => {
-            commit('GET_GROUP_API', response.data.resources);
+            commit('FETCH_SUCCESS', response.data);
         });
     },
     getApi({ commit }, params) {

@@ -11,7 +11,7 @@ const state = {
     api: apiInit(),
     apiPage: {
         count: 0,
-        limit: 16,
+        limit: 0,
         page: 0
     },
     serverRoot: domain,

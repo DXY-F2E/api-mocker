@@ -8,17 +8,12 @@
 <script>
 import AppHeader from './components/common/Header';
 export default {
-    name: 'app',
+    name: 'API_Mocker',
     components: {
         AppHeader
     },
-    methods: {
-        getGroups() {
-            this.$store.dispatch('getGroups');
-        }
-    },
     mounted() {
-        this.getGroups();
+        this.$store.dispatch('getGroups');
     }
 };
 </script>

@@ -8,6 +8,7 @@
                         <li v-for="(api, idx) in apiList">
                             <api :data="api" :index="idx"></api>
                         </li>
+                        <li class="empty">暂无接口</li>
                     </ul>
                 </div>
                 <page-nav></page-nav>
@@ -84,5 +85,15 @@ export default {
 .api-list li {
     display: inline-block;
     margin: 10px;
+}
+.api-list li.empty {
+    color: #D3DCE6;
+    text-align: center;
+    display: block;
+    margin: 0;
+    padding-top: 100px;
+}
+.api-list li ~li.empty {
+    display: none;
 }
 </style>

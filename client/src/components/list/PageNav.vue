@@ -1,5 +1,5 @@
 <template>
-    <div class="page-nav">
+    <div class="page-nav" v-show="showNav">
         <el-pagination
           @current-change="handleCurrentChange"
           :current-page="pageData.page"
@@ -18,6 +18,9 @@ export default {
         },
         apiLoading() {
             return this.$store.state.apiListLoading;
+        },
+        showNav() {
+            return this.pageData.count > this.pageData.limit;
         }
     },
     methods: {

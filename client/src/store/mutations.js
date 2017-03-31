@@ -4,7 +4,8 @@ const mutations = {
         state.groups = groups;
     },
     FETCH_SUCCESS(state, data) {
-        state.apiList = data;
+        state.apiList = data.resources;
+        state.apiPage = data.pages;
         state.apiListSuccess = true;
         state.apiListLoading = false;
     },
