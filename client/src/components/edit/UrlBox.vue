@@ -110,4 +110,8 @@ export default {
     background-color: #eef1f6;
     color: #bfcbd9;
 }
+.url-box .el-input-group__append .el-button:not(.is-disabled):hover {
+    color: #324057;
+    /*background-color: #C0CCDA;*/
+}
 </style>
