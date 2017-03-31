@@ -23,11 +23,10 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getApi' // 映射 this.increment() 为 this.$store.commit('increment')
+            'getApi'
         ]),
         initApi() {
             if (this.$route.name === 'Edit' && this.$route.params.apiId !== this.api._id) {
-                // this.$store.dispatch('getApi');
                 this.getApi(this.$route.params).then(() => {
                     this.loading = false;
                 }).catch(err => {

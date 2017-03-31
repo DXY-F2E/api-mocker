@@ -33,6 +33,15 @@ export default {
         ]),
         save() {
             this.saveApi().then(() => {
+                if (this.$route.name === 'Create' && this.api._id) {
+                    this.$router.push({
+                        name: 'Edit',
+                        params: {
+                            groupId: this.api.group,
+                            apiId: this.api._id
+                        }
+                    });
+                }
                 this.$message.success('保存成功');
             }).catch(err => {
                 window.console.log(err);

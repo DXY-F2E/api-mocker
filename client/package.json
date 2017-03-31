@@ -13,7 +13,7 @@
   "dependencies": {
     "axios": "0.15.3",
     "brace": "0.10.0",
-    "element-ui": "1.2.5",
+    "element-ui": "1.2.7",
     "ramda": "0.23.0",
     "vue": "^2.2.2",
     "vue-router": "^2.2.0",
