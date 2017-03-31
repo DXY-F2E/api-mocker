@@ -8,6 +8,14 @@
               <el-button size="mini">Tip</el-button>
             </el-tooltip>
             <el-button size="mini" @click="parseEditor()">Parse</el-button>
+            <el-select v-model="template" size="mini" placeholder="模板" @change="setTemplateVal()">
+                <el-option
+                  v-for="(val, idx) in templates"
+                  :label="'模板' + (idx+1)"
+                  key="idx"
+                  :value="idx">
+                </el-option>
+            </el-select>
         </div>
         <div id="json-editor"></div>
     </div>
@@ -18,6 +26,17 @@ import * as ace from 'brace';
 import 'brace/mode/json';
 
 export default {
+    data() {
+        return {
+            template: null,
+            templates: [
+                {success: true, data: {}, info: '获取成功'},
+                {success: true, data: {}, msg: '获取成功'},
+                {success: false, data: {}, msg: '数据获取失败'},
+                {success: true, data: {}, info: '获取成功'}
+            ]
+        };
+    },
     computed: {
         apiId() {
             return this.$store.state.api._id;
@@ -32,6 +51,12 @@ export default {
         }
     },
     methods: {
+        setTemplateVal() {
+            const dsl = this.templates[this.template];
+            this.editor.setValue(JSON.stringify(dsl, null, '\t'), 1);
+            this.$store.commit('UPDATE_API_PROPS', ['dsl', dsl]);
+            this.$store.commit('UPDATE_DSL_STATUS', true);
+        },
         validate() {
             try {
                 JSON.parse(this.editor.getValue());
@@ -101,5 +126,9 @@ export default {
 }
 #json-editor {
     height: 300px;
+}
+.response-box .el-select {
+    width: 80px;
+    float: right;
 }
 </style>
