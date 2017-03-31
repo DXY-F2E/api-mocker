@@ -84,6 +84,7 @@ export default {
 .response-box {
     margin-top: 40px;
 }
+.desc-box .hd,
 .response-box .hd {
     text-align: left;
     border-top: 1px solid #D3DCE6;

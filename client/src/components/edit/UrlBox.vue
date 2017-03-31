@@ -80,7 +80,7 @@ export default {
                 return this.$store.state.api.options.method;
             },
             set(value) {
-                this.$store.commit('UPDATE_API_PROPS', ['method', value]);
+                this.$store.commit('UPDATE_API_PROPS', ['options.method', value]);
             }
         }
     }

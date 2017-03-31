@@ -19,9 +19,9 @@
                     </el-row>
                 </div>
             </el-form-item>
-            <el-form-item label="接口描述">
+            <!-- <el-form-item label="接口描述">
                 <el-input type="textarea" v-model="desc" placeholder="选填" :rows="4"></el-input>
-            </el-form-item>
+            </el-form-item> -->
         </el-form>
         <p class="issue">
             <a href="http://gitlab.dxy.net/f2e/api-mocker/issues" target="_blank">Click For Help</a>
@@ -41,14 +41,6 @@ export default {
             },
             set(value) {
                 this.$store.commit('UPDATE_API_PROPS', ['name', value]);
-            }
-        },
-        desc: {
-            get() {
-                return this.$store.state.api.desc;
-            },
-            set(value) {
-                this.$store.commit('UPDATE_API_PROPS', ['desc', value]);
             }
         },
         group: {

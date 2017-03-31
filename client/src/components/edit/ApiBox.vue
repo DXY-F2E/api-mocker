@@ -3,6 +3,7 @@
         <url-box></url-box>
         <request-box></request-box>
         <response-box></response-box>
+        <desc-box></desc-box>
     </div>
 </template>
 
@@ -10,10 +11,12 @@
 import RequestBox from './RequestBox';
 import ResponseBox from './ResponseBox';
 import UrlBox from './UrlBox';
+import DescBox from './DescBox';
 export default {
     components: {
         RequestBox,
         ResponseBox,
+        DescBox,
         UrlBox
     },
     computed: {

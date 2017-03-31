@@ -15,6 +15,7 @@
     "brace": "0.10.0",
     "element-ui": "1.2.7",
     "ramda": "0.23.0",
+    "simditor": "2.3.6",
     "vue": "^2.2.2",
     "vue-router": "^2.2.0",
     "vuex": "2.2.1"
