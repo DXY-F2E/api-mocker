@@ -37,7 +37,7 @@ module.exports = app => {
         }
         * getGroupAll () {
             const { groupId } = this.ctx.params
-            const { limit = 30, offset = 0, q='.*'} = this.ctx.query
+            let { limit = 30, offset = 0, q='.*'} = this.ctx.query
             offset = Number(offset)
             limit = Number(limit)
             const reg = new RegExp(`.*${q}.*`, 'i')
