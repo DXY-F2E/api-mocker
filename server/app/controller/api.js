@@ -5,8 +5,8 @@ const assert = require('http-assert')
 module.exports = app => {
     class ApiController extends app.Controller {
         * getAll () {
-            let { limit = 30, offset = 0, order = false, q = '.*'} = this.ctx.query
-            offset = Number(offset)
+            let { limit = 30, page = 1, order = false, q = '.*'} = this.ctx.query
+            page = Number(page)
             limit = Number(limit)
             const reg = new RegExp(`.*${q}.*`, 'i')
             const resources = yield app.model.api
@@ -20,7 +20,7 @@ module.exports = app => {
                                            ]
                                        })
                                        .sort({modifiedTime: -1, createTime: -1})
-                                       .skip(offset)
+                                       .skip((page-1)* limit )
                                        .limit(limit)
                                        .exec()
 
@@ -32,13 +32,13 @@ module.exports = app => {
                     {'options.method': reg},
                 ]
             }).count().exec()
-            this.ctx.body = { resources , pages: { limit, offset, count}}
+            this.ctx.body = { resources , pages: { limit, page, count}}
             this.ctx.status = 200
         }
         * getGroupAll () {
             const { groupId } = this.ctx.params
-            let { limit = 30, offset = 0, q='.*'} = this.ctx.query
-            offset = Number(offset)
+            let { limit = 30, page = 1, q='.*'} = this.ctx.query
+            page = Number(page)
             limit = Number(limit)
             const reg = new RegExp(`.*${q}.*`, 'i')
             assert(groupId, 403, 'invalid groupId')
@@ -54,7 +54,7 @@ module.exports = app => {
                                            ]
                                        })
                                        .sort({modifiedTime: -1, createTime: -1})
-                                       .skip(offset)
+                                       .skip((page-1) * limit)
                                        .limit(limit)
                                        .exec()
 
@@ -66,7 +66,7 @@ module.exports = app => {
                     {'options.method': reg},
                 ]
             }).count().exec()
-            this.ctx.body = { resources , pages: { offset, limit, count}}
+            this.ctx.body = { resources , pages: { page, limit, count}}
             this.ctx.status = 200
         }
         * modifyApi () {
