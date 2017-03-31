@@ -32,6 +32,16 @@ export default {
     methods: {
         onQuery(query) {
             this.query = query;
+            if (this.inputShakeTime) {
+                return;
+            }
+            this.inputShakeTime = setTimeout(() => {
+                this.$store.dispatch('search', {
+                    groupId: this.$route.params.groupId,
+                    q: this.query
+                });
+                this.inputShakeTime = null;
+            }, 500);
         }
     },
     computed: mapState(['apiList', 'apiListLoading', 'apiListSuccess', 'apiPage'])
