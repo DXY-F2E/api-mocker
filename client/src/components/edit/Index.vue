@@ -10,7 +10,7 @@
 <script>
 import ApiInfo from './ApiInfo';
 import ApiBox from './ApiBox';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 export default {
     components: {
         ApiInfo,
@@ -23,10 +23,12 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getApi'
+            'getApi' // 映射 this.increment() 为 this.$store.commit('increment')
         ]),
         initApi() {
             if (this.$route.name === 'Edit' && this.$route.params.apiId !== this.api._id) {
+                // this.$store.dispatch('getApi');
+                this.loading = true;
                 this.getApi(this.$route.params).then(() => {
                     this.loading = false;
                 }).catch(err => {
@@ -38,11 +40,7 @@ export default {
             }
         }
     },
-    computed: {
-        api() {
-            return this.$store.state.api;
-        }
-    },
+    computed: mapState(['api']),
     mounted() {
         this.initApi();
     },

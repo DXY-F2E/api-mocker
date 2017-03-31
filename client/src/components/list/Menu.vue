@@ -19,7 +19,7 @@
 </template>
 <script>
  import createGroupDialog from '../../dialog/create-group';
-
+ import { mapState } from 'vuex';
  export default {
      components: {
          'create-group-dialog': createGroupDialog
@@ -33,7 +33,7 @@
          handleClickGroup(group) {
              if (group && group._id) {
                  this.$store.dispatch('getGroupApi', { groupId: group._id }).then(() => {
-                     this.$router.push(`/list/${group._id}`);
+                     this.$router.replace(`/list/${group._id}`);
                  });
              } else {
                  this.$store.dispatch('getApiList').then(() => {
@@ -55,11 +55,7 @@
              this.showCreateDialog = true;
          }
      },
-     computed: {
-         groups() {
-             return this.$store.state.groups;
-         }
-     }
+     computed: mapState(['groups'])
  };
 </script>
 <style>

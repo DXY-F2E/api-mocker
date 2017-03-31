@@ -32,7 +32,6 @@ export default {
                 page: currentPage,
                 limit: this.pageData.limit
             }).catch(err => {
-                window.console.log(err);
                 this.$message.error('加载数据失败');
             });
         }

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import API from './api';
-import R from 'ramda';
 
 const actions = {
     getGroups({ commit }) {

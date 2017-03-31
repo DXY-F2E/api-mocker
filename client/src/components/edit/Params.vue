@@ -108,12 +108,6 @@ export default {
     min-width: 120px;
     max-width: 120px;
 }
-.params-box .el-col {
-    /*padding: 0 10px;*/
-}
-/*.params-box .key .grid-content {
-    border-bottom: 1px solid #EFF2F7;
-}*/
 .params-box .control .grid-content i {
     color: #ccc;
     line-height: 37px;

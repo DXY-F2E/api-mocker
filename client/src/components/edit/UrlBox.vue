@@ -1,16 +1,24 @@
 <template>
     <div class="url-box">
-        <el-input placeholder="Url保存后自动生成" readonly v-model="url">
-            <el-select v-model="method" slot="prepend" placeholder="请选择">
-                <el-option label="GET" value="get"></el-option>
-                <el-option label="POST" value="post"></el-option>
-                <el-option label="PUT" value="put"></el-option>
-                <el-option label="DELETE" value="delete"></el-option>
-            </el-select>
-            <!-- <el-button slot="append">Copy</el-button> -->
-            <copy-button slot="append" :copy-data="url" :disabled="creating">Copy</copy-button>
-            <el-button slot="append" @click="validate()">Save</el-button>
-        </el-input>
+        <el-row type="flex">
+            <el-col :span="24">
+                <el-input placeholder="Url保存后自动生成" readonly v-model="url">
+                    <el-select v-model="method" slot="prepend" placeholder="请选择">
+                        <el-option label="GET" value="get"></el-option>
+                        <el-option label="POST" value="post"></el-option>
+                        <el-option label="PUT" value="put"></el-option>
+                        <el-option label="DELETE" value="delete"></el-option>
+                    </el-select>
+                    <!-- <el-button slot="append">Copy</el-button> -->
+                    <copy-button slot="append" :copy-data="url" :disabled="creating">Copy</copy-button>
+                    <el-button slot="append" @click="validate()">Save</el-button>
+                </el-input>
+            </el-col>
+            <!-- 2.0来实现 -->
+            <!-- <el-col class="mode">
+                <el-button>测试模式</el-button>
+            </el-col> -->
+        </el-row>
     </div>
 </template>
 
@@ -112,5 +120,9 @@ export default {
 .url-box .el-input-group__append .el-button:not(.is-disabled):hover {
     color: #324057;
     /*background-color: #C0CCDA;*/
+}
+.url-box .el-col.mode{
+    width: 150px;
+    text-align: right;
 }
 </style>

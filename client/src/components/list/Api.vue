@@ -54,9 +54,7 @@ export default {
                 } else {
                     this.$message.error(err);
                 }
-                window.console.log(err);
             });
-            window.console.log(this.data._id);
         },
         deleteApi() {
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
