@@ -3,15 +3,15 @@ const mutations = {
     INIT_GROUPS(state, groups) {
         state.groups = groups;
     },
-    SEARCH_SUCCESS(state, data) {
+    FETCH_SUCCESS(state, data) {
         state.apiList = data;
         state.apiListSuccess = true;
         state.apiListLoading = false;
     },
-    SEARCH_BEGIN(state) {
+    FETCH_BEGIN(state) {
         state.apiListLoading = true;
     },
-    SEARCH_FAILED(state) {
+    FETCH_FAILED(state) {
         state.apiListLoading = false;
         state.apiListSuccess = false;
     },
@@ -53,6 +53,7 @@ const mutations = {
     },
     UPDATE_API_PAGE(state, data) {
         state.apiPage = data;
+        window.console.log('UPDATE_API_PAGE');
     },
     DELETE_API(state, apiIdx) {
         state.apiList.splice(apiIdx, 1);

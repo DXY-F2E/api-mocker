@@ -2,7 +2,7 @@
     <div class="page-nav">
         <el-pagination
           @current-change="handleCurrentChange"
-          :current-page="pageData.offset"
+          :current-page="pageData.page"
           :page-size="pageData.limit"
           layout="prev, pager, next, jumper"
           :total="pageData.count">
@@ -12,23 +12,36 @@
 
 <script>
 export default {
-    props: {
-        pageData: {
-            type: Object,
-            default() {
-                return {
-                    count: 0,
-                    limit: 30,
-                    offset: 0
-                };
-            }
+    // props: {
+    //     pageData: {
+    //         type: Object,
+    //         default() {
+    //             return {
+    //                 count: 0,
+    //                 limit: 30,
+    //                 page: 0
+    //             };
+    //         }
+    //     }
+    // },
+    computed: {
+        pageData() {
+            return this.$store.state.apiPage;
+        },
+        apiLoading() {
+            return this.$store.state.apiListLoading;
         }
     },
     methods: {
-        handleCurrentChange(val) {
-            window.console.log(val);
+        handleCurrentChange(currentPage) {
+            window.console.log(currentPage);
+            window.console.log(this.apiLoading);
+            if (this.apiLoading || currentPage === this.pageData.page) {
+                return;
+            }
             this.$store.dispatch('getApiList', {
-                offset: val
+                page: currentPage,
+                limit: this.pageData.limit
             }).catch(err => {
                 window.console.log(err);
                 this.$message.error('加载数据失败');
