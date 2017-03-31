@@ -31,9 +31,6 @@ export default {
             this.setValue();
         }
     },
-    beforeDestory() {
-        window.console.log('destory');
-    },
     methods: {
         validate() {
             try {

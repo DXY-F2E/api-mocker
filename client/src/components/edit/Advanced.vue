@@ -18,9 +18,6 @@ export default {
         }
     },
     methods: {
-        judgeData(value) {
-            window.console.log(value);
-        },
         updateDelay(value) {
             value = window.parseInt(value);
             if (isNaN(value)) {
