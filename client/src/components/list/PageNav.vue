@@ -12,18 +12,6 @@
 
 <script>
 export default {
-    // props: {
-    //     pageData: {
-    //         type: Object,
-    //         default() {
-    //             return {
-    //                 count: 0,
-    //                 limit: 30,
-    //                 page: 0
-    //             };
-    //         }
-    //     }
-    // },
     computed: {
         pageData() {
             return this.$store.state.apiPage;
@@ -34,8 +22,6 @@ export default {
     },
     methods: {
         handleCurrentChange(currentPage) {
-            window.console.log(currentPage);
-            window.console.log(this.apiLoading);
             if (this.apiLoading || currentPage === this.pageData.page) {
                 return;
             }

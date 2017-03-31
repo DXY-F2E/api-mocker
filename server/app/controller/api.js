@@ -1,7 +1,9 @@
 const R = require('ramda')
 const util = require('../util.js')
 const assert = require('http-assert')
-
+const sleep = (ms) => {
+  return cb => setTimeout(cb, ms)
+}
 module.exports = app => {
     class ApiController extends app.Controller {
         * getAll () {
@@ -23,7 +25,7 @@ module.exports = app => {
                                        .skip((page-1)* limit )
                                        .limit(limit)
                                        .exec()
-
+            // yield sleep(1000)
             const count = yield app.model.api.find({
                 "$or": [
                     {name: reg},

@@ -39,9 +39,13 @@ const actions = {
         });
     },
     getApiList({ commit }, payload) {
+        const pages = payload || {
+            page: 1,
+            limit: 16
+        };
         commit('FETCH_BEGIN');
         return axios.get(API.APIS, {
-            params: payload
+            params: pages
         }).then(res => {
             commit('FETCH_SUCCESS');
             commit('INIT_API_LIST', res.data.resources);
