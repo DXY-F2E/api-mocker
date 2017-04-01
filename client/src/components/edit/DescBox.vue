@@ -18,7 +18,11 @@ export default {
     },
     methods: {
         setValue() {
-            this.editor.setValue(this.desc);
+            if (this.$store.state.api.desc === null) {
+                this.editor.setValue(null);
+            } else {
+                this.editor.setValue(this.desc);
+            }
         },
         initEditor() {
             this.editor = new Simditor({
@@ -37,6 +41,9 @@ export default {
     computed: {
         desc() {
             return this.$store.state.api.desc;
+        },
+        apiId() {
+            return this.$store.state.api._id;
         }
     }
 };
