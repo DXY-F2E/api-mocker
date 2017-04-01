@@ -20,11 +20,6 @@ export default {
         ResponseBox,
         DescBox,
         UrlBox
-    },
-    computed: {
-        mode() {
-            return this.$store.state.mode;
-        }
     }
 };
 </script>

@@ -40,6 +40,7 @@ export default {
     methods: {
         editApi(api) {
             this.$store.commit('UPDATE_API', api);
+            this.$store.commit('CHANGE_MODE', 'edit');
             this.$router.push(`/edit/${api.group}/${api._id}`);
         },
         confirmDelete() {

@@ -69,9 +69,6 @@ export default {
         updateReqParams() {
             this.$store.commit('UPDATE_REQ_PARAMS', this.reqParams);
         },
-        getReqParams() {
-            return JSON.parse(JSON.stringify(this.reqParams));
-        },
         getParams() {
             const params = JSON.parse(JSON.stringify(this.params));
             params.forEach((v, idx) => {
