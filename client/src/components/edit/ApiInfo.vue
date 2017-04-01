@@ -79,16 +79,10 @@ export default {
     width: 100%;
 }
 .api-info .el-form {
-    /*margin-bottom: 30px;*/
     min-height: 100%;
     padding-bottom: 50px;
 }
 .issue {
-    /*position: absolute;
-    width: 100%;
-    bottom: 20px;
-    left: 0;
-    right: 0;*/
     text-align: center;
     margin-top: -30px;
 }
