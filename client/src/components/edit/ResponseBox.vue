@@ -43,11 +43,31 @@ export default {
         },
         params() {
             return this.$store.state.api.options.params;
+        },
+        mode() {
+            return this.$store.state.mode;
+        },
+        response() {
+            return this.$store.state.response;
         }
     },
     watch: {
         apiId() {
             this.setValue();
+        },
+        response(val) {
+            if (this.mode === 'test') {
+                this.editor.setValue(JSON.stringify(val, null, '\t'), 1);
+            }
+        },
+        mode(val) {
+            if (val === 'edit') {
+                this.setValue();
+                this.editor.setReadOnly(false);
+            } else {
+                this.editor.setValue('');
+                this.editor.setReadOnly(true);
+            }
         }
     },
     methods: {
@@ -81,7 +101,11 @@ export default {
         },
         initDsl() {
             this.setValue();
+            this.$store.commit('UPDATE_DSL_STATUS', true);
             this.editor.getSession().on('change', () => {
+                if (this.mode === 'test') {
+                    return;
+                }
                 let dsl = this.editor.getValue();
                 try {
                     dsl = JSON.parse(dsl);

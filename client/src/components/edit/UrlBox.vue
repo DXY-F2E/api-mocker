@@ -11,13 +11,20 @@
                     </el-select>
                     <!-- <el-button slot="append">Copy</el-button> -->
                     <copy-button slot="append" :copy-data="url" :disabled="creating">Copy</copy-button>
-                    <el-button slot="append" @click="validate()">Save</el-button>
                 </el-input>
             </el-col>
+            <el-col class="control">
+                <el-button id="saveAct" type="info" @click="validate()" v-if="mode === 'edit'">Save</el-button>
+                <el-button id="editAct" type="success" @click="send()" v-else>Send</el-button>
+            </el-col>
             <!-- 2.0来实现 -->
-            <!-- <el-col class="mode">
-                <el-button>测试模式</el-button>
-            </el-col> -->
+            <el-col class="mode" v-if="api._id">
+                <el-select v-model="mode" placeholder="请选择" >
+                    <el-option label="编辑模式" value="edit"></el-option>
+                    <el-option label="测试模式" value="test"></el-option>
+                </el-select>
+                <!-- <el-button @click="changeMode()">{{modeName}}模式</el-button> -->
+            </el-col>
         </el-row>
     </div>
 </template>
@@ -37,7 +44,8 @@ export default {
     },
     methods: {
         ...mapActions([
-            'saveApi'
+            'saveApi',
+            'testApi'
         ]),
         save() {
             this.saveApi().then(() => {
@@ -56,6 +64,9 @@ export default {
                 this.$message.error(`创建失败:${err.response.data.message}`);
             });
         },
+        changeMode() {
+            this.$store.commit('CHANGE_MODE');
+        },
         validate() {
             const { status, msg } = validateApi(this.$store.state);
             if (status) {
@@ -63,9 +74,27 @@ export default {
             } else {
                 this.$message.error(msg);
             }
+        },
+        send() {
+            this.testApi();
+            window.console.log('send data');
         }
     },
     computed: {
+        // mode() {
+        //     return this.$store.state.mode;
+        // },
+        mode: {
+            get() {
+                return this.$store.state.mode;
+            },
+            set() {
+                this.$store.commit('CHANGE_MODE');
+            }
+        },
+        modeName() {
+            return this.$store.state.mode === 'edit' ? '编辑' : '测试';
+        },
         api() {
             return this.$store.state.api;
         },
@@ -88,18 +117,19 @@ export default {
 </script>
 <style>
 .url-box .el-select .el-input__inner {
-    width: 100px;
+    width: 104px;
 }
 .url-box .el-input__inner:hover,
 .url-box .el-input__inner:focus {
     border-color: #bfcbd9;
 }
 .url-box .control{
-    width: 80px;
+    width: 108px;
     text-align: right;
 }
 .url-box .el-input-group__append {
     padding: 0;
+    overflow: hidden;
 }
 .url-box .el-input-group__append .el-button:last-child {
     border-right: 0;
@@ -110,6 +140,8 @@ export default {
     border-right: 1px solid #bfcbd9;
     margin: 0px;
     border-radius: 0;
+    width: 70px;
+    text-align: center;
 }
 .url-box .el-input-group__append .el-button.is-disabled {
     border-color: #bfcbd9;
@@ -119,7 +151,10 @@ export default {
 }
 .url-box .el-input-group__append .el-button:not(.is-disabled):hover {
     color: #324057;
-    /*background-color: #C0CCDA;*/
+}
+#editAct,
+#saveAct {
+    width: 70px;
 }
 .url-box .el-col.mode{
     width: 150px;

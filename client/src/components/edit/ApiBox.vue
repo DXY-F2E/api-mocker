@@ -1,8 +1,10 @@
 <template>
     <div class="api-box el-col">
         <url-box></url-box>
-        <request-box></request-box>
-        <response-box></response-box>
+        <div class="animate">
+            <request-box></request-box>
+            <response-box></response-box>
+        </div>
         <desc-box></desc-box>
     </div>
 </template>
@@ -20,8 +22,8 @@ export default {
         UrlBox
     },
     computed: {
-        api() {
-            return this.$store.state.api;
+        mode() {
+            return this.$store.state.mode;
         }
     }
 };
@@ -29,5 +31,16 @@ export default {
 <style>
 .api-box {
     padding: 20px;
+}
+.animate {
+    background-color: #fff;
+    margin-top: 20px;
+    -webkit-transform: rotate3d(0, 1, 0, -360deg);
+    transform: rotate3d(0, 1, 0, -360deg);
+    transition: all 0.3s ease-out;
+}
+.edit .animate {
+    -webkit-transform: rotate3d(0, 1, 0, 0deg);
+    transform: rotate3d(0, 1, 0, 0deg);
 }
 </style>

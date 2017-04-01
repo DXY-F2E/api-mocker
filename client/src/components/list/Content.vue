@@ -68,6 +68,7 @@ export default {
     height: 100%;
     position: relative;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 .api-list-box {
     /*margin: 10px -10px;*/

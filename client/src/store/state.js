@@ -15,6 +15,9 @@ const state = {
         limit: 0,
         page: 0
     },
+    mode: 'edit',
+    reqParams: {},
+    response: '',
     serverRoot: domain,
     isDslRight: true
 };

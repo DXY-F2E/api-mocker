@@ -27,6 +27,7 @@ export default {
     methods: {
         createApi() {
             this.$store.commit('INIT_API');
+            this.$store.commit('CHANGE_MODE', 'edit');
         }
     }
 };

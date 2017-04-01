@@ -1,32 +1,36 @@
 <template>
     <div class="params-box">
-        <el-row type="flex" class="row-bg" v-for="(param, idx) in params" key="idx">
+        <el-row type="flex" class="row-bg fill" v-for="(p, idx) in params" key="idx">
+            <template v-if="p.key">
+                <el-col class="name" :span="5">
+                    <label>{{p.key}}<code>[{{p.type}}]</code>:</label>
+                </el-col>
+                <el-col class="value">
+                    <el-input :placeholder="getPlaceholder(p)" v-model="reqParams[p.key]" @change="updateReqParams()"></el-input>
+                </el-col>
+            </template>
+        </el-row>
+        <el-row type="flex" class="row-bg set" v-for="(param, idx) in params" key="idx">
             <el-col class="key">
-                <div class="grid-content">
-                    <el-input placeholder="key" v-model="param.key"></el-input>
-                </div>
+                <el-input placeholder="key" v-model="param.key"></el-input>
             </el-col>
             <el-col class="config">
-                <div class="grid-content">
-                    <el-select v-model="param.type" placeholder="类型" >
-                        <el-option
-                            v-for="(type, idx) in typeList"
-                            key="idx"
-                            :label="type"
-                            :value="type">
-                        </el-option>
-                    </el-select>
-                    <el-checkbox v-model="param.required">必填</el-checkbox>
-                </div>
+                <el-select v-model="param.type" placeholder="类型" >
+                    <el-option
+                        v-for="(type, idx) in typeList"
+                        key="idx"
+                        :label="type"
+                        :value="type">
+                    </el-option>
+                </el-select>
+                <el-checkbox v-model="param.required">必填</el-checkbox>
             </el-col>
             <el-col class="control">
-                <div class="grid-content">
-                    <i class="el-icon-plus" @click="addParam(idx)"></i>
-                    <i class="el-icon-close"
-                       @click="deleteParam(idx)"
-                       v-if="params.length > 1">
-                    </i>
-                </div>
+                <i class="el-icon-plus" @click="addParam(idx)"></i>
+                <i class="el-icon-close"
+                   @click="deleteParam(idx)"
+                   v-if="params.length > 1">
+                </i>
             </el-col>
         </el-row>
     </div>
@@ -37,7 +41,8 @@ export default {
     data() {
         return {
             typeList: ['String', 'Number', 'Object', 'Array'],
-            params: this.getInitParams()
+            params: this.getInitParams(),
+            reqParams: {}
         };
     },
     computed: {
@@ -58,6 +63,15 @@ export default {
         }
     },
     methods: {
+        getPlaceholder(p) {
+            return p.required ? '必填' : '选填';
+        },
+        updateReqParams() {
+            this.$store.commit('UPDATE_REQ_PARAMS', this.reqParams);
+        },
+        getReqParams() {
+            return JSON.parse(JSON.stringify(this.reqParams));
+        },
         getParams() {
             const params = JSON.parse(JSON.stringify(this.params));
             params.forEach((v, idx) => {
@@ -108,15 +122,15 @@ export default {
     min-width: 120px;
     max-width: 120px;
 }
-.params-box .control .grid-content i {
+.params-box .control i {
     color: #ccc;
-    line-height: 37px;
-    width: 37px;
+    line-height: 36px;
+    width: 36px;
     cursor: pointer;
     float: left;
     text-align: center;
 }
-.params-box .control .grid-content i:hover {
+.params-box .control i:hover {
     background-color: #EFF2F7;
 }
 .params-box .el-input__inner {
@@ -126,5 +140,21 @@ export default {
 }
 .params-box .el-select {
     margin-right: 20px;
+}
+.params-box .fill .name {
+    min-width: 140px;
+    /*max-width: 300px;*/
+    padding-left: 10px;
+    line-height: 36px;
+}
+.test .set,
+.edit .fill {
+    display: none;
+}
+.params-box code {
+    color: #e96900;
+    margin: 0 2px;
+    border-radius: 2px;
+    white-space: nowrap;
 }
 </style>

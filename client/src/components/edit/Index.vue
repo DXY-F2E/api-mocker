@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" :class="mode">
     <el-row type="flex" class="list-content" v-if="!loading">
         <api-info></api-info>
         <api-box></api-box>
@@ -39,7 +39,7 @@ export default {
             }
         }
     },
-    computed: mapState(['api']),
+    computed: mapState(['api', 'mode']),
     mounted() {
         this.initApi();
     },

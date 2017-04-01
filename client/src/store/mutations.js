@@ -43,6 +43,15 @@ const mutations = {
     },
     UPDATE_DSL_STATUS(state, status) {
         state.isDslRight = status;
+    },
+    CHANGE_MODE(state, mode) {
+        state.mode = mode || (state.mode === 'edit' ? 'test' : 'edit');
+    },
+    UPDATE_REQ_PARAMS(state, params) {
+        state.reqParams = params;
+    },
+    UPDATE_RESPONSE(state, res) {
+        state.response = res;
     }
 };
 export default mutations;

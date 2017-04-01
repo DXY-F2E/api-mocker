@@ -1,5 +1,8 @@
 import axios from 'axios';
 import API from './api';
+import config from '../../config';
+
+const domain = process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax;
 
 const actions = {
     getGroups({ commit }) {
@@ -86,6 +89,23 @@ const actions = {
     createApi({ state, commit }) {
         return axios.post(API.GROUP_APIS.replace(':groupId', state.api.group), state.api).then(res => {
             commit('UPDATE_API', res.data.resources);
+        });
+    },
+    testApi({ state, commit }) {
+        const api = state.api;
+        const method = api.options.method;
+        const config = {
+            method: api.options.method,
+            url: `${domain}${api.url}`
+        };
+        if (method === 'get' || method === 'delete') {
+            config.params = state.reqParams;
+        } else {
+            config.data = state.reqParams;
+        }
+        return axios(config).then(res => {
+            window.console.log(res);
+            commit('UPDATE_RESPONSE', res.data);
         });
     }
 };

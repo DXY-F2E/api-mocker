@@ -43,6 +43,6 @@ export default {
     color: #bfcbd9;
 }
 .advanced-box .delay.el-form-item {
-    margin: 1px 0 0px 0;
+    margin: 0;
 }
 </style>
