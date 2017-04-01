@@ -30,10 +30,10 @@ export default {
         return {
             template: null,
             templates: [
-                {success: true, data: {}, info: '获取成功'},
-                {success: true, data: {}, msg: '获取成功'},
-                {success: false, data: {}, msg: '数据获取失败'},
-                {success: true, data: {}, info: '获取成功'}
+                '{"success": true, "data": {}, "info": "获取成功"}',
+                '{"success": true, "data": {}, "msg": "获取成功"}',
+                '{"success": false, "data": {}, "msg": "数据获取失败"}',
+                '{"success": true, "data": {}, "info": "获取成功"}'
             ]
         };
     },
@@ -42,7 +42,7 @@ export default {
             return this.$store.state.api._id;
         },
         params() {
-            return this.$store.state.api.params;
+            return this.$store.state.api.options.params;
         }
     },
     watch: {
@@ -52,7 +52,12 @@ export default {
     },
     methods: {
         setTemplateVal() {
-            const dsl = this.templates[this.template];
+            const dsl = JSON.parse(this.templates[this.template]);
+            this.params.forEach(p => {
+                if (p.key) {
+                    dsl.data[p.key] = `$\{${p.key}}`;
+                }
+            });
             this.editor.setValue(JSON.stringify(dsl, null, '\t'), 1);
             this.$store.commit('UPDATE_API_PROPS', ['dsl', dsl]);
             this.$store.commit('UPDATE_DSL_STATUS', true);
