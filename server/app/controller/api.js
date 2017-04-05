@@ -7,25 +7,29 @@ const sleep = (ms) => {
 module.exports = app => {
     class ApiController extends app.Controller {
         * getAll () {
+            const { groupId } = this.ctx.params
             let { limit = 30, page = 1, order = false, q = '.*'} = this.ctx.query
             page = Number(page)
             limit = Number(limit)
             const reg = new RegExp(`.*${q}.*`, 'i')
+            const condition = {
+                isDeleted: false,
+                "$or": [
+                    {name: reg},
+                    {url: reg},
+                    {desc: reg},
+                    {'options.method': reg},
+                ]
+            }
+            if (groupId)
+                condition.group = groupId
+
             const resources = yield app.model.api
-                                       .find({
-                                           isDeleted: false,
-                                           "$or": [
-                                               {name: reg},
-                                               {url: reg},
-                                               {desc: reg},
-                                               {'options.method': reg},
-                                           ]
-                                       })
+                                       .find(condition)
                                        .sort({modifiedTime: -1, createTime: -1})
                                        .skip((page-1)* limit )
                                        .limit(limit)
                                        .exec()
-            // yield sleep(1000)
             const count = yield app.model.api.find({
                 "$or": [
                     {name: reg},
@@ -35,41 +39,6 @@ module.exports = app => {
                 ]
             }).count().exec()
             this.ctx.body = { resources , pages: { limit, page, count}}
-            this.ctx.status = 200
-        }
-        * getGroupAll () {
-            const { groupId } = this.ctx.params
-            let { limit = 30, page = 1, q='.*'} = this.ctx.query
-            page = Number(page)
-            limit = Number(limit)
-            const reg = new RegExp(`.*${q}.*`, 'i')
-            assert(groupId, 403, 'invalid groupId')
-            const resources = yield app.model.api
-                                       .find({
-                                           group: groupId,
-                                           isDeleted: false,
-                                           "$or": [
-                                               {name: reg},
-                                               {url: reg},
-                                               {desc: reg},
-                                               {'options.method': reg},
-                                           ]
-                                       })
-                                       .sort({modifiedTime: -1, createTime: -1})
-                                       .skip((page-1) * limit)
-                                       .limit(limit)
-                                       .exec()
-
-            const count = yield app.model.api.find({
-                "$or": [
-                    {name: reg},
-                    {url: reg},
-                    {desc: reg},
-                    {'options.method': reg},
-                ],
-                group: groupId
-            }).count().exec()
-            this.ctx.body = { resources , pages: { page, limit, count}}
             this.ctx.status = 200
         }
         * modifyApi () {
