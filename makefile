@@ -19,6 +19,9 @@ endef
 
 prerequ-program:
 	@$(call require_install,mongod,mongo)
+	mkdir -p ./db/
+	if [ "${pgrep mongod}" = "" ]; then mongod --fork --dbpath ./db/ --logpath ./db/mongod.log; fi
+	@echo "start mongod success!"
 
 $(DSL_LIBS): $(DSL_SRC)
 	cd dsl-core  && npm install && npm run build
