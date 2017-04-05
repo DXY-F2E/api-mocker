@@ -10,6 +10,8 @@
 
 * `make install`
 
+同时该命令也会确保`mongod`的启动，如果未启动会在本地建立`db`目录，并启动`mongod`.
+如果服务器新开机可重新执行`make install`确保数据库启动.
 
 ## 开发启动(dev)
 
