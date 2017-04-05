@@ -15,6 +15,7 @@ const actions = {
         let searchLastTime = null;
         return function({ commit }, payload) {
             const { groupId, q } = payload;
+            window.console.log(q);
             let req;
             const mytime = searchLastTime = Date.now();
             if (groupId) {
@@ -39,12 +40,13 @@ const actions = {
     },
     getApiList({ commit }, payload) {
         commit('FETCH_BEGIN');
-        return axios.get(API.APIS, {
-            page: 1,
-            limit: 16,
-            ...payload
+        const { groupId, query } = payload;
+        const url = groupId ? API.GROUP_APIS.replace(':groupId', groupId) : API.APIS;
+        return axios.get(url, {
+            params: query
         }).then(res => {
             commit('FETCH_SUCCESS', res.data);
+            return res;
         }).catch(err => {
             commit('FETCH_FAILED');
             throw err;

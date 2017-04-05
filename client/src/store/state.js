@@ -9,12 +9,12 @@ const state = {
     apiListLoading: false,
     apiListSuccess: false,
     api: apiInit(),
-    apiCreateing: false,
-    apiPage: {
-        count: 0,
+    apiQuery: {
+        q: '',
         limit: 0,
         page: 0
     },
+    apiCount: 0,
     mode: 'edit',
     reqParams: {},
     response: '',

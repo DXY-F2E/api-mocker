@@ -32,13 +32,15 @@
      methods: {
          handleClickGroup(group) {
              if (group && group._id) {
-                 this.$store.dispatch('getGroupApi', { groupId: group._id }).then(() => {
-                     this.$router.replace(`/list/${group._id}`);
-                 });
+                 // this.$store.dispatch('getGroupApi', { groupId: group._id }).then(() => {
+                 //     this.$router.replace(`/list/${group._id}`);
+                 // });
+                 this.$router.replace(`/list/${group._id}`);
              } else {
-                 this.$store.dispatch('getApiList').then(() => {
-                     this.$router.replace('/');
-                 });
+                 // this.$store.dispatch('getApiList').then(() => {
+                 //     this.$router.replace('/');
+                 // });
+                 this.$router.replace('/');
              }
          },
          handleClickCreateGroup(groupName) {
