@@ -2,39 +2,57 @@
     <div class="page-nav" v-show="showNav">
         <el-pagination
           @current-change="handleCurrentChange"
-          :current-page="pageData.page"
-          :page-size="pageData.limit"
+          :current-page="query.page"
+          :page-size="query.limit"
           layout="prev, pager, next, jumper"
-          :total="pageData.count">
+          :total="total">
         </el-pagination>
     </div>
 </template>
 
 <script>
 export default {
+    props: {
+        total: {
+            type: Number,
+            default: 0
+        },
+        query: {
+            type: Object,
+            default() {
+                return {
+                    page: 1,
+                    limit: 16
+                };
+            }
+        },
+        onPageNav: {
+            type: Function,
+            required: true
+        }
+    },
     computed: {
-        pageData() {
-            return this.$store.state.apiPage;
-        },
-        apiLoading() {
-            return this.$store.state.apiListLoading;
-        },
         showNav() {
-            return this.pageData.count > this.pageData.limit;
+            return this.total > this.query.limit;
         }
     },
     methods: {
         handleCurrentChange(currentPage) {
-            if (this.apiLoading || currentPage === this.pageData.page) {
-                return;
-            }
-            this.$store.dispatch('getApiList', {
-                page: currentPage,
-                limit: this.pageData.limit
-            }).catch(() => {
-                this.$message.error('加载数据失败');
-            });
+            this.onPageNav(currentPage);
         }
+        // handleCurrentChange(currentPage) {
+        //     if (this.apiLoading || currentPage === this.pageData.page) {
+        //         return;
+        //     }
+        //     this.$store.dispatch('getApiList', {
+        //         page: currentPage,
+        //         limit: this.pageData.limit
+        //     }).then(res => {
+        //         this.count = res.data.pages.count;
+        //     }).catch(() => {
+        //         this.$message.error('加载数据失败');
+        //     });
+        // }
     }
 };
 </script>

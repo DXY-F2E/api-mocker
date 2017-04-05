@@ -30,12 +30,12 @@ export default {
 .animate {
     background-color: #fff;
     margin-top: 20px;
-    -webkit-transform: rotate3d(0, 1, 0, -360deg);
-    transform: rotate3d(0, 1, 0, -360deg);
-    transition: all 0.3s ease-out;
+    /*-webkit-transform: rotate3d(0, 1, 0, -360deg);*/
+    /*transform: rotate3d(0, 1, 0, -360deg);*/
+    /*transition: all 0.3s ease-out;*/
 }
 .edit .animate {
-    -webkit-transform: rotate3d(0, 1, 0, 0deg);
-    transform: rotate3d(0, 1, 0, 0deg);
+    /*-webkit-transform: rotate3d(0, 1, 0, 0deg);*/
+    /*transform: rotate3d(0, 1, 0, 0deg);*/
 }
 </style>

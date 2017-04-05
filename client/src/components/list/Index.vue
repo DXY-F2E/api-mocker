@@ -13,10 +13,10 @@ export default {
         NavMenu
     },
     mounted() {
-        const groupId = this.$route.params.groupId;
-        Promise.all([
-            groupId ? this.$store.dispatch('getGroupApi', { groupId }) : this.$store.dispatch('getApiList')
-        ]);
+        // const groupId = this.$route.params.groupId;
+        // Promise.all([
+        //     groupId ? this.$store.dispatch('getGroupApi', { groupId }) : this.$store.dispatch('getApiList')
+        // ]);
     }
 };
 </script>

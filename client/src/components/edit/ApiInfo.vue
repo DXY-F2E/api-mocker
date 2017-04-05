@@ -24,7 +24,7 @@
             </el-form-item> -->
         </el-form>
         <p class="issue">
-            <a href="http://gitlab.dxy.net/f2e/api-mocker/wikis/home">Click For Help</a>
+            <a href="http://gitlab.dxy.net/f2e/api-mocker/wikis/home" target="_blank">Click For Help</a>
             <a href="http://gitlab.dxy.net/f2e/api-mocker/issues" target="_blank">Issue</a>
         </p>
     </div>
