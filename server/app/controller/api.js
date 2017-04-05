@@ -30,14 +30,7 @@ module.exports = app => {
                                        .skip((page-1)* limit )
                                        .limit(limit)
                                        .exec()
-            const count = yield app.model.api.find({
-                "$or": [
-                    {name: reg},
-                    {url: reg},
-                    {desc: reg},
-                    {'options.method': reg},
-                ]
-            }).count().exec()
+            const count = yield app.model.api.find(condition).count().exec()
             this.ctx.body = { resources , pages: { limit, page, count}}
             this.ctx.status = 200
         }
