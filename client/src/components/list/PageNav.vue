@@ -38,21 +38,11 @@ export default {
     },
     methods: {
         handleCurrentChange(currentPage) {
+            if (currentPage === this.query.page) {
+                return;
+            }
             this.onPageNav(currentPage);
         }
-        // handleCurrentChange(currentPage) {
-        //     if (this.apiLoading || currentPage === this.pageData.page) {
-        //         return;
-        //     }
-        //     this.$store.dispatch('getApiList', {
-        //         page: currentPage,
-        //         limit: this.pageData.limit
-        //     }).then(res => {
-        //         this.count = res.data.pages.count;
-        //     }).catch(() => {
-        //         this.$message.error('加载数据失败');
-        //     });
-        // }
     }
 };
 </script>

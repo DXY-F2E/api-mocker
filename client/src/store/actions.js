@@ -11,47 +11,31 @@ const actions = {
             return res.data.resources;
         });
     },
-    search: (() => {
-        let searchLastTime = null;
-        return function({ commit }, payload) {
-            const { groupId, q } = payload;
-            window.console.log(q);
-            let req;
-            const mytime = searchLastTime = Date.now();
-            if (groupId) {
-                req = axios.get(`${API.GROUP_APIS.replace(':groupId', groupId)}?q=${q}`);
-            } else {
-                req = axios.get(`${API.APIS}?q=${q}`);
-            }
-            commit('FETCH_BEGIN');
-            return req.then(response => {
-                if (searchLastTime === mytime) {
-                    commit('FETCH_SUCCESS', response.data);
-                }
-            }).catch(() => {
-                commit('FETCH_FAILED');
-            });
-        };
-    })(),
     createGroup({commit}, payload) {
         return axios.post(API.GROUPS, payload).then(response => {
             commit('CREATE_GROUP_SUCCESS', response.data.resources);
         });
     },
-    getApiList({ commit }, payload) {
-        commit('FETCH_BEGIN');
-        const { groupId, query } = payload;
-        const url = groupId ? API.GROUP_APIS.replace(':groupId', groupId) : API.APIS;
-        return axios.get(url, {
-            params: query
-        }).then(res => {
-            commit('FETCH_SUCCESS', res.data);
-            return res;
-        }).catch(err => {
-            commit('FETCH_FAILED');
-            throw err;
-        });
-    },
+    getApiList: (() => {
+        let searchLastTime = null;
+        return ({ commit }, payload) => {
+            commit('FETCH_BEGIN');
+            const { groupId, query } = payload;
+            const url = groupId ? API.GROUP_APIS.replace(':groupId', groupId) : API.APIS;
+            const mytime = searchLastTime = Date.now();
+            return axios.get(url, {
+                params: query
+            }).then(res => {
+                if (searchLastTime === mytime) {
+                    commit('FETCH_SUCCESS', res.data);
+                    return res;
+                }
+            }).catch(err => {
+                commit('FETCH_FAILED');
+                throw err;
+            });
+        };
+    })(),
     getGroupApi({ commit }, payload) {
         const { groupId } = payload;
         commit('FETCH_BEGIN');

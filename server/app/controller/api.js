@@ -23,7 +23,7 @@ module.exports = app => {
             }
             if (groupId)
                 condition.group = groupId
-
+            // yield sleep(3000)
             const resources = yield app.model.api
                                        .find(condition)
                                        .sort({modifiedTime: -1, createTime: -1})

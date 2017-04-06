@@ -31,42 +31,38 @@ export default {
     },
     watch: {
         $route(to) {
-            if (to.matched[0].path === '/list' && !this.apiListLoading) {
-                this.getData(true);
+            if (to.matched[0].path === '/list') {
+                this.initQuery();
+                this.getData();
             }
         }
     },
     methods: {
         initQuery() {
-            return {
+            this.query = {
                 q: '',
                 limit: 16,
                 page: 1
             };
+            return this.query;
         },
-        getData(isInit) {
-            window.console.log(isInit);
-            if (isInit) {
-                this.initQuery();
-            }
+        getData() {
             this.$store.dispatch('getApiList', {
                 groupId: this.$route.params.groupId,
                 query: this.query
             }).then(res => {
+                if (!res || !res.data) {
+                    return;
+                }
                 const pages = res.data.pages;
                 this.query.page = pages.page;
                 this.count = pages.count;
-            }).catch(() => {
+            }).catch((err) => {
+                window.console.log(err);
                 this.$message.error('加载数据失败');
             });
         },
         onPageNav(currentPage) {
-            window.console.log('page nav');
-            window.console.log(currentPage);
-            window.console.log(this.query.page);
-            if (currentPage === this.query.page) {
-                return;
-            }
             this.query.page = currentPage;
             if (this.apiListLoading) {
                 return;
@@ -75,6 +71,7 @@ export default {
         },
         onQuery(filter) {
             this.query.q = filter;
+            this.query.page = 1;
             if (this.inputShakeTime || this.apiListLoading) {
                 return;
             }

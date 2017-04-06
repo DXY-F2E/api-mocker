@@ -7,14 +7,8 @@ const state = {
     groups: [],
     apiList: [],
     apiListLoading: false,
-    apiListSuccess: false,
+    apiListSuccess: true,
     api: apiInit(),
-    apiQuery: {
-        q: '',
-        limit: 0,
-        page: 0
-    },
-    apiCount: 0,
     mode: 'edit',
     reqParams: {},
     response: '',

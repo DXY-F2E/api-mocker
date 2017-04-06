@@ -11,12 +11,6 @@ import NavMenu from './Menu';
 export default {
     components: {
         NavMenu
-    },
-    mounted() {
-        // const groupId = this.$route.params.groupId;
-        // Promise.all([
-        //     groupId ? this.$store.dispatch('getGroupApi', { groupId }) : this.$store.dispatch('getApiList')
-        // ]);
     }
 };
 </script>
