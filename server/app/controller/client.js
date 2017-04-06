@@ -6,35 +6,45 @@ const sleep = (ms) => {
 module.exports = app => {
     class ClientController extends app.Controller {
         // get/:id
+        * handleRequest(document) {
+            if (!document) {
+                return
+            }
+            const delay = document.options.delay || 0
+            yield sleep(delay)
+            const params = R.merge(this.ctx.request.body, this.ctx.request.query)
+            this.validateParams(document, params)
+            this.ctx.body = renderer(params)(document.dsl || {})
+        }
         * show () {
             const { id }= this.ctx.params
             const document = yield app.model.api.findOne({url: `/client/${id}`, "options.method": /get/i}).exec()
-            if (document) {
-                const delay = document.options.delay || 0
-                yield sleep(delay)
-                this.ctx.body = renderer(this.ctx.request.query)(document.dsl|| {})
-            }
+            yield this.handleRequest(document)
         }
         // post /
         * create () {
             const document = yield app.model.api.findOne({url: this.ctx.request.url, "options.method": /post/i}).exec()
-            if (document) {
-                this.ctx.body = renderer(R.merge(this.ctx.request.body, this.ctx.request.params))(document.dsl || {})
-            }
+            yield this.handleRequest(document)
         }
         //put
         * put () {
             const document = yield app.model.api.findOne({url: this.ctx.request.url, "options.method": /put/i}).exec()
-            if (document) {
-                this.ctx.body = renderer(R.merge(this.ctx.request.body, this.ctx.request.params))(document.dsl || {})
-            }
+            yield this.handleRequest(document)
         }
         // delete
         * delete () {
             const document = yield app.model.api.findOne({url: this.ctx.request.url, "options.method": /delete/i}).exec()
-            if (document) {
-                this.ctx.body = renderer(R.merge(this.ctx.request.body, this.ctx.request.params))(document.dsl || {})
+            yield this.handleRequest(document)
+        }
+        validateParams(document, params) {
+            const rule = {};
+            for (var param of document.options.params) {
+                rule[param.key] = {
+                    type: param.type.toLowerCase(),
+                    required: param.required
+                }
             }
+            this.ctx.validate(rule, params)
         }
     }
 

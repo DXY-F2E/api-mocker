@@ -84,14 +84,16 @@ const actions = {
             method: api.options.method,
             url: `${domain}${api.url}`
         };
-        if (method === 'get' || method === 'delete') {
+        if (method === 'get') {
             config.params = state.reqParams;
         } else {
             config.data = state.reqParams;
         }
         return axios(config).then(res => {
-            window.console.log(res);
             commit('UPDATE_RESPONSE', res.data);
+        }, err => {
+            // window.console.log(err.response);
+            commit('UPDATE_RESPONSE', err.response.data);
         });
     }
 };

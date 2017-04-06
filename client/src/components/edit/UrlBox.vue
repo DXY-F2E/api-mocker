@@ -77,7 +77,6 @@ export default {
         },
         send() {
             this.testApi();
-            window.console.log('send data');
         }
     },
     computed: {

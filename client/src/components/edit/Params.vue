@@ -6,7 +6,12 @@
                     <label>{{p.key}}<code>[{{p.type}}]</code>:</label>
                 </el-col>
                 <el-col class="value">
-                    <el-input :placeholder="getPlaceholder(p)" v-model="reqParams[p.key]" @change="updateReqParams()"></el-input>
+                    <input type="number" class="el-input__inner"
+                                         :placeholder="getPlaceholder(p)"
+                                         v-model="reqParams[p.key]"
+                                         v-if="p.type === 'Number'"
+                                         @input="updateNumberValue(p.key)" />
+                    <el-input :placeholder="getPlaceholder(p)" v-model="reqParams[p.key]" @change="updateReqParams" v-else></el-input>
                 </el-col>
             </template>
         </el-row>
@@ -65,6 +70,10 @@ export default {
     methods: {
         getPlaceholder(p) {
             return p.required ? '必填' : '选填';
+        },
+        updateNumberValue(key) {
+            this.reqParams[key] = window.parseInt(this.reqParams[key]);
+            this.updateReqParams();
         },
         updateReqParams() {
             this.$store.commit('UPDATE_REQ_PARAMS', this.reqParams);
@@ -135,6 +144,9 @@ export default {
     border-radius: 0;
     border-bottom: 1px solid #EFF2F7;
 }
+.params-box .el-input-number {
+    width: 100%;
+}
 .params-box .el-select {
     margin-right: 20px;
 }
@@ -142,7 +154,13 @@ export default {
     min-width: 140px;
     /*max-width: 300px;*/
     padding-left: 10px;
+    margin-right: 10px;
+}
+.params-box .fill .name label {
+    display: block;
     line-height: 36px;
+    height: 36px;
+    border-bottom: 1px solid #EFF2F7;
 }
 .test .set,
 .edit .fill {
