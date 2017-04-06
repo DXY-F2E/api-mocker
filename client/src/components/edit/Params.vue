@@ -22,7 +22,7 @@
             <el-col class="config">
                 <el-select v-model="param.type" placeholder="类型" >
                     <el-option
-                        v-for="(type, idx) in typeList"
+                        v-for="(type, idx) in getTypeList()"
                         key="idx"
                         :label="type"
                         :value="type">
@@ -45,7 +45,6 @@
 export default {
     data() {
         return {
-            typeList: ['String', 'Number', 'Object', 'Array'],
             params: this.getInitParams(),
             reqParams: {}
         };
@@ -53,6 +52,9 @@ export default {
     computed: {
         apiId() {
             return this.$store.state.api._id;
+        },
+        method() {
+            return this.$store.state.api.options.method;
         }
     },
     watch: {
@@ -68,6 +70,13 @@ export default {
         }
     },
     methods: {
+        getTypeList() {
+            if (this.method === 'get') {
+                return ['String'];
+            } else {
+                return ['String', 'Number', 'Object', 'Array'];
+            }
+        },
         getPlaceholder(p) {
             return p.required ? '必填' : '选填';
         },

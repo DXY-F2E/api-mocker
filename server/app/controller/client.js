@@ -36,15 +36,16 @@ module.exports = app => {
             const document = yield app.model.api.findOne({url: this.ctx.request.url, "options.method": /delete/i}).exec()
             yield this.handleRequest(document)
         }
-        validateParams(document, params) {
+        validateParams(document, data) {
             const rule = {};
-            for (var param of document.options.params) {
+            const { params, method } = document.options
+            for (var param of params) {
                 rule[param.key] = {
-                    type: param.type.toLowerCase(),
+                    type: (method === 'get') ? 'string' : param.type.toLowerCase(),
                     required: param.required
                 }
             }
-            this.ctx.validate(rule, params)
+            this.ctx.validate(rule, data)
         }
     }
 
