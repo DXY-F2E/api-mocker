@@ -6,7 +6,8 @@ module.exports = mongoose => {
             ref: 'group'
         },
         name: {
-            type: String
+            type: String,
+            unique: false
         },
         desc: String,
         createTime: {
