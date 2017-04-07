@@ -10,7 +10,11 @@ const state = {
     apiListSuccess: true,
     api: apiInit(),
     mode: 'edit',
-    reqParams: {},
+    reqParams: {
+        query: {},
+        body: {},
+        path: {}
+    },
     response: '',
     serverRoot: domain,
     isDslRight: true

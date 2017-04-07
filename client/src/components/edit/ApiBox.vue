@@ -2,8 +2,8 @@
     <div class="api-box el-col">
         <url-box></url-box>
         <div class="animate">
-            <request-box></request-box>
-            <response-box></response-box>
+            <request-box :params="params" :method="method" :mode="mode"></request-box>
+            <response-box :params="params" :mode="mode"></response-box>
         </div>
         <desc-box></desc-box>
     </div>
@@ -20,6 +20,17 @@ export default {
         ResponseBox,
         DescBox,
         UrlBox
+    },
+    computed: {
+        mode() {
+            return this.$store.state.mode;
+        },
+        params() {
+            return this.$store.state.api.options.params;
+        },
+        method() {
+            return this.$store.state.api.options.method;
+        }
     }
 };
 </script>

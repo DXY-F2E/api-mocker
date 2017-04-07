@@ -1,20 +1,5 @@
 <template>
     <div class="params-box">
-        <el-row type="flex" class="row-bg fill" v-for="(p, idx) in params" key="idx">
-            <template v-if="p.key">
-                <el-col class="name" :span="5">
-                    <label>{{p.key}}<code>[{{p.type}}]</code>:</label>
-                </el-col>
-                <el-col class="value">
-                    <input type="number" class="el-input__inner"
-                                         :placeholder="getPlaceholder(p)"
-                                         v-model="reqParams[p.key]"
-                                         v-if="p.type === 'Number'"
-                                         @input="updateNumberValue(p.key)" />
-                    <el-input :placeholder="getPlaceholder(p)" v-model="reqParams[p.key]" @change="updateReqParams" v-else></el-input>
-                </el-col>
-            </template>
-        </el-row>
         <el-row type="flex" class="row-bg set" v-for="(param, idx) in params" key="idx">
             <el-col class="key">
                 <el-input placeholder="key" v-model="param.key"></el-input>
@@ -43,10 +28,10 @@
 
 <script>
 export default {
-    props: ['data', 'name'],
+    props: ['data'],
     data() {
         return {
-            tpyeList: this.getTypeList(),
+            tpyeList: ['String'],
             reqParams: {},
             params: this.getInitParams()
         };
@@ -62,24 +47,13 @@ export default {
     watch: {
         params: {
             handler() {
-                const key = `options.params.${this.name}`;
                 this.$store.commit('UPDATE_API_PROPS',
-                                   [key, this.getParams()]);
+                                   ['options.params.query', this.getParams()]);
             },
             deep: true
-        },
-        apiId() {
-            this.params = this.getInitParams();
         }
     },
     methods: {
-        getTypeList() {
-            if (this.name === 'query') {
-                return ['String'];
-            } else {
-                return ['String', 'Number', 'Object', 'Array'];
-            }
-        },
         getInitParams() {
             if (this.data && this.data.length > 0) {
                 return JSON.parse(JSON.stringify(this.data));
@@ -99,10 +73,7 @@ export default {
             this.updateReqParams();
         },
         updateReqParams() {
-            this.$store.commit('UPDATE_REQ_PARAMS', {
-                type: this.name,
-                params: this.reqParams
-            });
+            this.$store.commit('UPDATE_REQ_PARAMS', this.reqParams);
         },
         getParams() {
             const params = JSON.parse(JSON.stringify(this.params));

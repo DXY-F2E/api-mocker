@@ -79,16 +79,13 @@ const actions = {
     },
     testApi({ state, commit }) {
         const api = state.api;
-        const method = api.options.method;
+        // const method = api.options.method;
         const config = {
             method: api.options.method,
             url: `${domain}${api.url}`
         };
-        if (method === 'get') {
-            config.params = state.reqParams;
-        } else {
-            config.data = state.reqParams;
-        }
+        config.params = state.reqParams.query;
+        config.data = state.reqParams.body;
         return axios(config).then(res => {
             commit('UPDATE_RESPONSE', res.data);
         }, err => {

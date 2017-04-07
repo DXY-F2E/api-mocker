@@ -39,11 +39,14 @@ module.exports = app => {
         validateParams(document, data) {
             const rule = {};
             const { params, method } = document.options
-            for (var param of params) {
-                rule[param.key] = {
-                    type: (method === 'get') ? 'string' : param.type.toLowerCase(),
-                    required: param.required
-                }
+            for (var name in params) {
+                if (method === 'get' && name !== 'query') continue
+                params[name].forEach(param => {
+                    rule[param.key] = {
+                        type: param.type,
+                        required: param.required
+                    }
+                })
             }
             this.ctx.validate(rule, data)
         }

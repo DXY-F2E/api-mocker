@@ -47,8 +47,8 @@ const mutations = {
     CHANGE_MODE(state, mode) {
         state.mode = mode || (state.mode === 'edit' ? 'test' : 'edit');
     },
-    UPDATE_REQ_PARAMS(state, params) {
-        state.reqParams = params;
+    UPDATE_REQ_PARAMS(state, {type, params}) {
+        state.reqParams[type] = params;
     },
     UPDATE_RESPONSE(state, res) {
         state.response = res;

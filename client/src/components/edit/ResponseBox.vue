@@ -1,21 +1,23 @@
 <template>
     <div class="response-box">
         <div class="hd">Response
-            <el-tooltip placement="top">
-              <div slot="content">
-                  可使用 ${param} ，返回自定义数据
-              </div>
-              <el-button size="mini">Tip</el-button>
-            </el-tooltip>
-            <el-button size="mini" @click="parseEditor()">Parse</el-button>
-            <el-select v-model="template" size="mini" placeholder="模板" @change="setTemplateVal()">
-                <el-option
-                  v-for="(val, idx) in templates"
-                  :label="'模板' + (idx+1)"
-                  key="idx"
-                  :value="idx">
-                </el-option>
-            </el-select>
+            <div class="control" v-if="mode === 'edit'">
+                <el-select v-model="template" size="mini" placeholder="模板" @change="setTemplateVal()">
+                    <el-option
+                      v-for="(val, idx) in templates"
+                      :label="'模板' + (idx+1)"
+                      key="idx"
+                      :value="idx">
+                    </el-option>
+                </el-select>
+                <el-button size="mini" @click="parseEditor()">Parse</el-button>
+                <el-tooltip placement="top">
+                  <div slot="content">
+                      可使用 ${param} ，返回自定义数据
+                  </div>
+                  <el-button size="mini">Tip</el-button>
+                </el-tooltip>
+            </div>
         </div>
         <div id="json-editor"></div>
     </div>
@@ -30,22 +32,17 @@ export default {
         return {
             template: null,
             templates: [
-                '{"success": true, "data": {}, "info": "获取成功"}',
-                '{"success": true, "data": {}, "msg": "获取成功"}',
-                '{"success": false, "data": {}, "msg": "数据获取失败"}',
-                '{"success": true, "data": {}, "info": "获取成功"}'
+                '{"success": true, "params": {}, "info": "获取成功"}',
+                '{"success": true, "params": {}, "msg": "获取成功"}',
+                '{"success": false, "params": {}, "msg": "数据获取失败"}',
+                '{"success": true, "params": {}, "info": "获取成功"}'
             ]
         };
     },
+    props: ['params', 'mode'],
     computed: {
         apiId() {
             return this.$store.state.api._id;
-        },
-        params() {
-            return this.$store.state.api.options.params;
-        },
-        mode() {
-            return this.$store.state.mode;
         },
         response() {
             return this.$store.state.response;
@@ -73,11 +70,13 @@ export default {
     methods: {
         setTemplateVal() {
             const dsl = JSON.parse(this.templates[this.template]);
-            this.params.forEach(p => {
-                if (p.key) {
-                    dsl.data[p.key] = `$\{${p.key}}`;
-                }
-            });
+            for (const key in this.params) {
+                this.params[key].forEach(p => {
+                    if (p.key) {
+                        dsl.params[p.key] = `$\{${p.key}}`;
+                    }
+                });
+            }
             this.editor.setValue(JSON.stringify(dsl, null, '\t'), 1);
             this.$store.commit('UPDATE_API_PROPS', ['dsl', dsl]);
             this.$store.commit('UPDATE_DSL_STATUS', true);
@@ -149,15 +148,17 @@ export default {
     padding: 8px 0;
     line-height: 22px;
 }
-.response-box .hd button {
+.response-box .hd .control {
     float: right;
-    margin-right: 10px;
+}
+.response-box .hd .control > * {
+    margin-left: 10px;
+    vertical-align: top;
 }
 #json-editor {
     height: 300px;
 }
 .response-box .el-select {
     width: 80px;
-    float: right;
 }
 </style>

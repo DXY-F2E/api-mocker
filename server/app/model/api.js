@@ -26,7 +26,7 @@ module.exports = mongoose => {
         options: {
             method: String,
             headers: {},
-            params: [],
+            params: {},
             delay: Number
         },
         isDeleted: {

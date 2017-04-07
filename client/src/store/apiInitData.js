@@ -7,13 +7,11 @@ function initData() {
         options: {
             method: 'get',
             delay: 0,
-            params: [
-                {
-                    key: null,
-                    type: 'String',
-                    required: true
-                }
-            ]
+            params: {
+                query: [],
+                body: [],
+                path: []
+            }
         }
     };
 }
