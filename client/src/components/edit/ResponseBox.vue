@@ -73,7 +73,8 @@ export default {
             for (const key in this.params) {
                 this.params[key].forEach(p => {
                     if (p.key) {
-                        dsl.params[p.key] = `$\{${p.key}}`;
+                        const param = p.key.replace(/\./g, '_');
+                        dsl.params[param] = `$\{${p.key}}`;
                     }
                 });
             }

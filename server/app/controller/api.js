@@ -46,7 +46,7 @@ module.exports = app => {
                 group: groupId,
                 _id: apiId
             }, R.merge(body, {modifiedTime: Date.now()}), {new: true}).exec()
-
+            //{new: true} 使结果能返回更新后的数据
             yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
 
             this.ctx.body = { resources }
