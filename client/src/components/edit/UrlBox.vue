@@ -23,7 +23,6 @@
                     <el-option label="编辑模式" value="edit"></el-option>
                     <el-option label="测试模式" value="test"></el-option>
                 </el-select>
-                <!-- <el-button @click="changeMode()">{{modeName}}模式</el-button> -->
             </el-col>
         </el-row>
     </div>

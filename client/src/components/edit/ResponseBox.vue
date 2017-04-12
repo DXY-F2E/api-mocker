@@ -1,6 +1,14 @@
 <template>
     <div class="response-box">
         <div class="hd">Response
+            <div class="res" v-if="mode === 'test' && response">
+                <em>-</em>
+                <el-tabs v-model="resActive" @tab-click="showRes">
+                    <el-tab-pane label="Body" name="body"></el-tab-pane>
+                    <el-tab-pane label="Headers" name="header"></el-tab-pane>
+                    <el-tab-pane label="All-Data" name="all"></el-tab-pane>
+                </el-tabs>
+            </div>
             <div class="control" v-if="mode === 'edit'">
                 <el-select v-model="template" size="mini" placeholder="模板" @change="setTemplateVal()">
                     <el-option
@@ -36,7 +44,8 @@ export default {
                 '{"success": true, "params": {}, "msg": "获取成功"}',
                 '{"success": false, "params": {}, "msg": "数据获取失败"}',
                 '{"success": true, "params": {}, "info": "获取成功"}'
-            ]
+            ],
+            resActive: 'body'
         };
     },
     props: ['params', 'mode'],
@@ -53,8 +62,8 @@ export default {
             this.setValue();
         },
         response(val) {
-            if (this.mode === 'test') {
-                this.editor.setValue(JSON.stringify(val, null, '\t'), 1);
+            if (this.mode === 'test' && val) {
+                this.showRes();
             }
         },
         mode(val) {
@@ -62,12 +71,45 @@ export default {
                 this.setValue();
                 this.editor.setReadOnly(false);
             } else {
+                this.$store.commit('UPDATE_RESPONSE', null);
                 this.editor.setValue('');
                 this.editor.setReadOnly(true);
             }
         }
     },
     methods: {
+        showRes() {
+            switch (this.resActive) {
+                case 'body':
+                    this.showResBody();
+                    break;
+                case 'header':
+                    this.showResHeader();
+                    break;
+                case 'all':
+                    this.showResAll();
+                    break;
+                default:
+                    break;
+            }
+            this.editor.getSession().setScrollTop(0);
+        },
+        showResBody() {
+            this.editor.setValue(JSON.stringify(this.response.data, null, '\t'), 1);
+            this.resActive = 'body';
+        },
+        showResAll() {
+            this.editor.setValue(JSON.stringify(this.response, null, '\t'), 1);
+            this.resActive = 'all';
+        },
+        showResHeader() {
+            const headers = Object.assign({
+                status: this.response.status,
+                statusText: this.response.statusText
+            }, this.response.headers);
+            this.editor.setValue(JSON.stringify(headers, null, '\t'), 1);
+            this.resActive = 'header';
+        },
         setTemplateVal() {
             const dsl = JSON.parse(this.templates[this.template]);
             for (const key in this.params) {
@@ -146,11 +188,12 @@ export default {
     line-height: 36px;
     font-size: 16px;
     color: #C0CCDA;
-    padding: 8px 0;
-    line-height: 22px;
+    /*padding: 8px 0;*/
+    line-height: 40px;
 }
 .response-box .hd .control {
     float: right;
+    padding-top: 9px;
 }
 .response-box .hd .control > * {
     margin-left: 10px;
@@ -161,5 +204,37 @@ export default {
 }
 .response-box .el-select {
     width: 80px;
+}
+.response-box .res {
+    display: inline-block;
+}
+.response-box .res > em {
+    /*margin-left: 18px;*/
+}
+.response-box .res .el-tabs {
+    display: inline-block;
+    vertical-align: top;
+}
+.response-box .res .el-tabs .el-tabs__header {
+    margin: 0;
+    border: none;
+}
+.response-box .el-tabs__item {
+    line-height: 40px;
+    height: 40px;
+}
+.response-box .res > span {
+    padding: 0 16px;
+    box-sizing: border-box;
+    display: inline-block;
+    list-style: none;
+    font-size: 14px;
+    position: relative;
+    vertical-align: top;
+    cursor: pointer;
+}
+.response-box .res > span.selected {
+    color: #20a0ff;
+    border-bottom: 3px solid #20a0ff;
 }
 </style>

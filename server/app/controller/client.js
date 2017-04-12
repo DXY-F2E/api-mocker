@@ -5,7 +5,10 @@ const sleep = (ms) => {
 }
 module.exports = app => {
     class ClientController extends app.Controller {
-        // get/:id
+        * findApi(method) {
+            const url = this.ctx.request.url.split('?')[0]
+            return yield app.model.api.findOne({url: url, "options.method": method}).exec()
+        }
         * handleRequest(document) {
             if (!document) {
                 return
@@ -16,24 +19,24 @@ module.exports = app => {
             this.validateParams(document, params)
             this.ctx.body = renderer(params)(document.dsl || {})
         }
+        // get/:id
         * show () {
-            const { id }= this.ctx.params
-            const document = yield app.model.api.findOne({url: `/client/${id}`, "options.method": /get/i}).exec()
+            const document = yield this.findApi('get')
             yield this.handleRequest(document)
         }
         // post /
         * create () {
-            const document = yield app.model.api.findOne({url: this.ctx.request.url, "options.method": /post/i}).exec()
+            const document = yield this.findApi('post')
             yield this.handleRequest(document)
         }
         //put
         * put () {
-            const document = yield app.model.api.findOne({url: this.ctx.request.url, "options.method": /put/i}).exec()
+            const document = yield this.findApi('put')
             yield this.handleRequest(document)
         }
         // delete
         * delete () {
-            const document = yield app.model.api.findOne({url: this.ctx.request.url, "options.method": /delete/i}).exec()
+            const document = yield this.findApi('delete')
             yield this.handleRequest(document)
         }
         validateParams(document, data) {

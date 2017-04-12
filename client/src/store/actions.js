@@ -87,10 +87,10 @@ const actions = {
         config.params = state.reqParams.query;
         config.data = state.reqParams.body;
         return axios(config).then(res => {
-            commit('UPDATE_RESPONSE', res.data);
+            commit('UPDATE_RESPONSE', res);
         }, err => {
-            // window.console.log(err.response);
-            commit('UPDATE_RESPONSE', err.response.data);
+            window.console.log(err.response);
+            commit('UPDATE_RESPONSE', err.response);
         });
     }
 };

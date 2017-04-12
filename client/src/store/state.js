@@ -15,7 +15,7 @@ const state = {
         body: {},
         path: {}
     },
-    response: '',
+    response: null,
     serverRoot: domain,
     isDslRight: true
 };
