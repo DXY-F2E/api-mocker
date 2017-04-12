@@ -1,19 +1,32 @@
 <template>
     <el-input
-        placeholder="请输入api地址、名称、方法"
+        class="search"
+        :placeholder="placeholder"
         icon="search"
+        :size="size"
+        @change="handleQuery"
         v-model="query">
     </el-input>
 </template>
 <script>
 export default {
+    props: {
+        placeholder: {
+            type: String,
+            default: '请输入条件'
+        },
+        size: {
+            type: String
+        }
+    },
     data() {
         return {
             query: null
         };
     },
-    watch: {
-        query(val) {
+    methods: {
+        handleQuery(val) {
+            window.console.log(val);
             this.$emit('query', val);
         }
     }
