@@ -8,24 +8,42 @@ module.exports = app =>{
                                        .find({})
                                        .sort({modifiedTime: -1, createTime: -1})
                                        .exec()
-            
+
+            this.ctx.body = { resources }
+            this.ctx.status = 200
+        }
+        * get () {
+            let { limit = 20, page = 1, q = '.*'} = this.ctx.query
+            page = Number(page)
+            limit = Number(limit)
+            const reg = new RegExp(`.*${q}.*`, 'i')
+            const cond = {
+                isDeleted: false,
+                name: reg
+            }
+            const resources = yield app.model.group
+                                       .find(cond)
+                                       .sort({modifiedTime: -1, createTime: -1})
+                                       .skip((page-1) * limit)
+                                       .limit(limit)
+                                       .exec()
             this.ctx.body = { resources }
             this.ctx.status = 200
         }
         * create () {
             const { body } = this.ctx.request
-            
+
             assert(body.name, 403 , 'required group name')
-            
+
             const resources = yield new app.model.group(R.merge(body, {
                 createTime: Date.now()
             }) ).save()
-            
+
             this.ctx.body = { resources }
         }
         * delete () {
             const { id } = this.ctx.params
-            
+
             yield app.model.group.remove({_id: id}).exec()
             this.ctx.status = 204
         }
