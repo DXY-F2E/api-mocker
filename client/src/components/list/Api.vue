@@ -108,7 +108,8 @@ export default {
     outline: none;
     cursor: pointer;
     background-color: transparent;
-    line-height: 2;
+    line-height: 1;
+    line-height: 20px;
     height: 20px;
     max-width: 130px;
     overflow: hidden;
