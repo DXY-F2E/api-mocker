@@ -34,7 +34,7 @@ export default {
     },
     data() {
         return {
-            requestActive: (this.method === 'get') ? 'query' : 'body'
+            requestActive: (this.method === 'get' || this.method === 'delete') ? 'query' : 'body'
         };
     }
 };
