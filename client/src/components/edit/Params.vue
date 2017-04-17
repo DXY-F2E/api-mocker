@@ -1,17 +1,17 @@
 <template>
     <div class="params-box">
-        <el-row type="flex" class="row-bg fill" v-for="(p, idx) in params" key="idx">
+        <el-row type="flex" class="row-bg fill" v-for="(p, idx) in reqParams" key="idx">
             <template v-if="p.key">
                 <el-col class="name" :span="5">
                     <label>{{p.key}}<code>[{{p.type}}]</code>:</label>
                 </el-col>
                 <el-col class="value">
-                    <input type="number" class="el-input__inner"
+                    <!-- <input type="number" class="el-input__inner"
                                          :placeholder="getPlaceholder(p)"
                                          v-model="reqParams[p.key]"
                                          v-if="p.type === 'Number'"
-                                         @input="updateNumberValue(p.key)" />
-                    <el-input :placeholder="getPlaceholder(p)" v-model="reqParams[p.key]" @change="updateReqParams" v-else></el-input>
+                                         @input="updateNumberValue(p.value)" /> -->
+                    <el-input :placeholder="getPlaceholder(p)" v-model="p.value" @change="updateReqParams"></el-input>
                 </el-col>
             </template>
         </el-row>
@@ -47,7 +47,6 @@ export default {
     data() {
         return {
             tpyeList: this.getTypeList(),
-            reqParams: {},
             params: this.getInitParams()
         };
     },
@@ -57,6 +56,11 @@ export default {
         },
         method() {
             return this.$store.state.api.options.method;
+        },
+        reqParams: {
+            get() {
+                return this.params;
+            }
         }
     },
     watch: {

@@ -82,10 +82,23 @@ const actions = {
         // const method = api.options.method;
         const config = {
             method: api.options.method,
-            url: `${domain}${api.url}`
+            url: `${domain}${api.url}`,
+            params: {},
+            data: {}
         };
-        config.params = state.reqParams.query;
-        config.data = state.reqParams.body;
+        state.reqParams.query.forEach(v => {
+            config.params[v.key] = v.value;
+        });
+        state.reqParams.body.forEach(v => {
+            if (v.type !== 'string') {
+                try {
+                    v.value = JSON.parse(v.value);
+                } catch (e) {
+                    window.console.log(e);
+                }
+            }
+            config.data[v.key] = v.value;
+        });
         return axios(config).then(res => {
             commit('UPDATE_RESPONSE', res);
         }, err => {
