@@ -1,6 +1,6 @@
 // npm run dev DO NOT read this file
 require('egg').startCluster({
-    https: true,
+    https: false
     key: '../domain.key',
     cert: '../domain.cert',
     baseDir: __dirname,
