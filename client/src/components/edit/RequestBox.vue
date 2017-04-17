@@ -25,16 +25,25 @@ export default {
         ReqBody
     },
     props: ['mode', 'params', 'method'],
+    methods: {
+        getReqActive() {
+            if (this.method === 'get' || this.method === 'delete') {
+                return 'query';
+            } else {
+                return 'body';
+            }
+        }
+    },
     watch: {
         mode(val) {
             if (val === 'test' && this.requestActive === 'advanced') {
-                this.requestActive = (this.method === 'get') ? 'query' : 'body';
+                this.requestActive = this.getReqActive();
             }
         }
     },
     data() {
         return {
-            requestActive: (this.method === 'get' || this.method === 'delete') ? 'query' : 'body'
+            requestActive: this.getReqActive()
         };
     }
 };
