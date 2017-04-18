@@ -11,9 +11,9 @@ const state = {
     api: apiInit(),
     mode: 'edit',
     reqParams: {
-        query: {},
-        body: {},
-        path: {}
+        query: [],
+        body: [],
+        path: []
     },
     response: null,
     serverRoot: domain,
