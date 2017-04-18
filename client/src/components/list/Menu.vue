@@ -4,7 +4,7 @@
             <el-menu-item-group :class="{showSearch: isShowSearch}">
                 <template slot="title">
                     <span @click="handleClickGroup">组列表</span>
-                    <search @query="onQuery" v-model="query" placeholder="请输入分组名称" size="small"></search>
+                    <search @query="onQuery" v-model="query" placeholder="请输入分组名称" size="small" id="search-group"></search>
                     <i class="el-icon-plus title-icon" @click="handleClickShowDialog"></i>
                     <i class="el-icon-search title-icon" @click="showSearch()"></i>
                 </template>
@@ -44,6 +44,9 @@ export default {
     methods: {
         showSearch() {
             this.isShowSearch = true;
+            window.setTimeout(() => {
+                document.querySelector('#search-group input').focus();
+            });
         },
         onQuery(val) {
             this.query = val;
