@@ -8,7 +8,7 @@
                 <div class="group-select">
                     <el-row type="flex" >
                         <el-col :span="24">
-                            <el-select placeholder="请选择分组" v-model="group">
+                            <el-select placeholder="请选择分组" filterable v-model="group">
                                 <el-option v-for="group in groups"
                                            :key="group._id"
                                            :label="group.name"

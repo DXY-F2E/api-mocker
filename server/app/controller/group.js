@@ -27,7 +27,8 @@ module.exports = app =>{
                                        .skip((page-1) * limit)
                                        .limit(limit)
                                        .exec()
-            this.ctx.body = { resources }
+            const count = yield app.model.group.find(cond).count().exec()
+            this.ctx.body = { resources , pages: { limit, page, count}}
             this.ctx.status = 200
         }
         * create () {

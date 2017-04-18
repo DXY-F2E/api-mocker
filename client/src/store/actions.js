@@ -8,7 +8,17 @@ const actions = {
     getGroups({ commit }) {
         return axios.get(API.GROUPS).then(res => {
             commit('FETCH_GROUPS_SUCCESS', res.data.resources);
-            return res.data.resources;
+            return res;
+        });
+    },
+    getGroupList({ commit }, query) {
+        return axios.get(API.GROUPS, {
+            params: query
+        }).then(res => {
+            commit('FETCH_GROUPS_SUCCESS', res.data.resources);
+            return res;
+        }).catch(err => {
+            throw err;
         });
     },
     createGroup({commit}, payload) {

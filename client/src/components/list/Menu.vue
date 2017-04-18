@@ -4,11 +4,11 @@
             <el-menu-item-group :class="{showSearch: isShowSearch}">
                 <template slot="title">
                     <span @click="handleClickGroup">组列表</span>
-                    <search @query="onQuery" placeholder="请输入分组名称" size="small"></search>
+                    <search @query="onQuery" v-model="query" placeholder="请输入分组名称" size="small"></search>
                     <i class="el-icon-plus title-icon" @click="handleClickShowDialog"></i>
                     <i class="el-icon-search title-icon" @click="showSearch()"></i>
                 </template>
-                <el-menu-item v-for="group in groups" :index="group._id" @click="handleClickGroup(group)" :key="group._id">
+                <el-menu-item v-for="group in groupList" :index="group._id" @click="handleClickGroup(group)" :key="group._id">
                     <i class="el-icon-minus"></i>{{group.name}}
                 </el-menu-item>
             </el-menu-item-group>
@@ -21,17 +21,24 @@
 </template>
 <script>
 import createGroupDialog from '../../dialog/create-group';
-import { mapState } from 'vuex';
 import Search from './Search';
 export default {
     components: {
         Search,
         createGroupDialog
     },
+    computed: {
+        groupList() {
+            return this.$store.state.groups.filter(g => {
+                return g.name.toLowerCase().indexOf(this.query.toLowerCase()) >= 0;
+            });
+        }
+    },
     data() {
         return {
             showCreateDialog: false,
-            isShowSearch: false
+            isShowSearch: false,
+            query: ''
         };
     },
     methods: {
@@ -39,7 +46,7 @@ export default {
             this.isShowSearch = true;
         },
         onQuery(val) {
-            window.console.log(val);
+            this.query = val;
         },
         handleClickGroup(group) {
             if (group && group._id) {
@@ -67,8 +74,7 @@ export default {
         handleClickShowDialog() {
             this.showCreateDialog = true;
         }
-    },
-    computed: mapState(['groups'])
+    }
 };
 </script>
 <style>

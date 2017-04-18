@@ -5,7 +5,7 @@
         icon="search"
         :size="size"
         @change="handleQuery"
-        v-model="query">
+        v-model="inputValue">
     </el-input>
 </template>
 <script>
@@ -17,16 +17,18 @@ export default {
         },
         size: {
             type: String
+        },
+        value: {
+            type: String
         }
     },
     data() {
         return {
-            query: null
+            inputValue: this.value
         };
     },
     methods: {
         handleQuery(val) {
-            window.console.log(val);
             this.$emit('query', val);
         }
     }
