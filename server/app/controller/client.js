@@ -4,6 +4,7 @@ const sleep = (ms) => {
   return cb => setTimeout(cb, ms)
 }
 module.exports = app => {
+
     class ClientController extends app.Controller {
         * findApi(method) {
             const url = this.ctx.request.url.split('?')[0]
@@ -17,7 +18,7 @@ module.exports = app => {
             yield sleep(delay)
             const params = R.merge(this.ctx.request.body, this.ctx.request.query)
 
-            this.validateParams(document, this.rebuildParams(params))
+            this.validateParams(document, params)
             this.ctx.body = renderer(params)(document.dsl || {})
         }
         // get/:id
@@ -47,23 +48,24 @@ module.exports = app => {
                 if (method === 'get' && name !== 'query') continue
                 params[name].forEach(param => {
                     rule[param.key] = {
-                        type: param.type,
+                        type: param.type === 'number' ? 'checkNumber': param.type,
                         required: param.required
                     }
                 })
             }
             this.ctx.validate(rule, data)
         }
-        rebuildParams(data) {
-            for (var key in data) {
-                const value = data[key]
-                if (value && Number(value) == value) {
-                    data[key] = Number(value)
-                }
-            }
-            return data
-        }
     }
+
+    // 数字校验-允许提交字符串格式的数字
+    app.validator.addRule('checkNumber', (rule, value) => {
+        if (value && Number(value) == value) {
+            value = Number(value)
+        }
+        if (typeof value !== 'number') {
+          return 'should be a number';
+        }
+    });
 
     return ClientController
 }
