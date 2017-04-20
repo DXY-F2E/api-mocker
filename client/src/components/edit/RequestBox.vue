@@ -25,26 +25,14 @@ export default {
         ReqBody
     },
     props: ['mode', 'params', 'method'],
-    methods: {
-        getReqActive() {
+    computed: {
+        requestActive() {
             if (this.method === 'get' || this.method === 'delete') {
                 return 'query';
             } else {
                 return 'body';
             }
         }
-    },
-    watch: {
-        mode(val) {
-            if (val === 'test' && this.requestActive === 'advanced') {
-                this.requestActive = this.getReqActive();
-            }
-        }
-    },
-    data() {
-        return {
-            requestActive: this.getReqActive()
-        };
     }
 };
 </script>
