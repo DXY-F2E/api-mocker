@@ -16,7 +16,8 @@ module.exports = app => {
             const delay = document.options.delay || 0
             yield sleep(delay)
             const params = R.merge(this.ctx.request.body, this.ctx.request.query)
-            this.validateParams(document, params)
+
+            this.validateParams(document, this.rebuildParams(params))
             this.ctx.body = renderer(params)(document.dsl || {})
         }
         // get/:id
@@ -52,6 +53,15 @@ module.exports = app => {
                 })
             }
             this.ctx.validate(rule, data)
+        }
+        rebuildParams(data) {
+            for (var key in data) {
+                const value = data[key]
+                if (value && Number(value) == value) {
+                    data[key] = Number(value)
+                }
+            }
+            return data
         }
     }
 
