@@ -33,6 +33,7 @@ module.exports = app => {
             const count = yield app.model.api.find(condition).count().exec()
             this.ctx.body = { resources , pages: { limit, page, count}}
             this.ctx.status = 200
+            this.ctx.logger.info('getALl', this.ctx.query);
         }
         * modifyApi () {
             const { groupId, apiId } = this.ctx.params
@@ -50,6 +51,7 @@ module.exports = app => {
             yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
 
             this.ctx.body = { resources }
+            this.ctx.logger.info('modifyApi', body);
         }
         * getApi () {
             const { groupId, apiId } = this.ctx.params
@@ -62,6 +64,7 @@ module.exports = app => {
 
             this.ctx.body = { resources }
             this.ctx.status = 200
+            this.ctx.logger.info('getApi');
         }
         * createApi () {
             const { groupId } = this.ctx.params
@@ -82,6 +85,7 @@ module.exports = app => {
 
             this.ctx.body = { resources }
             this.ctx.status = 200
+            this.ctx.logger.info('createApi', body);
         }
         * delete () {
             const { groupId } = this.ctx.params
@@ -96,6 +100,7 @@ module.exports = app => {
             })
             yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
             this.ctx.status = 204
+            this.logger.info('deleteApi');
         }
     }
     return ApiController
