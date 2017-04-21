@@ -30,7 +30,7 @@
   "scripts": {
     "start": "pm2 start index.js",
     "dev": "egg-bin dev",
-    "test": "npm run lint -- --fix && npm run test-local",
+    "test": "npm run test-local",
     "fix": "npm run lint -- --fix",
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",
