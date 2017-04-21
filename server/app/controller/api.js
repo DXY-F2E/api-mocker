@@ -59,7 +59,7 @@ module.exports = app => {
             assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
 
             const resources = yield app.model.api
-                                       .findOne({group: groupId, _id:apiId, isDeleted: false})
+                                       .findOne({_id: apiId, isDeleted: false})
                                        .exec()
 
             this.ctx.logger.info('getApi')
@@ -89,7 +89,6 @@ module.exports = app => {
             this.ctx.status = 200
         }
         * delete () {
-            const { groupId } = this.ctx.params
             const { groupId, apiId } = this.ctx.params
 
             assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalie groupId')
