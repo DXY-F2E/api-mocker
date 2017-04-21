@@ -52,7 +52,7 @@ export default {
     data() {
         return {
             isShowDialog: false,
-            testMode: 'real'
+            testMode: 'mock'
         };
     },
     methods: {
