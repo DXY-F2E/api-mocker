@@ -87,7 +87,7 @@ const actions = {
             commit('UPDATE_API', res.data.resources);
         });
     },
-    testApi({ state, commit }) {
+    testApi({ state, commit }, testMode) {
         const api = state.api;
         // const method = api.options.method;
         const config = {
@@ -109,11 +109,19 @@ const actions = {
             }
             config.data[v.key] = v.value;
         });
+        if (testMode === 'real') {
+            config.params.testMode = true;
+        }
         return axios(config).then(res => {
             commit('UPDATE_RESPONSE', res);
         }, err => {
-            window.console.log(err.response);
-            commit('UPDATE_RESPONSE', err.response);
+            window.console.log('error');
+            window.console.log(err);
+            if (err.response) {
+                commit('UPDATE_RESPONSE', err.response);
+            }
+        }).catch(err => {
+            window.console.log(err);
         });
     }
 };

@@ -11,7 +11,7 @@
                                          v-model="reqParams[p.key]"
                                          v-if="p.type === 'Number'"
                                          @input="updateNumberValue(p.value)" /> -->
-                    <el-input :placeholder="getPlaceholder(p)" v-model="p.value" @change="updateReqParams"></el-input>
+                    <el-input :placeholder="getPlaceholder(p)" v-model="p.value" @change="updateReqParams(p)"></el-input>
                 </el-col>
             </template>
         </el-row>
@@ -102,7 +102,10 @@ export default {
             this.reqParams[key] = window.parseInt(this.reqParams[key]);
             this.updateReqParams();
         },
-        updateReqParams() {
+        updateReqParams(param) {
+            if (!param.value) {
+                delete param.value;
+            }
             this.$store.commit('UPDATE_REQ_PARAMS', {
                 type: this.name,
                 params: this.reqParams
