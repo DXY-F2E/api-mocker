@@ -17,6 +17,7 @@ module.exports = app => {
                     {name: reg},
                     {url: reg},
                     {desc: reg},
+                    {prodUrl: reg},
                     {'options.method': reg},
                 ]
             }
