@@ -1,10 +1,10 @@
 <template>
     <div class="api-info el-col">
         <el-form>
-            <el-form-item label="接口名称">
+            <el-form-item label="接口名称" class="required">
                 <el-input auto-complete="off" v-model="name"></el-input>
             </el-form-item>
-            <el-form-item label="接口分组">
+            <el-form-item label="接口分组" class="required">
                 <div class="group-select">
                     <el-row type="flex" >
                         <el-col :span="24">
@@ -19,8 +19,12 @@
                     </el-row>
                 </div>
             </el-form-item>
-            <!-- <el-form-item label="接口描述">
-                <el-input type="textarea" v-model="desc" placeholder="选填" :rows="4"></el-input>
+            <el-form-item label="线上地址">
+                <el-input auto-complete="off" v-model="prodUrl" placeholder="请填写绝对路径"></el-input>
+            </el-form-item>
+
+            <!-- <el-form-item >
+                <el-button id="saveAct" type="info">Save</el-button>
             </el-form-item> -->
         </el-form>
         <p class="issue">
@@ -42,6 +46,14 @@ export default {
             },
             set(value) {
                 this.$store.commit('UPDATE_API_PROPS', ['name', value]);
+            }
+        },
+        prodUrl: {
+            get() {
+                return this.$store.state.api.prodUrl;
+            },
+            set(value) {
+                this.$store.commit('UPDATE_API_PROPS', ['prodUrl', value]);
             }
         },
         group: {
@@ -90,5 +102,10 @@ export default {
     color: #99A9BF;
     font-size: 12px;
     margin: 0 35px;
+}
+.el-form-item.required .el-form-item__label:after {
+    content: '*';
+    color: #ff4949;
+    margin-left: 2px;
 }
 </style>

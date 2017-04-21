@@ -10,14 +10,27 @@
                         <el-option label="DELETE" value="delete"></el-option>
                     </el-select>
                     <!-- <el-button slot="append">Copy</el-button> -->
-                    <copy-button slot="append" :copy-data="url" :disabled="creating">Copy</copy-button>
+                    <copy-button slot="append" :copy-data="url" :disabled="creating">复制</copy-button>
                 </el-input>
             </el-col>
             <el-col class="control">
-                <el-button id="saveAct" type="info" @click="validate()" v-if="mode === 'edit'">Save</el-button>
-                <el-button id="editAct" type="success" @click="send()" v-else>Send</el-button>
+                <el-button id="saveAct" type="info" @click="validate()" v-if="mode === 'edit'">保存</el-button>
+                <template v-if="mode === 'test'">
+                    <el-dropdown split-button
+                        type="success"
+                        id="editAct"
+                        @click="send()"
+                        @command="updateTestMode"
+                        v-if="prodUrl">
+                        测试
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="real" v-if="testMode === 'mock'">测试线上</el-dropdown-item>
+                            <el-dropdown-item command="mock" v-else>测试Mock</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                    <el-button id="editAct" type="success" @click="send()" v-else>测试</el-button>
+                </template>
             </el-col>
-            <!-- 2.0来实现 -->
             <el-col class="mode" v-if="api._id">
                 <el-select v-model="mode" placeholder="请选择" >
                     <el-option label="编辑模式" value="edit"></el-option>
@@ -38,7 +51,8 @@ export default {
     },
     data() {
         return {
-            isShowDialog: false
+            isShowDialog: false,
+            testMode: 'real'
         };
     },
     methods: {
@@ -46,6 +60,9 @@ export default {
             'saveApi',
             'testApi'
         ]),
+        updateTestMode(val) {
+            this.testMode = val;
+        },
         save() {
             this.saveApi().then(() => {
                 if (this.$route.name === 'Create' && this.api._id) {
@@ -75,7 +92,7 @@ export default {
             }
         },
         send() {
-            this.testApi();
+            this.testApi(this.testMode);
         }
     },
     computed: {
@@ -100,7 +117,16 @@ export default {
             return this.$store.state.api._id === undefined;
         },
         url() {
-            return this.api.url ? this.$store.state.serverRoot + this.api.url : '';
+            if (this.mode === 'edit') {
+                return this.api.url ? this.$store.state.serverRoot + this.api.url : '';
+            } else if (this.testMode === 'mock') {
+                return this.$store.state.serverRoot + this.api.url;
+            } else {
+                return this.api.prodUrl;
+            }
+        },
+        prodUrl() {
+            return this.$store.state.api.prodUrl;
         },
         method: {
             get() {
@@ -122,7 +148,7 @@ export default {
     border-color: #bfcbd9;
 }
 .url-box .control{
-    width: 108px;
+    width: 134px;
     text-align: right;
 }
 .url-box .el-input-group__append {
@@ -152,7 +178,7 @@ export default {
 }
 #editAct,
 #saveAct {
-    width: 70px;
+    width: 91px;
 }
 .url-box .el-col.mode{
     width: 150px;

@@ -9,7 +9,7 @@ const state = {
     apiListLoading: false,
     apiListSuccess: true,
     api: apiInit(),
-    mode: 'edit',
+    mode: 'test',
     reqParams: {
         query: [],
         body: [],
