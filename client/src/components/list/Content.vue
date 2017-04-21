@@ -2,7 +2,7 @@
     <el-col :span="24">
         <div class="content-wrap">
             <div id="content">
-                <search @query="onQuery"></search>
+                <search @query="onQuery" placeholder="请输入api地址、名称、方法"></search>
                 <api-list></api-list>
                 <page-nav :query="query" :total="count" :on-page-nav="onPageNav"></page-nav>
             </div>
