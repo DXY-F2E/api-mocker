@@ -57,15 +57,5 @@ module.exports = app => {
         }
     }
 
-    // 数字校验-允许提交字符串格式的数字
-    app.validator.addRule('checkNumber', (rule, value) => {
-        if (value && Number(value) == value) {
-            value = Number(value)
-        }
-        if (typeof value !== 'number') {
-          return 'should be a number';
-        }
-    });
-
     return ClientController
 }

@@ -17,7 +17,7 @@ module.exports = {
   // add your custom rules here
   'rules': {
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
-      "arrow-body-style": ["error", "as-needed"]
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'arrow-body-style': ['error', 'as-needed']
   }
 }
