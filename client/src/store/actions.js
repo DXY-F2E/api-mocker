@@ -87,15 +87,26 @@ const actions = {
             commit('UPDATE_API', res.data.resources);
         });
     },
-    testApi({ state, commit }, testMode) {
+    testApi({ state, commit }, url) {
         const api = state.api;
         // const method = api.options.method;
-        const config = {
+        let config = {
             method: api.options.method,
             url: `${domain}${api.url}`,
             params: {},
             data: {}
         };
+        if (url !== config.url) {
+            config = {
+                method: 'post',
+                url: `${domain}/client/real`,
+                params: {},
+                data: {
+                    realUrl: url,
+                    method: api.options.method
+                }
+            };
+        }
         state.reqParams.query.forEach(v => {
             config.params[v.key] = v.value;
         });
@@ -109,9 +120,6 @@ const actions = {
             }
             config.data[v.key] = v.value;
         });
-        if (testMode === 'real') {
-            config.params.testMode = true;
-        }
         return axios(config).then(res => {
             commit('UPDATE_RESPONSE', res);
         }, err => {

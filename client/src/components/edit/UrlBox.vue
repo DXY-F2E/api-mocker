@@ -92,7 +92,7 @@ export default {
             }
         },
         send() {
-            this.testApi(this.testMode);
+            this.testApi(this.url);
         }
     },
     computed: {

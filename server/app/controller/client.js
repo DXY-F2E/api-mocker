@@ -10,6 +10,28 @@ module.exports = app => {
             const url = this.ctx.request.url.split('?')[0]
             return yield app.model.api.findOne({url: url, "options.method": method}).exec()
         }
+        * real() {
+            let {realUrl, method} = this.ctx.request.body
+            if (!realUrl || !method) {
+                this.ctx.body = {
+                    success: false,
+                    message: '真实地址为空'
+                }
+            }
+            realUrl = this.ctx.request.url.replace('/client/real', realUrl)
+            delete this.ctx.request.body.realUrl
+            delete this.ctx.request.body.method
+            const result = yield this.ctx.curl(realUrl, {
+                method: method,
+                // body数据，暂时只支持json格式，未来可以从header中判断
+                contentType: 'json',
+                data: this.ctx.request.body,
+                dataType: 'json'
+            });
+            this.ctx.status = result.status;
+            this.ctx.set(result.headers);
+            this.ctx.body = result.data
+        }
         * handleRequest(document) {
             if (!document) {
                 return

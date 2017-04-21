@@ -15,4 +15,6 @@ module.exports = app => {
     app.post('/client/:id', 'client.create')
     app.put('/client/:id', 'client.put')
     app.delete('/client/:id', 'client.delete')
+
+    app.post('/client/real', 'client.real')
 }
