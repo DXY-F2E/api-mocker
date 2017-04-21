@@ -14,6 +14,15 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(Vuex);
 Vue.prototype.$http = axios;
+
+if (!window.localStorage.getItem('_sessionId')) {
+    const s = 'ABCDEFGHIJKLMN';
+    const a2f = s => f => i => s[f(i)];
+    const randomChar = length => () => Math.floor(Math.random() * 1000) % length;
+    const randomString = Array.prototype.map.call(s, (a2f(s)(randomChar(s.length)))).join('');
+    window.localStorage.setItem('_sessionId', randomString);
+}
+
 /* eslint-disable no-new */
 new Vue({
     el: '#app',
