@@ -3,9 +3,7 @@ import config from '../../config';
 
 const domain = process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax;
 
-export default R.map((url) => {
-    return `${domain}${url}`;
-})({
+export default R.map((url) => `${domain}${url}`)({
     GROUPS: '/server/group',
     GROUP: '/server/group/:groupId',
     APIS: '/server/api',

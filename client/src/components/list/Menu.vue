@@ -29,9 +29,7 @@ export default {
     },
     computed: {
         groupList() {
-            return this.$store.state.groups.filter(g => {
-                return g.name.toLowerCase().indexOf(this.query.toLowerCase()) >= 0;
-            });
+            return this.$store.state.groups.filter(g => g.name.toLowerCase().indexOf(this.query.toLowerCase()) >= 0);
         }
     },
     data() {
