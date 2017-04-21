@@ -22,6 +22,7 @@ module.exports = mongoose => {
             type: String,
             unique: true
         },
+        prodUrl: String,
         dsl: Object,
         options: {
             method: String,
