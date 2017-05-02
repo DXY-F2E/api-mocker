@@ -39,14 +39,12 @@ export default {
     },
     methods: {
         changeParamType(val) {
-            if (val === 'object') {
-                window.console.log('changeParamType');
-                window.console.log(this.param);
-                this.param.params = [{
+            if (val === 'object' && !this.param.params) {
+                this.$set(this.param, 'params', [{
                     key: null,
                     type: 'string',
                     required: true
-                }];
+                }]);
             }
             this.update();
         },

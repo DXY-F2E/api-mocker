@@ -9,9 +9,12 @@
                        @deleteParam="deleteParam"></api-param>
             <req-param v-if="reqParams[idx].key"
                        :param="reqParams[idx]"
-                       @change="updateReqParams"></req-param>
+                       @change="updateReqParam"></req-param>
             <template v-if="param.type === 'object'">
-                <params :data="param.params" @updateParams="updateParams" :name="name"></params>
+                <params :data="param.params"
+                        :name="name"
+                        @updateParams="updateParam"
+                        @updateReqParams="updateParam"></params>
             </template>
         </div>
     </div>
@@ -48,36 +51,16 @@ export default {
     },
     methods: {
         update() {
-            // window.console.log(this.params);
-            // window.console.log(this.data);
             this.$emit('updateParams', this.params, this.data);
         },
-        updateParams(params, data) {
-            window.console.log('updateParams');
-            window.console.log(params);
-            window.console.log(data);
-            // data = params;
+        updateParam() {
+            // 传递给子组件的prop是个数组，会影响父组件数据，不需再设置
             this.update();
         },
-        updateParam(param, idx) {
-            // window.console.log('子参数更新');
-            // window.console.log(idx);
-            // window.console.log(param);
-            // window.console.log(this.params);
-            this.params[idx] = param;
-            this.update();
-        },
-        updateReqParams(param) {
-            if (!param.value) {
-                delete param.value;
-            }
-            this.$store.commit('UPDATE_REQ_PARAMS', {
-                type: this.name,
-                params: this.reqParams
-            });
+        updateReqParam() {
+            this.$emit('updateReqParams', this.reqParams);
         },
         addParam(idx) {
-            // window.console.log(this.params);
             const param = {
                 key: null,
                 type: 'string',

@@ -5,7 +5,7 @@
                 <label>{{param.key}}<code>[{{param.type}}]</code>:</label>
             </el-col>
             <el-col class="value">
-                <el-input :placeholder="getPlaceholder(param)" v-model="param.value" @change="updateReqParams(param)"></el-input>
+                <el-input :placeholder="getPlaceholder(param)" v-model="param.value" @change="updateReqParam"></el-input>
             </el-col>
         </el-row>
     </div>
@@ -18,7 +18,7 @@ export default {
         getPlaceholder(p) {
             return p.required ? '必填' : '选填';
         },
-        updateReqParams() {
+        updateReqParam() {
             this.$emit('change', this.param);
         }
     }

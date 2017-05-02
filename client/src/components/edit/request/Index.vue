@@ -1,11 +1,14 @@
 <template>
     <div class="request-box">
         <el-tabs v-model="requestActive">
-            <el-tab-pane label="Body" name="body" :disabled="method === 'get'">
-                <params :data="localParams.body" name="body" v-on:updateParams="(data) => changeParams(data, 'body')"></params>
-            </el-tab-pane>
-            <el-tab-pane label="Query" name="query">
-                <params :data="localParams.query" name="query"></params>
+            <el-tab-pane v-for="(type, key) in types"
+                         :key="type.name"
+                         :label="type.label"
+                         :name="type.name"
+                         :disabled="method === 'get' && type.name === 'query'">
+                <params :data="localParams[type.name]" :name="type.name"
+                        @updateParams="(data) => changeParams(data, type.name)"
+                        @updateReqParams="(data) => changeReqParams(data, type.name)"></params>
             </el-tab-pane>
             <el-tab-pane label="Advanced" name="advanced" v-if="mode === 'edit'">
                 <advanced></advanced>
@@ -27,15 +30,28 @@ export default {
     },
     methods: {
         changeParams(data, name) {
-            window.console.log(data);
             const key = `options.params.${name}`;
             this.$store.commit('UPDATE_API_PROPS',
                                [key, clone(data)]);
+        },
+        changeReqParams(data, name) {
+            window.console.log(data);
+            this.$store.commit('UPDATE_REQ_PARAMS', {
+                type: name,
+                params: data
+            });
         }
     },
     props: ['mode', 'params', 'method'],
     data() {
         return {
+            types: [{
+                label: 'Body',
+                name: 'body'
+            }, {
+                label: 'Query',
+                name: 'query'
+            }],
             localParams: clone(this.params)
         };
     },
