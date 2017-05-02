@@ -10,6 +10,7 @@
     "egg-redis": "1.0.1",
     "egg-validate": "1.0.0",
     "http-assert": "1.2.0",
+    "mockjs": "1.0.1-beta3",
     "ramda": "0.23.0"
   },
   "devDependencies": {

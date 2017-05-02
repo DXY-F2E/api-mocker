@@ -1,6 +1,9 @@
 function isEmpty(val) {
     return !val || val.trim() === '';
 }
+function clone(val) {
+    return JSON.parse(JSON.stringify(val));
+}
 
 function validateApi(state) {
     const regex = new RegExp(/^((ht|f)tps?):\/\/[\w-]+(\.[\w-]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&~+#])?$/);
@@ -34,5 +37,6 @@ function validateApi(state) {
 
 export {
     validateApi,
-    isEmpty
+    isEmpty,
+    clone
 };
