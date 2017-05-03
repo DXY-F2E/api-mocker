@@ -59,18 +59,18 @@ export default {
         },
         explandParam() {
             this.getParamsBox();
-            window.console.log(this.paramsBox.scrollHeight);
             if (this.expanded) {
                 this.paramsBox.style.height = `${this.paramsBox.scrollHeight}px`;
+                window.setTimeout(() => {
+                    this.paramsBox.style.height = '0px';
+                });
             } else {
                 this.paramsBox.style.height = `${this.paramsBox.scrollHeight}px`;
                 window.setTimeout(() => {
                     this.paramsBox.style.height = 'auto';
                 }, 300);
             }
-            window.setTimeout(() => {
-                this.expanded = !this.expanded;
-            });
+            this.expanded = !this.expanded;
         }
     }
 };
@@ -84,7 +84,7 @@ export default {
 }
 .param-wrap.fold .params-box {
     overflow: hidden;
-    height: 0px !important;
+    height: 0px;
 }
 .param-wrap .expand {
     cursor: pointer;
