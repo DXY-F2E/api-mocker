@@ -6,7 +6,7 @@
                          :label="type.label"
                          :name="type.name"
                          :disabled="method === 'get' && type.name === 'query'">
-                <params :data="localParams[type.name]" :name="type.name"
+                <params :params="localParams[type.name]" :name="type.name"
                         @updateParams="(data) => changeParams(data, type.name)"
                         @updateReqParams="(data) => changeReqParams(data, type.name)"></params>
             </el-tab-pane>
@@ -69,5 +69,6 @@ export default {
 <style>
 .request-box .el-tabs__content {
     overflow: visible;
+    padding-left: 10px;
 }
 </style>

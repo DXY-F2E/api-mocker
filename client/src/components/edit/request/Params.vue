@@ -1,48 +1,42 @@
 <template>
     <div class="params-box">
-        <div v-for="(param, idx) in params" class="param-wrap">
-            <api-param :params="params"
-                       :param="param"
-                       :type="name"
-                       @change="updateParam"
-                       @addParam="addParam"
-                       @deleteParam="deleteParam"></api-param>
-            <req-param v-if="reqParams[idx].key"
-                       :param="reqParams[idx]"
-                       @change="updateReqParam"></req-param>
-            <template v-if="param.type === 'object'">
-                <params :data="param.params"
+        <div v-for="(param, idx) in params" class="param-box" :key="param">
+            <a-param :params="params"
+                     :param="param"
+                     :reqParam="reqParams[idx]"
+                     @addParam="() => addParam(idx)"
+                     @deleteParam="() => deleteParam(idx)"
+                     @updateParam="updateParam"
+                     @updateReqParam="updateReqParam">
+                <params v-if="param.type === 'object' && param.params"
+                        slot="params"
+                        :params="param.params"
                         :name="name"
                         @updateParams="updateParam"
-                        @updateReqParams="updateParam"></params>
-            </template>
+                        @updateReqParams="updateReqParam"></params>
+            </a-param>
         </div>
     </div>
 </template>
 
 <script>
-import ApiParam from './ApiParam';
-import ReqParam from './ReqParam';
+import AParam from './Param';
 export default {
     name: 'params',
     components: {
-        ApiParam,
-        ReqParam
+        AParam
     },
-    props: ['data', 'name', 'index'],
+    beforeMount() {
+        if (!this.params || this.params.length === 0) {
+            this.params.push({
+                key: null,
+                type: 'string',
+                required: true
+            });
+        }
+    },
+    props: ['params', 'name'],
     computed: {
-        params() {
-            // if (this.data && this.data.length > 0) {
-            //     return this.data;
-            // } else {
-            //     return [{
-            //         key: null,
-            //         type: 'string',
-            //         required: true
-            //     }];
-            // }
-            return this.data;
-        },
         reqParams: {
             get() {
                 return this.params;
@@ -54,7 +48,6 @@ export default {
             this.$emit('updateParams', this.params, this.data);
         },
         updateParam() {
-            // 传递给子组件的prop是个数组，会影响父组件数据，不需再设置
             this.update();
         },
         updateReqParam() {
@@ -84,9 +77,24 @@ export default {
     max-width: 750px;
     position: relative;
 }
-.params-box .params-box {
-    padding-left: 25px;
+/*.params-box .params-box:before {
+    content: '';
+    position: absolute;
+    width: 1px;
+    left: 12px;
+    top: 4px;
+    bottom: 16px;
+    background-color: #d1dbe5;
 }
+.params-box .params-box .param:before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 1px;
+    background-color: #d1dbe5;
+    left: -12px;
+    top: 19px;
+}*/
 .params-box .param {
     position: relative;
     z-index: 0;
@@ -99,12 +107,6 @@ export default {
 .params-box .param:hover {
     box-shadow: 0px 0px 5px 2px #eee;
     z-index: 1;
-}
-.params-box .params-box .param:before {
-    content: '↳';
-    position: absolute;
-    left: -15px;
-    top: 13px;
 }
 .params-box .el-select .el-input {
     width: 100px;

@@ -8,7 +8,7 @@
                 <el-select v-model="param.type" placeholder="类型" @change="changeParamType">
                     <el-option
                         v-for="(type, idx) in tpyeList"
-                        key="idx"
+                        :key="type"
                         :label="type"
                         :value="type.toLowerCase()">
                     </el-option>
@@ -34,31 +34,28 @@ export default {
             tpyeList: this.getTypeList()
         };
     },
-    mounted() {
-        this.index = this.params.findIndex(p => p === this.param);
-    },
     methods: {
         changeParamType(val) {
-            if (val === 'object' && !this.param.params) {
-                this.$set(this.param, 'params', [{
-                    key: null,
-                    type: 'string',
-                    required: true
-                }]);
+            if (val === 'object') {
+                if (!this.param.params) {
+                    this.$set(this.param, 'params', [{
+                        key: null,
+                        type: 'string',
+                        required: true
+                    }]);
+                }
+                this.$emit('buildObject', this.param);
             }
             this.update();
         },
         update() {
-            this.$emit('change', this.param, this.index);
-        },
-        getIndex() {
-            return this.params.findIndex(p => p === this.param);
+            this.$emit('change', this.param);
         },
         addParam() {
-            this.$emit('addParam', this.index);
+            this.$emit('addParam');
         },
         deleteParam() {
-            this.$emit('deleteParam', this.index);
+            this.$emit('deleteParam');
         },
         getTypeList() {
             if (this.type === 'query') {
