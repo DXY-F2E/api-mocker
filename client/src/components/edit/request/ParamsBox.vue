@@ -21,16 +21,14 @@ export default {
                                [key, clone(data)]);
         },
         changeReqParams(data) {
-            window.console.log('UPDATE_REQ_PARAMS');
-            window.console.log(data);
             this.$store.commit('UPDATE_REQ_PARAMS', {
                 type: this.name,
                 params: clone(data)
             });
+            this.reqParams = clone(data);
         },
         getReqParams(param) {
             this.buildReqParams(param);
-            window.console.log(param);
             return param;
         },
         buildReqParams(param) {
@@ -42,15 +40,12 @@ export default {
     },
     computed: {
         reqParams: {
-            // get() {
-            //     const reqParams = {
-            //         type: 'object',
-            //         params: clone(this.params)
-            //     };
-            //     return this.getReqParams(reqParams);
-            // }
             get() {
-                return this.params;
+                const reqParams = {
+                    type: 'object',
+                    params: clone(this.params)
+                };
+                return this.getReqParams(reqParams);
             }
         }
     }
@@ -61,11 +56,11 @@ export default {
     max-width: 750px;
     position: relative;
 }
-/*.params-box .params-box:before {
+.params-box .params-box:before {
     content: '';
     position: absolute;
     width: 1px;
-    left: 12px;
+    left: 0px;
     top: 4px;
     bottom: 16px;
     background-color: #d1dbe5;
@@ -73,12 +68,12 @@ export default {
 .params-box .params-box .param:before {
     content: '';
     position: absolute;
-    width: 20px;
+    width: 8px;
     height: 1px;
     background-color: #d1dbe5;
-    left: -12px;
+    left: -25px;
     top: 19px;
-}*/
+}
 .params-box .param {
     position: relative;
     z-index: 0;

@@ -6,7 +6,6 @@
             </el-col>
             <el-col class="value">
                 <el-input :placeholder="getPlaceholder(param)"
-                          v-model="param.value"
                           readonly
                           @click.native="expand"
                           v-if="param.type === 'object'"></el-input>

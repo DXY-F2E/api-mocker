@@ -12,7 +12,7 @@
                    @buildObject="buildObject"
                    @addParam="addParam"
                    @deleteParam="deleteParam"></api-param>
-        <req-param v-if="reqParam.key"
+        <req-param v-if="reqParam && reqParam.key"
                    :param="reqParam"
                    @expand="expandParam"
                    @change="updateReqParam"></req-param>
@@ -50,8 +50,6 @@ export default {
             this.$emit('updateParam', this.param);
         },
         updateReqParam() {
-            window.console.log('updateReqParam');
-            window.console.log(this.reqParam.key);
             this.$emit('updateReqParam', this.reqParam);
         },
         addParam() {

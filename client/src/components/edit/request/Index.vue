@@ -27,8 +27,6 @@ export default {
         Advanced,
         ReqBody
     },
-    methods: {
-    },
     props: ['mode', 'params', 'method'],
     data() {
         return {
