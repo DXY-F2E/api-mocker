@@ -5,7 +5,15 @@
                 <label>{{param.key}}<code>[{{param.type}}]</code>:</label>
             </el-col>
             <el-col class="value">
-                <el-input :placeholder="getPlaceholder(param)" v-model="param.value" @change="updateReqParam"></el-input>
+                <el-input :placeholder="getPlaceholder(param)"
+                          v-model="param.value"
+                          readonly
+                          @click.native="expand"
+                          v-if="param.type === 'object'"></el-input>
+                <el-input :placeholder="getPlaceholder(param)"
+                          v-model="param.value"
+                          @change="updateReqParam"
+                          v-else></el-input>
             </el-col>
         </el-row>
     </div>
@@ -20,6 +28,9 @@ export default {
         },
         updateReqParam() {
             this.$emit('change', this.param);
+        },
+        expand() {
+            this.$emit('expand');
         }
     }
 };

@@ -44,6 +44,13 @@ export default {
         }
     },
     methods: {
+        getObjectVal() {
+            const value = {};
+            this.param.params.forEach(p => {
+                value[p.key] = p.value;
+            });
+            return JSON.stringify(value);
+        },
         update() {
             this.$emit('updateParams', this.params, this.data);
         },
@@ -51,6 +58,10 @@ export default {
             this.update();
         },
         updateReqParam() {
+            window.console.log(this.reqParams);
+            if (this.reqParams.type === 'object') {
+                this.reqParams.value = this.getObjectVal();
+            }
             this.$emit('updateReqParams', this.reqParams);
         },
         addParam(idx) {

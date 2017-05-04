@@ -9,11 +9,20 @@ const state = {
     apiListLoading: false,
     apiListSuccess: true,
     api: apiInit(),
-    mode: 'edit',
+    mode: 'test',
     reqParams: {
-        query: [],
-        body: [],
-        path: []
+        query: {
+            value: '',
+            params: []
+        },
+        body: {
+            value: '',
+            params: []
+        },
+        path: {
+            value: '',
+            params: []
+        }
     },
     response: null,
     serverRoot: domain,

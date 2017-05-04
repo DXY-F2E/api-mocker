@@ -120,17 +120,19 @@ const actions = {
             }
             config.data[v.key] = v.value;
         });
-        return axios(config).then(res => {
-            commit('UPDATE_RESPONSE', res);
-        }, err => {
-            window.console.log('error');
-            window.console.log(err);
-            if (err.response) {
-                commit('UPDATE_RESPONSE', err.response);
-            }
-        }).catch(err => {
-            window.console.log(err);
-        });
+        window.console.log(config);
+        return;
+        // return axios(config).then(res => {
+        //     commit('UPDATE_RESPONSE', res);
+        // }, err => {
+        //     window.console.log('error');
+        //     window.console.log(err);
+        //     if (err.response) {
+        //         commit('UPDATE_RESPONSE', err.response);
+        //     }
+        // }).catch(err => {
+        //     window.console.log(err);
+        // });
     }
 };
 

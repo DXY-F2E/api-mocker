@@ -2,7 +2,7 @@
     <div class="param-wrap" :class="[expanded ? 'unfold' : 'fold']">
         <div class="expand"
              v-show="param.type === 'object'"
-             @click="explandParam()">
+             @click="expandParam()">
             <span class="el-tree-node__expand-icon" :class="{expanded: expanded}"></span>
         </div>
         <api-param :params="params"
@@ -14,6 +14,7 @@
                    @deleteParam="deleteParam"></api-param>
         <req-param v-if="reqParam.key"
                    :param="reqParam"
+                   @expand="expandParam"
                    @change="updateReqParam"></req-param>
         <slot name="params"></slot>
     </div>
@@ -49,6 +50,8 @@ export default {
             this.$emit('updateParam', this.param);
         },
         updateReqParam() {
+            window.console.log('updateReqParam');
+            window.console.log(this.reqParam.key);
             this.$emit('updateReqParam', this.reqParam);
         },
         addParam() {
@@ -57,7 +60,7 @@ export default {
         deleteParam() {
             this.$emit('deleteParam');
         },
-        explandParam() {
+        expandParam() {
             this.getParamsBox();
             if (this.expanded) {
                 this.paramsBox.style.height = `${this.paramsBox.scrollHeight}px`;
