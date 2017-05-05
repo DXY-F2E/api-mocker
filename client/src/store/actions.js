@@ -107,32 +107,33 @@ const actions = {
                 }
             };
         }
-        state.reqParams.query.forEach(v => {
-            config.params[v.key] = v.value;
-        });
-        state.reqParams.body.forEach(v => {
-            if (v.type !== 'string') {
-                try {
-                    v.value = JSON.parse(v.value);
-                } catch (e) {
-                    window.console.log(e);
-                }
-            }
-            config.data[v.key] = v.value;
-        });
-        window.console.log(config);
-        return;
-        // return axios(config).then(res => {
-        //     commit('UPDATE_RESPONSE', res);
-        // }, err => {
-        //     window.console.log('error');
-        //     window.console.log(err);
-        //     if (err.response) {
-        //         commit('UPDATE_RESPONSE', err.response);
-        //     }
-        // }).catch(err => {
-        //     window.console.log(err);
+        config.params = state.reqParams.query.value;
+        config.data = state.reqParams.body.value;
+        // state.reqParams.query.forEach(v => {
+        //     config.params[v.key] = v.value;
         // });
+        // state.reqParams.body.forEach(v => {
+        //     if (v.type !== 'string') {
+        //         try {
+        //             v.value = JSON.parse(v.value);
+        //         } catch (e) {
+        //             window.console.log(e);
+        //         }
+        //     }
+        //     config.data[v.key] = v.value;
+        // });
+        // return;
+        return axios(config).then(res => {
+            commit('UPDATE_RESPONSE', res);
+        }, err => {
+            window.console.log('error');
+            window.console.log(err);
+            if (err.response) {
+                commit('UPDATE_RESPONSE', err.response);
+            }
+        }).catch(err => {
+            window.console.log(err);
+        });
     }
 };
 

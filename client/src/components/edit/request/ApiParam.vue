@@ -1,5 +1,5 @@
 <template>
-    <div class="param set">
+    <div class="param set" @keyup.enter="addParam">
         <el-row type="flex" class="row-bg" >
             <el-col class="key">
                 <el-input placeholder="key" v-model="param.key" @change="update"></el-input>
@@ -15,10 +15,13 @@
                 </el-select>
                 <el-checkbox v-model="param.required" @change="update">必填</el-checkbox>
             </el-col>
+            <el-col class="comment">
+                <el-input placeholder="备注" v-model="param.comment" @change="update"></el-input>
+            </el-col>
             <el-col class="control">
-                <i class="el-icon-plus" @click="addParam()"></i>
+                <i class="el-icon-plus" @click="addParam"></i>
                 <i class="el-icon-close"
-                   @click="deleteParam()"
+                   @click="deleteParam"
                    v-if="params.length > 1">
                 </i>
             </el-col>

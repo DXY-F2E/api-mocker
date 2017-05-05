@@ -12,15 +12,15 @@ const state = {
     mode: 'edit',
     reqParams: {
         query: {
-            value: '',
+            value: {},
             params: []
         },
         body: {
-            value: '',
+            value: {},
             params: []
         },
         path: {
-            value: '',
+            value: {},
             params: []
         }
     },

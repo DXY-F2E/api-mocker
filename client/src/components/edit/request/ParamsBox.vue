@@ -53,7 +53,8 @@ export default {
 </script>
 <style>
 .params-box {
-    max-width: 750px;
+    /*max-width: 750px;*/
+    /*background-color: #f5f5f5;*/
     position: relative;
 }
 .params-box .params-box:before {
@@ -97,6 +98,13 @@ export default {
 .params-box .control {
     min-width: 72px;
     max-width: 72px;
+}
+.params-box .comment {
+    min-width: 300px;
+    max-width: 300px;
+}
+.params-box .key {
+    min-width: 100px;
 }
 .params-box .control i {
     color: #ccc;

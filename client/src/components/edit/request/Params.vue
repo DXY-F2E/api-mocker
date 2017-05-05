@@ -1,7 +1,7 @@
 <template>
     <div class="params-box">
         <div v-for="(param, idx) in params" class="param-box" :key="param">
-            <a-param :params="params"
+            <mock-param :params="params"
                      :param="param"
                      :req-param="reqParams.params[idx]"
                      @addParam="() => addParam(idx)"
@@ -15,17 +15,17 @@
                         :name="name"
                         @updateParams="updateParam"
                         @updateReqParams="updateReqParam"></params>
-            </a-param>
+            </mock-param>
         </div>
     </div>
 </template>
 
 <script>
-import AParam from './Param';
+import MockParam from './Param';
 export default {
     name: 'params',
     components: {
-        AParam
+        MockParam
     },
     beforeMount() {
         if (!this.params || this.params.length === 0) {

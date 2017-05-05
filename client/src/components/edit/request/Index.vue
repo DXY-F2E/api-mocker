@@ -55,5 +55,11 @@ export default {
 .request-box .el-tabs__content {
     overflow: visible;
     padding-left: 10px;
+    /*box-shadow: 0 0 6px 0px #eee;*/
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+.request-box .el-tabs__content .el-tab-pane {
+    margin-bottom: -1px;
 }
 </style>
