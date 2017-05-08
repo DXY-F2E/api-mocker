@@ -1,8 +1,8 @@
 <template>
-    <div class="param set" @keyup.enter="addParam">
+    <div class="param set">
         <el-row type="flex" class="row-bg" >
             <el-col class="key">
-                <el-input placeholder="key" v-model="param.key" @change="update"></el-input>
+                <el-input placeholder="key" v-model="param.key" @change="update"  @keyup.native.enter="addParam"></el-input>
             </el-col>
             <el-col class="config">
                 <el-select v-model="param.type" placeholder="类型" @change="changeParamType">

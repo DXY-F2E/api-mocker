@@ -1,7 +1,7 @@
 <template>
     <div class="desc-box">
-        <div class="hd">API Description</div>
-        <simditor id="desc-editor" placeholder="接口描述" v-model="desc" @change="updateDesc"></simditor>
+        <div class="hd">API Desc</div>
+        <simditor id="desc-editor" placeholder="其他备注" v-model="desc" @change="updateDesc"></simditor>
     </div>
 </template>
 
