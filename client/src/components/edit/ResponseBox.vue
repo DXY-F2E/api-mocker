@@ -10,7 +10,11 @@
                 </el-tabs>
             </div>
         </div>
-        <json-editor id="json-editor" v-model="jsonData" @change="jsonChanged" name="返回数据"></json-editor>
+        <json-editor id="json-editor"
+                     v-model="jsonData"
+                     name="返回数据"
+                     :templates="templates"
+                     @change="jsonChanged"></json-editor>
     </div>
 </template>
 
@@ -23,8 +27,6 @@ export default {
     },
     data() {
         return {
-            fullscreen: false,
-            template: null,
             templates: [
                 '{"success": true, "params": {}, "info": "获取成功"}',
                 '{"success": true, "params": {}, "msg": "获取成功"}',
@@ -72,20 +74,6 @@ export default {
             }
             this.$store.commit('UPDATE_DSL_STATUS', status);
         },
-        setTemplateVal() {
-            const dsl = JSON.parse(this.templates[this.template]);
-            for (const key in this.params) {
-                this.params[key].forEach(p => {
-                    if (p.key) {
-                        const param = p.key.replace(/\./g, '_');
-                        dsl.params[param] = `$\{${p.key}}`;
-                    }
-                });
-            }
-            this.editor.setValue(JSON.stringify(dsl, null, '\t'), 1);
-            this.$store.commit('UPDATE_API_PROPS', ['dsl', dsl]);
-            this.$store.commit('UPDATE_DSL_STATUS', true);
-        },
         setValue() {
             const dsl = this.$store.state.api.dsl;
             if (dsl !== undefined) {
@@ -120,20 +108,6 @@ export default {
     color: #C0CCDA;
     /*padding: 8px 0;*/
     line-height: 40px;
-}
-.response-box .hd .control {
-    float: right;
-    padding-top: 9px;
-}
-.response-box .hd .control > * {
-    margin-left: 10px;
-    vertical-align: top;
-}
-#json-editor {
-    height: 300px;
-}
-.response-box .el-select {
-    width: 80px;
 }
 .response-box .res {
     display: inline-block;

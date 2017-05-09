@@ -1,7 +1,7 @@
 <template>
-    <div class="editor-box">
+    <div class="json-editor">
         <div class="toolbar">
-            <el-select v-if="template" v-model="template" size="mini" placeholder="模板" @change="setTemplateVal()">
+            <el-select v-if="templates" v-model="template" size="mini" placeholder="模板" @change="setTemplateVal()">
                 <el-option
                   v-for="(val, idx) in templates"
                   :label="'模板' + (idx+1)"
@@ -12,7 +12,7 @@
             <el-button size="mini" @click="parseEditor()">Parse</el-button>
             <el-button size="mini" @click="fullscreen = true">全屏</el-button>
         </div>
-        <div :id="id"></div>
+        <div :id="id" class="editor-range"></div>
     </div>
 </template>
 
@@ -22,8 +22,14 @@ import 'brace/mode/json';
 import R from 'ramda';
 
 export default {
+    data() {
+        return {
+            fullscreen: false,
+            template: null
+        };
+    },
     props: {
-        template: {
+        templates: {
             type: Array
         },
         id: {
@@ -49,6 +55,10 @@ export default {
         }
     },
     methods: {
+        setTemplateVal() {
+            const data = JSON.parse(this.templates[this.template]);
+            this.editor.setValue(JSON.stringify(data, null, '\t'), 1);
+        },
         validate() {
             try {
                 JSON.parse(this.editor.getValue());
@@ -106,11 +116,21 @@ export default {
     }
 };
 </script>
-<style scoped>
-.editor-box {
+<style>
+.json-editor {
     position: relative;
 }
-.toolbar {
+.json-editor .toolbar > * {
+    vertical-align: top;
+}
+.json-editor .editor-range{
+    height: 300px;
+}
+.json-editor .toolbar .el-select {
+    width: 80px;
+    margin-right: 12px;
+}
+.json-editor .toolbar {
     position: absolute;
     right: 0;
     top: 0;
