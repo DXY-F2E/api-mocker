@@ -25,9 +25,12 @@ const state = {
             params: []
         }
     },
-    response: null,
+    response: {},
     serverRoot: domain,
-    isDslRight: true
+    dslStatus: {
+        success: true,
+        msg: ''
+    }
 };
 
 export default state;

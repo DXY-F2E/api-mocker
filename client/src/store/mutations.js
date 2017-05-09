@@ -47,7 +47,7 @@ const mutations = {
         state.apiList.splice(apiIdx, 1);
     },
     UPDATE_DSL_STATUS(state, status) {
-        state.isDslRight = status;
+        state.dslStatus = status;
     },
     CHANGE_MODE(state, mode) {
         state.mode = mode || (state.mode === 'edit' ? 'test' : 'edit');

@@ -3,41 +3,27 @@
         <div class="hd">Response
             <div class="res" v-if="mode === 'test' && response">
                 <em>-</em>
-                <el-tabs v-model="resActive" @tab-click="showRes">
+                <el-tabs v-model="resActive">
                     <el-tab-pane label="Body" name="body"></el-tab-pane>
                     <el-tab-pane label="Headers" name="header"></el-tab-pane>
                     <el-tab-pane label="All-Data" name="all"></el-tab-pane>
                 </el-tabs>
             </div>
-            <div class="control" v-if="mode === 'edit'">
-                <el-select v-model="template" size="mini" placeholder="模板" @change="setTemplateVal()">
-                    <el-option
-                      v-for="(val, idx) in templates"
-                      :label="'模板' + (idx+1)"
-                      key="idx"
-                      :value="idx">
-                    </el-option>
-                </el-select>
-                <el-button size="mini" @click="parseEditor()">Parse</el-button>
-                <el-tooltip placement="top">
-                  <div slot="content">
-                      可使用 ${param} ，返回自定义数据
-                  </div>
-                  <el-button size="mini">Tip</el-button>
-                </el-tooltip>
-            </div>
         </div>
-        <div id="json-editor"></div>
+        <json-editor id="json-editor" v-model="jsonData" @change="jsonChanged" name="返回数据"></json-editor>
     </div>
 </template>
 
 <script>
-import * as ace from 'brace';
-import 'brace/mode/json';
+import JsonEditor from '../common/JsonEditor';
 
 export default {
+    components: {
+        JsonEditor
+    },
     data() {
         return {
+            fullscreen: false,
             template: null,
             templates: [
                 '{"success": true, "params": {}, "info": "获取成功"}',
@@ -50,6 +36,13 @@ export default {
     },
     props: ['params', 'mode'],
     computed: {
+        jsonData() {
+            if (this.mode === 'edit') {
+                return this.$store.state.api.dsl;
+            } else {
+                return this.getResponseData();
+            }
+        },
         apiId() {
             return this.$store.state.api._id;
         },
@@ -57,58 +50,27 @@ export default {
             return this.$store.state.response;
         }
     },
-    watch: {
-        apiId() {
-            this.setValue();
-        },
-        response(val) {
-            if (this.mode === 'test' && val) {
-                this.showRes();
-            }
-        },
-        mode(val) {
-            if (val === 'edit') {
-                this.setValue();
-                this.editor.setReadOnly(false);
-            } else {
-                this.$store.commit('UPDATE_RESPONSE', null);
-                this.editor.setValue('');
-                this.editor.setReadOnly(true);
-            }
-        }
-    },
     methods: {
-        showRes() {
-            switch (this.resActive) {
-                case 'body':
-                    this.showResBody();
-                    break;
-                case 'header':
-                    this.showResHeader();
-                    break;
-                case 'all':
-                    this.showResAll();
-                    break;
-                default:
-                    break;
+        getResponseData() {
+            if (this.resActive === 'body') {
+                return this.response.data;
+            } else if (this.resActive === 'header') {
+                return Object.assign({
+                    status: this.response.status,
+                    statusText: this.response.statusText
+                }, this.response.headers);
+            } else {
+                return this.response;
             }
-            this.editor.getSession().setScrollTop(0);
         },
-        showResBody() {
-            this.editor.setValue(JSON.stringify(this.response.data, null, '\t'), 1);
-            this.resActive = 'body';
-        },
-        showResAll() {
-            this.editor.setValue(JSON.stringify(this.response, null, '\t'), 1);
-            this.resActive = 'all';
-        },
-        showResHeader() {
-            const headers = Object.assign({
-                status: this.response.status,
-                statusText: this.response.statusText
-            }, this.response.headers);
-            this.editor.setValue(JSON.stringify(headers, null, '\t'), 1);
-            this.resActive = 'header';
+        jsonChanged(data, status) {
+            if (this.mode !== 'edit') {
+                return;
+            }
+            if (status.success) {
+                this.$store.commit('UPDATE_API_PROPS', ['dsl', data]);
+            }
+            this.$store.commit('UPDATE_DSL_STATUS', status);
         },
         setTemplateVal() {
             const dsl = JSON.parse(this.templates[this.template]);
@@ -124,15 +86,6 @@ export default {
             this.$store.commit('UPDATE_API_PROPS', ['dsl', dsl]);
             this.$store.commit('UPDATE_DSL_STATUS', true);
         },
-        validate() {
-            try {
-                JSON.parse(this.editor.getValue());
-                return true;
-            } catch (err) {
-                this.$message.error('response 未正确填写');
-                return false;
-            }
-        },
         setValue() {
             const dsl = this.$store.state.api.dsl;
             if (dsl !== undefined) {
@@ -140,24 +93,6 @@ export default {
             } else {
                 this.editor.setValue('');
             }
-        },
-        initDsl() {
-            this.setValue();
-            this.$store.commit('UPDATE_DSL_STATUS', true);
-            this.editor.getSession().on('change', () => {
-                if (this.mode === 'test') {
-                    return;
-                }
-                let dsl = this.editor.getValue();
-                try {
-                    dsl = JSON.parse(dsl);
-                    this.$store.commit('UPDATE_API_PROPS', ['dsl', dsl]);
-                    this.$store.commit('UPDATE_DSL_STATUS', true);
-                } catch (err) {
-                    this.$store.commit('UPDATE_DSL_STATUS', false);
-                    return false;
-                }
-            });
         },
         parseEditor() {
             let dsl = this.editor.getValue();
@@ -168,11 +103,6 @@ export default {
                 this.$message.error('请正确填写JSON');
             }
         }
-    },
-    mounted() {
-        this.editor = ace.edit('json-editor');
-        this.editor.getSession().setMode('ace/mode/json');
-        this.initDsl();
     }
 };
 </script>

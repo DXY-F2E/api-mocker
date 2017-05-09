@@ -80,6 +80,8 @@ const actions = {
             } else {
                 return dispatch('createApi');
             }
+        }).catch(err => {
+            throw err;
         });
     },
     updateApi({ state, commit }) {
