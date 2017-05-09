@@ -3,7 +3,8 @@
       <div slot="header" class="clearfix">
         <span class="name">{{data.name}}</span>
         <el-button-group>
-          <copy-button size="mini" icon="document" :copy-data="copyData"></copy-button>
+          <!-- <copy-button size="mini" icon="document" :copy-data="copyData" message="复制接口链接成功"></copy-button> -->
+          <el-button size="mini" icon="document" @click.native.stop="showDoc()"></el-button>
           <el-button size="mini" icon="delete" @click.native.stop="deleteApi()"></el-button>
         </el-button-group>
         <!-- <el-button type="primary" icon="edit" size="small" class="edit-api"></el-button> -->
@@ -38,6 +39,9 @@ export default {
         };
     },
     methods: {
+        showDoc() {
+            this.$router.push(`/doc/${this.data.group}/${this.data._id}`);
+        },
         editApi(api) {
             this.$store.commit('UPDATE_API', api);
             this.$store.commit('CHANGE_MODE', 'edit');

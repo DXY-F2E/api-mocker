@@ -20,6 +20,10 @@ export default {
         disabled: {
             type: Boolean,
             default: false
+        },
+        message: {
+            type: String,
+            default: '复制成功'
         }
     },
     methods: {
@@ -31,7 +35,7 @@ export default {
             input.select();
             document.execCommand('copy');
             input.remove();
-            this.$message.success('复制接口链接成功');
+            this.$message.success(this.message);
         }
     }
 };

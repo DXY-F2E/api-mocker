@@ -24,7 +24,7 @@
             </el-form-item>
 
             <!-- <el-form-item >
-                <el-button id="saveAct" type="info">Save</el-button>
+                <el-button type="info">文档</el-button>
             </el-form-item> -->
         </el-form>
         <p class="issue">

@@ -14,7 +14,7 @@
                 </el-input>
             </el-col>
             <el-col class="control">
-                <el-button id="saveAct" type="info" @click="validate()" v-if="mode === 'edit'">保存</el-button>
+                <el-button id="saveAct" type="info" @click="save()" v-if="mode === 'edit'"></el-button>
                 <template v-if="mode === 'test'">
                     <el-dropdown split-button
                         type="success"
@@ -35,6 +35,11 @@
                 <el-select v-model="mode" placeholder="请选择" >
                     <el-option label="编辑模式" value="edit"></el-option>
                     <el-option label="测试模式" value="test"></el-option>
+                    <el-option label="文档模式"
+                               value="doc"
+                               class="doc"
+                               @click.native="showDoc"
+                               :disabled="true"></el-option>
                 </el-select>
             </el-col>
         </el-row>
@@ -44,13 +49,13 @@
 <script>
 import { mapActions } from 'vuex';
 import CopyButton from '../common/CopyButton';
-import { validateApi } from '../../util';
 export default {
     components: {
         CopyButton
     },
     data() {
         return {
+            saveToken: false,
             isShowDialog: false,
             testMode: 'mock'
         };
@@ -64,7 +69,12 @@ export default {
             this.testMode = val;
         },
         save() {
+            if (this.saveToken) {
+                return;
+            }
+            this.saveToken = true;
             this.saveApi().then(() => {
+                this.saveToken = false;
                 if (this.$route.name === 'Create' && this.api._id) {
                     this.$router.push({
                         name: 'Edit',
@@ -76,29 +86,37 @@ export default {
                 }
                 this.$message.success('保存成功');
             }).catch(err => {
-                window.console.log(err);
-                this.$message.error(`创建失败:${err.response.data.message}`);
+                this.saveToken = false;
+                const message = err.msg || err.response.data.message;
+                this.$message.error(`创建失败:${message}`);
             });
-        },
-        changeMode() {
-            this.$store.commit('CHANGE_MODE');
-        },
-        validate() {
-            const { status, msg } = validateApi(this.$store.state);
-            if (status) {
-                this.save();
-            } else {
-                this.$message.error(msg);
-            }
         },
         send() {
             this.testApi(this.url);
+        },
+        onKeydown(e) {
+            if (e.keyCode === 83 && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                this.save();
+            }
+        },
+        showDoc() {
+            this.$router.push({
+                name: 'Document',
+                params: {
+                    groupId: this.api.group,
+                    apiId: this.api._id
+                }
+            });
         }
     },
+    beforeDestroy() {
+        document.removeEventListener('keydown', this.onKeydown);
+    },
+    mounted() {
+        document.addEventListener('keydown', this.onKeydown);
+    },
     computed: {
-        // mode() {
-        //     return this.$store.state.mode;
-        // },
         mode: {
             get() {
                 return this.$store.state.mode;
@@ -180,8 +198,22 @@ export default {
 #saveAct {
     width: 91px;
 }
+#saveAct:after {
+    content: '保存';
+}
+#saveAct:hover:after {
+    content: '⌘ + S'
+}
 .url-box .el-col.mode{
     width: 150px;
     text-align: right;
+}
+.el-select-dropdown__item.is-disabled.doc {
+    cursor: pointer;
+    color: #48576a;
+}
+.el-select-dropdown__item.is-disabled.doc:hover {
+    /*background-color: #58B7FF;*/
+    color: #58B7FF;
 }
 </style>

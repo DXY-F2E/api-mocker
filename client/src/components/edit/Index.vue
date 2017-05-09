@@ -4,6 +4,9 @@
         <api-info></api-info>
         <api-box></api-box>
     </el-row>
+    <div class="loading" v-show="loading">
+        <div class="el-loading-mask"><div class="el-loading-spinner"><svg viewBox="25 25 50 50" class="circular"><circle cx="50" cy="50" r="20" fill="none" class="path"></circle></svg><!----></div></div>
+    </div>
   </div>
 </template>
 
@@ -19,38 +22,67 @@ export default {
     data() {
         return {
             loading: true
+            // loadingService: Loading.service({target: this.$el});,
         };
     },
     methods: {
+        onKeydown(e) {
+            if (e.keyCode === 83 && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                window.console.log('save');
+            }
+        },
         ...mapActions([
             'getApi'
         ]),
+        beginLoading() {
+            this.loading = true;
+        },
+        endLoading() {
+            this.loading = false;
+        },
         initApi() {
-            if (this.$route.name === 'Edit' && this.$route.params.apiId !== this.api._id) {
-                this.loading = true;
+            this.beginLoading();
+            if (this.$route.name === 'Create') {
+                this.$store.commit('INIT_API');
+                this.endLoading();
+            } else {
                 this.getApi(this.$route.params).then(() => {
-                    this.loading = false;
+                    this.endLoading();
                 }).catch(err => {
                     this.$message.error(`获取数据失败:${err.response.data.message}`);
-                    this.loading = false;
+                    this.endLoading();
                 });
-            } else {
-                this.loading = false;
             }
+            this.$store.commit('CHANGE_MODE', 'edit');
+            window.setTimeout(() => {
+                this.$store.commit('SAVE_API');
+            });
         }
     },
-    computed: mapState(['api', 'mode']),
-    mounted() {
-        this.initApi();
+    computed: mapState(['api', 'mode', 'apiUnsaved']),
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.initApi();
+        });
     },
-    watch: {
-        $route(to, from) {
-            if (from.name === 'Create' && to.name === 'Edit' && !this.loading) {
-                this.initApi();
-            }
+    beforeRouteLeave(to, from, next) {
+        if (this.apiUnsaved) {
+            this.$confirm('有未保存的内容, 是否离开?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                next();
+            }).catch(() => {});
+        } else {
+            next();
         }
     }
 };
 </script>
-<style>
+<style scoped>
+.content {
+    position: absolute !important;
+}
 </style>

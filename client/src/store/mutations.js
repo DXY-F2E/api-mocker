@@ -31,9 +31,14 @@ const mutations = {
         const prop = R.head(propValuePair);
         const value = R.last(propValuePair);
         state.api = R.assocPath(prop.split('.'), value, api);
+        state.apiUnsaved = true;
+    },
+    SAVE_API(state) {
+        state.apiUnsaved = false;
     },
     UPDATE_API(state, data) {
         state.api = data;
+        state.apiUnsaved = true;
     },
     UPDATE_API_PAGE(state, data) {
         state.apiPage = data;

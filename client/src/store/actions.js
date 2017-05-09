@@ -1,6 +1,7 @@
 import axios from 'axios';
 import API from './api';
 import config from '../../config';
+import { validateApi } from '../util';
 
 const domain = process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax;
 
@@ -60,6 +61,7 @@ const actions = {
         const {groupId, apiId} = payload;
         return axios.get(API.API.replace(':groupId', groupId).replace(':apiId', apiId)).then(res => {
             commit('UPDATE_API', res.data.resources);
+            commit('SAVE_API');
         });
     },
     deleteApi({ state, commit }, payload) {
@@ -68,28 +70,34 @@ const actions = {
             commit('DELETE_API', payload.index);
         });
     },
+    validateApi({ state }) {
+        return validateApi(state);
+    },
     saveApi({ dispatch, state }) {
-        if (state.api._id) {
-            return dispatch('updateApi');
-        } else {
-            return dispatch('createApi');
-        }
+        return validateApi(state).then(() => {
+            if (state.api._id) {
+                return dispatch('updateApi');
+            } else {
+                return dispatch('createApi');
+            }
+        });
     },
     updateApi({ state, commit }) {
         const api = state.api;
         const { group, _id} = api;
         return axios.put(API.API.replace(':groupId', group).replace(':apiId', _id), state.api).then(res => {
             commit('UPDATE_API', res.data.resources);
+            commit('SAVE_API');
         });
     },
     createApi({ state, commit }) {
         return axios.post(API.GROUP_APIS.replace(':groupId', state.api.group), state.api).then(res => {
             commit('UPDATE_API', res.data.resources);
+            commit('SAVE_API');
         });
     },
     testApi({ state, commit }, url) {
         const api = state.api;
-        // const method = api.options.method;
         let config = {
             method: api.options.method,
             url: `${domain}${api.url}`,
@@ -109,20 +117,6 @@ const actions = {
         }
         config.params = state.reqParams.query.value;
         config.data = state.reqParams.body.value;
-        // state.reqParams.query.forEach(v => {
-        //     config.params[v.key] = v.value;
-        // });
-        // state.reqParams.body.forEach(v => {
-        //     if (v.type !== 'string') {
-        //         try {
-        //             v.value = JSON.parse(v.value);
-        //         } catch (e) {
-        //             window.console.log(e);
-        //         }
-        //     }
-        //     config.data[v.key] = v.value;
-        // });
-        // return;
         return axios(config).then(res => {
             commit('UPDATE_RESPONSE', res);
         }, err => {

@@ -79,7 +79,7 @@ export default {
     position: relative;
     z-index: 0;
 }
-.param .el-input__inner:focus,
+/*.param .el-input__inner:focus,*/
 .param .el-input__inner:hover {
     border-color: #EFF2F7;
 }

@@ -36,11 +36,13 @@ export default {
             }, {
                 label: 'Query',
                 name: 'query'
-            }],
-            localParams: clone(this.params)
+            }]
         };
     },
     computed: {
+        localParams() {
+            return clone(this.params);
+        },
         requestActive() {
             if (this.method === 'get' || this.method === 'delete') {
                 return 'query';
@@ -54,10 +56,9 @@ export default {
 <style>
 .request-box .el-tabs__content {
     overflow: visible;
-    padding-left: 10px;
-    /*box-shadow: 0 0 6px 0px #eee;*/
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
+    margin: 0 10px;
+    /*border-top: 1px solid #eee;*/
+    /*border-bottom: 1px solid #eee;*/
 }
 .request-box .el-tabs__content .el-tab-pane {
     margin-bottom: -1px;
