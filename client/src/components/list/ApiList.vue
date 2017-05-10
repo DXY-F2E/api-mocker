@@ -3,8 +3,7 @@
         <ul class="api-list" v-loading="apiListLoading">
             <li v-for="(api, idx) in apiList">
                 <api :data="api" :index="idx"></api>
-            </li>
-            <li class="add-api" @click="createApi">
+            </li><li class="add-api" @click="createApi">
                 <el-card><i class="el-icon-plus"></i>创建接口</el-card>
             </li>
             <li class="empty">暂无接口</li>
