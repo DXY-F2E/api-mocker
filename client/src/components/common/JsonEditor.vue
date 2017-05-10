@@ -124,7 +124,11 @@ export default {
     },
     mounted() {
         this.editor = ace.edit(this.id);
-        this.editor.getSession().setMode('ace/mode/json');
+        this.editor.getSession().setOptions({
+            mode: 'ace/mode/json',
+            tabSize: 4,
+            useSoftTabs: true
+        });
         this.editor.setAutoScrollEditorIntoView(true);
         this.initEditor();
     }
