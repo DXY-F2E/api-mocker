@@ -68,9 +68,6 @@ export default {
         query() {
             return this.api.options.params.query;
         }
-    },
-    mounted() {
-        window.console.log(this.api);
     }
 };
 </script>

@@ -31,6 +31,7 @@
              this.$emit('action', this.input);
          },
          handleClickCancel() {
+             this.input = '';
              this.$emit('close', this);
          }
      },

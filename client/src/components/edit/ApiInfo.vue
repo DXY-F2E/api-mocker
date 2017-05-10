@@ -5,6 +5,7 @@
                 <el-input auto-complete="off" v-model="name"></el-input>
             </el-form-item>
             <el-form-item label="接口分组" class="required">
+                <i class="el-icon-plus title-icon create-group" @click="showCreateGroup = true"></i>
                 <div class="group-select">
                     <el-row type="flex" >
                         <el-col :span="24">
@@ -31,11 +32,36 @@
             <a href="http://gitlab.dxy.net/f2e/api-mocker/wikis/home" target="_blank">Click For Help</a>
             <a href="http://gitlab.dxy.net/f2e/api-mocker/issues" target="_blank">Issue</a>
         </p>
+        <create-group
+            :visited="showCreateGroup"
+            @action="handleClickCreateGroup"
+            @close="handleClickClose"/>
     </div>
 </template>
 
 <script>
+import createGroup from '../../dialog/create-group';
 export default {
+    components: {
+        createGroup
+    },
+    data() {
+        return {
+            showCreateGroup: false
+        };
+    },
+    methods: {
+        handleClickCreateGroup(groupName) {
+            this.$store.dispatch('createGroup', { name: groupName }).then(() => {
+                this.showCreateGroup = false;
+            }).catch((e) => {
+                window.console.log('error', e);
+            });
+        },
+        handleClickClose() {
+            this.showCreateGroup = false;
+        }
+    },
     computed: {
         groups() {
             return this.$store.state.groups;
@@ -93,6 +119,10 @@ export default {
 .api-info .el-form {
     min-height: 100%;
     padding-bottom: 50px;
+}
+.api-info .create-group {
+    color: #97a8be;
+    cursor: pointer;
 }
 .issue {
     text-align: center;
