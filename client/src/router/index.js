@@ -17,6 +17,10 @@ export default new Router({
             redirect: '/list/all'
         },
         {
+            path: '/list',
+            redirect: '/list/all'
+        },
+        {
             path: '/create',
             name: 'Create',
             component: Edit
