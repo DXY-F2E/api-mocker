@@ -1,6 +1,6 @@
 <template>
     <div class="params-box">
-        <div v-for="(param, idx) in params" class="param-box" :key="param">
+        <div v-for="(param, idx) in params" class="param-box" :key="idx">
             <mock-param :params="params"
                      :param="param"
                      :req-param="reqParams.params[idx]"
