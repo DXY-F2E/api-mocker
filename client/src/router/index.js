@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import List from '@/components/list/Index';
 import Edit from '@/components/edit/Index';
 import ListContent from '@/components/list/Content';
-import Document from '@/components/Document';
+import Document from '@/components/document/Index';
 
 Vue.use(Router);
 
