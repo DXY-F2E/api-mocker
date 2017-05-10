@@ -6,7 +6,7 @@
 
 <script>
 import Prism from 'prismjs';
-import 'prismjs/themes/Prism.css';
+import 'prismjs/themes/prism.css';
 export default {
     props: ['response'],
     data() {

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import RequestBox from './request';
+import RequestBox from './request/Index';
 import ResponseBox from './ResponseBox';
 import UrlBox from './UrlBox';
 import DescBox from './DescBox';
