@@ -1,5 +1,5 @@
 <template>
-    <div class="json-editor">
+    <div class="json-editor" :class="isFullscreen ? 'fullscreen' : ''">
         <div class="toolbar">
             <el-select v-if="templates" v-model="template" size="mini" placeholder="模板" @change="setTemplateVal()">
                 <el-option
@@ -10,9 +10,9 @@
                 </el-option>
             </el-select>
             <el-button size="mini" @click="parseEditor()">Parse</el-button>
-            <el-button size="mini" @click="fullscreen = true">全屏</el-button>
+            <el-button size="mini" @click="fullscreen()">{{isFullscreen ? '取消' : ''}}全屏</el-button>
         </div>
-        <div :id="id" class="editor-range"></div>
+        <div :id="id" class="editor-range" @keyup="keyupBehavior"></div>
     </div>
 </template>
 
@@ -24,7 +24,7 @@ import R from 'ramda';
 export default {
     data() {
         return {
-            fullscreen: false,
+            isFullscreen: false,
             template: null
         };
     },
@@ -55,6 +55,19 @@ export default {
         }
     },
     methods: {
+        keyupBehavior(e) {
+            // 按Esc键退出全屏
+            if (this.isFullscreen && e.keyCode === 27) {
+                this.fullscreen();
+            }
+        },
+        fullscreen() {
+            this.isFullscreen = !this.isFullscreen;
+            window.setTimeout(() => {
+                this.editor.resize(true);
+                this.editor.focus();
+            });
+        },
         setTemplateVal() {
             const data = JSON.parse(this.templates[this.template]);
             this.editor.setValue(JSON.stringify(data, null, '\t'), 1);
@@ -112,6 +125,7 @@ export default {
     mounted() {
         this.editor = ace.edit(this.id);
         this.editor.getSession().setMode('ace/mode/json');
+        this.editor.setAutoScrollEditorIntoView(true);
         this.initEditor();
     }
 };
@@ -119,12 +133,27 @@ export default {
 <style>
 .json-editor {
     position: relative;
+    height: 300px;
+}
+.json-editor.fullscreen {
+    position: fixed;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background-color: #fff;
 }
 .json-editor .toolbar > * {
     vertical-align: top;
 }
+.json-editor.fullscreen .editor-range {
+    height: 100%;
+}
 .json-editor .editor-range{
-    height: 300px;
+    height: 100%;
+
 }
 .json-editor .toolbar .el-select {
     width: 80px;
@@ -132,9 +161,9 @@ export default {
 }
 .json-editor .toolbar {
     position: absolute;
-    right: 0;
+    right: 10px;
     top: 0;
-    z-index: 1;
+    z-index: 9999;
     padding: 10px;
 }
 </style>
