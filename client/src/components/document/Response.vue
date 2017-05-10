@@ -15,7 +15,7 @@ export default {
         };
     },
     mounted() {
-        this.html = Prism.highlight(JSON.stringify(this.response, null, 4), Prism.languages.javascript);
+        this.html = this.response ? Prism.highlight(JSON.stringify(this.response, null, 4), Prism.languages.javascript) : '{}';
     }
 };
 </script>

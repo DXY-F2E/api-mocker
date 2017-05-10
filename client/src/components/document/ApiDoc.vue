@@ -1,5 +1,5 @@
 <template>
-    <div class="api-doc">
+    <div class="api-doc" :id="api._id">
         <div class="fields">
             <div class="field name">
                 <h2>{{api.name}}<span class="method" :class="method">{{method}}</span></h2>
@@ -41,7 +41,12 @@ export default {
         ParamsTable,
         Response
     },
-    props: ['api'],
+    props: {
+        api: {
+            type: Object,
+            required: true
+        }
+    },
     methods: {
         edit() {
             this.$store.commit('UPDATE_API', this.api);
@@ -72,12 +77,18 @@ export default {
 };
 </script>
 <style>
-.api-doc {
+.apis-doc {
     width: 100%;
     height: 100%;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
+}
+.api-doc {
+    width: 100%;
     padding: 30px;
+}
+.api-doc ~ .api-doc {
+    border-top: 1px solid #ddd;
 }
 .api-doc h2 {
     border-bottom: 1px solid #ececec;
@@ -110,7 +121,7 @@ export default {
 .api-doc .field:last-child {
     margin-bottom: 0;
 }
-.method {
+.api-doc .method {
     color: #3eb63e;
     font-weight: normal;
     margin-left: 10px;
@@ -118,6 +129,10 @@ export default {
 .method.post,
 .method.POST {
     color: #f5a623;
+}
+.method.get,
+.method.GET {
+    color: #3eb63e;
 }
 .api-doc .field.url > div {
     padding-left: 70px;

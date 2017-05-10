@@ -4,6 +4,9 @@ import List from '@/components/list/Index';
 import Edit from '@/components/edit/Index';
 import ListContent from '@/components/list/Content';
 import Document from '@/components/document/Index';
+import DocOverview from '@/components/document/Overview';
+import GroupContent from '@/components/document/GroupContent';
+import ApiContent from '@/components/document/ApiContent';
 
 Vue.use(Router);
 
@@ -11,7 +14,7 @@ export default new Router({
     routes: [
         {
             path: '/',
-            redirect: '/list'
+            redirect: '/list/all'
         },
         {
             path: '/create',
@@ -26,8 +29,9 @@ export default new Router({
         {
             path: '/list',
             component: List,
+            name: 'List',
             children: [{
-                path: '',
+                path: 'all',
                 name: 'AllList',
                 component: ListContent
             }, {
@@ -37,9 +41,23 @@ export default new Router({
             }]
         },
         {
-            path: '/doc/:groupId/:apiId',
+            path: '/doc',
+            component: Document,
             name: 'Document',
-            component: Document
+            redirect: '/doc/all',
+            children: [{
+                path: 'all',
+                name: 'AllDoc',
+                component: DocOverview
+            }, {
+                path: ':groupId',
+                name: 'GroupDoc',
+                component: GroupContent
+            }, {
+                path: ':groupId/:apiId',
+                name: 'ApiDoc',
+                component: ApiContent
+            }]
         }
     ]
 });

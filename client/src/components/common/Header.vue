@@ -11,7 +11,7 @@
                      >
               <el-menu-item index="AllList" :route="{name: 'AllList'}">接口列表</el-menu-item>
               <el-menu-item index="Create" :route="{name: 'Create'}">创建接口</el-menu-item>
-              <el-menu-item index="Document" v-show="$route.name === 'Document'">接口文档</el-menu-item>
+              <el-menu-item index="Document" :route="{name: 'Document'}">接口文档</el-menu-item>
             </el-menu>
         </el-col>
     </el-row>
@@ -22,7 +22,7 @@
 export default {
     computed: {
         activeIndex() {
-            return this.$route.name;
+            return this.$route.matched[0].name;
         }
     }
 };

@@ -8,8 +8,13 @@
                     <i class="el-icon-plus title-icon" @click="handleClickShowDialog"></i>
                     <i class="el-icon-search title-icon" @click="showSearch()"></i>
                 </template>
-                <el-menu-item v-for="group in groupList" :index="group._id" @click="handleClickGroup(group)" :key="group._id">
-                    <i class="el-icon-minus"></i>{{group.name}}
+                <el-menu-item v-for="group in groupList"
+                              :index="group._id"
+                              class="group-item"
+                              @click="handleClickGroup(group)"
+                              :key="group._id">
+                    <i class="el-icon-document" @click.stop="showGroupDoc(group)"></i>
+                    <span>{{group.name}}</span>
                 </el-menu-item>
             </el-menu-item-group>
         </el-menu>
@@ -68,6 +73,14 @@ export default {
         },
         handleClickShowDialog() {
             this.showCreateDialog = true;
+        },
+        showGroupDoc(group) {
+            this.$router.push({
+                name: 'GroupDoc',
+                params: {
+                    groupId: group._id
+                }
+            });
         }
     }
 };
@@ -83,9 +96,21 @@ export default {
     line-height: 30px;
     position: relative;
 }
-.el-menu-item-group > ul li i {
+.group-item [class^=el-icon-].el-icon-document {
+    display: inline-block;
+    font-size: 18px;
+    position: relative;
+    top: 2px;
     visibility: hidden;
- }
+    margin-right: 4px;
+}
+.group-item:hover .el-icon-document {
+    visibility: visible;
+}
+.group-item > * {
+    display: inline-block;
+    vertical-align: middle;
+}
 .menu-nav .el-menu-item-group__title > i {
     position: relative;
     right: 0;

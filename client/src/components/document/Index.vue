@@ -1,10 +1,8 @@
 <template>
   <div class="content">
     <el-row type="flex" class="list-content">
-        <template v-if="api._id">
-            <api-list :apis="apis" :groups="groups" @change="getApi"></api-list>
-            <api-doc :api="api"></api-doc>
-        </template>
+        <api-list :apis="apis"></api-list>
+        <router-view :apis="apis"></router-view>
     </el-row>
   </div>
 </template>
@@ -23,33 +21,28 @@ export default {
             apis: []
         };
     },
-    computed: {
-        groups() {
-            return this.$store.state.groups;
-        }
-    },
     methods: {
-        initDoc() {
-            this.getApis();
-        },
-        getApis() {
+        getApis(route) {
+            if (route.name === 'AllDoc') {
+                return;
+            }
             const query = {
                 page: 1,
                 size: 10000
             };
-            this.$http.get(API.GROUP_APIS.replace(':groupId', this.$route.params.groupId), {
+            this.$http.get(API.GROUP_APIS.replace(':groupId', route.params.groupId), {
                 params: query
             }).then(rs => {
                 this.apis = rs.data.resources;
-                this.getApi();
             });
-        },
-        getApi() {
-            this.api = this.apis.find(api => api._id === this.$route.params.apiId);
         }
     },
+    beforeRouteUpdate(to, from, next) {
+        this.getApis(to);
+        next();
+    },
     mounted() {
-        this.initDoc();
+        this.getApis(this.$route);
     }
 };
 </script>
