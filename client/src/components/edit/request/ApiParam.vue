@@ -5,7 +5,7 @@
                 <el-input placeholder="key" v-model="param.key" @change="update"  @keyup.native.enter="addParam"></el-input>
             </el-col>
             <el-col class="config">
-                <el-select v-model="param.type" placeholder="类型" @change="changeParamType">
+                <el-select v-model="apiType" placeholder="类型" @change="changeParamType">
                     <el-option
                         v-for="(type, idx) in tpyeList"
                         :key="type"
@@ -34,6 +34,7 @@ export default {
     props: ['params', 'param', 'type'],
     data() {
         return {
+            apiType: this.param.type, // Vue + element升级到2.3.x + 1.3.1，select的model在这就不能直接绑定param.type了
             tpyeList: this.getTypeList()
         };
     },
