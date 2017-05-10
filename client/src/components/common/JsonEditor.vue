@@ -48,8 +48,8 @@ export default {
         }
     },
     watch: {
-        value(newVal, oldVal) {
-            if (!R.equals(newVal, oldVal)) {
+        value(newVal) {
+            if (!R.equals(newVal, this.getValue())) {
                 this.setValue();
             }
         }
@@ -88,6 +88,9 @@ export default {
                 this.editor.setValue('');
             }
         },
+        getValue() {
+            return JSON.parse(this.editor.getValue());
+        },
         parseEditor() {
             let value = this.editor.getValue();
             try {
@@ -101,7 +104,7 @@ export default {
             this.setValue();
             this.editor.getSession().on('change', () => {
                 try {
-                    const data = JSON.parse(this.editor.getValue());
+                    const data = this.getValue();
                     if (Object.keys(data).length > 0) {
                         this.$emit('change', data, {
                             success: true,
