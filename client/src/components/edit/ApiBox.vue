@@ -1,23 +1,24 @@
 <template>
     <div class="api-box el-col">
         <url-box></url-box>
-        <div class="animate">
-            <request-box :params="params" :method="method" :mode="mode"></request-box>
-            <response-box :params="params" :mode="mode"></response-box>
-        </div>
+        <request-box :params="params" :method="method" :mode="mode"></request-box>
+        <response></response>
+        <mock-box :params="params" :mode="mode"></mock-box>
         <desc-box></desc-box>
     </div>
 </template>
 
 <script>
 import RequestBox from './request/Index';
-import ResponseBox from './ResponseBox';
+import MockBox from './MockBox';
 import UrlBox from './UrlBox';
+import Response from './response/Index';
 import DescBox from './DescBox';
 export default {
     components: {
         RequestBox,
-        ResponseBox,
+        Response,
+        MockBox,
         DescBox,
         UrlBox
     },
@@ -38,15 +39,17 @@ export default {
 .api-box {
     padding: 20px;
 }
-.animate {
-    background-color: #fff;
-    margin-top: 20px;
-    /*-webkit-transform: rotate3d(0, 1, 0, -360deg);*/
-    /*transform: rotate3d(0, 1, 0, -360deg);*/
-    /*transition: all 0.3s ease-out;*/
+.api-box > div {
+    /*margin-top: 20px;*/
 }
-.edit .animate {
-    /*-webkit-transform: rotate3d(0, 1, 0, 0deg);*/
-    /*transform: rotate3d(0, 1, 0, 0deg);*/
+.api-box > div > .hd {
+    text-align: left;
+    border-top: 1px solid #D3DCE6;
+    border-bottom: 1px solid #D3DCE6;
+    line-height: 36px;
+    font-size: 16px;
+    color: #C0CCDA;
+    /*padding: 8px 0;*/
+    line-height: 40px;
 }
 </style>

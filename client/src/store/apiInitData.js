@@ -7,6 +7,10 @@ function initData() {
         group: '',
         desc: null,
         options: {
+            response: [{
+                status: 200,
+                schema: []
+            }],
             method: 'get',
             delay: 0,
             params: {

@@ -54,9 +54,15 @@ export default {
 };
 </script>
 <style>
+.request-box {
+    margin-top: 20px;
+}
+.request-box .el-tabs__header {
+    margin-bottom: 0;
+}
 .request-box .el-tabs__content {
     overflow: visible;
-    margin: 0 10px;
+    margin: 15px 10px 20px 10px;
     /*border-top: 1px solid #eee;*/
     /*border-bottom: 1px solid #eee;*/
 }

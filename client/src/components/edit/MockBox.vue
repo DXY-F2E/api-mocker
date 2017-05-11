@@ -1,6 +1,6 @@
 <template>
     <div class="response-box">
-        <div class="hd">Response
+        <div class="hd">Mock Data
             <div class="res" v-if="mode === 'test' && response">
                 <em>-</em>
                 <el-tabs v-model="resActive">
@@ -95,20 +95,6 @@ export default {
 };
 </script>
 <style>
-.response-box {
-    margin-top: 40px;
-}
-.desc-box .hd,
-.response-box .hd {
-    text-align: left;
-    border-top: 1px solid #D3DCE6;
-    border-bottom: 1px solid #D3DCE6;
-    line-height: 36px;
-    font-size: 16px;
-    color: #C0CCDA;
-    /*padding: 8px 0;*/
-    line-height: 40px;
-}
 .response-box .res {
     display: inline-block;
 }
