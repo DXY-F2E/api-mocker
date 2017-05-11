@@ -3,7 +3,6 @@
         <div v-for="(param, idx) in params" class="param-box" :key="idx">
             <api-param :params="params"
                        :param="param"
-                       :type="name"
                        @change="updateParam"
                        @buildObject="buildObject"
                        @addParam="addParam"
@@ -20,7 +19,7 @@ import ApiParam from '../request/ApiParam';
 export default {
     name: 'params',
     components: {
-        MockParam
+        ApiParam
     },
     beforeMount() {
         if (!this.params || this.params.length === 0) {
@@ -33,6 +32,10 @@ export default {
     },
     props: ['params'],
     methods: {
+        buildObject() {
+            window.console.log(this.params);
+            this.expanded = true;
+        },
         update() {
             this.$emit('updateParams', this.params, this.data);
         },

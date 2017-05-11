@@ -3,10 +3,10 @@
     <div class="hd">Response</div>
     <el-row type="flex">
         <el-col class="status">
-            <status></status>
+            <status :response="response"></status>
         </el-col>
         <el-col>
-            <schema v-for="(schema, key) in response" :key="key" :schema="schema"></schema>
+            <schema :schema="activeSchema"></schema>
         </el-col>
     </el-row>
 </div>
@@ -16,16 +16,23 @@
 import Schema from '../schema/Index';
 import Status from './Status';
 export default {
+    props: ['response'],
     components: {
         Status,
         Schema
     },
-    computed: {
-        response: this.$store.state.api.options.response
+    data() {
+        return {
+            activeSchema: this.response[0]
+        };
     }
 };
 </script>
 <style>
+.out-box {
+    /*border-left: 1px solid #d1dbe5;*/
+    /*border-right: 1px solid #d1dbe5;*/
+}
 .out-box > .el-row{
     /*height: 300px;*/
 }
@@ -34,7 +41,9 @@ export default {
     min-width: 100px;
     max-width: 100px;
     height: 100%;
-    border-right: 1px solid #d1dbe5;
-    margin-right: -1px;
+}
+.out-box .schema {
+    border-left: 1px solid #d1dbe5;
+    /*margin-left: -1px;*/
 }
 </style>

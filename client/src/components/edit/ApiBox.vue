@@ -2,7 +2,7 @@
     <div class="api-box el-col">
         <url-box></url-box>
         <request-box :params="params" :method="method" :mode="mode"></request-box>
-        <response></response>
+        <response :response="response"></response>
         <mock-box :params="params" :mode="mode"></mock-box>
         <desc-box></desc-box>
     </div>
@@ -28,6 +28,9 @@ export default {
         },
         params() {
             return this.$store.state.api.options.params;
+        },
+        response() {
+            return this.$store.state.api.options.response;
         },
         method() {
             return this.$store.state.api.options.method;

@@ -9,7 +9,13 @@ function initData() {
         options: {
             response: [{
                 status: 200,
-                schema: []
+                params: [{
+                    key: null,
+                    value: '',
+                    type: 'string',
+                    required: true,
+                    comment: ''
+                }]
             }],
             method: 'get',
             delay: 0,

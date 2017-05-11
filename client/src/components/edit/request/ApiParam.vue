@@ -31,7 +31,20 @@
 
 <script>
 export default {
-    props: ['params', 'param', 'type'],
+    props: {
+        params: {
+            type: Array,
+            required: true
+        },
+        param: {
+            type: Object,
+            required: true
+        },
+        type: {
+            type: String,
+            required: false
+        }
+    },
     data() {
         return {
             apiType: this.param.type, // Vue + element升级到2.3.x + 1.3.1，select的model在这就不能直接绑定param.type了
