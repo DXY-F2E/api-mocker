@@ -53,6 +53,7 @@ export default {
     },
     methods: {
         changeParamType(val) {
+            this.param.type = val;
             if (val === 'object') {
                 if (!this.param.params) {
                     this.$set(this.param, 'params', [{
