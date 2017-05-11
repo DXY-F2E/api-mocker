@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <el-row type="flex" class="list-content">
+    <el-row type="flex" class="list-content" v-if="apis.length">
         <api-list :apis="apis"></api-list>
         <router-view :apis="apis"></router-view>
     </el-row>
