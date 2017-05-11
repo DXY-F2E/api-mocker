@@ -1,8 +1,8 @@
 <template>
   <div class="content">
-    <el-row type="flex" class="list-content" v-if="apis.length">
+    <el-row type="flex" class="list-content">
         <api-list :apis="apis"></api-list>
-        <router-view :apis="apis"></router-view>
+        <router-view :apis="apis" v-if="apis.length"></router-view>
     </el-row>
   </div>
 </template>
