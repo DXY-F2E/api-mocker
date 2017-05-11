@@ -20,7 +20,6 @@
 
 <script>
 import JsonEditor from '../common/JsonEditor';
-
 export default {
     components: {
         JsonEditor
@@ -65,14 +64,14 @@ export default {
                 return this.response;
             }
         },
-        jsonChanged(data, status) {
+        jsonChanged(rs) {
             if (this.mode !== 'edit') {
                 return;
             }
-            if (status.success) {
-                this.$store.commit('UPDATE_API_PROPS', ['dsl', data]);
+            if (rs.success) {
+                this.$store.commit('UPDATE_API_PROPS', ['dsl', rs.data]);
             }
-            this.$store.commit('UPDATE_DSL_STATUS', status);
+            this.$store.commit('UPDATE_DSL_STATUS', rs);
         },
         setValue() {
             const dsl = this.$store.state.api.dsl;

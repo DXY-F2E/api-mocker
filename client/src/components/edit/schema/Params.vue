@@ -1,15 +1,22 @@
 <template>
     <div class="params-box">
         <div v-for="(param, idx) in params" class="param-box" :key="idx">
-            <api-param :params="params"
-                       :param="param"
-                       @change="updateParam"
-                       @buildObject="buildObject"
-                       @addParam="addParam"
-                       @deleteParam="deleteParam"></api-param>
-            <params v-if="param.type === 'object' && param.params"
-                    :params="param.params"
-                    @updateParams="updateParam"></params>
+            <div class="param-wrap" :class="[expanded ? 'unfold' : 'fold']">
+                <div class="expand"
+                     v-show="param.type === 'object'"
+                     @click="expandParam">
+                    <span class="el-tree-node__expand-icon" :class="{expanded: expanded}"></span>
+                </div>
+                <api-param :params="params"
+                           :param="param"
+                           @change="updateParam"
+                           @buildObject="buildObject"
+                           @addParam="() => addParam(idx)"
+                           @deleteParam="() => deleteParam(idx)"></api-param>
+                <params v-if="param.type === 'object' && param.params"
+                        :params="param.params"
+                        @updateParams="updateParam"></params>
+            </div>
         </div>
     </div>
 </template>
@@ -30,10 +37,14 @@ export default {
             });
         }
     },
+    data() {
+        return {
+            expanded: false
+        };
+    },
     props: ['params'],
     methods: {
         buildObject() {
-            window.console.log(this.params);
             this.expanded = true;
         },
         update() {
@@ -57,6 +68,17 @@ export default {
             }
             this.params.splice(idx, 1);
             this.update();
+        },
+        getParamsBox() {
+            this.$el.childNodes.forEach(child => {
+                if (child.className === 'params-box') {
+                    this.paramsBox = child;
+                }
+            });
+            return this.paramsBox;
+        },
+        expandParam() {
+            this.expanded = !this.expanded;
         }
     }
 };

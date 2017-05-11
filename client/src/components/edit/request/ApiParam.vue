@@ -86,4 +86,22 @@ export default {
 };
 </script>
 <style>
+.params-box .control {
+    min-width: 72px;
+    max-width: 72px;
+    /*position: absolute;
+    left: 0;
+    top: 0;*/
+}
+.params-box .control i {
+    color: #ccc;
+    line-height: 36px;
+    width: 36px;
+    cursor: pointer;
+    float: left;
+    text-align: center;
+}
+.params-box .control i:hover {
+    background-color: #EFF2F7;
+}
 </style>

@@ -1,21 +1,32 @@
 <template>
     <div class="schema">
-        <el-tabs type="card" class="tabs">
-            <el-tab-pane class="tab-item structure" label="Structure">
-                <params :params="schema.params"
-                        @updateParams="updateParams"></params>
+        <el-tabs type="card" class="tabs" v-model="activeTab">
+            <el-tab-pane class="tab-item structure" label="Structure" name="structure">
+                <params :params="localSchema.params"
+                        @updateParams="paramsChanged"></params>
             </el-tab-pane>
-            <el-tab-pane class="tab-item" label="JSON Schema">配置管理</el-tab-pane>
-            <el-tab-pane class="tab-item" label="Example">角色管理</el-tab-pane>
+            <el-tab-pane class="tab-item" label="JSON Schema" name="schema">
+                <json-editor v-if="activeTab === 'schema'" v-model="localSchema" @change="schemaChanged"></json-editor>
+            </el-tab-pane>
+            <el-tab-pane class="tab-item" label="Example" name="example">角色管理</el-tab-pane>
         </el-tabs>
     </div>
 </template>
 
 <script>
 import Params from './Params';
+// import { clone } from '../../../util';
+import R from 'ramda';
+import JsonEditor from '../../common/JsonEditor';
 export default {
     components: {
-        Params
+        Params,
+        JsonEditor
+    },
+    data() {
+        return {
+            activeTab: 'structure'
+        };
     },
     props: {
         schema: {
@@ -23,9 +34,22 @@ export default {
             required: true
         }
     },
+    computed: {
+        localSchema() {
+            return R.clone(this.schema);
+        }
+    },
     methods: {
-        updateParams() {
-            window.console.log('change params');
+        schemaChanged(rs) {
+            if (rs.success) {
+                this.updateSchema(rs.data);
+            }
+        },
+        paramsChanged() {
+            this.updateSchema(this.localSchema);
+        },
+        updateSchema(data) {
+            this.$emit('change', data);
         }
     }
 };
@@ -44,11 +68,10 @@ export default {
     line-height: 36px;
 }
 .schema .el-tabs__content {
-    min-height: 200px;
-    padding:
-    /*max-height: 300px;*/
+    height: 300px;
+    overflow-y: auto;
 }
 .schema .el-tabs__content .structure {
-    padding: 10px;
+    padding: 10px 20px;
 }
 </style>

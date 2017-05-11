@@ -1,4 +1,5 @@
 import apiInit from './apiInitData';
+import Schema from './apiInitSchema';
 import R from 'ramda';
 const mutations = {
     FETCH_GROUPS_SUCCESS(state, groups) {
@@ -30,7 +31,14 @@ const mutations = {
         const api = state.api || {};
         const prop = R.head(propValuePair);
         const value = R.last(propValuePair);
-        state.api = R.assocPath(prop.split('.'), value, api);
+        const route = prop.split('.').map(p => {
+            if (Number(p).toString() === p) {
+                return Number(p);
+            } else {
+                return p;
+            }
+        });
+        state.api = R.assocPath(route, value, api);
         state.apiUnsaved = true;
     },
     SAVE_API(state) {
@@ -57,6 +65,12 @@ const mutations = {
     },
     UPDATE_RESPONSE(state, res) {
         state.response = res;
+    },
+    ADD_API_RESPONSE(state) {
+        state.api.options.response.push(new Schema());
+    },
+    DELETE_API_RESPONSE(state, index) {
+        state.api.options.response.splice(index, 1);
     }
 };
 export default mutations;

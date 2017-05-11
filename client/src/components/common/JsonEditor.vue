@@ -106,18 +106,19 @@ export default {
                 try {
                     const data = this.getValue();
                     if (Object.keys(data).length > 0) {
-                        this.$emit('change', data, {
+                        this.$emit('change', {
                             success: true,
+                            data,
                             msg: ''
                         });
                     } else {
-                        this.$emit('change', false, {
+                        this.$emit('change', {
                             success: false,
                             msg: `${this.name}空对象`
                         });
                     }
                 } catch (err) {
-                    this.$emit('change', false, {
+                    this.$emit('change', {
                         success: false,
                         msg: `${this.name}格式错误`
                     });

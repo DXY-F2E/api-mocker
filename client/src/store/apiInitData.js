@@ -1,4 +1,4 @@
-
+import Schema from './apiInitSchema';
 function initData() {
     return {
         url: null,
@@ -7,16 +7,7 @@ function initData() {
         group: '',
         desc: null,
         options: {
-            response: [{
-                status: 200,
-                params: [{
-                    key: null,
-                    value: '',
-                    type: 'string',
-                    required: true,
-                    comment: ''
-                }]
-            }],
+            response: [new Schema()],
             method: 'get',
             delay: 0,
             params: {

@@ -95,27 +95,12 @@ export default {
     min-width: 200px;
     max-width: 200px;
 }
-.params-box .control {
-    min-width: 72px;
-    max-width: 72px;
-}
 .params-box .comment {
     min-width: 300px;
     max-width: 300px;
 }
 .params-box .key {
     min-width: 100px;
-}
-.params-box .control i {
-    color: #ccc;
-    line-height: 36px;
-    width: 36px;
-    cursor: pointer;
-    float: left;
-    text-align: center;
-}
-.params-box .control i:hover {
-    background-color: #EFF2F7;
 }
 .params-box .el-input__inner {
     border: none;
