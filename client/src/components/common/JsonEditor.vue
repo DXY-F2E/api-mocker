@@ -89,7 +89,14 @@ export default {
             }
         },
         getValue() {
-            return JSON.parse(this.editor.getValue());
+            try {
+                return JSON.parse(this.editor.getValue());
+            } catch (err) {
+                return {
+                    success: false,
+                    msg: `${this.name}格式错误`
+                };
+            }
         },
         parseEditor() {
             let value = this.editor.getValue();
@@ -103,25 +110,21 @@ export default {
         initEditor() {
             this.setValue();
             this.editor.getSession().on('change', () => {
-                try {
-                    const data = this.getValue();
-                    if (Object.keys(data).length > 0) {
-                        this.$emit('change', data, {
-                            success: true,
-                            msg: ''
-                        });
-                    } else {
-                        this.$emit('change', false, {
-                            success: false,
-                            msg: `${this.name}空对象`
-                        });
-                    }
-                } catch (err) {
-                    this.$emit('change', false, {
+                const data = this.getValue();
+                if (!data.success) {
+                    return data;
+                }
+                if (Object.keys(data).length <= 0) {
+                    this.$emit('change', {
                         success: false,
-                        msg: `${this.name}格式错误`
+                        msg: `${this.name}空对象`
                     });
                 }
+                this.$emit('change', {
+                    data,
+                    success: true,
+                    msg: ''
+                });
             });
         }
     },
