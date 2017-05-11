@@ -103,7 +103,7 @@ export default {
         },
         showDoc() {
             this.$router.push({
-                name: 'Document',
+                name: 'ApiDoc',
                 params: {
                     groupId: this.api.group,
                     apiId: this.api._id
