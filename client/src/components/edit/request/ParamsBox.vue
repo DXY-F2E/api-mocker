@@ -1,11 +1,9 @@
 <template>
     <div>
-        <params class="set"
-                :params="params"
+        <params :params="params"
                 :name="name"
                 @updateParams="changeParams"></params>
-        <params class="fill"
-                :params="reqParams"
+        <params :params="reqParams"
                 :name="name"
                 mode="fill"
                 @updateParams="changeReqParams"></params>

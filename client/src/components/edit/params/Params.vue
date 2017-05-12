@@ -1,20 +1,27 @@
 <template>
     <div class="params-box">
-        <div v-for="(param, idx) in params" class="param-box" :key="idx">
-            <api-param :params="params"
-                       :param="param"
-                       :name="name"
-                       :mode="mode"
-                       @change="(data) => update(data, idx)"
-                       @addParam="() => addParam(idx)"
-                       @deleteParam="() => deleteParam(idx)">
-                <params v-if="param.type === 'object' && param.params"
-                        :mode="mode"
-                        :params="param.params"
-                        slot="params"
-                        @change="(data) => update(data, idx)"></params>
-            </api-param>
-        </div>
+        <api-param :params="params"
+                   :param="param"
+                   :name="name"
+                   :mode="mode"
+                   :level="level"
+                   v-for="(param, idx) in params" :key="idx"
+                   @change="(data) => update(data, idx)"
+                   @addParam="() => addParam(idx)"
+                   @deleteParam="() => deleteParam(idx)">
+            <params v-if="param.type === 'object' && param.params"
+                    :mode="mode"
+                    :params="param.params"
+                    slot="params"
+                    :level="level + 1"
+                    @change="(data) => update(data, idx)"></params>
+            <params v-if="param.type === 'array' && param.items.type === 'object'"
+                    :mode="mode"
+                    :params="param.items.params"
+                    slot="params"
+                    :level="level + 1"
+                    @change="(data) => update(data, idx)"></params>
+        </api-param>
     </div>
 </template>
 
@@ -26,6 +33,10 @@ export default {
         ApiParam
     },
     props: {
+        level: {
+            type: Number,
+            required: true
+        },
         params: {
             type: Array,
             required: true
@@ -98,21 +109,12 @@ export default {
     position: relative;
     z-index: 0;
 }
-/*.param .el-input__inner:focus,*/
-.param .el-input__inner:hover {
-    border-color: #EFF2F7;
-}
-.params-box .param:focus,
-.params-box .param:hover {
-    box-shadow: 0px 0px 5px 2px #eee;
-    z-index: 1;
-}
-.params-box .el-select .el-input {
-    width: 100px;
+.params-box .el-cascader .el-input {
+    width: 140px;
 }
 .params-box .config {
-    min-width: 200px;
-    max-width: 200px;
+    min-width: 240px;
+    max-width: 240px;
 }
 .params-box .comment {
     min-width: 300px;
@@ -154,25 +156,7 @@ export default {
     padding-left: 25px;
     position: relative;
 }
-.params-box .param.set {
-    /*padding-left: 72px;*/
-}
-.params-box .control {
-    min-width: 72px;
-    max-width: 72px;
-    /*position: absolute;
-    left: -72px;
-    top: 0;*/
-}
-.params-box .control i {
-    color: #ccc;
-    line-height: 36px;
-    width: 36px;
-    cursor: pointer;
-    float: left;
-    text-align: center;
-}
-.params-box .control i:hover {
-    background-color: #EFF2F7;
+.params-box.set {
+    padding-left: 66px;
 }
 </style>

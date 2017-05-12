@@ -1,7 +1,7 @@
 import axios from 'axios';
 import API from './api';
 import config from '../../config';
-import { validateApi } from '../util';
+import { validateApi, buildApiResponse } from '../util';
 
 const domain = process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax;
 
@@ -60,7 +60,9 @@ const actions = {
     getApi({ commit }, payload) {
         const {groupId, apiId} = payload;
         return axios.get(API.API.replace(':groupId', groupId).replace(':apiId', apiId)).then(res => {
-            commit('UPDATE_API', res.data.resources);
+            const api = buildApiResponse(res.data.resources);
+            window.console.log(api);
+            commit('UPDATE_API', api);
             commit('SAVE_API');
         });
     },

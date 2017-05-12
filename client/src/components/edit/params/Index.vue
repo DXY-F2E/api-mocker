@@ -2,6 +2,8 @@
     <params :params="params"
             :name="name"
             :mode="mode"
+            :class="mode"
+            :level="1"
             @change="update"></params>
 </template>
 
@@ -11,14 +13,11 @@ export default {
     components: {
         Params
     },
+    beforeUpdate() {
+        this.rebuildParams();
+    },
     beforeMount() {
-        if (!this.params || this.params.length === 0) {
-            this.params.push({
-                key: null,
-                type: 'string',
-                required: true
-            });
-        }
+        this.rebuildParams();
     },
     props: {
         params: {
@@ -35,6 +34,15 @@ export default {
         }
     },
     methods: {
+        rebuildParams() {
+            if (!this.params || this.params.length === 0) {
+                this.params.push({
+                    key: null,
+                    type: 'string',
+                    required: true
+                });
+            }
+        },
         getFillValue(params) {
             const value = {};
             params.forEach(p => {

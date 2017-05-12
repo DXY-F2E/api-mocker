@@ -5,25 +5,15 @@
                 <el-input placeholder="key" v-model="param.key" @change="update"  @keyup.native.enter="addParam"></el-input>
             </el-col>
             <el-col class="config">
-                <el-select v-model="apiType" placeholder="类型" @change="changeParamType">
-                    <el-option
-                        v-for="(type, idx) in tpyeList"
-                        :key="type"
-                        :label="type"
-                        :value="type.toLowerCase()">
-                    </el-option>
-                </el-select>
+                <el-cascader
+                    @change="changeParamType"
+                    :options="tpyeList"
+                    v-model="apiType">
+                </el-cascader>
                 <el-checkbox v-model="param.required" @change="update">必填</el-checkbox>
             </el-col>
             <el-col class="comment">
                 <el-input placeholder="备注" v-model="param.comment" @change="update"></el-input>
-            </el-col>
-            <el-col class="control">
-                <i class="el-icon-plus" @click="addParam"></i>
-                <i class="el-icon-close"
-                   @click="deleteParam"
-                   v-if="params.length > 1">
-                </i>
             </el-col>
         </el-row>
     </div>
@@ -32,10 +22,6 @@
 <script>
 export default {
     props: {
-        params: {
-            type: Array,
-            required: true
-        },
         param: {
             type: Object,
             required: true
@@ -47,14 +33,15 @@ export default {
     },
     data() {
         return {
-            apiType: this.param.type, // Vue + element升级到2.3.x + 1.3.1，select的model在这就不能直接绑定param.type了
-            tpyeList: this.getTypeList()
+            apiType: this.getDefaultType(), // Vue + element升级到2.3.x + 1.3.1，select的model在这就不能直接绑定param.type了
+            tpyeList: this.getTypeList(),
+            selectedOptions: []
         };
     },
     methods: {
         changeParamType(val) {
-            this.param.type = val;
-            if (val === 'object') {
+            this.$set(this.param, 'type', val[0]);
+            if (val[0] === 'object') {
                 if (!this.param.params) {
                     this.$set(this.param, 'params', [{
                         key: null,
@@ -63,23 +50,56 @@ export default {
                     }]);
                 }
                 this.$emit('buildObject', this.param);
+            } else if (val[0] === 'array') {
+                this.setArrayType(val[1]);
             }
+            window.console.log(this.param);
             this.update();
+        },
+        setArrayType(type) {
+            this.$set(this.param, 'items', {
+                type
+            });
+            if (type === 'object' && !this.param.items.params) {
+                this.$set(this.param.items, 'params', [{
+                    key: null,
+                    type: 'string',
+                    required: true
+                }]);
+                this.$emit('buildObject', this.param);
+            }
         },
         update() {
             this.$emit('change', this.param);
         },
-        addParam() {
-            this.$emit('addParam');
-        },
-        deleteParam() {
-            this.$emit('deleteParam');
+        getDefaultType() {
+            const type = [this.param.type];
+            if (this.param.type === 'array') {
+                type.push(this.param.items.type);
+            }
+            return type;
         },
         getTypeList() {
             if (this.name === 'query') {
-                return ['String'];
+                return [{
+                    value: 'string',
+                    label: 'String'
+                }];
             } else {
-                return ['String', 'Number', 'Object', 'Array'];
+                const types = ['String', 'Number', 'Boolean', 'Object', 'Array'];
+                return types.map(t => {
+                    const type = {
+                        value: t.toLowerCase(),
+                        label: t
+                    };
+                    if (t === 'Array') {
+                        type.children = ['String', 'Number', 'Boolean', 'Object'].map(t => ({
+                            value: t.toLowerCase(),
+                            label: t
+                        }));
+                    }
+                    return type;
+                });
             }
         }
     }

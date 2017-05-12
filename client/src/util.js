@@ -4,7 +4,41 @@ function isEmpty(val) {
 function clone(val) {
     return JSON.parse(JSON.stringify(val));
 }
-
+function buildParams(json) {
+    const schema = [];
+    for (const key in json) {
+        const type = typeof json[key];
+        const param = {
+            key,
+            type,
+            required: true,
+            comment: null
+        };
+        if (type === 'object') {
+            param.params = buildParams(json[key]);
+        } else {
+            param.example = json[key];
+        }
+        schema.push(param);
+    }
+    return schema;
+}
+function buildSchemaFormExample(json, statusText = 'status1') {
+    const schema = {
+        status: 200,
+        statusText,
+        params: []
+    };
+    schema.params = buildParams(json);
+    return schema;
+}
+function buildApiResponse(api) {
+    if (api.options.response) {
+        return api;
+    }
+    api.options.response = [buildSchemaFormExample(api.dsl)];
+    return api;
+}
 function validateApi(state) {
     const regex = new RegExp(/^((ht|f)tps?):\/\/[\w-]+(\.[\w-]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&~+#])?$/);
     const api = state.api;
@@ -43,6 +77,8 @@ function validateApi(state) {
 }
 
 export {
+    buildSchemaFormExample,
+    buildApiResponse,
     validateApi,
     isEmpty,
     clone

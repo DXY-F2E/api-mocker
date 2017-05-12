@@ -2,7 +2,7 @@
     <div class="api-box el-col">
         <url-box></url-box>
         <request-box :params="params" :method="method" :mode="mode"></request-box>
-        <!-- <response v-if="response" :response="response"></response> -->
+        <response v-if="response" :response="response"></response>
         <mock-box :params="params" :mode="mode"></mock-box>
         <desc-box></desc-box>
     </div>

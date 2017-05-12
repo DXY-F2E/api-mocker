@@ -8,19 +8,22 @@
             <el-tab-pane class="tab-item" label="JSON Schema" name="schema">
                 <json-editor v-if="activeTab === 'schema'" v-model="localSchema" @change="schemaChanged"></json-editor>
             </el-tab-pane>
-            <el-tab-pane class="tab-item" label="Example" name="example">角色管理</el-tab-pane>
+            <el-tab-pane class="tab-item" label="Example" name="example">
+                <Example :schema="localSchema"></Example>
+            </el-tab-pane>
         </el-tabs>
     </div>
 </template>
 
 <script>
-import Params from './Params';
-// import { clone } from '../../../util';
+import Params from '../params/Index';
 import R from 'ramda';
 import JsonEditor from '../../common/JsonEditor';
+import Example from './Example';
 export default {
     components: {
         Params,
+        Example,
         JsonEditor
     },
     data() {
