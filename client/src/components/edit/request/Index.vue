@@ -5,7 +5,7 @@
                          :key="type.name"
                          :label="type.label"
                          :name="type.name"
-                         :disabled="method === 'get' && type.name === 'query'">
+                         :disabled="method === 'get' && type.name === 'body'">
                 <params-box :params="localParams[type.name]" :name="type.name"></params-box>
                 <!-- <params :params="localParams[type.name]" :name="type.name"></params> -->
             </el-tab-pane>
