@@ -1,36 +1,34 @@
 <template>
-    <div class="param set">
-        <el-row type="flex" class="row-bg" >
-            <el-col class="key">
-                <el-input placeholder="key" v-model="param.key" @change="update"  @keyup.native.enter="addParam"></el-input>
-            </el-col>
-            <el-col class="config">
-                <el-select v-model="apiType" placeholder="类型" @change="changeParamType">
-                    <el-option
-                        v-for="(type, idx) in tpyeList"
-                        :key="type"
-                        :label="type"
-                        :value="type.toLowerCase()">
-                    </el-option>
-                </el-select>
-                <el-checkbox v-model="param.required" @change="update">必填</el-checkbox>
-            </el-col>
-            <el-col class="comment">
-                <el-input placeholder="备注" v-model="param.comment" @change="update"></el-input>
-            </el-col>
-            <el-col class="control">
-                <i class="el-icon-plus" @click="addParam"></i>
-                <i class="el-icon-close"
-                   @click="deleteParam"
-                   v-if="params.length > 1">
-                </i>
-            </el-col>
-        </el-row>
+    <div class="param-wrap" :class="[expanded ? 'unfold' : 'fold']">
+        <div class="expand"
+             v-show="param.type === 'object'"
+             @click="expandParam">
+            <span class="el-tree-node__expand-icon" :class="{expanded: expanded}"></span>
+        </div>
+        <param-set :params="params"
+                   :param="param"
+                   :name="name"
+                   v-if="mode === 'set'"
+                   @buildObject="buildObject"
+                   @change="updateParam"
+                   @addParam="addParam"
+                   @deleteParam="deleteParam"></param-set>
+        <param-fill v-if="mode === 'fill'"
+                    :param="param"
+                    @expand="expandParam"
+                    @change="updateParam"></param-fill>
+        <slot name="params"></slot>
     </div>
 </template>
 
 <script>
+import ParamFill from './ParamFill';
+import ParamSet from './ParamSet';
 export default {
+    components: {
+        ParamFill,
+        ParamSet
+    },
     props: {
         params: {
             type: Array,
@@ -40,33 +38,25 @@ export default {
             type: Object,
             required: true
         },
-        type: {
+        name: {
             type: String,
             required: false
+        },
+        mode: {
+            type: String,
+            default: 'set'
         }
     },
     data() {
         return {
-            apiType: this.param.type, // Vue + element升级到2.3.x + 1.3.1，select的model在这就不能直接绑定param.type了
-            tpyeList: this.getTypeList()
+            expanded: false
         };
     },
     methods: {
-        changeParamType(val) {
-            this.param.type = val;
-            if (val === 'object') {
-                if (!this.param.params) {
-                    this.$set(this.param, 'params', [{
-                        key: null,
-                        type: 'string',
-                        required: true
-                    }]);
-                }
-                this.$emit('buildObject', this.param);
-            }
-            this.update();
+        buildObject() {
+            this.expanded = true;
         },
-        update() {
+        updateParam() {
             this.$emit('change', this.param);
         },
         addParam() {
@@ -75,36 +65,31 @@ export default {
         deleteParam() {
             this.$emit('deleteParam');
         },
-        getTypeList() {
-            if (this.type === 'query') {
-                return ['String'];
-            } else {
-                return ['String', 'Number', 'Object', 'Array'];
-            }
+        expandParam() {
+            this.expanded = !this.expanded;
         }
     }
 };
 </script>
 <style>
-.params-box .param.set {
-    /*padding-left: 72px;*/
+.param-wrap {
+    position: relative;
 }
-.params-box .control {
-    min-width: 72px;
-    max-width: 72px;
-    /*position: absolute;
-    left: -72px;
-    top: 0;*/
+.param-wrap .params-box {
+    transition: height 0.3s ease;
 }
-.params-box .control i {
-    color: #ccc;
-    line-height: 36px;
-    width: 36px;
+.param-wrap.fold .params-box {
+    overflow: hidden;
+    height: 0px;
+}
+.param-wrap .expand {
     cursor: pointer;
-    float: left;
-    text-align: center;
-}
-.params-box .control i:hover {
-    background-color: #EFF2F7;
+    display: inline-block;
+    width: 20px;
+    height: 36px;
+    position: absolute;
+    left: -20px;
+    top: 0px;
+    line-height: 36px;
 }
 </style>

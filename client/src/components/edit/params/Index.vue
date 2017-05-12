@@ -1,32 +1,15 @@
 <template>
-    <div class="params-box">
-        <div v-for="(param, idx) in params" class="param-box" :key="idx">
-            <div class="param-wrap" :class="[expanded ? 'unfold' : 'fold']">
-                <div class="expand"
-                     v-show="param.type === 'object'"
-                     @click="expandParam">
-                    <span class="el-tree-node__expand-icon" :class="{expanded: expanded}"></span>
-                </div>
-                <api-param :params="params"
-                           :param="param"
-                           @change="updateParam"
-                           @buildObject="buildObject"
-                           @addParam="() => addParam(idx)"
-                           @deleteParam="() => deleteParam(idx)"></api-param>
-                <params v-if="param.type === 'object' && param.params"
-                        :params="param.params"
-                        @updateParams="updateParam"></params>
-            </div>
-        </div>
-    </div>
+    <params :params="params"
+            :name="name"
+            :mode="mode"
+            @change="update"></params>
 </template>
 
 <script>
-import ApiParam from '../request/ApiParam';
+import Params from './Params';
 export default {
-    name: 'params',
     components: {
-        ApiParam
+        Params
     },
     beforeMount() {
         if (!this.params || this.params.length === 0) {
@@ -37,74 +20,44 @@ export default {
             });
         }
     },
-    data() {
-        return {
-            expanded: false
-        };
+    props: {
+        params: {
+            type: Array,
+            required: true
+        },
+        name: {
+            type: String,
+            required: false
+        },
+        mode: {
+            type: String,
+            default: 'set'
+        }
     },
-    props: ['params'],
     methods: {
-        buildObject() {
-            this.expanded = true;
-        },
-        update() {
-            this.$emit('updateParams', this.params, this.data);
-        },
-        updateParam() {
-            this.update();
-        },
-        addParam(idx) {
-            const param = {
-                key: null,
-                type: 'string',
-                required: true
-            };
-            this.params.splice(idx + 1, 0, param);
-            this.update();
-        },
-        deleteParam(idx) {
-            if (this.params.length === 1) {
-                return;
-            }
-            this.params.splice(idx, 1);
-            this.update();
-        },
-        getParamsBox() {
-            this.$el.childNodes.forEach(child => {
-                if (child.className === 'params-box') {
-                    this.paramsBox = child;
+        getFillValue(params) {
+            const value = {};
+            params.forEach(p => {
+                if (p.type === 'object' && p.params) {
+                    const v = this.getFillValue(p.params);
+                    if (Object.keys(v).length > 0) {
+                        value[p.key] = v;
+                        this.$set(p, 'value', v);
+                    }
+                } else if (p.value) {
+                    value[p.key] = p.value;
                 }
             });
-            return this.paramsBox;
+            return value;
         },
-        expandParam() {
-            this.expanded = !this.expanded;
+        update() {
+            if (this.mode === 'fill') {
+                const value = this.getFillValue(this.params);
+                this.$emit('updateParams', this.params, value);
+            } else {
+                this.$emit('updateParams', this.params);
+            }
         }
     }
 };
-</script><style>
-.param-wrap {
-    position: relative;
-}
-.param-wrap .params-box {
-    transition: height 0.3s ease;
-}
-.param-wrap.fold .params-box {
-    overflow: hidden;
-    height: 0px;
-}
-.param-wrap .expand {
-    cursor: pointer;
-    display: inline-block;
-    width: 20px;
-    height: 36px;
-    position: absolute;
-    left: -20px;
-    top: 0px;
-    line-height: 36px;
-}
-.params-box .params-box {
-    padding-left: 25px;
-    position: relative;
-}
-</style>
+</script>

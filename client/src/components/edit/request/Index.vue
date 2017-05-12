@@ -7,7 +7,6 @@
                          :name="type.name"
                          :disabled="method === 'get' && type.name === 'body'">
                 <params-box :params="localParams[type.name]" :name="type.name"></params-box>
-                <!-- <params :params="localParams[type.name]" :name="type.name"></params> -->
             </el-tab-pane>
             <el-tab-pane label="Advanced" name="advanced" v-if="mode === 'edit'">
                 <advanced></advanced>
