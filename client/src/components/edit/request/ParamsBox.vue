@@ -2,12 +2,11 @@
     <params :params="params"
             :req-params="reqParams"
             :name="name"
-            @updateParams="changeParams"
-            @updateReqParams="changeReqParams"></params>
+            @updateParams="changeParams"></params>
 </template>
 
 <script>
-import Params from './Params';
+import Params from '../params/Index';
 import { clone } from '../../../util';
 export default {
     components: {
