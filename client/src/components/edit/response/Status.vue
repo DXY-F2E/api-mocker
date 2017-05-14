@@ -8,6 +8,7 @@
                 :key="key"
                 @click="changeSchema(key)">
                 <span>{{r.status}}</span>
+                <span>[{{r.statusText}}]</span>
                 <i class="el-icon-close" v-if="response.length > 1" @click.stop="deleteSchema(key)"></i>
             </li>
             <li class="item add" @click="addSchema">

@@ -9,7 +9,9 @@
                 <json-editor v-if="activeTab === 'schema'" v-model="localSchema" @change="schemaChanged"></json-editor>
             </el-tab-pane>
             <el-tab-pane class="tab-item" label="Example" name="example">
-                <Example :schema="localSchema"></Example>
+                <Example :schema="localSchema"
+                         @buildSchema="updateSchema"
+                         @buildExample="updateExample"></Example>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -44,12 +46,17 @@ export default {
     },
     methods: {
         schemaChanged(rs) {
+            window.console.log(rs);
             if (rs.success) {
                 this.updateSchema(rs.data);
             }
         },
         paramsChanged() {
             this.updateSchema(this.localSchema);
+        },
+        updateExample(example) {
+            this.localSchema.example = example;
+            this.$emit('change', this.localSchema);
         },
         updateSchema(data) {
             this.$emit('change', data);

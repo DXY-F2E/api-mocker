@@ -82,7 +82,7 @@ export default {
             }
         },
         setValue() {
-            if (this.value !== undefined) {
+            if (this.value) {
                 this.editor.setValue(JSON.stringify(this.value, null, '\t'), 1);
             } else {
                 this.editor.setValue('');
@@ -112,7 +112,8 @@ export default {
             this.editor.getSession().on('change', () => {
                 const data = this.getValue();
                 if (!data.success) {
-                    return data;
+                    this.$emit('change', data);
+                    return;
                 }
                 if (Object.keys(data).length <= 0) {
                     this.$emit('change', {

@@ -8,6 +8,7 @@ function initData() {
         desc: null,
         options: {
             response: [new Schema()],
+            responseIndex: 0,
             method: 'get',
             delay: 0,
             params: {

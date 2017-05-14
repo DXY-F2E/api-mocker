@@ -63,8 +63,8 @@ export default {
 }
 .out-box .el-col.status {
     position: relative;
-    min-width: 100px;
-    max-width: 100px;
+    min-width: 150px;
+    max-width: 150px;
     height: 100%;
 }
 .out-box .schema {

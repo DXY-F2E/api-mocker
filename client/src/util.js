@@ -1,3 +1,4 @@
+import Mock from 'mockjs';
 function isEmpty(val) {
     return !val || val.trim() === '';
 }
@@ -23,10 +24,11 @@ function buildParams(json) {
     }
     return schema;
 }
-function buildSchemaFormExample(json, statusText = 'status1') {
+function buildSchemaFormExample(json, statusText = 'status1', status = 200) {
     const schema = {
-        status: 200,
+        status,
         statusText,
+        example: json,
         params: []
     };
     schema.params = buildParams(json);
@@ -39,6 +41,30 @@ function buildApiResponse(api) {
     api.options.response = [buildSchemaFormExample(api.dsl)];
     return api;
 }
+let buildExampleFormSchema = null;
+let buildExample = null;
+buildExampleFormSchema = (schema) => {
+    window.console.log(schema);
+    const example = {};
+    schema.params.forEach(param => {
+        example[param.key] = param.example || buildExample(param);
+    });
+    return Mock.mock(example);
+};
+buildExample = (param) => {
+    switch (param.type) {
+        case 'object':
+            return buildExampleFormSchema(param);
+        case 'array':
+            return [buildExample(param.items)];
+        case 'number':
+            return Math.ceil(Math.random() * 10000);
+        case 'boolean':
+            return true;
+        default:
+            return 'value';
+    }
+};
 function validateApi(state) {
     const regex = new RegExp(/^((ht|f)tps?):\/\/[\w-]+(\.[\w-]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&~+#])?$/);
     const api = state.api;
@@ -77,6 +103,7 @@ function validateApi(state) {
 }
 
 export {
+    buildExampleFormSchema,
     buildSchemaFormExample,
     buildApiResponse,
     validateApi,

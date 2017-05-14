@@ -28,6 +28,11 @@ module.exports = mongoose => {
             method: String,
             headers: {},
             params: {},
+            response: {},
+            responseIndex: {
+                type: Number,
+                default: 0
+            },
             delay: Number
         },
         isDeleted: {

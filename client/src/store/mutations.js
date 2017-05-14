@@ -70,7 +70,7 @@ const mutations = {
         state.response = res;
     },
     ADD_API_RESPONSE(state) {
-        state.api.options.response.push(new Schema());
+        state.api.options.response.push(new Schema(state.api.options.response.length + 1));
     },
     DELETE_API_RESPONSE(state, index) {
         state.api.options.response.splice(index, 1);

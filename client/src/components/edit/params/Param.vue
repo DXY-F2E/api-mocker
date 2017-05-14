@@ -5,7 +5,7 @@
              @click="expandParam">
             <span class="el-tree-node__expand-icon" :class="{expanded: expanded}"></span>
         </div>
-        <div class="control" :style="styleObject">
+        <div class="control" :style="styleObject" v-if="mode === 'set'">
             <i class="el-icon-close"
                @click="deleteParam"
                :class="{hidden: params.length === 1}">
