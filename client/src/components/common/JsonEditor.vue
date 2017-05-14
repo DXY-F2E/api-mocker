@@ -49,7 +49,7 @@ export default {
     },
     watch: {
         value(newVal) {
-            if (!R.equals(newVal, this.getValue())) {
+            if (!R.equals(newVal, this.getValue().data)) {
                 this.setValue();
             }
         }
@@ -90,9 +90,13 @@ export default {
         },
         getValue() {
             try {
-                return JSON.parse(this.editor.getValue());
+                return {
+                    data: JSON.parse(this.editor.getValue()),
+                    success: true
+                };
             } catch (err) {
                 return {
+                    data: this.value,
                     success: false,
                     msg: `${this.name}格式错误`
                 };
@@ -115,17 +119,14 @@ export default {
                     this.$emit('change', data);
                     return;
                 }
-                if (Object.keys(data).length <= 0) {
+                if (Object.keys(data.data).length <= 0) {
                     this.$emit('change', {
                         success: false,
                         msg: `${this.name}空对象`
                     });
+                    return;
                 }
-                this.$emit('change', {
-                    data,
-                    success: true,
-                    msg: ''
-                });
+                this.$emit('change', data);
             });
         }
     },
