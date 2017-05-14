@@ -7,8 +7,10 @@
                 v-for="(r, key) in response"
                 :key="key"
                 @click="changeSchema(key)">
-                <span>{{r.status}}</span>
-                <span>[{{r.statusText}}]</span>
+                <span>
+                    <em class="code">{{r.status}}</em>
+                    <em class="text">[{{r.statusText}}]</em>
+                </span>
                 <i class="el-icon-close" v-if="response.length > 1" @click.stop="deleteSchema(key)"></i>
             </li>
             <li class="item add" @click="addSchema">
@@ -46,6 +48,14 @@ export default {
     padding: 8px 10px;
     cursor: pointer;
     opacity: 0.6;
+    height: 36px;
+    overflow: hidden;
+}
+.status .item em {
+    font-style: normal;
+}
+.status .item .text {
+    color: #333;
 }
 .status .item:not(.add):before {
     content: '';
@@ -75,6 +85,10 @@ export default {
 .status .item span {
     display: inline-block;
     vertical-align: middle;
+    max-width: 92px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .status .item:not(.add) i {
     float: right;
@@ -86,6 +100,11 @@ export default {
     text-align: center;
     display: none;
     transform: scale(0.8);
+    margin-top: 2px;
+    border-radius: 3px;
+}
+.status .item:not(.add) i:hover{
+    background-color: #fbcbcb;
 }
 .status .item.active,
 .status .item:hover {

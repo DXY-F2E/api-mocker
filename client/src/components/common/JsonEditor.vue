@@ -96,7 +96,6 @@ export default {
                 };
             } catch (err) {
                 return {
-                    data: this.value,
                     success: false,
                     msg: `${this.name}格式错误`
                 };
