@@ -26,12 +26,6 @@ export default {
         };
     },
     methods: {
-        onKeydown(e) {
-            if (e.keyCode === 83 && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                window.console.log('save');
-            }
-        },
         ...mapActions([
             'getApi'
         ]),

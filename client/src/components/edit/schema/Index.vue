@@ -1,15 +1,20 @@
 <template>
-    <div class="schema">
+    <div class="schema schema-edit">
         <el-tabs type="card" class="tabs" v-model="activeTab">
-            <el-tab-pane class="tab-item structure" label="Structure" name="structure">
+            <el-tab-pane class="tab-item structure" label="Params" name="structure">
                 <params :params="localSchema.params"
                         @updateParams="paramsChanged"></params>
             </el-tab-pane>
-            <el-tab-pane class="tab-item" label="JSON Schema" name="schema">
-                <json-editor v-if="activeTab === 'schema'" v-model="localSchema" @change="schemaChanged"></json-editor>
+            <el-tab-pane class="tab-item" label="Schema" name="schema">
+                <json-editor v-if="activeTab === 'schema'"
+                             v-model="localSchema"
+                             :resize-act="fullscreen"
+                             :fullscreen-tool="false"
+                             @change="schemaChanged"></json-editor>
             </el-tab-pane>
             <el-tab-pane class="tab-item" label="Example" name="example">
                 <Example :schema="localSchema"
+                         :fullscreen="fullscreen"
                          @buildSchema="updateSchema"
                          @buildExample="updateExample"></Example>
             </el-tab-pane>
@@ -20,7 +25,7 @@
 <script>
 import Params from '../params/Index';
 import R from 'ramda';
-import JsonEditor from '../../common/JsonEditor';
+import JsonEditor from '../../common/jsonEditor/Index';
 import Example from './Example';
 export default {
     components: {
@@ -37,6 +42,10 @@ export default {
         schema: {
             type: Object,
             required: true
+        },
+        fullscreen: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
@@ -46,7 +55,6 @@ export default {
     },
     methods: {
         schemaChanged(rs) {
-            window.console.log(rs);
             if (rs.success) {
                 this.updateSchema(rs.data);
             }
@@ -65,6 +73,13 @@ export default {
 };
 </script>
 <style>
+.schema.schema-edit{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
 .schema .tabs .el-tabs__item{
     border-top: 0 !important;
     border-radius: 0 !important;
@@ -77,11 +92,18 @@ export default {
     height: 36px;
     line-height: 36px;
 }
-.schema .el-tabs__content {
-    height: 300px;
-    overflow-y: auto;
+.schema .tab-item {
+    height: 100%;
 }
 .schema .el-tabs__content .structure {
     padding: 10px 20px;
+}
+.schema .el-tabs__content {
+    position: absolute;
+    top: 36px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
 }
 </style>

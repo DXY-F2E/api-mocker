@@ -55,8 +55,8 @@ export default {
 }
 .params-table .required,
 .params-table .type {
-    min-width: 100px;
-    max-width: 100px;
+    min-width: 125px;
+    max-width: 125px;
     text-align: center;
 }
 </style>

@@ -1,4 +1,4 @@
-const renderer = require('../../../dsl-core/index.js').renderer
+const dslCore = require('../../../dsl-core/index.js')
 const R = require('ramda')
 const Mock = require('mockjs')
 const sleep = (ms) => {
@@ -42,7 +42,15 @@ module.exports = app => {
             const params = R.merge(this.ctx.request.body, this.ctx.request.query)
 
             this.validateParams(document, params)
-            this.ctx.body = Mock.mock(renderer(params)(document.dsl || {}))
+            this.ctx.body = dslCore.renderer(params)(this.getResponse(document) || {})
+        }
+        getResponse(api) {
+            if (api.options.response && api.options.response.length > 1) {
+                const schema = api.options.response[api.options.responseIndex]
+                return schema.example || dslCore.buildExampleFormSchema(schema)
+            } else {
+                return api.dsl
+            }
         }
         // get/:id
         * show () {

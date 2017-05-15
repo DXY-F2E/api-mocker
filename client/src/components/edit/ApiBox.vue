@@ -2,25 +2,35 @@
     <div class="api-box el-col">
         <url-box></url-box>
         <request-box :params="params" :method="method" :mode="mode"></request-box>
-        <response v-if="response" :response="response"></response>
-        <mock-box :params="params" :mode="mode"></mock-box>
-        <desc-box></desc-box>
+        <setting-field title="Response" v-if="response" >
+            <template scope="props">
+                <response :response="response" :fullscreen="props.fullscreen"></response>
+            </template>
+        </setting-field>
+        <setting-field title="Result">
+            <result-box></result-box>
+        </setting-field>
+        <setting-field title="Api Desc" >
+            <desc-box></desc-box>
+        </setting-field>
     </div>
 </template>
 
 <script>
 import RequestBox from './request/Index';
-import MockBox from './MockBox';
+import ResultBox from './ResultBox';
 import UrlBox from './UrlBox';
 import Response from './response/Index';
 import DescBox from './DescBox';
+import SettingField from './SettingField';
 export default {
     components: {
         RequestBox,
         Response,
-        MockBox,
+        ResultBox,
         DescBox,
-        UrlBox
+        UrlBox,
+        SettingField
     },
     computed: {
         mode() {
@@ -41,18 +51,5 @@ export default {
 <style>
 .api-box {
     padding: 20px;
-}
-.api-box > div {
-    /*margin-top: 20px;*/
-}
-.api-box > div > .hd {
-    text-align: left;
-    border-top: 1px solid #D3DCE6;
-    border-bottom: 1px solid #D3DCE6;
-    line-height: 36px;
-    font-size: 16px;
-    color: #C0CCDA;
-    /*padding: 8px 0;*/
-    line-height: 40px;
 }
 </style>

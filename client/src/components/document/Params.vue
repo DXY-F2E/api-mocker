@@ -5,6 +5,9 @@
                         :params="param.params"
                         slot="params">
             </params>
+            <params v-if="param.type === 'array' && param.items.type === 'object'"
+                    :params="param.items.params"
+                    slot="params"></params>
         </doc-param>
     </div>
 </template>

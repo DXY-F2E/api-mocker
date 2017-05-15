@@ -1,8 +1,5 @@
 <template>
-    <div class="desc-box">
-        <div class="hd">API Desc</div>
-        <simditor id="desc-editor" placeholder="其他备注" v-model="desc" @change="updateDesc"></simditor>
-    </div>
+    <simditor id="desc-editor" placeholder="其他备注" v-model="desc" @change="updateDesc"></simditor>
 </template>
 
 <script>
@@ -25,9 +22,6 @@ export default {
 };
 </script>
 <style>
-.desc-box .simditor {
-    border: none;
-}
 #desc-editor {
     min-height: 200px;
 }

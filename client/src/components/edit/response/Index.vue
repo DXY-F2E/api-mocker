@@ -1,19 +1,16 @@
 <template>
-<div class="out-box">
-    <div class="hd">Response</div>
-    <el-row type="flex">
-        <el-col class="status">
-            <status :response="response"
-                    :active-index="activeIndex"
-                    @add="addResponse"
-                    @delete="deleteResponse"
-                    @change="changeSchema"></status>
-        </el-col>
-        <el-col>
-            <schema :schema="response[activeIndex]" @change="updateResponse"></schema>
-        </el-col>
-    </el-row>
-</div>
+<el-row type="flex" class="out-box">
+    <el-col class="status">
+        <status :response="response"
+                :active-index="activeIndex"
+                @add="addResponse"
+                @delete="deleteResponse"
+                @change="changeSchema"></status>
+    </el-col>
+    <el-col class="schema-content">
+        <schema :schema="response[activeIndex]" @change="updateResponse" :fullscreen="fullscreen"></schema>
+    </el-col>
+</el-row>
 </template>
 
 <script>
@@ -21,7 +18,16 @@ import Schema from '../schema/Index';
 import Status from './Status';
 import R from 'ramda';
 export default {
-    props: ['response'],
+    props: {
+        response: {
+            type: Array,
+            required: true
+        },
+        fullscreen: {
+            type: Boolean,
+            default: false
+        }
+    },
     components: {
         Status,
         Schema
@@ -54,12 +60,8 @@ export default {
 };
 </script>
 <style>
-.out-box {
-    /*border-left: 1px solid #d1dbe5;*/
-    /*border-right: 1px solid #d1dbe5;*/
-}
-.out-box > .el-row{
-    /*height: 300px;*/
+.out-box .el-col {
+    position: relative;
 }
 .out-box .el-col.status {
     position: relative;
@@ -70,5 +72,13 @@ export default {
 .out-box .schema {
     border-left: 1px solid #d1dbe5;
     /*margin-left: -1px;*/
+}
+
+.schema-content {
+    height: 300px;
+    overflow-y: auto;
+}
+.fullscreen .schema-content{
+    height: auto;
 }
 </style>

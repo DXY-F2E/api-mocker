@@ -16,12 +16,16 @@
                 </div>
             </div>
             <div class="field params" v-for="(ps, name) in params" v-if="ps.length">
-                <label>参数列表：{{name}}</label>
+                <label>提交参数：{{name}}</label>
                 <params-table :params="ps"></params-table>
             </div>
-            <div class="field response">
-                <label>返回数据</label>
-                <response :response="api.dsl"></response>
+            <div class="field mock-data" v-if="api.options.response && api.options.response.length">
+                <label>返回参数</label>
+                <schemas :schemas="api.options.response"></schemas>
+            </div>
+            <div class="field mock-data" v-else>
+                <label>Mock数据</label>
+                <mock-data :mock-data="api.dsl"></mock-data>
             </div>
             <div class="field desc" v-show="api.desc">
                 <label>其他备注</label>
@@ -33,13 +37,15 @@
 
 <script>
 import ParamsTable from './ParamsTable';
-import Response from './Response';
+import Schemas from './Schemas';
+import MockData from './MockData';
 import CopyButton from '../common/CopyButton';
 export default {
     components: {
         CopyButton,
+        Schemas,
         ParamsTable,
-        Response
+        MockData
     },
     props: {
         api: {

@@ -9,12 +9,18 @@
                        :plain="true"
                        @click.natvie="buildSchema">Example => Schema</el-button>
         </div>
-        <json-editor class="example-editor" v-model="example" @change="updateExample"></json-editor>
+        <div class="editor">
+            <json-editor class="example-editor"
+                         v-model="example"
+                         :resize-act="fullscreen"
+                         :fullscreen-tool="false"
+                         @change="updateExample"></json-editor>
+        </div>
     </div>
 </template>
 
 <script>
-import JsonEditor from '../../common/JsonEditor';
+import JsonEditor from '../../common/jsonEditor/Index';
 import { buildSchemaFormExample, buildExampleFormSchema } from '../../../util';
 export default {
     components: {
@@ -34,7 +40,6 @@ export default {
                 return this.schema.example;
             },
             set(val) {
-                window.console.log(val);
                 this.$emit('buildExample', val);
             }
         }
@@ -63,16 +68,27 @@ export default {
         schema: {
             type: Object,
             required: true
+        },
+        fullscreen: {
+            type: Boolean,
+            default: false
         }
     }
 };
 </script>
 <style>
+.schema-example {
+    height: 100%;
+}
 .schema-example .control {
     padding: 10px 20px;
     border-bottom: 1px solid #d1dbe5;
 }
-.example-editor {
-    height: 251px;
+.schema-example .editor {
+    position: absolute;
+    top: 49px;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 </style>

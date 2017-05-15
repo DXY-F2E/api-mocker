@@ -1,5 +1,5 @@
 <template>
-    <div class="doc-response">
+    <div class="doc-mock-data">
         <pre class="code"><code v-html="html"></code></pre>
     </div>
 </template>
@@ -8,10 +8,10 @@
 import Prism from 'prismjs';
 import 'prismjs/themes/prism.css';
 export default {
-    props: ['response'],
+    props: ['mockData'],
     computed: {
         html() {
-            return this.response ? Prism.highlight(JSON.stringify(this.response, null, 4), Prism.languages.javascript) : '{}';
+            return this.mockData ? Prism.highlight(JSON.stringify(this.mockData, null, 4), Prism.languages.javascript) : '{}';
         }
     }
 };

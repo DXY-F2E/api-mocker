@@ -1,5 +1,5 @@
 <template>
-    <div class="json-editor" :class="isFullscreen ? 'fullscreen' : ''">
+    <div class="json-editor" :class="isFullscreen ? 'fullscreen' : ''" :style="{height: height}">
         <div class="toolbar">
             <el-select v-if="templates" v-model="template" size="mini" placeholder="模板" @change="setTemplateVal()">
                 <el-option
@@ -9,8 +9,10 @@
                   :value="idx">
                 </el-option>
             </el-select>
-            <el-button size="mini" @click="parseEditor()">Parse</el-button>
-            <el-button size="mini" @click="fullscreen()">{{isFullscreen ? '取消' : ''}}全屏</el-button>
+            <el-button size="mini" v-if="fullscreenTool" @click="parseEditor()">Parse</el-button>
+            <el-button size="mini"
+                       v-if="fullscreenTool"
+                       @click="fullscreen()">{{isFullscreen ? '取消' : ''}}全屏</el-button>
         </div>
         <div :id="id" class="editor-range" @keyup="keyupBehavior"></div>
     </div>
@@ -20,6 +22,7 @@
 import * as ace from 'brace';
 import 'brace/mode/json';
 import R from 'ramda';
+// import editorEvent from './Event.js';
 
 export default {
     data() {
@@ -29,6 +32,14 @@ export default {
         };
     },
     props: {
+        parseTool: {
+            type: Boolean,
+            default: false
+        },
+        fullscreenTool: {
+            type: Boolean,
+            default: false
+        },
         templates: {
             type: Array
         },
@@ -40,14 +51,22 @@ export default {
             }
         },
         value: {
-            type: Object
+            type: [Object, String]
         },
         name: {
             type: String,
             default: 'Json'
-        }
+        },
+        height: {
+            type: String,
+            default: '100%'
+        },
+        resizeAct: null
     },
     watch: {
+        resizeAct() {
+            this.editorResize();
+        },
         value(newVal) {
             if (!R.equals(newVal, this.getValue().data)) {
                 this.setValue();
@@ -55,6 +74,12 @@ export default {
         }
     },
     methods: {
+        editorResize() {
+            window.console.log('editorResize');
+            window.setTimeout(() => {
+                this.editor.resize(true);
+            });
+        },
         keyupBehavior(e) {
             // 按Esc键退出全屏
             if (this.isFullscreen && e.keyCode === 27) {
@@ -90,8 +115,10 @@ export default {
         },
         getValue() {
             try {
+                const value = this.editor.getValue();
+                const data = (value === '') ? '' : JSON.parse(this.editor.getValue());
                 return {
-                    data: JSON.parse(this.editor.getValue()),
+                    data,
                     success: true
                 };
             } catch (err) {
@@ -118,16 +145,20 @@ export default {
                     this.$emit('change', data);
                     return;
                 }
-                if (Object.keys(data.data).length <= 0) {
-                    this.$emit('change', {
-                        success: false,
-                        msg: `${this.name}空对象`
-                    });
-                    return;
-                }
+                // if (Object.keys(data.data).length <= 0) {
+                //     this.$emit('change', {
+                //         success: false,
+                //         msg: `${this.name}空对象`
+                //     });
+                //     return;
+                // }
                 this.$emit('change', data);
             });
         }
+    },
+    beforeDestroy() {
+        // editorEvent.$off('resize', this.editorResize);
+        this.editor.destroy();
     },
     mounted() {
         this.editor = ace.edit(this.id);
@@ -137,6 +168,7 @@ export default {
             useSoftTabs: true
         });
         this.editor.setAutoScrollEditorIntoView(true);
+        // editorEvent.$on('resize', this.editorResize);
         this.initEditor();
     }
 };
@@ -144,7 +176,10 @@ export default {
 <style>
 .json-editor {
     position: relative;
-    height: 300px;
+    /*height: 300px;*/
+}
+.fullscreen .json-editor {
+    height: auto;
 }
 .json-editor.fullscreen {
     position: fixed;
@@ -164,7 +199,6 @@ export default {
 }
 .json-editor .editor-range{
     height: 100%;
-
 }
 .json-editor .toolbar .el-select {
     width: 80px;

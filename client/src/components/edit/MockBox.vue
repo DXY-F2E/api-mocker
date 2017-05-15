@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import JsonEditor from '../common/JsonEditor';
+import JsonEditor from '../common/jsonEditor/Index';
 export default {
     components: {
         JsonEditor

@@ -62,6 +62,7 @@ export default {
 .request-box .el-tabs__content {
     overflow: visible;
     margin: 15px 10px 20px 10px;
+    min-height: 100px;
     /*border-top: 1px solid #eee;*/
     /*border-bottom: 1px solid #eee;*/
 }
