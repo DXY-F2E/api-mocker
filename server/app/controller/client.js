@@ -46,7 +46,9 @@ module.exports = app => {
         }
         getResponse(api) {
             if (api.options.response && api.options.response.length > 1) {
-                const schema = api.options.response[api.options.responseIndex]
+                const index = api.options.responseIndex
+                const idx = index === -1 ? parseInt(Math.random() * api.options.response.length) : index
+                const schema = api.options.response[idx]
                 return schema.example || dslCore.buildExampleFormSchema(schema)
             } else {
                 return api.dsl

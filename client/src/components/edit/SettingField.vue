@@ -1,10 +1,13 @@
 <template>
-<div class="setting-field" :class="fullscreen ? 'fullscreen' : ''">
+<div class="setting-field" :class="{ fullscreen: fullscreen, expland: expland }">
     <div class="hd">{{title}}
-        <el-button type="info"
-                   size="small"
-                   :plain="true"
+        <el-button size="small"
                    @click.natvie="switchFullscreen">{{fullscreen ? 'Esc' : '全屏'}}</el-button>
+        <el-button size="small"
+                   @click.natvie="switchExpland">
+            <i v-if="expland" class="el-icon-minus" />
+            <i v-else class="el-icon-plus" />
+        </el-button>
     </div>
     <div class="bd">
         <slot :fullscreen="fullscreen"></slot>
@@ -18,6 +21,10 @@ export default {
         title: {
             type: String,
             required: true
+        },
+        isExpland: {
+            type: Boolean,
+            default: true
         }
     },
     methods: {
@@ -26,6 +33,9 @@ export default {
             if (this.fullscreen && e.keyCode === 27) {
                 this.fullscreen = false;
             }
+        },
+        switchExpland() {
+            this.expland = !this.expland;
         },
         switchFullscreen() {
             this.fullscreen = !this.fullscreen;
@@ -38,7 +48,8 @@ export default {
     },
     data() {
         return {
-            fullscreen: false
+            fullscreen: false,
+            expland: this.isExpland
         };
     }
 };
@@ -68,10 +79,21 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
+}
+.setting-field > .bd {
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 20px;
+    transition: height 0.3s ease;
+}
+.setting-field.expland > .bd {
+    height: auto;
+    margin-bottom: 0;
     overflow-y: auto;
 }
 .setting-field.fullscreen > .bd > div {
     height: 100%;
+    position: relative;
 }
 .setting-field > .hd {
     text-align: left;
@@ -85,6 +107,6 @@ export default {
 }
 .setting-field > .hd button {
     float: right;
-    margin: 6px 10px;
+    margin: 6px 10px 6px 0;
 }
 </style>

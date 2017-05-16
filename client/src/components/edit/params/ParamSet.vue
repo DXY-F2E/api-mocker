@@ -15,6 +15,9 @@
             <el-col class="comment">
                 <el-input placeholder="备注" v-model="param.comment" @change="update"></el-input>
             </el-col>
+            <el-col class="example">
+                <el-input placeholder="example" v-model="example" @change="update"></el-input>
+            </el-col>
         </el-row>
     </div>
 </template>
@@ -29,6 +32,20 @@ export default {
         name: {
             type: String,
             required: false
+        }
+    },
+    computed: {
+        example: {
+            get() {
+                return typeof this.param.example === 'string' ? this.param.example : JSON.stringify(this.param.example);
+            },
+            set(value) {
+                try {
+                    this.param.example = JSON.parse(value);
+                } catch (err) {
+                    this.param.example = value;
+                }
+            }
         }
     },
     data() {
@@ -53,7 +70,6 @@ export default {
             } else if (val[0] === 'array') {
                 this.setArrayType(val[1]);
             }
-            window.console.log(this.param);
             this.update();
         },
         setArrayType(type) {
@@ -70,6 +86,7 @@ export default {
             }
         },
         update() {
+            window.console.log(this.param);
             this.$emit('change', this.param);
         },
         getDefaultType() {

@@ -6,6 +6,7 @@
                 <el-col class="type">类型</el-col>
                 <el-col class="required">是否必填</el-col>
                 <el-col class="comment">备注</el-col>
+                <el-col class="example">示例</el-col>
             </el-row>
         </div>
         <div class="bd">
@@ -29,7 +30,7 @@ export default {
     border: 1px solid #e6e6e6;
     border-radius: 3px;
     overflow: hidden;
-    max-width: 750px;
+    max-width: 917px;
 }
 .params-table .hd {
     background-color: #f8f8f8;
@@ -50,8 +51,12 @@ export default {
     border: none;
 }
 .params-table .comment {
-    min-width: 300px;
-    max-width: 300px;
+    min-width: 200px;
+    max-width: 200px;
+}
+.params-table .example {
+    min-width: 200px;
+    max-width: 200px;
 }
 .params-table .required,
 .params-table .type {

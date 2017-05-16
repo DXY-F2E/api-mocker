@@ -61,6 +61,7 @@ export default {
             type: String,
             default: '100%'
         },
+        readonly: Boolean,
         resizeAct: null
     },
     watch: {
@@ -139,6 +140,7 @@ export default {
         },
         initEditor() {
             this.setValue();
+            this.editor.setReadOnly(this.readonly);
             this.editor.getSession().on('change', () => {
                 const data = this.getValue();
                 if (!data.success) {
@@ -167,7 +169,12 @@ export default {
             tabSize: 4,
             useSoftTabs: true
         });
-        this.editor.setAutoScrollEditorIntoView(true);
+        // Automatically scrolling cursor into view after selection change this will be disabled in the next version set editor.$blockScrolling = Infinity to disable this message
+        this.editor.$blockScrolling = Infinity;
+
+        // 设置自动高度，然而并没什么用
+        // this.editor.setAutoScrollEditorIntoView(true);
+
         // editorEvent.$on('resize', this.editorResize);
         this.initEditor();
     }

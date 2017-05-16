@@ -113,12 +113,17 @@ export default {
     width: 140px;
 }
 .params-box .config {
-    min-width: 240px;
-    max-width: 240px;
+    min-width: 220px;
+    max-width: 220px;
+}
+.params-box .example {
+    min-width: 145px;
+    max-width: 220px;
 }
 .params-box .comment {
-    min-width: 300px;
-    max-width: 300px;
+    margin-right: 20px;
+    min-width: 145px;
+    max-width: 240px;
 }
 .params-box .key {
     min-width: 100px;

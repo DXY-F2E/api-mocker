@@ -73,7 +73,11 @@ const mutations = {
         state.api.options.response.push(new Schema(state.api.options.response.length + 1));
     },
     DELETE_API_RESPONSE(state, index) {
-        state.api.options.response.splice(index, 1);
+        const options = state.api.options;
+        options.response.splice(index, 1);
+        if (options.responseIndex >= index && index !== 0) {
+            options.responseIndex --;
+        }
     }
 };
 export default mutations;

@@ -3,7 +3,8 @@
     <json-editor id="json-editor"
                  v-model="jsonData"
                  name="返回数据"
-                 @change="jsonChanged"></json-editor>
+                 :resize-act="fullscreen"
+                 readonly></json-editor>
 </div>
 </template>
 
@@ -12,6 +13,12 @@ import JsonEditor from '../common/jsonEditor/Index';
 export default {
     components: {
         JsonEditor
+    },
+    props: {
+        fullscreen: {
+            type: Boolean,
+            default: false
+        }
     },
     data() {
         return {
@@ -27,9 +34,6 @@ export default {
         }
     },
     methods: {
-        jsonChanged(data) {
-            window.console.log(data);
-        },
         getResponseData() {
             if (this.resActive === 'body') {
                 return this.response.data;

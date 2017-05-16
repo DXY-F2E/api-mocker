@@ -17,6 +17,7 @@
 import Prism from 'prismjs';
 import ParamsTable from './ParamsTable';
 import 'prismjs/themes/prism.css';
+import { buildExampleFormSchema } from '../../util';
 export default {
     props: ['schema'],
     data() {
@@ -26,7 +27,8 @@ export default {
     },
     computed: {
         example() {
-            return this.schema.example ? Prism.highlight(JSON.stringify(this.schema.example, null, 4), Prism.languages.javascript) : '{}';
+            const example = this.schema.example ? this.schema.example : buildExampleFormSchema(this.schema);
+            return Prism.highlight(JSON.stringify(example, null, 4), Prism.languages.javascript);
         }
     },
     components: {
@@ -37,6 +39,7 @@ export default {
 <style>
 .doc-schemas .schema {
     margin-bottom: 30px;
+    max-width: 917px;
 }
 .doc-schemas .title {
     font-size: 14px;
@@ -46,11 +49,7 @@ export default {
     margin-bottom: 10px;
     height: 30px;
     line-height: 30px;
-    max-width: 750px;
     background-color: #f8f8f8;
-}
-.api-doc .doc-schemas .code {
-    max-width: 750px;
 }
 .doc-schemas .example {
     float: right;

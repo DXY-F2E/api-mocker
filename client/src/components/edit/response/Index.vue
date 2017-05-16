@@ -1,21 +1,25 @@
 <template>
-<el-row type="flex" class="out-box">
-    <el-col class="status">
-        <status :response="response"
-                :active-index="activeIndex"
-                @add="addResponse"
-                @delete="deleteResponse"
-                @change="changeSchema"></status>
-    </el-col>
-    <el-col class="schema-content">
-        <schema :schema="response[activeIndex]" @change="updateResponse" :fullscreen="fullscreen"></schema>
-    </el-col>
-</el-row>
+<div class="response-box">
+    <config></config>
+    <el-row type="flex" class="out-box">
+        <el-col class="status">
+            <status :response="response"
+                    :active-index="activeIndex"
+                    @add="addResponse"
+                    @delete="deleteResponse"
+                    @change="changeSchema"></status>
+        </el-col>
+        <el-col class="schema-content">
+            <schema :schema="response[activeIndex]" @change="updateResponse" :fullscreen="fullscreen"></schema>
+        </el-col>
+    </el-row>
+</div>
 </template>
 
 <script>
 import Schema from '../schema/Index';
 import Status from './Status';
+import Config from './Config';
 import R from 'ramda';
 export default {
     props: {
@@ -29,6 +33,7 @@ export default {
         }
     },
     components: {
+        Config,
         Status,
         Schema
     },
@@ -77,6 +82,13 @@ export default {
 .schema-content {
     height: 300px;
     overflow-y: auto;
+}
+.fullscreen .out-box {
+    position: absolute;
+    top: 57px;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 .fullscreen .schema-content{
     height: auto;
