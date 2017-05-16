@@ -46,11 +46,17 @@ export default {
                     this.param.example = value;
                 }
             }
+        },
+        apiType() {
+            const type = [this.param.type];
+            if (this.param.type === 'array') {
+                type.push(this.param.items.type);
+            }
+            return type;
         }
     },
     data() {
         return {
-            apiType: this.getDefaultType(), // Vue + element升级到2.3.x + 1.3.1，select的model在这就不能直接绑定param.type了
             tpyeList: this.getTypeList(),
             selectedOptions: []
         };

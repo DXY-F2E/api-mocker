@@ -15,7 +15,15 @@ function buildParams(json) {
             required: true,
             comment: null
         };
-        if (type === 'object') {
+        if (type === 'object' && json[key] instanceof Array) {
+            param.type = 'array';
+            param.items = {
+                type: typeof json[key][0]
+            };
+            if (param.items.type === 'object') {
+                param.items.params = buildParams(json[key][0]);
+            }
+        } else if (type === 'object') {
             param.params = buildParams(json[key]);
         } else {
             param.example = json[key];
@@ -41,29 +49,6 @@ function buildApiResponse(api) {
     api.options.response = [buildSchemaFormExample(api.dsl)];
     return api;
 }
-// let buildExampleFormSchema = null;
-// let buildExample = null;
-// buildExampleFormSchema = (schema) => {
-//     const example = {};
-//     schema.params.forEach(param => {
-//         example[param.key] = param.example || buildExample(param);
-//     });
-//     return Mock.mock(example);
-// };
-// buildExample = (param) => {
-//     switch (param.type) {
-//         case 'object':
-//             return buildExampleFormSchema(param);
-//         case 'array':
-//             return [buildExample(param.items)];
-//         case 'number':
-//             return Math.ceil(Math.random() * 10000);
-//         case 'boolean':
-//             return true;
-//         default:
-//             return 'value';
-//     }
-// };
 function validateApi(state) {
     const regex = new RegExp(/^((ht|f)tps?):\/\/[\w-]+(\.[\w-]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&~+#])?$/);
     const api = state.api;
