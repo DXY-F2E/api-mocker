@@ -8,23 +8,16 @@
                          :disabled="method === 'get' && type.name === 'body'">
                 <params-box :params="localParams[type.name]" :name="type.name"></params-box>
             </el-tab-pane>
-            <el-tab-pane label="Advanced" name="advanced" v-if="mode === 'edit'">
-                <advanced></advanced>
-            </el-tab-pane>
         </el-tabs>
     </div>
 </template>
 
 <script>
 import ParamsBox from './ParamsBox';
-import ReqBody from './Body';
-import Advanced from './Advanced';
 import { clone } from '../../../util';
 export default {
     components: {
-        ParamsBox,
-        Advanced,
-        ReqBody
+        ParamsBox
     },
     props: ['mode', 'params', 'method'],
     data() {
