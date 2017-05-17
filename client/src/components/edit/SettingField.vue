@@ -1,6 +1,7 @@
 <template>
 <div class="setting-field" :class="{ fullscreen: fullscreen, expland: expland }">
     <div class="hd">{{title}}
+        <slot name="header"></slot>
         <el-button size="small"
                    @click.natvie="switchFullscreen">{{fullscreen ? 'Esc' : '全屏'}}</el-button>
         <el-button size="small"
@@ -56,11 +57,15 @@ export default {
 </script>
 <style>
 .setting-field {
-    /*margin-top: 20px;*/
+    margin-top: 20px;
     /*overflow-x: scroll;*/
+    border: 1px solid #D3DCE6;
+    border-radius: 5px;
     background-color: #fff;
 }
 .setting-field.fullscreen {
+    margin-top: 0;
+    border-radius: 0;
     position: fixed;
     height: 100%;
     width: 100%;
@@ -83,7 +88,7 @@ export default {
 .setting-field > .bd {
     height: 0;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: -1px;
     transition: height 0.3s ease;
 }
 .setting-field.expland > .bd {
@@ -97,13 +102,13 @@ export default {
 }
 .setting-field > .hd {
     text-align: left;
-    border-top: 1px solid #D3DCE6;
     border-bottom: 1px solid #D3DCE6;
     line-height: 36px;
     font-size: 16px;
-    color: #C0CCDA;
-    /*padding: 8px 0;*/
+    color: #333;
+    padding: 0 10px;
     line-height: 40px;
+    /*background-color: #eef1f6;*/
 }
 .setting-field > .hd button {
     float: right;

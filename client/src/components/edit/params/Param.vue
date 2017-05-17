@@ -5,7 +5,7 @@
              @click="expandParam">
             <span class="el-tree-node__expand-icon" :class="{expanded: expanded}"></span>
         </div>
-        <div class="control" :style="styleObject" v-if="mode === 'set'">
+        <div class="control" :style="styleObject" >
             <i class="el-icon-close"
                @click="deleteParam"
                :class="{hidden: params.length === 1}">
@@ -14,13 +14,8 @@
         </div>
         <param-set :param="param"
                    :name="name"
-                   v-if="mode === 'set'"
                    @buildObject="buildObject"
                    @change="updateParam"></param-set>
-        <param-fill v-if="mode === 'fill'"
-                    :param="param"
-                    @expand="expandParam"
-                    @change="updateParam"></param-fill>
         <slot name="params"></slot>
     </div>
 </template>
@@ -49,10 +44,6 @@ export default {
         name: {
             type: String,
             required: false
-        },
-        mode: {
-            type: String,
-            default: 'set'
         }
     },
     data() {

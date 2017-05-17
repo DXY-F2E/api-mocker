@@ -11,6 +11,11 @@ function initData() {
             responseIndex: 0,
             method: 'get',
             delay: 0,
+            examples: {
+                query: null,
+                body: null,
+                path: null
+            },
             params: {
                 query: [],
                 body: [],

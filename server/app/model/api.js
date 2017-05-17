@@ -28,6 +28,14 @@ module.exports = mongoose => {
             method: String,
             headers: {},
             params: {},
+            examples: {
+                type: Object,
+                default: {
+                    query: null,
+                    body: null,
+                    path: null
+                }
+            },
             response: {},
             responseIndex: {
                 type: Number,

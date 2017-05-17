@@ -46,7 +46,6 @@ export default {
     },
     methods: {
         updateExample(data) {
-            window.console.log(data);
             this.status = data;
             if (data.success) {
                 this.example = data.data;

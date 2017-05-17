@@ -1,7 +1,7 @@
 import axios from 'axios';
 import API from './api';
 import config from '../../config';
-import { validateApi, buildApiResponse } from '../util';
+import { validateApi, buildApiResponse, buildExampleFormSchema } from '../util';
 
 const domain = process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax;
 
@@ -119,8 +119,16 @@ const actions = {
                 }
             };
         }
-        config.params = state.reqParams.query.value;
-        config.data = state.reqParams.body.value;
+        config.params = api.options.examples.query || buildExampleFormSchema({
+            example: null,
+            params: api.options.params.query
+        });
+        config.data = api.options.examples.body || buildExampleFormSchema({
+            example: null,
+            params: api.options.params.body
+        });
+        // config.params = state.reqParams.query.value;
+        // config.data = state.reqParams.body.value;
         return axios(config).then(res => {
             commit('UPDATE_RESPONSE', res);
         }, err => {

@@ -1,23 +1,25 @@
 <template>
     <div class="schema schema-edit">
         <el-tabs type="card" class="tabs" v-model="activeTab">
-            <el-tab-pane class="tab-item structure" label="Params" name="structure">
+            <el-tab-pane class="tab-item structure" label="Schema" name="structure">
                 <params :params="localSchema.params"
                         @updateParams="paramsChanged"></params>
             </el-tab-pane>
-            <el-tab-pane class="tab-item" label="Schema" name="schema">
+            <!-- <el-tab-pane class="tab-item" label="Schema" name="schema">
                 <json-editor v-if="activeTab === 'schema'"
                              v-model="localSchema"
                              :resize-act="fullscreen"
                              :fullscreen-tool="false"
                              @change="schemaChanged"></json-editor>
-            </el-tab-pane>
-            <el-tab-pane class="tab-item" label="Example" name="example">
+            </el-tab-pane> -->
+            <el-tab-pane class="tab-item" :label="exampleName" name="example">
                 <Example :schema="localSchema"
                          :fullscreen="fullscreen"
+                         :name="exampleName"
                          @buildSchema="updateSchema"
                          @buildExample="updateExample"></Example>
             </el-tab-pane>
+            <slot></slot>
         </el-tabs>
     </div>
 </template>
@@ -33,12 +35,15 @@ export default {
         Example,
         JsonEditor
     },
-    data() {
-        return {
-            activeTab: 'structure'
-        };
-    },
     props: {
+        active: {
+            type: String,
+            default: 'structure'
+        },
+        exampleName: {
+            type: String,
+            default: 'Example'
+        },
         schema: {
             type: Object,
             required: true
@@ -51,6 +56,9 @@ export default {
     computed: {
         localSchema() {
             return R.clone(this.schema);
+        },
+        activeTab() {
+            return this.active;
         }
     },
     methods: {
@@ -73,6 +81,10 @@ export default {
 };
 </script>
 <style>
+.schema-content {
+    position: relative;
+    border-left: 1px solid #d1dbe5;
+}
 .schema.schema-edit{
     position: absolute;
     left: 0;

@@ -55,8 +55,12 @@ export default {
 </script>
 <style>
 .config-box {
-    padding: 10px 0;
-    border-bottom: 1px solid #D3DCE6;
+    display: inline-block;
+    margin-left: 36px;
+    /*padding: 10px 0;*/
+    /*border-bottom: 1px solid #D3DCE6;*/
+    /*padding-left: 15px;*/
+    /*border-left: 1px solid #d3dce6;*/
 }
 .fullscreen .config-box {
     padding: 10px 10px;

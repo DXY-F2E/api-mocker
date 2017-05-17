@@ -3,20 +3,17 @@
         <api-param :params="params"
                    :param="param"
                    :name="name"
-                   :mode="mode"
                    :level="level"
                    v-for="(param, idx) in params" :key="idx"
                    @change="(data) => update(data, idx)"
                    @addParam="() => addParam(idx)"
                    @deleteParam="() => deleteParam(idx)">
             <params v-if="param.type === 'object' && param.params"
-                    :mode="mode"
                     :params="param.params"
                     slot="params"
                     :level="level + 1"
                     @change="(data) => update(data, idx)"></params>
             <params v-if="param.type === 'array' && param.items.type === 'object'"
-                    :mode="mode"
                     :params="param.items.params"
                     slot="params"
                     :level="level + 1"
@@ -44,10 +41,6 @@ export default {
         name: {
             type: String,
             required: false
-        },
-        mode: {
-            type: String,
-            default: 'set'
         }
     },
     methods: {

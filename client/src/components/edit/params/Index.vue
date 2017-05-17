@@ -1,8 +1,7 @@
 <template>
     <params :params="params"
             :name="name"
-            :mode="mode"
-            :class="mode"
+            class="set"
             :level="1"
             @change="update"></params>
 </template>
@@ -27,10 +26,6 @@ export default {
         name: {
             type: String,
             required: false
-        },
-        mode: {
-            type: String,
-            default: 'set'
         }
     },
     methods: {

@@ -58,8 +58,8 @@ export default {
 };
 </script>
 <style>
-.test .request-box .set,
+/*.test .request-box .set,
 .edit .request-box .fill {
     display: none;
-}
+}*/
 </style>

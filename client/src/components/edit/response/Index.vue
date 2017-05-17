@@ -1,6 +1,6 @@
 <template>
 <div class="response-box">
-    <config></config>
+    <!-- <config></config> -->
     <el-row type="flex" class="out-box">
         <el-col class="status">
             <status :response="response"
@@ -10,7 +10,11 @@
                     @change="changeSchema"></status>
         </el-col>
         <el-col class="schema-content">
-            <schema :schema="response[activeIndex]" @change="updateResponse" :fullscreen="fullscreen"></schema>
+            <schema :schema="response[activeIndex]" @change="updateResponse" :fullscreen="fullscreen">
+                <el-tab-pane class="tab-item" label="Status" name="status">
+                    <status-setting :schema="response[activeIndex]" @change="updateStatus"></status-setting>
+                </el-tab-pane>
+            </schema>
         </el-col>
     </el-row>
 </div>
@@ -19,6 +23,7 @@
 <script>
 import Schema from '../schema/Index';
 import Status from './Status';
+import StatusSetting from './StatusSetting';
 import Config from './Config';
 import R from 'ramda';
 export default {
@@ -35,6 +40,7 @@ export default {
     components: {
         Config,
         Status,
+        StatusSetting,
         Schema
     },
     data() {
@@ -56,10 +62,16 @@ export default {
             this.$store.commit('ADD_API_RESPONSE');
             this.activeIndex = this.response.length - 1;
         },
+        updateStatus({ status, statusText}) {
+            const schema = R.clone(this.response[this.activeIndex]);
+            schema.status = status;
+            schema.statusText = statusText;
+            this.updateResponse(schema);
+        },
         updateResponse(schema) {
             const key = `options.response.${this.activeIndex}`;
             this.$store.commit('UPDATE_API_PROPS',
-                               [key, R.clone(schema)]);
+                               [key, schema]);
         }
     }
 };
@@ -74,11 +86,6 @@ export default {
     max-width: 150px;
     height: 100%;
 }
-.out-box .schema {
-    border-left: 1px solid #d1dbe5;
-    /*margin-left: -1px;*/
-}
-
 .schema-content {
     height: 300px;
     overflow-y: auto;
