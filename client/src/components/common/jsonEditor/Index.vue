@@ -76,7 +76,6 @@ export default {
     },
     methods: {
         editorResize() {
-            window.console.log('editorResize');
             window.setTimeout(() => {
                 this.editor.resize(true);
             });

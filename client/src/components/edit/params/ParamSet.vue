@@ -95,7 +95,6 @@ export default {
             }
         },
         update() {
-            window.console.log(this.param);
             this.$emit('change', this.param);
         },
         getDefaultType() {
