@@ -1,9 +1,9 @@
 module.exports = mongoose => {
     const { ObjectId } = mongoose.Schema.Types
-    const GroupSchema = new mongoose.Schema({
-        teamId: {
-            type: ObjectId,
-            required: true
+    const TeamSchema = new mongoose.Schema({
+        name: {
+            type: String,
+            unique: true
         },
         creator: {
             type: ObjectId,
@@ -13,23 +13,13 @@ module.exports = mongoose => {
             type: ObjectId,
             required: true
         },
-        name: {
-            type: String,
-            required: true,
-            unique: true
-        },
-        level: {
-            type: Number,
-            required: true,
-            default: 1
-        },
+        operator: [ObjectId],
         createTime: String,
         modifiedTime: String,
-        desc: String,
         isDeleted: {
             type: Boolean,
             default: false
         }
     });
-    return mongoose.model('Group', GroupSchema);
+    return mongoose.model('Team', TeamSchema);
 }
