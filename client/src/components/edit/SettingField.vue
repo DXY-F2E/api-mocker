@@ -57,6 +57,7 @@ export default {
 </script>
 <style>
 .setting-field {
+    position: relative;
     margin-top: 20px;
     /*overflow-x: scroll;*/
     border: 1px solid #D3DCE6;
@@ -78,14 +79,8 @@ export default {
 .setting-field.fullscreen > .hd {
     padding: 0 10px;
 }
-.setting-field.fullscreen > .bd {
-    position: absolute;
-    top: 42px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
 .setting-field > .bd {
+    position: relative;
     height: 0;
     overflow: hidden;
     margin-bottom: -1px;
@@ -94,11 +89,19 @@ export default {
 .setting-field.expland > .bd {
     height: auto;
     margin-bottom: 0;
-    overflow-y: auto;
 }
 .setting-field.fullscreen > .bd > div {
     height: 100%;
     position: relative;
+}
+.setting-field.fullscreen > .bd {
+    position: absolute;
+    height: auto;
+    overflow-y: auto;
+    top: 42px;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 .setting-field > .hd {
     text-align: left;

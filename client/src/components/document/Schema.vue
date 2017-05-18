@@ -1,8 +1,9 @@
 <template>
-    <div class="schema">
+    <div class="schema doc-schema">
         <div class="title" :class="isShowExample">
-            <span class="status" :class="schema.status.toString()">{{schema.status}}</span>
-            <span class="status-text">[{{schema.statusText}}]</span>
+            <span class="status" v-if="schema.status" :class="schema.status.toString()">{{schema.status}}</span>
+            <span class="status-text" v-if="name">{{name}}</span>
+            <span v-if="schema.statusText">[{{schema.statusText}}]</span>
             <a href="javascript:;" class="example"
                                    @click="isShowExample = !isShowExample">
                 {{isShowExample ? '结构' : '示例' }}
@@ -19,7 +20,7 @@ import ParamsTable from './ParamsTable';
 import 'prismjs/themes/prism.css';
 import { buildExampleFormSchema } from '../../util';
 export default {
-    props: ['schema'],
+    props: ['schema', 'name'],
     data() {
         return {
             isShowExample: false
@@ -37,11 +38,11 @@ export default {
 };
 </script>
 <style>
-.doc-schemas .schema {
+.doc-schema {
     margin-bottom: 30px;
     max-width: 917px;
 }
-.doc-schemas .title {
+.doc-schema .title {
     font-size: 14px;
     border-radius: 3px;
     padding: 0 10px;
@@ -51,7 +52,7 @@ export default {
     line-height: 30px;
     background-color: #f8f8f8;
 }
-.doc-schemas .example {
+.doc-schema .example {
     float: right;
 }
 .title .status-text {

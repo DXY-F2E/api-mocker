@@ -92,12 +92,14 @@ const actions = {
         return axios.put(API.API.replace(':groupId', group).replace(':apiId', _id), state.api).then(res => {
             commit('UPDATE_API', res.data.resources);
             commit('SAVE_API');
+            return res;
         });
     },
     createApi({ state, commit }) {
         return axios.post(API.GROUP_APIS.replace(':groupId', state.api.group), state.api).then(res => {
             commit('UPDATE_API', res.data.resources);
             commit('SAVE_API');
+            return res;
         });
     },
     testApi({ state, commit }, url) {

@@ -18,12 +18,11 @@ export default {
         fullscreen: {
             type: Boolean,
             default: false
+        },
+        resActive: {
+            type: String,
+            required: true
         }
-    },
-    data() {
-        return {
-            resActive: 'body'
-        };
     },
     computed: {
         jsonData() {

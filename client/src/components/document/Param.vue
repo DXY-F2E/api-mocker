@@ -1,5 +1,5 @@
 <template>
-    <div class="doc-param">
+    <div class="doc-param" v-if="param.key">
         <el-row type="flex">
             <el-col class="key">{{param.key}}</el-col>
             <el-col class="type">{{param.type}}<code class="array-type" v-if="param.type === 'array'">[{{param.items.type}}]</code></el-col>

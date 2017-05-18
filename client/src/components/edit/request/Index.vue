@@ -14,6 +14,7 @@
         </el-col>
         <el-col class="schema-content">
             <schema :schema="localParams[activeType]"
+                    :name="activeType"
                     :fullscreen="fullscreen"
                     @change="updateParams"></schema>
         </el-col>
@@ -89,6 +90,9 @@ export default {
 };
 </script>
 <style>
+.request-box {
+    height: 300px;
+}
 .request-box .el-col.types {
     position: relative;
     min-width: 150px;

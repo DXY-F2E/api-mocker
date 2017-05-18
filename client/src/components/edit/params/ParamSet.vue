@@ -6,6 +6,7 @@
             </el-col>
             <el-col class="config">
                 <el-cascader
+                    popper-class="type-cascader"
                     @change="changeParamType"
                     :options="tpyeList"
                     v-model="apiType">
@@ -53,11 +54,13 @@ export default {
                 type.push(this.param.items.type);
             }
             return type;
+        },
+        tpyeList() {
+            return this.getTypeList();
         }
     },
     data() {
         return {
-            tpyeList: this.getTypeList(),
             selectedOptions: []
         };
     },
@@ -128,3 +131,8 @@ export default {
     }
 };
 </script>
+<style type="text/css">
+.type-cascader .el-cascader-menu {
+    height: auto;
+}
+</style>

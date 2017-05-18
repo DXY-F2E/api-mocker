@@ -15,12 +15,16 @@
                     <p class="prod code">{{api.prodUrl}}</p>
                 </div>
             </div>
-            <div class="field params" v-for="(ps, name) in params" v-if="ps.length">
-                <label>提交参数：{{name}}</label>
-                <params-table :params="ps"></params-table>
+            <div class="field">
+                <label>提交参数</label>
+                <schema v-for="(schema, key) in schemaParams"
+                        v-if="hasParams(schema.params)"
+                        :name="key"
+                        :schema="schema"
+                        :key="key"></schema>
             </div>
-            <div class="field mock-data" v-if="api.options.response && api.options.response.length">
-                <label>返回参数</label>
+            <div class="field" v-if="api.options.response && api.options.response.length">
+                <label>返回结果</label>
                 <schemas :schemas="api.options.response"></schemas>
             </div>
             <div class="field mock-data" v-else>
@@ -38,12 +42,14 @@
 <script>
 import ParamsTable from './ParamsTable';
 import Schemas from './Schemas';
+import Schema from './Schema';
 import MockData from './MockData';
 import CopyButton from '../common/CopyButton';
 export default {
     components: {
         CopyButton,
         Schemas,
+        Schema,
         ParamsTable,
         MockData
     },
@@ -58,6 +64,9 @@ export default {
             this.$store.commit('UPDATE_API', this.api);
             this.$store.commit('CHANGE_MODE', 'edit');
             this.$router.push(`/edit/${this.api.group}/${this.api._id}`);
+        },
+        hasParams(params) {
+            return params && params.filter(p => p.key).length > 0;
         }
     },
     computed: {
@@ -66,6 +75,19 @@ export default {
         },
         method() {
             return this.api.options.method.toUpperCase();
+        },
+        examples() {
+            return this.api.options.examples;
+        },
+        schemaParams() {
+            const schemas = {};
+            for (const key in this.params) {
+                schemas[key] = {
+                    example: this.examples[key],
+                    params: this.params[key]
+                };
+            }
+            return schemas;
         },
         params() {
             return this.api.options.params;

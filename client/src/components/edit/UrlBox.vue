@@ -89,7 +89,7 @@ export default {
                 window.console.log(err);
                 this.saveToken = false;
                 const message = err.msg || err.response.data.message;
-                this.$message.error(`创建失败:${message}`);
+                this.$message.error(`保存失败:${message}`);
             });
         },
         send() {

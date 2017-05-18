@@ -4,6 +4,7 @@ let buildExample = null;
 buildExampleFormSchema = (schema) => {
     const example = {};
     schema.params.forEach(param => {
+        if (!param.key) return;
         example[param.key] = param.example || buildExample(param);
     });
     return Mock.mock(example);

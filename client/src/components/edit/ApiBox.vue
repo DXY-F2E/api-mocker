@@ -7,8 +7,13 @@
             </template>
         </setting-field>
         <setting-field title="Result" v-if="mode === 'test'">
+            <el-tabs v-model="resActive" slot="header" class="result-tabs">
+                <el-tab-pane label="Body" name="body"></el-tab-pane>
+                <el-tab-pane label="Headers" name="header"></el-tab-pane>
+                <el-tab-pane label="All-Data" name="all"></el-tab-pane>
+            </el-tabs>
             <template scope="props">
-                <result-box :fullscreen="props.fullscreen"></result-box>
+                <result-box :fullscreen="props.fullscreen" :res-active="resActive"></result-box>
             </template>
         </setting-field>
         <setting-field title="Response" v-if="response" >
@@ -41,6 +46,11 @@ export default {
         ResponseConfig,
         SettingField
     },
+    data() {
+        return {
+            resActive: 'body'
+        };
+    },
     computed: {
         mode() {
             return this.$store.state.mode;
@@ -55,7 +65,12 @@ export default {
 .api-box {
     padding: 20px;
 }
-.request-field {
-    margin-top: 20px;
+.result-tabs.el-tabs {
+    display: inline-block;
+    margin: 0 0 -1px 30px;
+    vertical-align: top;
+}
+.result-tabs .el-tabs__header {
+    margin-bottom: 0;
 }
 </style>

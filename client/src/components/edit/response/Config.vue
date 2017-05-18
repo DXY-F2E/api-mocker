@@ -63,7 +63,7 @@ export default {
     /*border-left: 1px solid #d3dce6;*/
 }
 .fullscreen .config-box {
-    padding: 10px 10px;
+    /*padding: 10px 10px;*/
 }
 .config-box .el-input {
     display: inline-block;

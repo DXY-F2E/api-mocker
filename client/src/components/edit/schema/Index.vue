@@ -3,6 +3,7 @@
         <el-tabs type="card" class="tabs" v-model="activeTab">
             <el-tab-pane class="tab-item structure" label="Schema" name="structure">
                 <params :params="localSchema.params"
+                        :name="name"
                         @updateParams="paramsChanged"></params>
             </el-tab-pane>
             <!-- <el-tab-pane class="tab-item" label="Schema" name="schema">
@@ -36,6 +37,7 @@ export default {
         JsonEditor
     },
     props: {
+        name: String,
         active: {
             type: String,
             default: 'structure'

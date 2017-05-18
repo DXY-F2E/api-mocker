@@ -91,7 +91,8 @@ export default {
     text-overflow: ellipsis;
 }
 .status .item:not(.add) i {
-    float: right;
+    position: absolute;
+    right: 10px;
     color: red;
     font-size: 12px;
     width: 18px;

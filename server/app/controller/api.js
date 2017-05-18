@@ -73,7 +73,7 @@ module.exports = app => {
 
             assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalie groupId')
             assert(body.name, 403, 'required name')
-            assert(body.dsl, 403, 'required dsl')
+            // assert(body.dsl, 403, 'required dsl')
 
             const nextUrl = yield util.generateApiURL(app)
 

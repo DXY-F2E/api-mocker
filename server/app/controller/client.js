@@ -45,7 +45,7 @@ module.exports = app => {
             this.ctx.body = dslCore.renderer(params)(this.getResponse(document) || {})
         }
         getResponse(api) {
-            if (api.options.response && api.options.response.length > 1) {
+            if (api.options.response && api.options.response.length > 0) {
                 const index = api.options.responseIndex
                 const idx = index === -1 ? parseInt(Math.random() * api.options.response.length) : index
                 const schema = api.options.response[idx]
