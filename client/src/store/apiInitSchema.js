@@ -4,7 +4,6 @@ function Schema(index = 1) {
     this.example = null;
     this.params = [{
         key: null,
-        example: null,
         type: 'string',
         required: true,
         comment: null

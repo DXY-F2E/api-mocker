@@ -5,7 +5,7 @@ buildExampleFormSchema = (schema) => {
     const example = {};
     schema.params.forEach(param => {
         if (!param.key) return;
-        example[param.key] = param.example || buildExample(param);
+        example[param.key] = (param.example || param.example === false) ? param.example : buildExample(param);
     });
     return Mock.mock(example);
 };
@@ -18,7 +18,7 @@ buildExample = (param) => {
         case 'number':
             return Math.ceil(Math.random() * 10000);
         case 'boolean':
-            return true;
+            return Math.ceil(Math.random() * 2) > 1 ? true : false
         default:
             return 'value';
     }
