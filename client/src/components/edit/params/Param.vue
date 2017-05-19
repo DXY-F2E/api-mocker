@@ -14,6 +14,7 @@
         </div>
         <param-set :param="param"
                    :name="name"
+                   @keyup.native.enter="addParam"
                    @buildObject="buildObject"
                    @change="updateParam"></param-set>
         <slot name="params"></slot>

@@ -2,7 +2,7 @@
     <div class="param set">
         <el-row type="flex" class="row-bg" >
             <el-col class="key">
-                <el-input placeholder="key" v-model="param.key" @change="update"  @keyup.native.enter="addParam"></el-input>
+                <el-input placeholder="key" v-model="param.key" @change="update"></el-input>
             </el-col>
             <el-col class="config">
                 <el-cascader

@@ -12,23 +12,23 @@ module.exports = app => {
             return yield app.model.api.findOne({url: url, "options.method": method}).exec()
         }
         * real() {
-            let {realUrl, method} = this.ctx.request.body
-            if (!realUrl || !method) {
+            let {_apiRealUrl, _apiMethod} = this.ctx.request.body
+            if (!_apiRealUrl || !_apiMethod) {
                 this.ctx.body = {
                     success: false,
                     message: '真实地址为空'
                 }
             }
-            realUrl = this.ctx.request.url.replace('/client/real', realUrl)
-            delete this.ctx.request.body.realUrl
-            delete this.ctx.request.body.method
-            const result = yield this.ctx.curl(realUrl, {
-                method: method,
-                // body数据，暂时只支持json格式，未来可以从header中判断
+            delete this.ctx.request.body._apiRealUrl
+            delete this.ctx.request.body._apiMethod
+            const opts = _apiMethod === 'get' ? {} : {
                 contentType: 'json',
+                // body数据，暂时只支持json格式，未来可以从header中判断
                 data: this.ctx.request.body,
                 dataType: 'json'
-            });
+            }
+            opts.method = _apiMethod
+            const result = yield this.ctx.curl(_apiRealUrl, opts);
             this.ctx.status = result.status;
             this.ctx.set(result.headers);
             this.ctx.body = result.data

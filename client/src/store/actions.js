@@ -116,8 +116,8 @@ const actions = {
                 url: `${domain}/client/real`,
                 params: {},
                 data: {
-                    realUrl: url,
-                    method: api.options.method
+                    _apiRealUrl: url,
+                    _apiMethod: api.options.method
                 }
             };
         }
@@ -125,10 +125,10 @@ const actions = {
             example: null,
             params: api.options.params.query
         });
-        config.data = api.options.examples.body || buildExampleFormSchema({
+        config.data = Object.assign(config.data, api.options.examples.body || buildExampleFormSchema({
             example: null,
             params: api.options.params.body
-        });
+        }));
         // config.params = state.reqParams.query.value;
         // config.data = state.reqParams.body.value;
         return axios(config).then(res => {
