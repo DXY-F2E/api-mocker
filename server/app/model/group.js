@@ -13,6 +13,11 @@ module.exports = mongoose => {
             type: ObjectId,
             required: true
         },
+        member: [ObjectId],
+        public: {
+            type: Boolean,
+            default: true
+        },
         name: {
             type: String,
             required: true,

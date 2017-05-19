@@ -1,4 +1,5 @@
 module.exports = mongoose => {
+    const { ObjectId } = mongoose.Schema.Types
     const UserSchema = new mongoose.Schema({
         email: {
             type: String,
@@ -13,6 +14,7 @@ module.exports = mongoose => {
             type: String,
             unique: true
         },
+        teamId: [ObjectId],
         createTime: String,
         modifiedTime: String,
         isDeleted: {
