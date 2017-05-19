@@ -15,8 +15,14 @@ module.exports = mongoose => {
             unique: true
         },
         teamId: [ObjectId],
-        createTime: String,
-        modifiedTime: String,
+        createTime: {
+            type: Date,
+            default: Date.now
+        },
+        modifiedTime: {
+            type: Date,
+            default: Date.now
+        },
         isDeleted: {
             type: Boolean,
             default: false

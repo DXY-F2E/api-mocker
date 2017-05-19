@@ -21,5 +21,6 @@ module.exports = app => {
     app.post('/client/real', 'client.real')
 
     // user
-    app.post('/server/user', 'user.create')
+    app.post('/auth/user', 'user.create')
+    app.post('/auth/user/login', 'user.login')
 }

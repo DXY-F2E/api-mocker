@@ -3,6 +3,9 @@ import API from './api';
 import config from '../../config';
 import { validateApi, buildApiResponse, buildExampleFormSchema } from '../util';
 
+// 允许跨域请求带上cookie
+axios.default.withCredentials = true;
+
 const domain = process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax;
 
 const actions = {
@@ -105,6 +108,7 @@ const actions = {
     testApi({ state, commit }, url) {
         const api = state.api;
         let config = {
+            withCredentials: true,
             method: api.options.method,
             url: `${domain}${api.url}`,
             params: {},
@@ -112,6 +116,7 @@ const actions = {
         };
         if (url !== config.url) {
             config = {
+                withCredentials: true,
                 method: 'post',
                 url: `${domain}/client/real`,
                 params: {},

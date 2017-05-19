@@ -25,6 +25,7 @@ module.exports = app => {
                 contentType: 'json',
                 // body数据，暂时只支持json格式，未来可以从header中判断
                 data: this.ctx.request.body,
+                headers: this.ctx.headers,
                 dataType: 'json'
             }
             opts.method = _apiMethod
@@ -40,7 +41,6 @@ module.exports = app => {
             const delay = document.options.delay || 0
             yield sleep(delay)
             const params = R.merge(this.ctx.request.body, this.ctx.request.query)
-
             this.validateParams(document, params)
             this.ctx.body = dslCore.renderer(params)(this.getResponse(document) || {})
         }

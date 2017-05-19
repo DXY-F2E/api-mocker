@@ -14,8 +14,14 @@ module.exports = mongoose => {
             required: true
         },
         operator: [ObjectId],
-        createTime: String,
-        modifiedTime: String,
+        createTime: {
+            type: Date,
+            default: Date.now
+        },
+        modifiedTime: {
+            type: Date,
+            default: Date.now
+        },
         isDeleted: {
             type: Boolean,
             default: false
