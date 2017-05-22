@@ -62,12 +62,19 @@ export default {
             this.showCreateGroup = false;
         }
     },
+    created() {
+        this.originTitle = document.title;
+    },
+    beforeDestroy() {
+        document.title = this.originTitle;
+    },
     computed: {
         groups() {
             return this.$store.state.groups;
         },
         name: {
             get() {
+                document.title = this.$store.state.api.name || '未命名接口';
                 return this.$store.state.api.name;
             },
             set(value) {
