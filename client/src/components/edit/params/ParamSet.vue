@@ -1,11 +1,12 @@
 <template>
-    <div class="param set">
+    <div class="param set" :class="name">
         <el-row type="flex" class="row-bg" >
             <el-col class="key">
                 <el-input placeholder="key" v-model="param.key" @change="update"></el-input>
             </el-col>
             <el-col class="config">
                 <el-cascader
+                    v-if="name !== 'headers'"
                     popper-class="type-cascader"
                     @change="changeParamType"
                     :options="tpyeList"
@@ -133,5 +134,41 @@ export default {
 <style type="text/css">
 .type-cascader .el-cascader-menu {
     height: auto;
+}
+.param.set .el-checkbox {
+    height: 36px;
+    line-height: 36px;
+}
+.params-box .config {
+    min-width: 220px;
+    max-width: 220px;
+}
+.params-box .headers .config {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+}
+.params-box .example {
+    min-width: 145px;
+    max-width: 220px;
+}
+.params-box .comment {
+    margin-right: 20px;
+    min-width: 145px;
+    max-width: 240px;
+}
+.params-box .key {
+    min-width: 100px;
+}
+.params-box .el-input__inner {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #EFF2F7;
+}
+.params-box .el-input-number {
+    width: 100%;
+}
+.params-box .el-select {
+    margin-right: 20px;
 }
 </style>
