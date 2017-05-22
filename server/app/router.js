@@ -1,20 +1,19 @@
 module.exports = app => {
-    app.get('/', 'home.index');
-    app.get('/server/group', 'group.getAll')
-    app.post('/server/group', 'group.create')
-    app.delete('/server/group/:id', 'group.delete')
+    app.get('/mock-api/server/group', 'group.getAll')
+    app.post('/mock-api/server/group', 'group.create')
+    app.delete('/mock-api/server/group/:id', 'group.delete')
 
-    app.get('/server/api/', 'api.getAll')
-    app.get('/server/api/:groupId', 'api.getAll')
-    app.get('/server/api/:groupId/:apiId', 'api.getApi')
-    app.post('/server/api/:groupId', 'api.createApi')
-    app.put('/server/api/:groupId/:apiId', 'api.modifyApi')
-    app.delete('/server/api/:groupId/:apiId', 'api.delete')
+    app.get('/mock-api/server/api/', 'api.getAll')
+    app.get('/mock-api/server/api/:groupId', 'api.getAll')
+    app.get('/mock-api/server/api/:groupId/:apiId', 'api.getApi')
+    app.post('/mock-api/server/api/:groupId', 'api.createApi')
+    app.put('/mock-api/server/api/:groupId/:apiId', 'api.modifyApi')
+    app.delete('/mock-api/server/api/:groupId/:apiId', 'api.delete')
 
-    app.get('/client/:id', 'client.show')
-    app.post('/client/:id', 'client.create')
-    app.put('/client/:id', 'client.put')
-    app.delete('/client/:id', 'client.delete')
+    app.get('/mock-api/client/:id', 'client.show')
+    app.post('/mock-api/client/:id', 'client.create')
+    app.put('/mock-api/client/:id', 'client.put')
+    app.delete('/mock-api/client/:id', 'client.delete')
 
-    app.post('/client/real', 'client.real')
+    app.post('/mock-api/client/real', 'client.real')
 }
