@@ -5,6 +5,17 @@ import { validateApi, buildApiResponse, buildExampleFormSchema } from '../util';
 
 // 允许跨域请求带上cookie
 axios.default.withCredentials = true;
+axios.interceptors.response.use((response) => {
+    window.console.log(response);
+    return response;
+}, (err) => {
+    if (err.response && err.response.status === 401) {
+        // window.location.href = '#/login`';
+        throw err;
+    }
+    return Promise.resolve({ err });
+});
+
 
 const domain = process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax;
 
