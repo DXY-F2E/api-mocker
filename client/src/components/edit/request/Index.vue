@@ -10,10 +10,16 @@
                     @click="changeSchema(r.name)">
                     <span>{{r.label}}</span>
                 </li>
+                <li class="item"
+                    :class="[{active: activeType === 'headers'}]"
+                    key="headers"
+                    @click="changeSchema('headers')">
+                    <span>Header</span>
+                </li>
             </ul>
         </el-col>
         <el-col class="schema-content">
-            <schema :schema="localParams[activeType]"
+            <schema :schema="activeSchema"
                     :name="activeType"
                     :fullscreen="fullscreen"
                     @change="updateParams"></schema>
@@ -45,6 +51,11 @@ export default {
     },
     methods: {
         updateParams(data) {
+            if (this.activeType === 'headers') {
+                this.$store.commit('UPDATE_API_PROPS',
+                                   ['options.headers', R.clone(data)]);
+                return;
+            }
             const key = `options.params.${this.activeType}`;
             this.$store.commit('UPDATE_API_PROPS',
                                [key, R.clone(data.params)]);
@@ -63,6 +74,12 @@ export default {
         }
     },
     computed: {
+        activeSchema() {
+            return this.activeType === 'headers' ? this.headers : this.localParams[this.activeType];
+        },
+        headers() {
+            return this.$store.state.api.options.headers;
+        },
         method() {
             return this.$store.state.api.options.method;
         },
