@@ -12,7 +12,7 @@ module.exports = mongoose => {
         },
         name: {
             type: String,
-            unique: true
+            required: true
         },
         teamId: [ObjectId],
         createTime: {

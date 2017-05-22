@@ -1,7 +1,8 @@
 <template>
-<div>这是登录页</div>
+    <div>
+        <router-view></router-view>
+    </div>
 </template>
-
 <script>
 export default {
 };

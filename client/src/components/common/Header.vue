@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="header" v-if="activeIndex !== 'Auth'">
     <el-row type="flex" >
         <el-col :span="0" class="logo"><h1>DXY API Mocker</h1></el-col>
         <el-col :span="24">

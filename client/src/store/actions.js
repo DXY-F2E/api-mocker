@@ -4,16 +4,12 @@ import config from '../../config';
 import { validateApi, buildApiResponse, buildExampleFormSchema } from '../util';
 
 // 允许跨域请求带上cookie
-axios.default.withCredentials = true;
-axios.interceptors.response.use((response) => {
-    window.console.log(response);
-    return response;
-}, (err) => {
+axios.defaults.withCredentials = true;
+axios.interceptors.response.use((response) => response, (err) => {
     if (err.response && err.response.status === 401) {
         // window.location.href = '#/login`';
-        throw err;
     }
-    return Promise.resolve({ err });
+    throw err;
 });
 
 
@@ -119,7 +115,6 @@ const actions = {
     testApi({ state, commit }, url) {
         const api = state.api;
         let config = {
-            withCredentials: true,
             method: api.options.method,
             url: `${domain}${api.url}`,
             params: {},
@@ -127,7 +122,6 @@ const actions = {
         };
         if (url !== config.url) {
             config = {
-                withCredentials: true,
                 method: 'post',
                 url: `${domain}/client/real`,
                 params: {},

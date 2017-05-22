@@ -23,4 +23,5 @@ module.exports = app => {
     // user
     app.post('/auth/user', 'user.create')
     app.post('/auth/user/login', 'user.login')
+    app.get('/auth/user/logout', 'user.logout')
 }

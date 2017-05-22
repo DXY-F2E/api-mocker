@@ -1,5 +1,5 @@
 <template>
-这是注册页
+<div>这是注册页</div>
 </template>
 
 <script>

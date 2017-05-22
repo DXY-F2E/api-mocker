@@ -7,6 +7,9 @@ import Document from '@/components/document/Index';
 import DocOverview from '@/components/document/Overview';
 import GroupContent from '@/components/document/GroupContent';
 import ApiContent from '@/components/document/ApiContent';
+import Auth from '@/components/auth/Index';
+import Login from '@/components/auth/Login';
+import Register from '@/components/auth/Register';
 
 Vue.use(Router);
 
@@ -19,6 +22,20 @@ export default new Router({
         {
             path: '/list',
             redirect: '/list/all'
+        },
+        {
+            path: '/auth',
+            name: 'Auth',
+            component: Auth,
+            children: [{
+                path: 'login',
+                name: 'Login',
+                component: Login
+            }, {
+                path: 'register',
+                name: 'Register',
+                component: Register
+            }]
         },
         {
             path: '/create',
