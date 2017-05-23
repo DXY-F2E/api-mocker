@@ -23,6 +23,7 @@
         <div class="editor">
             <json-editor class="example-editor"
                          v-model="example"
+                         :parse-tool="true"
                          :resize-act="fullscreen"
                          :fullscreen-tool="false"
                          @change="updateExample"></json-editor>

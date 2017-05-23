@@ -9,7 +9,7 @@
                   :value="idx">
                 </el-option>
             </el-select>
-            <el-button size="mini" v-if="fullscreenTool" @click="parseEditor()">Parse</el-button>
+            <el-button size="mini" v-if="parseTool" @click="parseEditor()">Parse</el-button>
             <el-button size="mini"
                        v-if="fullscreenTool"
                        @click="fullscreen()">{{isFullscreen ? '取消' : ''}}全屏</el-button>
