@@ -4,6 +4,7 @@
             <div class="control">Types</div>
             <ul>
                 <li class="item"
+                    v-show="method !== 'get' || r.name !== 'body'"
                     :class="[{active: activeType === r.name}]"
                     v-for="(r, key) in types"
                     :key="key"
@@ -36,10 +37,10 @@ export default {
         ParamsBox,
         Schema
     },
-    props: ['fullscreen'],
+    props: ['fullscreen', 'method'],
     data() {
         return {
-            activeType: 'body',
+            activeType: this.initActive(),
             types: [{
                 label: 'Body',
                 name: 'body'
@@ -50,6 +51,13 @@ export default {
         };
     },
     methods: {
+        initActive() {
+            if (this.method === 'get') {
+                return 'query';
+            } else {
+                return 'body';
+            }
+        },
         updateParams(data) {
             if (this.activeType === 'headers') {
                 this.$store.commit('UPDATE_API_PROPS',
@@ -73,15 +81,24 @@ export default {
             };
         }
     },
+    watch: {
+        method(val) {
+            if (this.activeType === 'headers') {
+                return;
+            }
+            if (val === 'get') {
+                this.activeType = 'query';
+            } else {
+                this.activeType = 'body';
+            }
+        }
+    },
     computed: {
         activeSchema() {
             return this.activeType === 'headers' ? this.headers : this.localParams[this.activeType];
         },
         headers() {
             return this.$store.state.api.options.headers;
-        },
-        method() {
-            return this.$store.state.api.options.method;
         },
         params() {
             return this.$store.state.api.options.params;
@@ -95,13 +112,6 @@ export default {
                 localParams[key] = this.getSchemaObject(key);
             }
             return localParams;
-        },
-        requestActive() {
-            if (this.method === 'get' || this.method === 'delete') {
-                return 'query';
-            } else {
-                return 'body';
-            }
         }
     }
 };

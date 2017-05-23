@@ -3,7 +3,7 @@
         <url-box></url-box>
         <setting-field title="Request" class="request-field">
             <template scope="props">
-                <request-box :fullscreen="props.fullscreen"></request-box>
+                <request-box :fullscreen="props.fullscreen" :method="method"></request-box>
             </template>
         </setting-field>
         <setting-field title="Result" v-if="mode === 'test'">
@@ -54,6 +54,9 @@ export default {
     computed: {
         mode() {
             return this.$store.state.mode;
+        },
+        method() {
+            return this.$store.state.api.options.method;
         },
         response() {
             return this.$store.state.api.options.response;
