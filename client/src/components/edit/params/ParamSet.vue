@@ -137,7 +137,7 @@ export default {
 }
 .param.set .el-checkbox {
     height: 36px;
-    line-height: 36px;
+    line-height: 35px;
 }
 .params-box .config {
     min-width: 220px;
