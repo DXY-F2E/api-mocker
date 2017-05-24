@@ -28,7 +28,8 @@ export default {
     data() {
         return {
             isFullscreen: false,
-            template: null
+            template: null,
+            silent: false
         };
     },
     props: {
@@ -107,11 +108,13 @@ export default {
             }
         },
         setValue() {
+            this.silent = true;
             if (this.value) {
                 this.editor.setValue(JSON.stringify(this.value, null, '\t'), 1);
             } else {
                 this.editor.setValue('');
             }
+            this.silent = false;
         },
         getValue() {
             try {
@@ -138,9 +141,11 @@ export default {
             }
         },
         initEditor() {
-            this.setValue();
             this.editor.setReadOnly(this.readonly);
             this.editor.getSession().on('change', () => {
+                if (this.silent) {
+                    return;
+                }
                 const data = this.getValue();
                 if (!data.success) {
                     this.$emit('change', data);
@@ -155,6 +160,7 @@ export default {
                 // }
                 this.$emit('change', data);
             });
+            this.setValue();
         }
     },
     beforeDestroy() {

@@ -57,6 +57,7 @@ export default {
 .params-table .example {
     min-width: 200px;
     max-width: 200px;
+    word-break: break-all;
 }
 .params-table .required,
 .params-table .type {
