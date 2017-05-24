@@ -1,4 +1,4 @@
-import { buildExampleFormSchema } from '../../dsl-core/index.js';
+import { buildExampleFormSchema } from '../../dsl-core/lib/buildExampleFormSchema.js';
 function isEmpty(val) {
     return !val || val.trim() === '';
 }

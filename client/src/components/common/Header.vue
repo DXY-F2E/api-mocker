@@ -1,5 +1,5 @@
 <template>
-  <div class="header" v-if="activeIndex !== 'Auth'">
+  <div class="header">
     <el-row type="flex" >
         <el-col :span="0" class="logo"><h1>DXY API Mocker</h1></el-col>
         <el-col :span="24">
@@ -9,7 +9,7 @@
                      mode="horizontal"
                      :router="true"
                      >
-              <el-menu-item index="AllList" :route="{name: 'AllList'}">接口列表</el-menu-item>
+              <el-menu-item index="List" :route="{name: 'AllList'}">接口列表</el-menu-item>
               <el-menu-item index="Create" :route="{name: 'Create'}">创建接口</el-menu-item>
               <el-menu-item index="Document" :route="{name: 'Document'}">接口文档</el-menu-item>
             </el-menu>
@@ -22,7 +22,7 @@
 export default {
     computed: {
         activeIndex() {
-            return this.$route.matched[0].name;
+            return this.$route.matched[0] ? this.$route.matched[0].name : '';
         }
     }
 };
