@@ -20,7 +20,7 @@ module.exports = {
     // `npm run build --report`
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report,
-    ajax: 'https://192.168.200.206:7001'
+    ajax: 'https://f2e.dxy.net/mock-api'
   },
   dev: {
     env: require('./dev.env'),

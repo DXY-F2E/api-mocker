@@ -1,17 +1,29 @@
 <template>
     <div class="schema-example">
         <div class="control">
-            <el-button type="info"
-                       size="small"
-                       @click.natvie="buildExample">Schema => Example</el-button>
-            <el-button type="info"
-                       size="small"
-                       :plain="true"
-                       @click.natvie="buildSchema">Example => Schema</el-button>
+            <el-tooltip class="item"
+                        effect="dark"
+                        content="已覆盖示例值"
+                        placement="top"
+                        v-model="tooltip.example"
+                        :manual="true">
+                <el-button size="small"
+                           @click.natvie="buildExample">Schema => Example</el-button>
+            </el-tooltip>
+            <el-tooltip class="item"
+                        effect="dark"
+                        content="生成模型成功"
+                        placement="top"
+                        v-model="tooltip.schema"
+                        :manual="true">
+                <el-button size="small"
+                           @click.natvie="buildSchema">Example => Schema</el-button>
+            </el-tooltip>
         </div>
         <div class="editor">
             <json-editor class="example-editor"
                          v-model="example"
+                         :parse-tool="true"
                          :resize-act="fullscreen"
                          :fullscreen-tool="false"
                          @change="updateExample"></json-editor>
@@ -31,6 +43,10 @@ export default {
             status: {
                 success: true,
                 msg: ''
+            },
+            tooltip: {
+                example: false,
+                schema: false
             }
         };
     },
@@ -45,6 +61,12 @@ export default {
         }
     },
     methods: {
+        showTooltip(name) {
+            this.tooltip[name] = true;
+            window.setTimeout(() => {
+                this.tooltip[name] = false;
+            }, 700);
+        },
         updateExample(data) {
             this.status = data;
             if (data.success) {
@@ -55,6 +77,7 @@ export default {
         },
         buildExample() {
             this.example = buildExampleFormSchema(this.schema);
+            this.showTooltip('example');
         },
         buildSchema() {
             if (!this.status.success) {
@@ -63,6 +86,7 @@ export default {
             }
             const schema = buildSchemaFormExample(this.example);
             this.$emit('buildSchema', schema);
+            this.showTooltip('schema');
         }
     },
     props: {

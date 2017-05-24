@@ -9,6 +9,10 @@ function initData() {
         options: {
             response: [new Schema()],
             responseIndex: 0,
+            headers: {
+                example: null,
+                params: []
+            },
             method: 'get',
             delay: 0,
             examples: {

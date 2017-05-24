@@ -10,11 +10,13 @@
                    @deleteParam="() => deleteParam(idx)">
             <params v-if="param.type === 'object' && param.params"
                     :params="param.params"
+                    :name="name"
                     slot="params"
                     :level="level + 1"
                     @change="(data) => update(data, idx)"></params>
             <params v-if="param.type === 'array' && param.items.type === 'object'"
                     :params="param.items.params"
+                    :name="name"
                     slot="params"
                     :level="level + 1"
                     @change="(data) => update(data, idx)"></params>
@@ -104,33 +106,6 @@ export default {
 }
 .params-box .el-cascader .el-input {
     width: 140px;
-}
-.params-box .config {
-    min-width: 220px;
-    max-width: 220px;
-}
-.params-box .example {
-    min-width: 145px;
-    max-width: 220px;
-}
-.params-box .comment {
-    margin-right: 20px;
-    min-width: 145px;
-    max-width: 240px;
-}
-.params-box .key {
-    min-width: 100px;
-}
-.params-box .el-input__inner {
-    border: none;
-    border-radius: 0;
-    border-bottom: 1px solid #EFF2F7;
-}
-.params-box .el-input-number {
-    width: 100%;
-}
-.params-box .el-select {
-    margin-right: 20px;
 }
 .params-box .fill .name {
     min-width: 140px;

@@ -23,9 +23,13 @@
                         :schema="schema"
                         :key="key"></schema>
             </div>
+            <div class="field" v-if="headers.params.length">
+                <label>请求头</label>
+                <schema :schema="headers" name="headers"></schema>
+            </div>
             <div class="field" v-if="api.options.response && api.options.response.length">
                 <label>返回结果</label>
-                <schemas :schemas="api.options.response"></schemas>
+                <schemas :schemas="api.options.response" name="response"></schemas>
             </div>
             <div class="field mock-data" v-else>
                 <label>Mock数据</label>
@@ -91,6 +95,9 @@ export default {
         },
         params() {
             return this.api.options.params;
+        },
+        headers() {
+            return this.api.options.headers;
         },
         body() {
             return this.api.options.params.body;

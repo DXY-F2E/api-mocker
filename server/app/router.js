@@ -1,6 +1,4 @@
 module.exports = app => {
-    // api
-    app.get('/', 'home.index');
     app.get('/server/group', 'group.getAll')
     app.post('/server/group', 'group.create')
     app.delete('/server/group/:id', 'group.delete')

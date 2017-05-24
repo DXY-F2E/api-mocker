@@ -80,6 +80,7 @@ module.exports = app => {
             for (var name in params) {
                 if (method === 'get' && name !== 'query') continue
                 params[name].forEach(param => {
+                    if (!param.key) return
                     rule[param.key] = {
                         type: param.type === 'number' ? 'checkNumber': param.type,
                         required: param.required

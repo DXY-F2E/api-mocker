@@ -4,16 +4,23 @@
             <div class="control">Types</div>
             <ul>
                 <li class="item"
+                    v-show="method !== 'get' || r.name !== 'body'"
                     :class="[{active: activeType === r.name}]"
                     v-for="(r, key) in types"
                     :key="key"
                     @click="changeSchema(r.name)">
                     <span>{{r.label}}</span>
                 </li>
+                <li class="item"
+                    :class="[{active: activeType === 'headers'}]"
+                    key="headers"
+                    @click="changeSchema('headers')">
+                    <span>Header</span>
+                </li>
             </ul>
         </el-col>
         <el-col class="schema-content">
-            <schema :schema="localParams[activeType]"
+            <schema :schema="activeSchema"
                     :name="activeType"
                     :fullscreen="fullscreen"
                     @change="updateParams"></schema>
@@ -30,10 +37,10 @@ export default {
         ParamsBox,
         Schema
     },
-    props: ['fullscreen'],
+    props: ['fullscreen', 'method'],
     data() {
         return {
-            activeType: 'body',
+            activeType: this.initActive(),
             types: [{
                 label: 'Body',
                 name: 'body'
@@ -44,7 +51,19 @@ export default {
         };
     },
     methods: {
+        initActive() {
+            if (this.method === 'get') {
+                return 'query';
+            } else {
+                return 'body';
+            }
+        },
         updateParams(data) {
+            if (this.activeType === 'headers') {
+                this.$store.commit('UPDATE_API_PROPS',
+                                   ['options.headers', R.clone(data)]);
+                return;
+            }
             const key = `options.params.${this.activeType}`;
             this.$store.commit('UPDATE_API_PROPS',
                                [key, R.clone(data.params)]);
@@ -62,9 +81,24 @@ export default {
             };
         }
     },
+    watch: {
+        method(val) {
+            if (this.activeType === 'headers') {
+                return;
+            }
+            if (val === 'get') {
+                this.activeType = 'query';
+            } else {
+                this.activeType = 'body';
+            }
+        }
+    },
     computed: {
-        method() {
-            return this.$store.state.api.options.method;
+        activeSchema() {
+            return this.activeType === 'headers' ? this.headers : this.localParams[this.activeType];
+        },
+        headers() {
+            return this.$store.state.api.options.headers;
         },
         params() {
             return this.$store.state.api.options.params;
@@ -78,13 +112,6 @@ export default {
                 localParams[key] = this.getSchemaObject(key);
             }
             return localParams;
-        },
-        requestActive() {
-            if (this.method === 'get' || this.method === 'delete') {
-                return 'query';
-            } else {
-                return 'body';
-            }
         }
     }
 };

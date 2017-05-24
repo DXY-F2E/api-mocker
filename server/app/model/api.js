@@ -29,7 +29,10 @@ module.exports = mongoose => {
         },
         options: {
             method: String,
-            headers: {},
+            headers: {
+                example: {},
+                params: []
+            },
             params: {},
             examples: {
                 type: Object,

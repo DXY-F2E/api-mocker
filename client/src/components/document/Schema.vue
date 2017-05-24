@@ -1,6 +1,6 @@
 <template>
     <div class="schema doc-schema">
-        <div class="title" :class="isShowExample">
+        <div class="title" :class="isShowExample" v-if="name !== 'headers'">
             <span class="status" v-if="schema.status" :class="schema.status.toString()">{{schema.status}}</span>
             <span class="status-text" v-if="name">{{name}}</span>
             <span v-if="schema.statusText">[{{schema.statusText}}]</span>

@@ -139,6 +139,7 @@ const actions = {
             example: null,
             params: api.options.params.body
         }));
+        config.headers = buildExampleFormSchema(api.options.headers);
         // config.params = state.reqParams.query.value;
         // config.data = state.reqParams.body.value;
         return axios(config).then(res => {
