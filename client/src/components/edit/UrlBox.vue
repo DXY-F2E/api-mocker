@@ -136,10 +136,11 @@ export default {
             return this.$store.state.api._id === undefined;
         },
         url() {
+            const devUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`;
             if (this.mode === 'edit') {
-                return this.api.url ? this.$store.state.serverRoot + this.api.url : '';
+                return this.api._id ? devUrl : '';
             } else if (this.testMode === 'mock') {
-                return this.$store.state.serverRoot + this.api.url;
+                return devUrl;
             } else {
                 return this.api.prodUrl;
             }

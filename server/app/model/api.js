@@ -18,10 +18,6 @@ module.exports = mongoose => {
             type: String,
             default: Date.now
         },
-        url: {
-            type: String,
-            unique: true
-        },
         prodUrl: String,
         dsl: {
             type: Object,

@@ -105,7 +105,7 @@ const actions = {
         const api = state.api;
         let config = {
             method: api.options.method,
-            url: `${domain}${api.url}`,
+            url: `${domain}/client/${api._id}`,
             params: {},
             data: {}
         };

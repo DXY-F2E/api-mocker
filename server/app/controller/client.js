@@ -8,8 +8,15 @@ module.exports = app => {
 
     class ClientController extends app.Controller {
         * findApi(method) {
-            const url = this.ctx.request.url.split('?')[0]
-            return yield app.model.api.findOne({url: url, "options.method": method}).exec()
+            // const url = this.ctx.request.url.split('?')[0]
+            const { id } = this.ctx.params;
+            if (id.length < 5) {
+                // hack方法，兼容老的存下url信息的api
+                const url = `/client/${id}`
+                return yield app.model.api.findOne({url: url, "options.method": method}).exec()
+            } else {
+                return yield app.model.api.findOne({_id: id, "options.method": method}).exec()
+            }
         }
         * real() {
             let {_apiRealUrl, _apiMethod} = this.ctx.request.body

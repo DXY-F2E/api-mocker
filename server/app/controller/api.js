@@ -74,13 +74,12 @@ module.exports = app => {
             assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalie groupId')
             assert(body.name, 403, 'required name')
             // assert(body.dsl, 403, 'required dsl')
-
-            const nextUrl = yield util.generateApiURL(app)
+            // 废弃，不需要url了
+            // const nextUrl = yield util.generateApiURL(app)
 
             const resources = yield new app.model.api(R.merge(body, {
                 createTime: Date.now(),
-                group: groupId,
-                url: nextUrl
+                group: groupId
             })).save()
 
             yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
