@@ -1,6 +1,6 @@
 module.exports = mongoose => {
     const { ObjectId } = mongoose.Schema.Types
-    const apiSchema = mongoose.Schema({
+    const ApiSchema = mongoose.Schema({
         group: {
             type: ObjectId,
             ref: 'group'
@@ -51,5 +51,5 @@ module.exports = mongoose => {
         }
     })
 
-    return mongoose.model('api', apiSchema)
+    return mongoose.model('Api', ApiSchema)
 }
