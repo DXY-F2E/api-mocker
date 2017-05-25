@@ -4,9 +4,9 @@ function getDomain() {
     // const protocol = window.location.href.indexOf('https') === 0 ? 'https://' : 'http://';
     // return protocol + (process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax);
     if (process.env.NODE_ENV === 'development') {
-        return `http://${config.dev.ajax}`
+        return `http://${config.dev.ajax}`;
     } else {
-        return `https://${config.build.ajax}`
+        return `https://${config.build.ajax}`;
     }
 }
 function isEmpty(val) {
