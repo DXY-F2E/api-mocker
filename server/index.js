@@ -6,3 +6,10 @@ require('egg').startCluster({
     baseDir: __dirname,
     port: process.env.PORT || 7001 // default to 7001
 });
+
+// run两个程序，http 链接走 7002 端口
+require('egg').startCluster({
+    https: false,
+    baseDir: __dirname,
+    port: 7002
+});
