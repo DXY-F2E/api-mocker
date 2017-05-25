@@ -1,7 +1,7 @@
 import R from 'ramda';
-import config from '../../config';
+import { getDomain } from '../util';
 
-const domain = process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax;
+const domain = getDomain();
 
 export default R.map((url) => `${domain}${url}`)({
     GROUPS: '/server/group',

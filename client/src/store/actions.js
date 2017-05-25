@@ -1,9 +1,8 @@
 import axios from 'axios';
 import API from './api';
-import config from '../../config';
-import { validateApi, buildApiResponse, buildExampleFormSchema } from '../util';
+import { validateApi, buildApiResponse, buildExampleFormSchema, getDomain } from '../util';
 
-const domain = process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax;
+const domain = getDomain();
 
 const actions = {
     getGroups({ commit }) {

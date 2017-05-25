@@ -1,4 +1,9 @@
 import { buildExampleFormSchema } from '../../dsl-core/index.js';
+import config from '../config';
+function getDomain() {
+    const protocol = window.location.href.indexOf('https') === 0 ? 'https://' : 'http://';
+    return protocol + (process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax);
+}
 function isEmpty(val) {
     return !val || val.trim() === '';
 }
@@ -92,5 +97,6 @@ export {
     buildApiResponse,
     validateApi,
     isEmpty,
-    clone
+    clone,
+    getDomain
 };
