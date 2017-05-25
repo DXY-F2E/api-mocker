@@ -46,9 +46,11 @@ module.exports = app => {
             const resources = yield app.model.api.findOneAndUpdate({
                 group: groupId,
                 _id: apiId
-            }, R.merge(body, {modifiedTime: Date.now()}), {new: true}).exec()
+            }, R.merge(body, {modifiedTime: Date.now()}), {new: true}).lean()
             //{new: true} 使结果能返回更新后的数据
             yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
+            // 存下历史记录，并将所有记录返回
+            resources.records = yield this.service.apiHistory.push(resources)
 
             this.ctx.logger.info('modifyApi', body)
             this.ctx.body = { resources }
