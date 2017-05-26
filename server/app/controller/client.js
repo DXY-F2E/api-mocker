@@ -8,7 +8,6 @@ module.exports = app => {
 
     class ClientController extends app.Controller {
         * findApi(method) {
-            // const url = this.ctx.request.url.split('?')[0]
             const { id } = this.ctx.params;
             if (id.length < 5) {
                 // hack方法，兼容老的存下url信息的api

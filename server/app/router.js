@@ -1,4 +1,6 @@
 module.exports = app => {
+    const apiStat = app.middlewares.apiStat()
+
     app.get('/server/group', 'group.getAll')
     app.post('/server/group', 'group.create')
     app.delete('/server/group/:id', 'group.delete')
@@ -12,10 +14,10 @@ module.exports = app => {
 
     app.get('/server/history/api/:apiId', 'history.getApi')
 
-    app.get('/client/:id', 'client.show')
-    app.post('/client/:id', 'client.create')
-    app.put('/client/:id', 'client.put')
-    app.delete('/client/:id', 'client.delete')
+    app.get('/client/:id', apiStat, 'client.show')
+    app.post('/client/:id', apiStat, 'client.create')
+    app.put('/client/:id', apiStat, 'client.put')
+    app.delete('/client/:id', apiStat, 'client.delete')
 
     app.post('/client/real', 'client.real')
 }
