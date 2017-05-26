@@ -43,10 +43,10 @@ module.exports = app => {
 
             delete body._id
 
-            const resources = yield app.model.api.findOneAndUpdate({
+            const resources = (yield app.model.api.findOneAndUpdate({
                 group: groupId,
                 _id: apiId
-            }, R.merge(body, {modifiedTime: Date.now()}), {new: true}).lean()
+            }, R.merge(body, {modifiedTime: Date.now()}), {new: true})).toObject() // 使用lean()方法会导致无法设定schema的默认值
             //{new: true} 使结果能返回更新后的数据
             yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
             // 存下历史记录，并将所有记录返回
@@ -61,9 +61,7 @@ module.exports = app => {
             assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalid groupId')
             assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
 
-            const resources = yield app.model.api
-                                       .findOne({_id: apiId, isDeleted: false})
-                                       .lean()
+            const resources = (yield app.model.api.findOne({_id: apiId, isDeleted: false})).toObject()
             resources.history = yield this.service.apiHistory.get(resources)
 
             this.ctx.logger.info('getApi')

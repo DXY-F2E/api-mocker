@@ -25,6 +25,12 @@ module.exports = mongoose => {
         },
         options: {
             method: String,
+            proxy: {
+                type: Object,
+                default: {
+                    mode: 0
+                }
+            },
             headers: {
                 example: {},
                 params: []

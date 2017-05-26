@@ -6,6 +6,9 @@ function initData() {
         group: '',
         desc: null,
         options: {
+            proxy: {
+                mode: 0
+            },
             response: [new Schema()],
             responseIndex: 0,
             headers: {
