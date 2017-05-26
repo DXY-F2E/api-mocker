@@ -14,14 +14,3 @@ export default {
     }
 };
 </script>
-<style>
-.content {
-    position: absolute;
-    width: 100%;
-    top: 60px;
-    bottom: 0;
-}
-.list-content {
-    min-height: 100%;
-}
-</style>
