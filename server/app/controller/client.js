@@ -44,12 +44,19 @@ module.exports = app => {
             this.ctx.set(result.headers);
             this.ctx.body = result.data
         }
+        * handleProxy(api) {
+            const { _mockProxyStatus } = this.ctx.request.query
+            if (api.options.proxy.mode === 1 || _mockProxyStatus === '1') {
+                yield this.proxy(api.prodUrl, api.options.method)
+                return true
+            }
+            return false
+        }
         * handleRequest(api) {
             if (!api) {
                 return
             }
-            if (api.options.proxy.mode === 1) {
-                yield this.proxy(api.prodUrl, api.options.method)
+            if (yield this.handleProxy(api)) {
                 return
             }
             const delay = api.options.delay || 0
