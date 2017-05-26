@@ -50,7 +50,7 @@ module.exports = app => {
             //{new: true} 使结果能返回更新后的数据
             yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
             // 存下历史记录，并将所有记录返回
-            resources.records = yield this.service.apiHistory.push(resources)
+            resources.history = yield this.service.apiHistory.push(resources)
 
             this.ctx.logger.info('modifyApi', body)
             this.ctx.body = { resources }
@@ -63,7 +63,8 @@ module.exports = app => {
 
             const resources = yield app.model.api
                                        .findOne({_id: apiId, isDeleted: false})
-                                       .exec()
+                                       .lean()
+            resources.history = yield this.service.apiHistory.get(resources)
 
             this.ctx.logger.info('getApi')
             this.ctx.body = { resources }

@@ -3,7 +3,7 @@ module.exports = mongoose => {
     const ApiHistorySchema = mongoose.Schema({
         apiId: {
             type: ObjectId,
-            // unique: true,
+            unique: true,
             ref: 'api'
         },
         records: [{

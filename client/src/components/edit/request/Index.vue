@@ -29,12 +29,10 @@
 </template>
 
 <script>
-import ParamsBox from './ParamsBox';
 import Schema from '../schema/Index';
 import R from 'ramda';
 export default {
     components: {
-        ParamsBox,
         Schema
     },
     props: ['fullscreen', 'method'],

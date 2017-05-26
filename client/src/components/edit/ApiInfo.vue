@@ -23,6 +23,9 @@
             <el-form-item label="线上地址">
                 <el-input auto-complete="off" v-model="prodUrl" placeholder="请填写绝对路径"></el-input>
             </el-form-item>
+            <el-form-item label="历史记录" v-if="history && history.records.length">
+                <api-history :history="history"></api-history>
+            </el-form-item>
 
             <!-- <el-form-item >
                 <el-button type="info">文档</el-button>
@@ -41,9 +44,11 @@
 
 <script>
 import createGroup from '../../dialog/create-group';
+import ApiHistory from './ApiHistory';
 export default {
     components: {
-        createGroup
+        createGroup,
+        ApiHistory
     },
     data() {
         return {
@@ -71,6 +76,9 @@ export default {
     computed: {
         groups() {
             return this.$store.state.groups;
+        },
+        history() {
+            return this.$store.state.api.history;
         },
         name: {
             get() {
@@ -144,5 +152,9 @@ export default {
     content: '*';
     color: #ff4949;
     margin-left: 2px;
+}
+.api-info .history {
+    display: inline-block;
+    width: 100%;
 }
 </style>

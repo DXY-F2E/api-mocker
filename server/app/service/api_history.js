@@ -1,7 +1,7 @@
 module.exports = app => {
     class ApiHistory extends app.Service {
         * get(apiId) {
-            return app.model.apiHistory.find({
+            return app.model.apiHistory.findOne({
                 apiId: apiId
             })
         }
@@ -22,7 +22,7 @@ module.exports = app => {
                 $push: {
                     records: {
                         $each: [ record ],
-                        $sort: { modifiedTime: 1 },
+                        $sort: { createTime: 1 },
                         $slice: -5
                     }
                  }

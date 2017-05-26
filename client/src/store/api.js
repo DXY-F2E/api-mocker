@@ -8,5 +8,6 @@ export default R.map((url) => `${domain}${url}`)({
     GROUP: '/server/group/:groupId',
     APIS: '/server/api',
     GROUP_APIS: '/server/api/:groupId',
-    API: '/server/api/:groupId/:apiId'
+    API: '/server/api/:groupId/:apiId',
+    ApiHistory: '/server/history/api/:apiId'
 });

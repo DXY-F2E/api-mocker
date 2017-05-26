@@ -4,6 +4,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import App from './App';
 import store from './store';
+import filter from './filter';
 import router from './router';
 import ElementUI from 'element-ui';
 import axios from 'axios';
@@ -11,6 +12,7 @@ import 'element-ui/lib/theme-default/index.css';
 import 'element-ui/lib/theme-default/reset.css';
 
 Vue.config.productionTip = false;
+Vue.use(filter);
 Vue.use(ElementUI);
 Vue.use(Vuex);
 Vue.prototype.$http = axios;

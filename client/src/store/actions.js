@@ -65,6 +65,15 @@ const actions = {
             commit('SAVE_API');
         });
     },
+    getApiHistory({ commit, state }) {
+        // 此接口暂时无用
+        return axios.get(API.ApiHistory.replace(':apiId', state.api._id)).then(res => {
+            // commit('UPDATE_API_HISTORY', res.data);
+            commit('SAVE_API');
+            window.console.log(res);
+            return res.data.history;
+        });
+    },
     deleteApi({ state, commit }, payload) {
         const { group, _id} = payload.api;
         return axios.delete(API.API.replace(':groupId', group).replace(':apiId', _id)).then(() => {
