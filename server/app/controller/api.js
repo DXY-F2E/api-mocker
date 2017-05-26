@@ -43,12 +43,14 @@ module.exports = app => {
 
             delete body._id
 
-            const resources = yield app.model.api.findOneAndUpdate({
+            const resources = (yield app.model.api.findOneAndUpdate({
                 group: groupId,
                 _id: apiId
-            }, R.merge(body, {modifiedTime: Date.now()}), {new: true}).exec()
+            }, R.merge(body, {modifiedTime: Date.now()}), {new: true})).toObject() // 使用lean()方法会导致无法设定schema的默认值
             //{new: true} 使结果能返回更新后的数据
             yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
+            // 存下历史记录，并将所有记录返回
+            resources.history = yield this.service.apiHistory.push(resources)
 
             this.ctx.logger.info('modifyApi', body)
             this.ctx.body = { resources }
@@ -59,9 +61,8 @@ module.exports = app => {
             assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalid groupId')
             assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
 
-            const resources = yield app.model.api
-                                       .findOne({_id: apiId, isDeleted: false})
-                                       .exec()
+            const resources = (yield app.model.api.findOne({_id: apiId, isDeleted: false})).toObject()
+            resources.history = yield this.service.apiHistory.get(resources)
 
             this.ctx.logger.info('getApi')
             this.ctx.body = { resources }
@@ -74,13 +75,12 @@ module.exports = app => {
             assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalie groupId')
             assert(body.name, 403, 'required name')
             // assert(body.dsl, 403, 'required dsl')
-
-            const nextUrl = yield util.generateApiURL(app)
+            // 废弃，不需要url了
+            // const nextUrl = yield util.generateApiURL(app)
 
             const resources = yield new app.model.api(R.merge(body, {
                 createTime: Date.now(),
-                group: groupId,
-                url: nextUrl
+                group: groupId
             })).save()
 
             yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()

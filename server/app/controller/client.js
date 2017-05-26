@@ -8,8 +8,14 @@ module.exports = app => {
 
     class ClientController extends app.Controller {
         * findApi(method) {
-            const url = this.ctx.request.url.split('?')[0]
-            return yield app.model.api.findOne({url: url, "options.method": method}).exec()
+            const { id } = this.ctx.params;
+            if (id.length < 5) {
+                // hack方法，兼容老的存下url信息的api
+                const url = `/client/${id}`
+                return yield app.model.api.findOne({url: url, "options.method": method}).exec()
+            } else {
+                return yield app.model.api.findOne({_id: id, "options.method": method}).exec()
+            }
         }
         * real() {
             let {_apiRealUrl, _apiMethod} = this.ctx.request.body
@@ -21,28 +27,43 @@ module.exports = app => {
             }
             delete this.ctx.request.body._apiRealUrl
             delete this.ctx.request.body._apiMethod
-            const opts = _apiMethod === 'get' ? {} : {
+            yield this.proxy(_apiRealUrl, _apiMethod)
+        }
+        * proxy(url, method) {
+            url += `?${this.ctx.request.url.split('?')[1]}`
+            const opts = method === 'get' ? {} : {
                 contentType: 'json',
                 // body数据，暂时只支持json格式，未来可以从header中判断
                 data: this.ctx.request.body,
                 headers: this.ctx.headers,
                 dataType: 'json'
             }
-            opts.method = _apiMethod
-            const result = yield this.ctx.curl(_apiRealUrl, opts);
+            opts.method = method
+            const result = yield this.ctx.curl(url, opts);
             this.ctx.status = result.status;
             this.ctx.set(result.headers);
             this.ctx.body = result.data
         }
-        * handleRequest(document) {
-            if (!document) {
+        * handleProxy(api) {
+            const { _mockProxyStatus } = this.ctx.request.query
+            if (api.options.proxy.mode === 1 || _mockProxyStatus === '1') {
+                yield this.proxy(api.prodUrl, api.options.method)
+                return true
+            }
+            return false
+        }
+        * handleRequest(api) {
+            if (!api) {
                 return
             }
-            const delay = document.options.delay || 0
+            if (yield this.handleProxy(api)) {
+                return
+            }
+            const delay = api.options.delay || 0
             yield sleep(delay)
             const params = R.merge(this.ctx.request.body, this.ctx.request.query)
-            this.validateParams(document, params)
-            this.ctx.body = dslCore.renderer(params)(this.getResponse(document) || {})
+            this.validateParams(api, params)
+            this.ctx.body = dslCore.renderer(params)(this.getResponse(api) || {})
         }
         getResponse(api) {
             if (api.options.response && api.options.response.length > 0) {

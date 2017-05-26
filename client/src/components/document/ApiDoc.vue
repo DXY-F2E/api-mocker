@@ -75,7 +75,7 @@ export default {
     },
     computed: {
         url() {
-            return this.$store.state.serverRoot + this.api.url;
+            return `${this.$store.state.serverRoot}/client/${this.api._id}`;
         },
         method() {
             return this.api.options.method.toUpperCase();

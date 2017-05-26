@@ -1,12 +1,14 @@
 import Schema from './apiInitSchema';
 function initData() {
     return {
-        url: null,
         prodUrl: null,
         name: '',
         group: '',
         desc: null,
         options: {
+            proxy: {
+                mode: 0
+            },
             response: [new Schema()],
             responseIndex: 0,
             headers: {

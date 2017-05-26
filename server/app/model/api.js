@@ -1,6 +1,6 @@
 module.exports = mongoose => {
     const { ObjectId } = mongoose.Schema.Types
-    const apiSchema = mongoose.Schema({
+    const ApiSchema = mongoose.Schema({
         group: {
             type: ObjectId,
             ref: 'group'
@@ -18,10 +18,6 @@ module.exports = mongoose => {
             type: String,
             default: Date.now
         },
-        url: {
-            type: String,
-            unique: true
-        },
         prodUrl: String,
         dsl: {
             type: Object,
@@ -29,6 +25,12 @@ module.exports = mongoose => {
         },
         options: {
             method: String,
+            proxy: {
+                type: Object,
+                default: {
+                    mode: 0
+                }
+            },
             headers: {
                 example: {},
                 params: []
@@ -55,5 +57,5 @@ module.exports = mongoose => {
         }
     })
 
-    return mongoose.model('api', apiSchema)
+    return mongoose.model('Api', ApiSchema)
 }

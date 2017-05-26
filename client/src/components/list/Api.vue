@@ -10,7 +10,7 @@
         <!-- <el-button type="primary" icon="edit" size="small" class="edit-api"></el-button> -->
       </div>
       <div class="text item">
-          <label>URL:</label><input v-model="data.url" readonly :id="data._id" />
+          <label>URL:</label><input v-model="url" readonly :id="data._id" />
       </div>
       <div class="text item">
           <label>Method:</label>{{data.options.method}}
@@ -33,9 +33,15 @@ export default {
             require: true
         }
     },
+    computed: {
+        url() {
+            return `/client/${this.data._id}`;
+            // return this.data.prodUrl ? || '无';
+        }
+    },
     data() {
         return {
-            copyData: this.$store.state.serverRoot + this.data.url
+            copyData: this.$store.state.serverRoot + this.url
         };
     },
     methods: {
@@ -102,6 +108,8 @@ export default {
 }
 .item {
     color: #8492A6;
+    /*line-height: 1.5;*/
+    /*margin-bottom: 5px;*/
 }
 .item label {
     color: #475669;
@@ -115,7 +123,7 @@ export default {
     line-height: 1;
     line-height: 20px;
     height: 20px;
-    max-width: 130px;
+    max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
 }

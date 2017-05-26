@@ -23,6 +23,15 @@
             <el-form-item label="线上地址">
                 <el-input auto-complete="off" v-model="prodUrl" placeholder="请填写绝对路径"></el-input>
             </el-form-item>
+            <el-form-item label="代理转发">
+                <el-tooltip content="开启后请求mock地址会转发到线上地址" placement="top"><span class="tip">?</span></el-tooltip>
+                <el-switch v-model="proxyMode"
+                           :on-value="1"
+                           :off-value="0"></el-switch>
+            </el-form-item>
+            <el-form-item label="历史记录" class="history-item" v-if="history && history.records.length">
+                <api-history :history="history"></api-history>
+            </el-form-item>
 
             <!-- <el-form-item >
                 <el-button type="info">文档</el-button>
@@ -41,9 +50,11 @@
 
 <script>
 import createGroup from '../../dialog/create-group';
+import ApiHistory from './ApiHistory';
 export default {
     components: {
-        createGroup
+        createGroup,
+        ApiHistory
     },
     data() {
         return {
@@ -72,6 +83,9 @@ export default {
         groups() {
             return this.$store.state.groups;
         },
+        history() {
+            return this.$store.state.api.history;
+        },
         name: {
             get() {
                 document.title = this.$store.state.api.name || '未命名接口';
@@ -87,6 +101,14 @@ export default {
             },
             set(value) {
                 this.$store.commit('UPDATE_API_PROPS', ['prodUrl', value]);
+            }
+        },
+        proxyMode: {
+            get() {
+                return this.$store.state.api.options.proxy.mode;
+            },
+            set(value) {
+                this.$store.commit('UPDATE_API_PROPS', ['options.proxy.mode', value]);
             }
         },
         group: {
@@ -144,5 +166,28 @@ export default {
     content: '*';
     color: #ff4949;
     margin-left: 2px;
+}
+.api-info .history {
+    display: inline-block;
+    width: 100%;
+}
+.api-info .el-radio-group .el-radio {
+    /*margin-left: 15px;*/
+    margin: 4px 0;
+    font-family: monospace;
+}
+.api-info .tip {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 12px;
+    border-radius: 50%;
+    text-align: center;
+    cursor: pointer;
+    vertical-align: middle;
+    margin: 0 15px 0 -8px;
+    background: #97a8be;
+    color: #fff;
 }
 </style>

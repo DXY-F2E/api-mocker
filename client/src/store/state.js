@@ -1,7 +1,7 @@
 import apiInit from './apiInitData';
-import config from '../../config'; // 0.5m
+import { getDomain } from '../util';
 
-const domain = process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax;
+const domain = getDomain();
 
 const state = {
     groups: [],
