@@ -10,6 +10,9 @@ import AppHeader from './common/Header';
 export default {
     components: {
         AppHeader
+    },
+    mounted() {
+        this.$store.dispatch('getGroups');
     }
 };
 </script>

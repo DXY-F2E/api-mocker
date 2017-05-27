@@ -22,15 +22,8 @@
 export default {
     computed: {
         activeIndex() {
-            return this.$route.matched[0] ? this.$route.matched[0].name : '';
+            return this.$route.matched[1] ? this.$route.matched[1].name : '';
         }
-    },
-    mounted() {
-        // this.$store.dispatch('getGroups');
-        window.console.log(this.$route);
-        // if (this.routeName !== 'Auth') {
-        //     this.$store.dispatch('getGroups');
-        // }
     }
 };
 </script>

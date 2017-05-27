@@ -31,7 +31,7 @@ export default {
     },
     watch: {
         $route(to) {
-            if (to.matched[0].path === '/list') {
+            if (to.matched[1].name === 'List') {
                 this.initQuery();
                 this.getData();
             }

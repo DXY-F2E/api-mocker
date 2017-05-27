@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import Admin from '@/components/Admin';
 // import List from '@/components/list/Index';
 // import ListContent from '@/components/list/Content';
 // import Edit from '@/components/edit/Index';
@@ -12,7 +13,7 @@ import Router from 'vue-router';
 // import Register from '@/components/auth/Register';
 
 const List = r => require.ensure([], () => r(require('@/components/list/Index')), 'list');
-const ListContent = r => require.ensure([], () => r(require('@/components/list/Content')), 'list');
+// const ListContent = r => require.ensure([], () => r(require('@/components/list/Content')), 'list');
 
 const Edit = r => require.ensure([], () => r(require('@/components/edit/Index')), 'edit');
 
@@ -31,72 +32,74 @@ export default new Router({
     routes: [
         {
             path: '/',
-            redirect: '/list/all'
+            name: 'Admin',
+            redirect: '/list/all',
+            component: Admin,
+            meta: {
+                auth: true
+            },
+            children: [
+                {
+                    path: 'create',
+                    name: 'Create',
+                    component: Edit
+                },
+                {
+                    path: '/edit/:groupId/:apiId',
+                    name: 'Edit',
+                    component: Edit
+                },
+                {
+                    path: 'list',
+                    component: List,
+                    redirect: '/list/all',
+                    name: 'List',
+                    children: [{
+                        path: 'all',
+                        name: 'AllList'
+                        // component: ListContent
+                    }, {
+                        path: ':groupId',
+                        name: 'GruopList'
+                        // component: ListContent
+                    }]
+                },
+                {
+                    path: 'doc',
+                    component: Document,
+                    name: 'Document',
+                    redirect: '/doc/all',
+                    children: [{
+                        path: 'all',
+                        name: 'AllDoc',
+                        component: DocOverview
+                    }, {
+                        path: ':groupId',
+                        name: 'GroupDoc',
+                        component: GroupContent
+                    }, {
+                        path: ':groupId/:apiId',
+                        name: 'ApiDoc',
+                        component: ApiContent
+                    }]
+                }
+            ]
         },
         {
-            path: '/list',
-            redirect: '/list/all'
-        },
-        {
-            path: '/auth',
+            path: '/',
             name: 'Auth',
             component: Auth,
             meta: {
-                noAuth: true
+                auth: true
             },
             children: [{
-                path: 'auth-login',
-                alias: '/login',
+                path: 'login',
                 name: 'Login',
                 component: Login
             }, {
-                path: 'auth-register',
-                alias: '/register',
+                path: 'register',
                 name: 'Register',
                 component: Register
-            }]
-        },
-        {
-            path: '/create',
-            name: 'Create',
-            component: Edit
-        },
-        {
-            path: '/edit/:groupId/:apiId',
-            name: 'Edit',
-            component: Edit
-        },
-        {
-            path: '/list',
-            component: List,
-            name: 'List',
-            children: [{
-                path: 'all',
-                name: 'AllList',
-                component: ListContent
-            }, {
-                path: ':groupId',
-                name: 'GruopList',
-                component: ListContent
-            }]
-        },
-        {
-            path: '/doc',
-            component: Document,
-            name: 'Document',
-            redirect: '/doc/all',
-            children: [{
-                path: 'all',
-                name: 'AllDoc',
-                component: DocOverview
-            }, {
-                path: ':groupId',
-                name: 'GroupDoc',
-                component: GroupContent
-            }, {
-                path: ':groupId/:apiId',
-                name: 'ApiDoc',
-                component: ApiContent
             }]
         }
     ]
