@@ -1,5 +1,5 @@
 <template>
-<div>
+<div v-if="user">
     <app-header></app-header>
     <router-view></router-view>
 </div>
@@ -11,8 +11,15 @@ export default {
     components: {
         AppHeader
     },
+    computed: {
+        user() {
+            return this.$store.state.user;
+        }
+    },
     mounted() {
-        this.$store.dispatch('getGroups');
+        this.$store.dispatch('getUser').then(() => {
+            this.$store.dispatch('getGroups');
+        });
     }
 };
 </script>

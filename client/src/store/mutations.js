@@ -78,6 +78,9 @@ const mutations = {
         if (options.responseIndex >= index && index !== 0) {
             options.responseIndex --;
         }
+    },
+    SET_USER(state, user) {
+        state.user = user;
     }
 };
 export default mutations;

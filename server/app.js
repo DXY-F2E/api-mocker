@@ -7,11 +7,13 @@ module.exports = app => {
       }
     }
     fail(msg) {
+      this.ctx.body = {
         success: false,
         msg
+      }
     }
     error(data) {
-        this.ctx.throw(data.code, data.msg)
+      this.ctx.throw(data.code, data.msg)
     }
     notFound(msg) {
       msg = msg || 'not found'

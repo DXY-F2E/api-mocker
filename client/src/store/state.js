@@ -4,6 +4,7 @@ import { getDomain } from '../util';
 const domain = getDomain();
 
 const state = {
+    user: null,
     groups: [],
     apiList: [],
     apiListLoading: false,

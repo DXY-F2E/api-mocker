@@ -8,10 +8,10 @@ module.exports = app => {
                 name: user.name
             }).save()).toObject()
         }
-        * get(user) {
+        * getByEmail(email) {
             return yield app.model.user.findOne({
-                email: user.email,
-                password: md5(user.password, this.config.md5Key)
+                email: email
+                // password: md5(user.password, this.config.md5Key)
             }).lean()
         }
   }

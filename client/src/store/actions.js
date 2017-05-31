@@ -6,7 +6,7 @@ import { validateApi, buildApiResponse, buildExampleFormSchema, getDomain } from
 axios.defaults.withCredentials = true;
 axios.interceptors.response.use((response) => response, (err) => {
     if (err.response && err.response.status === 401) {
-        // window.location.href = '#/login`';
+        window.location.href = '#/login';
     }
     throw err;
 });
@@ -159,6 +159,36 @@ const actions = {
             }
         }).catch(err => {
             window.console.log(err);
+        });
+    },
+    getUser({ state, commit }) {
+        return state.user || axios.get(API.User).then(res => {
+            commit('SET_USER', res.data.data);
+            return res.data.data;
+        });
+    },
+    register({ commit }, user) {
+        return axios.post(`${API.User}/register`, user).then(res => {
+            if (res.data.success) {
+                commit('SET_USER', res.data.data);
+            }
+            return res;
+        });
+    },
+    login({ commit }, user) {
+        return axios.post(`${API.User}/login`, user).then(res => {
+            if (res.data.success) {
+                commit('SET_USER', res.data.data);
+            }
+            return res;
+        });
+    },
+    logout({ commit }) {
+        return axios.get(`${API.User}/logout`).then(res => {
+            if (res.data.success) {
+                commit('SET_USER', null);
+            }
+            return res;
         });
     }
 };

@@ -14,12 +14,19 @@
               <el-menu-item index="Document" :route="{name: 'Document'}">接口文档</el-menu-item>
             </el-menu>
         </el-col>
+        <el-col :span="0">
+            <profile-menu></profile-menu>
+        </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
+import ProfileMenu from '../profile/Menu';
 export default {
+    components: {
+        ProfileMenu
+    },
     computed: {
         activeIndex() {
             return this.$route.matched[1] ? this.$route.matched[1].name : '';

@@ -16,7 +16,7 @@ module.exports = app => {
     setUser(user) {
       this.set('mockerUser', JSON.stringify(user))
     }
-    getUser(user) {
+    getUser() {
       try {
         return JSON.parse(this.get('mockerUser'))
       } catch (e) {

@@ -23,7 +23,8 @@ module.exports = app => {
     app.post('/client/real', 'client.real')
 
     // user
-    app.post('/auth/user', 'user.create')
+    app.get('/auth/user', 'user.get')
+    app.post('/auth/user/register', 'user.create')
     app.post('/auth/user/login', 'user.login')
     app.get('/auth/user/logout', 'user.logout')
 }
