@@ -5,7 +5,7 @@
   "private": true,
   "dependencies": {
     "blueimp-md5": "2.7.0",
-    "egg": "^1.0.0",
+    "egg": "1.4.0",
     "egg-cors": "1.0.0",
     "egg-mongoose": "1.1.1",
     "egg-redis": "1.0.1",

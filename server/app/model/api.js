@@ -9,6 +9,11 @@ module.exports = mongoose => {
             type: String,
             unique: false
         },
+        creator: {
+            type: ObjectId,
+            required: true,
+            ref: 'user'
+        },
         desc: String,
         createTime: {
             type: String,
