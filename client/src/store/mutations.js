@@ -24,8 +24,9 @@ const mutations = {
     GET_GROUP_API(state, data) {
         state.apiList = data;
     },
-    INIT_API(state) {
+    INIT_API(state, groupId) {
         state.api = apiInit();
+        state.api.group = groupId;
     },
     UPDATE_API_PROPS(state, propValuePair) {
         const api = state.api || {};

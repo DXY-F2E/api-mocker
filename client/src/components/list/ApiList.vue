@@ -21,7 +21,9 @@ export default {
     },
     methods: {
         createApi() {
-            this.$router.push('/create');
+            const groupId = this.$route.params.groupId;
+            const query = groupId ? `?groupId=${groupId}` : '';
+            this.$router.push(`/create${query}`);
         }
     },
     computed: mapState(['apiList', 'apiListLoading'])
