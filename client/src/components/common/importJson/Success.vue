@@ -54,7 +54,8 @@ export default {
                 return api;
             });
             window.sessionStorage.setItem('_previewApis', JSON.stringify(previewApis));
-            const url = `/#/doc/${this.apisData[groupIndex].groupId}/${apiIndex}?preview=1`;
+            const rootDomain = window.location.href.split('#')[0];
+            const url = `${rootDomain}#/doc/${this.apisData[groupIndex].groupId}/${apiIndex}?preview=1`;
             window.open(url, '_blank');
         },
         deleteApi(groupIndex, apiIndex) {
