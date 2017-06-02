@@ -28,7 +28,7 @@ export default {
             }
             const query = {
                 page: 1,
-                size: 10000
+                limit: 10000
             };
             this.$http.get(API.GROUP_APIS.replace(':groupId', route.params.groupId), {
                 params: query
