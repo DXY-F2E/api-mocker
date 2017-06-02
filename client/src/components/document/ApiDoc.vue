@@ -3,7 +3,7 @@
         <div class="fields">
             <div class="field name">
                 <h2>{{api.name}}<span class="method" :class="method">{{method}}</span></h2>
-                <el-button type="primary" class="edit" icon="edit" @click="edit()">编辑</el-button>
+                <el-button v-if="!isPreview" type="primary" class="edit" icon="edit" @click="edit()">编辑</el-button>
             </div>
             <div class="field url">
                 <div>
@@ -74,6 +74,9 @@ export default {
         }
     },
     computed: {
+        isPreview() {
+            return !!this.$route.query.preview;
+        },
         url() {
             return `${this.$store.state.serverRoot}/client/${this.api._id}`;
         },
