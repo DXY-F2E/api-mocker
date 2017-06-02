@@ -64,7 +64,22 @@ export default {
         },
         handleConfirm() {
             window.console.log(this.apisData);
-            this.dialogVisible = false;
+            const data = this.apisData[0];
+            this.$store.dispatch('createApis', {
+                groupId: data.groupId,
+                apis: data.apis
+            }).then(rs => {
+                if (rs.data.apis.length > 0) {
+                    this.$message.success('保存成功');
+                    this.$store.commit('INSERT_APIS', rs.data.apis);
+                    this.dialogVisible = false;
+                } else {
+                    this.$message.success('保存失败');
+                }
+            }).catch(err => {
+                const message = err.msg || err.response.data.message;
+                this.$message.error(`保存失败:${message}`);
+            });
         }
     }
 };

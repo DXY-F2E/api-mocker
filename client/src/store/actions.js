@@ -94,6 +94,10 @@ const actions = {
             throw err;
         });
     },
+    createApis({ state }, payload) {
+        const { apis, groupId } = payload;
+        return axios.post(API.API.replace(':groupId', groupId).replace(':apiId', 'batch'), apis);
+    },
     updateApi({ state, commit }) {
         const api = state.api;
         const { group, _id} = api;

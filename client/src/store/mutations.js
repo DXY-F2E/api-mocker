@@ -5,6 +5,9 @@ const mutations = {
     FETCH_GROUPS_SUCCESS(state, groups) {
         state.groups = groups;
     },
+    INSERT_APIS(state, apis) {
+        state.apiList = apis.concat(state.apiList);
+    },
     FETCH_SUCCESS(state, data) {
         state.apiList = data.resources;
         state.apiPage = data.pages;

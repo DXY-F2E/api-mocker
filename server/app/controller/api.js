@@ -89,6 +89,14 @@ module.exports = app => {
             this.ctx.body = { resources }
             this.ctx.status = 200
         }
+        * createGroupApis () {
+            const { groupId } = this.ctx.params
+            const apis = this.ctx.request.body
+            const rs = yield this.service.api.createApis(apis)
+            yield this.service.group.updateTime(groupId)
+            this.ctx.body = { apis: rs }
+            this.ctx.status = 200
+        }
         * delete () {
             const { groupId, apiId } = this.ctx.params
 
