@@ -38,7 +38,10 @@ export default {
         }
     },
     beforeRouteUpdate(to, from, next) {
-        this.getApis(to);
+        // 切换不同组的文档，需重新获取下apis
+        if (to.params.groupId !== from.params.groupId) {
+            this.getApis(to);
+        }
         next();
     },
     mounted() {
