@@ -26,9 +26,13 @@ export default {
             if (route.name === 'AllDoc') {
                 return;
             }
+            if (route.query.preview) {
+                this.apis = JSON.parse(window.sessionStorage.getItem('_previewApis'));
+                return;
+            }
             const query = {
                 page: 1,
-                size: 10000
+                limit: 10000
             };
             this.$http.get(API.GROUP_APIS.replace(':groupId', route.params.groupId), {
                 params: query
@@ -38,7 +42,10 @@ export default {
         }
     },
     beforeRouteUpdate(to, from, next) {
-        this.getApis(to);
+        // 切换不同组的文档，需重新获取下apis
+        if (to.params.groupId !== from.params.groupId) {
+            this.getApis(to);
+        }
         next();
     },
     mounted() {

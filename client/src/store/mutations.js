@@ -5,6 +5,9 @@ const mutations = {
     FETCH_GROUPS_SUCCESS(state, groups) {
         state.groups = groups;
     },
+    INSERT_APIS(state, apis) {
+        state.apiList = apis.concat(state.apiList);
+    },
     FETCH_SUCCESS(state, data) {
         state.apiList = data.resources;
         state.apiPage = data.pages;
@@ -24,8 +27,9 @@ const mutations = {
     GET_GROUP_API(state, data) {
         state.apiList = data;
     },
-    INIT_API(state) {
+    INIT_API(state, groupId) {
         state.api = apiInit();
+        state.api.group = groupId;
     },
     UPDATE_API_PROPS(state, propValuePair) {
         const api = state.api || {};
@@ -81,6 +85,9 @@ const mutations = {
     },
     SET_USER(state, user) {
         state.user = user;
+    },
+    UPDATE_PREVIEW_APIS(state, data) {
+        state.previewApis = data;
     }
 };
 export default mutations;

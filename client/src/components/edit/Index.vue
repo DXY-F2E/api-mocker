@@ -38,7 +38,7 @@ export default {
         initApi() {
             this.beginLoading();
             if (this.$route.name === 'Create') {
-                this.$store.commit('INIT_API');
+                this.$store.commit('INIT_API', this.$route.query.groupId);
                 this.endLoading();
             } else {
                 this.getApi(this.$route.params).then(() => {

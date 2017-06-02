@@ -114,21 +114,4 @@ export default {
     left: 10px;
     right: 10px;
 }
-.api-list {
-    min-height: 100%;
-}
-.api-list li {
-    display: inline-block;
-    margin: 10px;
-}
-.api-list li.empty {
-    color: #D3DCE6;
-    text-align: center;
-    display: block;
-    margin: 0;
-    padding-top: 100px;
-}
-.api-list li ~li.empty {
-    display: none;
-}
 </style>

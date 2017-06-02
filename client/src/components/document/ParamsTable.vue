@@ -50,10 +50,7 @@ export default {
 .params-table .el-col:last-child {
     border: none;
 }
-.params-table .comment {
-    min-width: 200px;
-    max-width: 200px;
-}
+.params-table .comment,
 .params-table .example {
     min-width: 200px;
     max-width: 200px;
