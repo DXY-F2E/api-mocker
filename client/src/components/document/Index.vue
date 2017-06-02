@@ -26,6 +26,10 @@ export default {
             if (route.name === 'AllDoc') {
                 return;
             }
+            if (route.query.preview) {
+                this.apis = JSON.parse(window.sessionStorage.getItem('_previewApis'));
+                return;
+            }
             const query = {
                 page: 1,
                 limit: 10000

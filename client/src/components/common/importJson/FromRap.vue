@@ -1,29 +1,44 @@
 <template>
-<el-upload action=""
-           :auto-upload="false"
-           :show-file-list="false"
-           accept="application/json"
-           ref="importRapJson"
-           :on-change="importJsonFromRap">
-    <i class="el-icon-upload2"></i>导入Rap Json
-</el-upload>
+<div>
+    <el-upload action=""
+               :auto-upload="false"
+               :show-file-list="false"
+               accept="application/json"
+               ref="importRapJson"
+               :on-change="importJsonFromRap">
+        <i class="el-icon-upload2"></i>导入Rap Json
+    </el-upload>
+    <success v-if="importSuccess"
+             :visible="importSuccess"
+             :apis-data="apisData"
+             @visibleChange="visibleChange"></success>
+</div>
 </template>
 
 <script>
 import ApiInit from '../../../store/apiInitData';
+import Success from './Success';
 export default {
+    components: {
+        Success
+    },
     props: {
-        groupId: {
-            type: String,
+        group: {
+            type: Object,
             required: true
         }
     },
     data() {
         return {
+            apisData: [],
+            importSuccess: false,
             methods: ['get', 'post', 'put', 'delete']
         };
     },
     methods: {
+        visibleChange(val) {
+            this.importSuccess = val;
+        },
         importJsonFromRap(file) {
             const oReq = new XMLHttpRequest();
             oReq.onload = (e) => {
@@ -48,14 +63,27 @@ export default {
             }
             return params;
         },
+        buildResponse(parameterList) {
+            return [{
+                status: 200,
+                statusText: 'status1',
+                example: null,
+                params: this.buildParams(parameterList)
+            }];
+        },
         buildParams(parameterList) {
             return parameterList.map(p => {
                 const param = {
                     key: p.identifier,
                     type: p.dataType,
                     required: true,
-                    comment: p.remark
+                    comment: p.name
                 };
+                if (p.remark.indexOf('@mock') === 0) {
+                    param.example = p.remark.replace('@mock=', '');
+                } else {
+                    param.comment += ` ${p.remark}`;
+                }
                 if (param.type === 'object') {
                     param.params = this.buildParams(p.parameterList);
                 }
@@ -77,14 +105,21 @@ export default {
                         api.name = apiName;
                         api.desc = action.description;
                         api.prodUrl = action.requestUrl;
-                        api.group = this.groupId;
-                        api.options.methods = this.methods[action.type];
-                        api.options.params = this.buildReqParams(api.options.params, action.requestParameterList, action.type);
+                        api.group = this.group._id;
+                        const requestType = Number(action.requestType);
+                        api.options.method = this.methods[requestType - 1];
+                        api.options.params = this.buildReqParams(api.options.params, action.requestParameterList, requestType);
+                        api.options.response = this.buildResponse(action.responseParameterList);
                         apis.push(api);
                     });
                 });
             });
-            window.console.log(apis);
+            this.importSuccess = true;
+            this.apisData[0] = {
+                groupName: this.group.name,
+                groupId: this.group._id,
+                apis
+            };
         }
     }
 };

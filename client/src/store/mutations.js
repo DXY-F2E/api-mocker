@@ -79,6 +79,9 @@ const mutations = {
         if (options.responseIndex >= index && index !== 0) {
             options.responseIndex --;
         }
+    },
+    UPDATE_PREVIEW_APIS(state, data) {
+        state.previewApis = data;
     }
 };
 export default mutations;

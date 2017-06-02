@@ -10,7 +10,7 @@
                 </li>
                 <li class="add-api">
                     <el-card>
-                        <import-rap-json :group-id="groupId"></import-rap-json>
+                        <import-rap-json :group="group"></import-rap-json>
                     </el-card>
                 </li>
             </template>
@@ -30,9 +30,12 @@ export default {
         ImportRapJson
     },
     computed: {
-        ...mapState(['apiList', 'apiListLoading']),
+        ...mapState(['apiList', 'apiListLoading', 'groups']),
         groupId() {
             return this.$route.params.groupId;
+        },
+        group() {
+            return this.groups.find(g => g._id === this.groupId) || {};
         }
     },
     methods: {
@@ -45,10 +48,24 @@ export default {
 </script>
 <style>
 .api-list {
+    min-height: 100%;
     overflow: hidden;
 }
-.api-list li {
+.api-list > li {
     float: left;
+    display: inline-block;
+    margin: 10px;
+
+    &.empty {
+        color: #D3DCE6;
+        text-align: center;
+        display: block;
+        margin: 0;
+        padding-top: 100px;
+    }
+}
+.api-list > li ~li.empty {
+    display: none;
 }
 .add-api .el-card .el-card__body {
     height: 105px;
@@ -56,6 +73,10 @@ export default {
     text-align: center;
     font-size: 16px;
     color: #324057;
+}
+.add-api .el-card .el-card__body .el-dialog {
+    line-height: initial;
+    text-align: left;
 }
 .add-api i {
     font-size: 18px;
