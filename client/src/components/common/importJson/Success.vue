@@ -64,7 +64,6 @@ export default {
             this.$set(this.apisData, groupIndex, this.apisData[groupIndex]);
         },
         handleConfirm() {
-            window.console.log(this.apisData);
             const data = this.apisData[0];
             this.$store.dispatch('createApis', {
                 groupId: data.groupId,
