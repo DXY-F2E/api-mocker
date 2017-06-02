@@ -95,8 +95,17 @@ export default {
             });
         },
         buildApisFormJson(json) {
+            let moduleList = [];
+            if (json.modelJSON) {
+                moduleList = JSON.parse(json.modelJSON).moduleList;
+            } else if (json.projectData) {
+                moduleList = json.projectData.moduleList;
+            } else {
+                this.$message.error('json格式错误');
+                return;
+            }
             const apis = [];
-            json.projectData.moduleList.forEach(module => {
+            moduleList.forEach(module => {
                 module.pageList.forEach(page => {
                     page.actionList.forEach(action => {
                         window.console.log(action);
