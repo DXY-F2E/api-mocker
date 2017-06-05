@@ -8,20 +8,20 @@ module.exports = app => {
                 name: user.name
             }).save()).toObject()
         }
-        * getByEmail(email) {
-            return yield app.model.user.findOne({
+        getByEmail(email) {
+            return app.model.user.findOne({
                 email: email
                 // password: md5(user.password, this.config.md5Key)
             }).lean()
         }
-        * getByIds(ids) {
+        getByIds(ids) {
             return app.model.user.find({
                 _id: {
                     $in: ids
                 }
             })
         }
-        * find(q) {
+        find(q) {
             const reg = new RegExp(`.*${q}.*`, 'i')
             return app.model.user.find({
                 "$or": [

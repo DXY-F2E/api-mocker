@@ -1,17 +1,17 @@
 module.exports = app => {
     class ApiHistory extends app.Service {
-        * get(apiId) {
+        get(apiId) {
             return app.model.apiHistory.findOne({
                 apiId: apiId
             })
         }
-        * create(api){
+        create(api){
             return new app.model.apiHistory({
                 apiId: api._id,
                 data: api
             }).save()
         }
-        * push(api) {
+        push(api) {
             const { _id, name} = this.ctx.authUser
             const record = {
                 data: api,

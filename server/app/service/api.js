@@ -1,19 +1,19 @@
 module.exports = app => {
     class Api extends app.Service {
-        * createApis (apis) {
+        createApis (apis) {
             return app.model.api.insertMany(apis)
         }
-        * create (api) {
+        create (api) {
             api.creator = this.ctx.authUser._id
             return app.model.api(api).save()
         }
-        * update (apiId, api) {
+        update (apiId, api) {
             api.modifiedTime = Date.now()
             return app.model.api.findOneAndUpdate({
                 _id: apiId
             }, api, { new: true })
         }
-        * getList (cond, page, limit) {
+        getList (cond, page, limit) {
             return app.model.api
                             .find(cond)
                             .sort({modifiedTime: -1, createTime: -1})

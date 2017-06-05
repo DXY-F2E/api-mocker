@@ -22,7 +22,7 @@ const mutations = {
         state.apiListSuccess = false;
     },
     CREATE_GROUP_SUCCESS(state, data) {
-        state.groups = state.groups.concat(data);
+        state.groups.unshift(data);
     },
     GET_GROUP_API(state, data) {
         state.apiList = data;
