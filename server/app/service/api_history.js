@@ -12,8 +12,11 @@ module.exports = app => {
             }).save()
         }
         * push(api) {
+            const { _id, name} = this.ctx.authUser
             const record = {
-                data: api
+                data: api,
+                operator: _id,
+                operatorName: name
             }
             return app.model.apiHistory.findOneAndUpdate({
                 apiId: api._id

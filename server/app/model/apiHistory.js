@@ -8,6 +8,7 @@ module.exports = mongoose => {
         },
         records: [{
             operator: ObjectId,
+            operatorName: String,
             createTime: {
                 type: Date,
                 default: Date.now

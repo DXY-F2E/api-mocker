@@ -10,10 +10,10 @@
         <!-- <el-button type="primary" icon="edit" size="small" class="edit-api"></el-button> -->
       </div>
       <div class="text item">
-          <label>URL:</label><input v-model="url" readonly :id="data._id" />
+          <label>Method:</label>{{data.options.method}}
       </div>
       <div class="text item">
-          <label>Method:</label>{{data.options.method}}
+          <label>Creator:</label><input v-model="creator" readonly :id="data._id" />
       </div>
     </el-card>
 </template>
@@ -37,6 +37,9 @@ export default {
         url() {
             return `/client/${this.data._id}`;
             // return this.data.prodUrl ? || '无';
+        },
+        creator() {
+            return this.data.creator ? this.data.creator.name : '未知';
         }
     },
     data() {
@@ -123,7 +126,7 @@ export default {
     line-height: 1;
     line-height: 20px;
     height: 20px;
-    max-width: 140px;
+    max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
 }

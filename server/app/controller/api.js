@@ -21,16 +21,19 @@ module.exports = app => {
                     {'options.method': reg},
                 ]
             }
-            if (groupId)
-                condition.group = groupId
-            const resources = yield app.model.api
-                                       .find(condition)
-                                       .sort({modifiedTime: -1, createTime: -1})
-                                       .skip((page-1)* limit )
-                                       .limit(limit)
-                                       .exec()
+            // 超过三个字符才会去匹配api创建者
+            const users = (q && q.length > 2) ? yield this.service.user.find(q) : []
+            if (users.length) {
+                condition.$or.push({
+                    creator: {
+                        $in: users.map(u => u._id)
+                    }
+                })
+            }
+            if (groupId) condition.group = groupId
+            const resources = yield this.service.api.geiRichList(condition, page, limit)
             const count = yield app.model.api.find(condition).count().exec()
-            this.ctx.logger.info('getALl', this.ctx.query)
+            this.ctx.logger.info('getAll', this.ctx.query)
             this.ctx.body = { resources, pages: { limit, page, count}}
             this.ctx.status = 200
         }
@@ -43,13 +46,11 @@ module.exports = app => {
 
             delete body._id
 
-            const resources = (yield app.model.api.findOneAndUpdate({
-                group: groupId,
-                _id: apiId
-            }, R.merge(body, {modifiedTime: Date.now()}), {new: true})).toObject() // 使用lean()方法会导致无法设定schema的默认值
-            //{new: true} 使结果能返回更新后的数据
-            yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
+            const resources = (yield this.service.api.update(apiId, body)).toObject() // 使用lean()方法会导致无法设定schema的默认值
+
+            this.service.group.updateTime(groupId)
             // 存下历史记录，并将所有记录返回
+            // console.log(this.ctx.authInfo)
             resources.history = yield this.service.apiHistory.push(resources)
 
             this.ctx.logger.info('modifyApi', body)
@@ -78,12 +79,11 @@ module.exports = app => {
             // 废弃，不需要url了
             // const nextUrl = yield util.generateApiURL(app)
 
-            const resources = yield new app.model.api(R.merge(body, {
-                createTime: Date.now(),
+            const resources = yield this.service.api.create(R.merge(body, {
                 group: groupId
-            })).save()
+            }))
 
-            yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
+            yield this.service.group.updateTime(groupId)
 
             this.ctx.logger.info('createApi', body)
             this.ctx.body = { resources }

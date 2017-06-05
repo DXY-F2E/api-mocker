@@ -14,6 +14,22 @@ module.exports = app => {
                 // password: md5(user.password, this.config.md5Key)
             }).lean()
         }
+        * getByIds(ids) {
+            return app.model.user.find({
+                _id: {
+                    $in: ids
+                }
+            })
+        }
+        * find(q) {
+            const reg = new RegExp(`.*${q}.*`, 'i')
+            return app.model.user.find({
+                "$or": [
+                    {name: reg},
+                    {email: reg}
+                ]
+            })
+        }
   }
   return User;
 };

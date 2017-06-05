@@ -2,8 +2,8 @@
 <ul class="history">
     <li class="record" v-for="record in records" :key="record._id" @click="recover(record)">
         <span class="time">{{record.createTime | dateFormat}}</span>
+        <span class="name">{{record.operatorName}}</span>
         <span class="recover">加载</span>
-        <!-- <span class="name">{{record.data.name}}</span> -->
     </li>
 </ul>
 </template>
@@ -61,8 +61,11 @@ export default {
 .record:hover {
     color: #475669;
 }
+.record .name {
+    margin-left: 10px;
+}
 .record .recover {
-    /*float: right;*/
+    float: right;
     margin-left: 10px;
     display: none;
 }

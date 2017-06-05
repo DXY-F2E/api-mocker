@@ -3,7 +3,7 @@ module.exports = mongoose => {
     const GroupSchema = new mongoose.Schema({
         teamId: {
             type: ObjectId,
-            required: true
+            required: false
         },
         creator: {
             type: ObjectId,
@@ -28,8 +28,14 @@ module.exports = mongoose => {
             required: true,
             default: 1
         },
-        createTime: String,
-        modifiedTime: String,
+        createTime: {
+            type: String,
+            default: Date.now
+        },
+        modifiedTime: {
+            type: String,
+            default: Date.now
+        },
         desc: String,
         isDeleted: {
             type: Boolean,

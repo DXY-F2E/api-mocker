@@ -36,9 +36,7 @@ module.exports = app =>{
 
             assert(body.name, 403 , 'required group name')
 
-            const resources = yield new app.model.group(R.merge(body, {
-                createTime: Date.now()
-            }) ).save()
+            const resources = yield this.service.group.create(body)
 
             this.ctx.body = { resources }
         }
