@@ -1,10 +1,16 @@
 <template>
 <div>
-    <el-menu :default-active="$route.params.groupId" class="el-menu-vertical">
+    <el-menu :default-active="$route.name" :router="true" class="el-menu-vertical">
         <el-menu-item-group title="管理设置">
-            <el-menu-item index="profile"><i class="el-icon-minus"></i>我的信息</el-menu-item>
-            <el-menu-item index="group"><i class="el-icon-minus"></i>我的分组</el-menu-item>
-            <el-menu-item index="api"><i class="el-icon-minus"></i>我的<code>API</code></el-menu-item>
+            <el-menu-item index="ManageGroup" :route="{name: 'ManageGroup'}">
+                <i class="el-icon-minus"></i>管理分组
+            </el-menu-item>
+            <el-menu-item index="ManageApi" :route="{name: 'ManageApi'}">
+                <i class="el-icon-minus"></i>管理<code>API</code>
+            </el-menu-item>
+            <el-menu-item index="Profile" :route="{name: 'Profile'}">
+                <i class="el-icon-minus"></i>个人信息
+            </el-menu-item>
         </el-menu-item-group>
     </el-menu>
 </div>
@@ -28,6 +34,7 @@ export default {
     .el-menu-item [class^=el-icon-] {
         /*opacity: 0.5;*/
         color: #97a8be;
+        margin-left: 20px;
     }
 }
 </style>

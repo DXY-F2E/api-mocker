@@ -14,6 +14,11 @@ module.exports = mongoose => {
             required: true,
             ref: 'user'
         },
+        manager: {
+            type: ObjectId,
+            required: true,
+            ref: 'user'
+        },
         desc: String,
         createTime: {
             type: String,

@@ -4,7 +4,9 @@ module.exports = app => {
             return app.model.api.insertMany(apis)
         }
         create (api) {
-            api.creator = this.ctx.authUser._id
+            const authId = this.ctx.authUser._id
+            api.creator = authId
+            api.manager = authId
             return app.model.api(api).save()
         }
         update (apiId, api) {
@@ -21,14 +23,21 @@ module.exports = app => {
                             .limit(limit)
                             .lean()
         }
+        getManageList (page, limit) {
+            const cond = {
+                manager: this.ctx.authUser._id,
+                isDeleted: false
+            }
+            return this.getList(cond)
+        }
         * geiRichList (cond, page, limit) {
             const apis = yield this.getList(cond, page, limit)
-            const userIds = apis.reduce((acc, a) => a.creator ? acc.concat(a.creator) : acc, [])
+            const userIds = apis.reduce((acc, a) => a.manager ? acc.concat(a.manager) : acc, [])
             const users = yield this.service.user.getByIds(userIds)
             const usersMap = {}
             users.forEach(u => usersMap[u._id] = u)
             return apis.map(api => {
-                api.creator = usersMap[api.creator]
+                api.manager = usersMap[api.manager]
                 return api
             })
         }

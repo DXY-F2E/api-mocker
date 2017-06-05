@@ -13,6 +13,9 @@ module.exports = app => {
     app.put('/server/api/:groupId/:apiId', 'api.modifyApi')
     app.delete('/server/api/:groupId/:apiId', 'api.delete')
 
+    app.get('/server/api/manage', 'api.getManageApi')
+    // app.get('/server/group/manage', 'group.getManageGroup')
+
     app.get('/server/history/api/:apiId', 'history.getApi')
 
     // mock data

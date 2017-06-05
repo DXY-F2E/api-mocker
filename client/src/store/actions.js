@@ -74,6 +74,9 @@ const actions = {
             commit('SAVE_API');
         });
     },
+    getManageApi() {
+        return axios.get(`${API.APIS}/manage`);
+    },
     getApiHistory({ commit, state }) {
         // 此接口暂时无用
         return axios.get(API.ApiHistory.replace(':apiId', state.api._id)).then(res => {

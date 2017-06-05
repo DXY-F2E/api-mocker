@@ -10,10 +10,10 @@
         <!-- <el-button type="primary" icon="edit" size="small" class="edit-api"></el-button> -->
       </div>
       <div class="text item">
-          <label>Method:</label>{{data.options.method}}
+          <label class="manager"><code>Manager:</code></label><input v-model="manager" readonly :id="data._id" />
       </div>
       <div class="text item">
-          <label>Creator:</label><input v-model="creator" readonly :id="data._id" />
+          <label><code>Method :</code></label>{{data.options.method}}
       </div>
     </el-card>
 </template>
@@ -38,8 +38,8 @@ export default {
             return `/client/${this.data._id}`;
             // return this.data.prodUrl ? || '无';
         },
-        creator() {
-            return this.data.creator ? this.data.creator.name : '未知';
+        manager() {
+            return this.data.manager ? this.data.manager.name : '未知';
         }
     },
     data() {
@@ -117,6 +117,9 @@ export default {
 .item label {
     color: #475669;
     margin-right: 5px;
+    width: 70px;
+    display: inline-block;
+    /*text-align: right;*/
 }
 .item input {
     border: none;
@@ -126,7 +129,7 @@ export default {
     line-height: 1;
     line-height: 20px;
     height: 20px;
-    max-width: 120px;
+    max-width: 100px;
     overflow: hidden;
     text-overflow: ellipsis;
 }

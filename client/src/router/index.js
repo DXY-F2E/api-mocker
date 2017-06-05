@@ -14,6 +14,9 @@ import Admin from '@/components/Admin';
 
 const Manage = r => require.ensure([], () => r(require('@/components/manage/Index')), 'manage');
 const Profile = r => require.ensure([], () => r(require('@/components/profile/Index')), 'manage');
+const ManageGroup = r => require.ensure([], () => r(require('@/components/manage/Group')), 'manage');
+const ManageApi = r => require.ensure([], () => r(require('@/components/manage/Api')), 'manage');
+
 const List = r => require.ensure([], () => r(require('@/components/list/Index')), 'list');
 // const ListContent = r => require.ensure([], () => r(require('@/components/list/Content')), 'list');
 
@@ -49,6 +52,14 @@ const router = new Router({
                         path: 'profile',
                         name: 'Profile',
                         component: Profile
+                    }, {
+                        path: 'group',
+                        name: 'ManageGroup',
+                        component: ManageGroup
+                    }, {
+                        path: 'api',
+                        name: 'ManageApi',
+                        component: ManageApi
                     }]
                 },
                 {
