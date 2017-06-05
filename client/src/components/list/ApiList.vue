@@ -46,7 +46,7 @@ export default {
     }
 };
 </script>
-<style>
+<style lang='less'>
 .api-list {
     min-height: 100%;
     overflow: hidden;
@@ -62,6 +62,7 @@ export default {
         display: block;
         margin: 0;
         padding-top: 100px;
+        width: 100%;
     }
 }
 .api-list > li ~li.empty {
