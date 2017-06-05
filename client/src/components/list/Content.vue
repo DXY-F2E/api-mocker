@@ -91,19 +91,6 @@ export default {
     min-height: 100%;
     position: relative;
 }
-.content {
-    text-align: left;
-}
-.content > .el-row{
-    height: 100%;
-    position: relative;
-}
-.content > .el-row > .el-col {
-    height: 100%;
-    position: relative;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
 .api-list-box {
     /*margin: 10px -10px;*/
     /*width: 100%;*/

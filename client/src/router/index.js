@@ -12,6 +12,8 @@ import Admin from '@/components/Admin';
 // import Login from '@/components/auth/Login';
 // import Register from '@/components/auth/Register';
 
+const Manage = r => require.ensure([], () => r(require('@/components/manage/Index')), 'manage');
+const Profile = r => require.ensure([], () => r(require('@/components/profile/Index')), 'manage');
 const List = r => require.ensure([], () => r(require('@/components/list/Index')), 'list');
 // const ListContent = r => require.ensure([], () => r(require('@/components/list/Content')), 'list');
 
@@ -39,6 +41,16 @@ const router = new Router({
                 auth: true
             },
             children: [
+                {
+                    path: 'manage',
+                    name: 'Manage',
+                    component: Manage,
+                    children: [{
+                        path: 'profile',
+                        name: 'Profile',
+                        component: Profile
+                    }]
+                },
                 {
                     path: 'create',
                     name: 'Create',

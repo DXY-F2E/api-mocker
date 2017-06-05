@@ -29,6 +29,17 @@ export default {
     width: 100%;
     top: 60px;
     bottom: 0;
+    text-align: left;
+}
+.content > .el-row{
+    height: 100%;
+    position: relative;
+}
+.content > .el-row > .el-col {
+    height: 100%;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .list-content {
     min-height: 100%;

@@ -2,7 +2,7 @@
 <div class="profile-menu" v-if="user">
     <div class="name"><span>{{user.name}}</span> <i class="el-icon-caret-bottom"></i></div>
     <div class="profile-nav">
-        <a href="#">权限设置</a>
+        <router-link :to="manageRoute">权限管理</router-link>
         <a href="#" @click="logout">注销登录</a>
     </div>
 </div>
@@ -10,6 +10,13 @@
 
 <script>
 export default {
+    data() {
+        return {
+            manageRoute: {
+                name: 'Manage'
+            }
+        };
+    },
     methods: {
         logout() {
             this.$store.dispatch('logout').then(rs => {
