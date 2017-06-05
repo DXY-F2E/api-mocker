@@ -42,10 +42,14 @@ export default {
                 return typeof this.param.example === 'string' ? this.param.example : JSON.stringify(this.param.example);
             },
             set(value) {
-                try {
-                    this.param.example = JSON.parse(value);
-                } catch (err) {
+                if (this.param.type === 'string') {
                     this.param.example = value;
+                } else {
+                    try {
+                        this.param.example = JSON.parse(value);
+                    } catch (err) {
+                        this.param.example = value;
+                    }
                 }
             }
         },
