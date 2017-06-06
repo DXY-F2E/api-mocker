@@ -13,7 +13,7 @@ export default {
     data() {
         return {
             manageRoute: {
-                name: 'Manage'
+                name: 'ManageApi'
             }
         };
     },

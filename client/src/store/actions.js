@@ -88,9 +88,7 @@ const actions = {
     },
     deleteApi({ state, commit }, payload) {
         const { group, _id} = payload.api;
-        return axios.delete(API.API.replace(':groupId', group).replace(':apiId', _id)).then(() => {
-            commit('DELETE_API', payload.index);
-        });
+        return axios.delete(API.API.replace(':groupId', group).replace(':apiId', _id));
     },
     validateApi({ state }) {
         return validateApi(state);

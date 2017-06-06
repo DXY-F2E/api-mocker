@@ -3,11 +3,10 @@
       <div slot="header" class="clearfix">
         <span class="name">{{data.name}}</span>
         <el-button-group>
-          <!-- <copy-button size="mini" icon="document" :copy-data="copyData" message="复制接口链接成功"></copy-button> -->
           <el-button size="mini" icon="document" @click.native.stop="showDoc()"></el-button>
-          <el-button size="mini" icon="delete" @click.native.stop="deleteApi()"></el-button>
+          <copy-button size="mini" icon="share" :copy-data="apiUrl" message="复制接口链接成功"></copy-button>
+          <!-- <el-button size="mini" icon="delete" @click.native.stop="deleteApi()"></el-button> -->
         </el-button-group>
-        <!-- <el-button type="primary" icon="edit" size="small" class="edit-api"></el-button> -->
       </div>
       <div class="text item">
           <label class="manager"><code>Manager:</code></label><input v-model="manager" readonly :id="data._id" />
@@ -34,17 +33,13 @@ export default {
         }
     },
     computed: {
-        url() {
-            return `/client/${this.data._id}`;
-            // return this.data.prodUrl ? || '无';
-        },
         manager() {
             return this.data.manager ? this.data.manager.name : '未知';
         }
     },
     data() {
         return {
-            copyData: this.$store.state.serverRoot + this.url
+            apiUrl: `${this.$store.state.serverRoot}/client/${this.data._id}`
         };
     },
     methods: {
@@ -55,34 +50,6 @@ export default {
             this.$store.commit('UPDATE_API', api);
             this.$store.commit('CHANGE_MODE', 'edit');
             this.$router.push(`/edit/${api.group}/${api._id}`);
-        },
-        confirmDelete() {
-            this.$store.dispatch('deleteApi', {
-                api: this.data,
-                index: this.index
-            }).then(() => {
-                this.$message.success('删除成功');
-            }).catch(err => {
-                if (err.response && err.response.data) {
-                    this.$message.error(err.response.data.message);
-                } else {
-                    this.$message.error(err);
-                }
-            });
-        },
-        deleteApi() {
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                this.confirmDelete();
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });
-            });
         }
     }
 };

@@ -108,11 +108,13 @@ module.exports = app => {
             assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalie groupId')
             assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
 
-            yield app.model.api.update({
-                _id: this.ctx.params.apiId
-            }, {
-                isDeleted: true
-            })
+            const rs = yield this.service.api.delete(apiId)
+            if (!rs) {
+                this.error({
+                    code: 403,
+                    msg: '无权删除'
+                });
+            }
             yield app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()
             this.ctx.logger.info('deleteApi')
             this.ctx.status = 204
