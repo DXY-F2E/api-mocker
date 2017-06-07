@@ -88,7 +88,7 @@ const actions = {
     },
     getApiHistory({ commit, state }) {
         // 此接口暂时无用
-        return axios.get(API.ApiHistory.replace(':apiId', state.api._id)).then(res => {
+        return axios.get(API.API_HISTORY.replace(':apiId', state.api._id)).then(res => {
             // commit('UPDATE_API_HISTORY', res.data);
             commit('SAVE_API');
             window.console.log(res);
@@ -179,13 +179,13 @@ const actions = {
         });
     },
     getUser({ state, commit }) {
-        return state.user || axios.get(API.User).then(res => {
+        return state.user || axios.get(API.USER).then(res => {
             commit('SET_USER', res.data.data);
             return res.data.data;
         });
     },
     register({ commit }, user) {
-        return axios.post(`${API.User}/register`, user).then(res => {
+        return axios.post(`${API.USER}/register`, user).then(res => {
             if (res.data.success) {
                 commit('SET_USER', res.data.data);
             }
@@ -193,7 +193,7 @@ const actions = {
         });
     },
     login({ commit }, user) {
-        return axios.post(`${API.User}/login`, user).then(res => {
+        return axios.post(`${API.USER}/login`, user).then(res => {
             if (res.data.success) {
                 commit('SET_USER', res.data.data);
             }
@@ -201,9 +201,17 @@ const actions = {
         });
     },
     logout({ commit }) {
-        return axios.get(`${API.User}/logout`).then(res => {
+        return axios.get(`${API.USER}/logout`).then(res => {
             if (res.data.success) {
                 commit('SET_USER', null);
+            }
+            return res;
+        });
+    },
+    updateProfile({ state, commit }, user) {
+        return axios.put(`${API.PROFILE}`, user).then(res => {
+            if (res.data.success) {
+                commit('SET_USER', res.data.data);
             }
             return res;
         });

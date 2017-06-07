@@ -32,4 +32,5 @@ module.exports = app => {
     app.post('/auth/user/register', 'user.create')
     app.post('/auth/user/login', 'user.login')
     app.get('/auth/user/logout', 'user.logout')
+    app.put('/server/user', 'user.update')
 }

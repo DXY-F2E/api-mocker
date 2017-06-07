@@ -30,6 +30,16 @@ module.exports = app => {
                 ]
             })
         }
+        update(user) {
+            const authId = this.ctx.authUser._id;
+            return app.model.user.findOneAndUpdate({
+                _id: authId
+            }, {
+                name: user.name,
+                email: user.email,
+                modifiedTime: new Date()
+            }, { new: true}).lean()
+        }
   }
   return User;
 };

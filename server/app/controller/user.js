@@ -22,7 +22,6 @@ module.exports = app => {
         * login() {
             const info = this.ctx.request.body
             const user = yield this.service.user.getByEmail(info.email)
-            console.log(user)
             if (!user) {
                 this.fail('账号不存在')
                 return
@@ -34,6 +33,19 @@ module.exports = app => {
             delete user.password
             this.service.cookie.setUser(user)
             this.success(user)
+        }
+        * update() {
+            const user = this.ctx.request.body
+            const rs = yield this.service.user.update(user)
+            if (!rs) {
+                this.error({
+                    code: 500,
+                    msg: '修改失败'
+                })
+            }
+            delete rs.password
+            this.service.cookie.setUser(rs)
+            this.success(rs)
         }
         logout() {
             this.service.cookie.clearUser()
