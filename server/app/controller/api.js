@@ -41,6 +41,7 @@ module.exports = app => {
             const { groupId, apiId } = this.ctx.params
             const { body } = this.ctx.request
             const authId = this.ctx.authUser._id
+            const lastModifiedTime = body.modifiedTime
 
             assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalid groupId')
             assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
@@ -56,7 +57,7 @@ module.exports = app => {
                     msg: '系统错误，保存失败'
                 })
             }
-            yield this.notifyApiChange(resources)
+            yield this.notifyApiChange(resources, lastModifiedTime)
             this.service.group.updateTime(groupId)
             // 存下历史记录，并将所有记录返回
             resources.history = yield this.service.apiHistory.push(resources)
@@ -64,8 +65,13 @@ module.exports = app => {
             this.ctx.logger.info('modifyApi', body)
             this.ctx.body = { resources }
         }
-        * notifyApiChange(api) {
-            if (api.manager === this.ctx.authId) {
+        * notifyApiChange(api, lastModifiedTime) {
+            if (api.manager === this.ctx.authUser._id) {
+                return
+            }
+            // 十分钟内有修改不推送
+            const interval = api.modifiedTime - lastModifiedTime
+            if (interval < 1000 * 60 * 10) {
                 return
             }
             const users = yield this.service.user.getByIds([api.manager])
@@ -102,7 +108,7 @@ module.exports = app => {
                 group: groupId
             }))
 
-            yield this.service.group.updateTime(groupId)
+            this.service.group.updateTime(groupId)
 
             this.ctx.logger.info('createApi', body)
             this.ctx.body = { resources }
@@ -112,7 +118,7 @@ module.exports = app => {
             const { groupId } = this.ctx.params
             const apis = this.ctx.request.body
             const rs = yield this.service.api.createApis(apis)
-            yield this.service.group.updateTime(groupId)
+            this.service.group.updateTime(groupId)
             this.ctx.body = { apis: rs }
             this.ctx.status = 200
         }

@@ -19,6 +19,7 @@ module.exports = app => {
         notifyApiChange(api, users) {
             const html = `
                 <strong>API：${api.name}</strong>
+                <p>修改者：${this.ctx.authUser.name}</p>
                 <p>链接地址：http:/localhost:8080/#/doc/${api.group}/${api._id}</p>
             `
             users.map(user => {
