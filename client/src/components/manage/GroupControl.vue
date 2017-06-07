@@ -1,0 +1,72 @@
+<template>
+<div class="api-control">
+    <el-button type="text" size="small" @click="groupClaim" v-if="mode ==='unmanaged'">认领</el-button>
+    <el-button type="text" size="small" @click="groupDoc">文档</el-button>
+    <el-button type="text" size="small" @click="groupDelete">删除</el-button>
+</div>
+</template>
+
+<script>
+export default {
+    props: {
+        group: {
+            type: Object,
+            required: true
+        },
+        mode: {
+            type: String,
+            required: true
+        }
+    },
+    methods: {
+        groupClaim() {
+            this.$store.dispatch('claimGroup', this.group._id).then(() => {
+                this.$message.success('认领成功');
+                this.$emit('delete', this.group);
+            }).catch(err => {
+                if (err.response && err.response.data) {
+                    this.$message.error(err.response.data.message);
+                } else {
+                    this.$message.error(err);
+                }
+            });
+        },
+        confirmDelete() {
+            this.$store.dispatch('deleteGroup', this.group._id).then(() => {
+                this.$message.success('删除成功');
+                this.$emit('delete', this.group);
+            }).catch(err => {
+                if (err.response && err.response.data) {
+                    this.$message.error(err.response.data.message);
+                } else {
+                    this.$message.error(err);
+                }
+            });
+        },
+        groupDelete() {
+            this.$confirm('删除后，分组内Api将都不可见，确定删除?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.confirmDelete();
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
+        },
+        groupDoc() {
+            this.$router.push({
+                name: 'GroupDoc',
+                params: {
+                    groupId: this.group._id
+                }
+            });
+        }
+    }
+};
+</script>
+<style>
+</style>

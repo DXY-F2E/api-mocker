@@ -31,6 +31,16 @@ module.exports = app =>{
             this.ctx.body = { resources , pages: { limit, page, count}}
             this.ctx.status = 200
         }
+        * getManageGroup() {
+            this.ctx.body = yield this.service.group.getManageGroup()
+        }
+        * getUnmanaged() {
+            this.ctx.body = yield this.service.group.getUnmanaged()
+        }
+        * claim() {
+            const groupId = this.ctx.params.id
+            this.ctx.body = yield this.service.group.claim(groupId)
+        }
         * create () {
             const { body } = this.ctx.request
 
@@ -42,8 +52,14 @@ module.exports = app =>{
         }
         * delete () {
             const { id } = this.ctx.params
-
-            yield app.model.group.remove({_id: id}).exec()
+            const rs = yield this.service.group.delete(id)
+            console.log(rs)
+            if (!rs) {
+                this.error({
+                    code: 403,
+                    msg: '无权删除'
+                });
+            }
             this.ctx.status = 204
         }
     }

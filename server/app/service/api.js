@@ -20,8 +20,9 @@ module.exports = app => {
                 _id: apiId,
                 manager: this.ctx.authUser._id
             }, {
+                modifiedTime: Date.now(),
                 isDeleted: true
-            }, { new: true })
+            })
         }
         getList (cond, page, limit) {
             return app.model.api

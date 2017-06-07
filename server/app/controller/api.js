@@ -40,6 +40,7 @@ module.exports = app => {
         * modifyApi () {
             const { groupId, apiId } = this.ctx.params
             const { body } = this.ctx.request
+            const authId = this.ctx.authUser._id
 
             assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalid groupId')
             assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
@@ -47,15 +48,28 @@ module.exports = app => {
             delete body._id
 
             // Hack方法。如果api没有管理员，那本次更新操作的人将成为管理员
-            if (!body.manager) body.manager = this.ctx.authUser._id
+            if (!body.manager) body.manager = authId
             const resources = (yield this.service.api.update(apiId, body)).toObject() // 使用lean()方法会导致无法设定schema的默认值
-
+            if (!resources) {
+                this.error({
+                    code: '500',
+                    msg: '系统错误，保存失败'
+                })
+            }
+            yield this.notifyApiChange(resources)
             this.service.group.updateTime(groupId)
             // 存下历史记录，并将所有记录返回
             resources.history = yield this.service.apiHistory.push(resources)
 
             this.ctx.logger.info('modifyApi', body)
             this.ctx.body = { resources }
+        }
+        * notifyApiChange(api) {
+            if (api.manager === this.ctx.authId) {
+                return
+            }
+            const users = yield this.service.user.getByIds([api.manager])
+            this.service.email.notifyApiChange(api, users)
         }
         * getApi () {
             const { groupId, apiId } = this.ctx.params
@@ -72,7 +86,7 @@ module.exports = app => {
         }
         * getManageApi() {
             let { limit = 100, page = 1} = this.ctx.query
-            this.ctx.body = yield this.service.api.getManageList(page, limit)
+            this.ctx.body = yield this.service.api.getManageList()
         }
         * createApi () {
             const { groupId } = this.ctx.params

@@ -77,6 +77,15 @@ const actions = {
     getManageApi() {
         return axios.get(`${API.APIS}/manage`);
     },
+    getManageGroup() {
+        return axios.get(`${API.GROUPS}/manage`);
+    },
+    getUnmanagedGroup() {
+        return axios.get(`${API.GROUPS}/unmanaged`);
+    },
+    claimGroup({state}, groupId) {
+        return axios.put(`${API.GROUP.replace(':groupId', groupId)}/claim`);
+    },
     getApiHistory({ commit, state }) {
         // 此接口暂时无用
         return axios.get(API.ApiHistory.replace(':apiId', state.api._id)).then(res => {
@@ -89,6 +98,9 @@ const actions = {
     deleteApi({ state, commit }, payload) {
         const { group, _id} = payload.api;
         return axios.delete(API.API.replace(':groupId', group).replace(':apiId', _id));
+    },
+    deleteGroup({ state, commit }, groupId) {
+        return axios.delete(API.GROUP.replace(':groupId', groupId));
     },
     validateApi({ state }) {
         return validateApi(state);

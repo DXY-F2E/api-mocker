@@ -13,6 +13,38 @@ module.exports = app => {
             }
             return app.model.group(_group).save()
         }
+        getUserGroups(user, rights) {
+            return app.model.group.find({
+                [rights]: user,
+                isDeleted: false
+            }).sort({
+                createTime: -1
+            })
+        }
+        delete(groupId) {
+            return app.model.group.findOneAndUpdate({
+                _id: groupId,
+                manager: this.ctx.authUser._id
+            }, {
+                modifiedTime: Date.now(),
+                isDeleted: true
+            })
+        }
+        getManageGroup() {
+            return this.getUserGroups(this.ctx.authUser._id, 'manager')
+        }
+        getUnmanaged() {
+            return this.getUserGroups(null, 'manager')
+        }
+        claim (groupId) {
+            return app.model.group.findOneAndUpdate({
+                _id: groupId,
+                manager: null
+            }, {
+                modifiedTime: Date.now(),
+                manager: this.ctx.authUser._id
+            })
+        }
     }
     return Group;
 };
