@@ -5,6 +5,9 @@ function initData() {
         name: '',
         group: '',
         desc: null,
+        creator: null,
+        manager: null,
+        follower: [],
         options: {
             proxy: {
                 mode: 0

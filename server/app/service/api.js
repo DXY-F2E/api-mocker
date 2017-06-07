@@ -7,6 +7,7 @@ module.exports = app => {
             const authId = this.ctx.authUser._id
             api.creator = authId
             api.manager = authId
+            api.follower = [authId]
             return app.model.api(api).save()
         }
         update (apiId, api) {

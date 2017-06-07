@@ -3,7 +3,10 @@
         <div class="fields">
             <div class="field name">
                 <h2>{{api.name}}<span class="method" :class="method">{{method}}</span></h2>
-                <el-button v-if="!isPreview" type="primary" class="edit" icon="edit" @click="edit()">编辑</el-button>
+                <div class="control" v-if="!isPreview">
+                    <el-button type="primary" class="edit" icon="edit" @click="edit()">编辑</el-button>
+                    <el-button class="follow" icon="star-off" @click="follow()">订阅</el-button>
+                </div>
             </div>
             <div class="field url">
                 <div>
@@ -71,6 +74,9 @@ export default {
         },
         hasParams(params) {
             return params && params.filter(p => p.key).length > 0;
+        },
+        follow() {
+            window.console.log(this.api);
         }
     },
     computed: {
@@ -151,7 +157,7 @@ export default {
     position: relative;
     margin-bottom: 30px;
 }
-.api-doc .field.name .edit{
+.api-doc .field.name .control{
     position: absolute;
     right: 0px;
     top: 0;
