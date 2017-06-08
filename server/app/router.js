@@ -15,6 +15,7 @@ module.exports = app => {
     app.post('/server/api/:groupId', 'api.createApi')
     app.post('/server/api/:groupId/batch', 'api.createGroupApis')
     app.put('/server/api/:groupId/:apiId', 'api.modifyApi')
+    app.put('/server/api/:apiId/follower', 'api.follower')
     app.delete('/server/api/:groupId/:apiId', 'api.delete')
 
     app.get('/server/history/api/:apiId', 'history.getApi')

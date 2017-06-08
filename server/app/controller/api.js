@@ -90,6 +90,11 @@ module.exports = app => {
             this.ctx.body = { resources }
             this.ctx.status = 200
         }
+        * follower () {
+            const apiId = this.ctx.params.apiId
+            const api = yield this.service.api.getById(apiId)
+            this.success(api)
+        }
         * getManageApi() {
             let { limit = 100, page = 1} = this.ctx.query
             this.ctx.body = yield this.service.api.getManageList()

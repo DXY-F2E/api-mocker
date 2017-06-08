@@ -1,5 +1,11 @@
 module.exports = app => {
     class Api extends app.Service {
+        getById (apiId) {
+            return app.model.api.find({
+                _id: apiId,
+                isDeleted: false
+            })
+        }
         createApis (apis) {
             return app.model.api.insertMany(apis)
         }
