@@ -1,7 +1,7 @@
 module.exports = app => {
     class Api extends app.Service {
         getById (apiId) {
-            return app.model.api.find({
+            return app.model.api.findOne({
                 _id: apiId,
                 isDeleted: false
             })

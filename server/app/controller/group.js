@@ -5,7 +5,7 @@ module.exports = app =>{
     class GroupController extends app.Controller {
         * getAll () {
             const resources = yield app.model.group
-                                       .find({})
+                                       .find({isDeleted: false})
                                        .sort({modifiedTime: -1, createTime: -1})
                                        .exec()
 

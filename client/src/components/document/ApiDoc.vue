@@ -5,7 +5,15 @@
                 <h2>{{api.name}}<span class="method" :class="method">{{method}}</span></h2>
                 <div class="control" v-if="!isPreview">
                     <el-button type="primary" class="edit" icon="edit" @click="edit()">编辑</el-button>
-                    <el-button class="follow" icon="star-off" @click="follow()">订阅</el-button>
+                    <el-button class="follow"
+                               icon="star-on"
+                               v-if="followed"
+                               type="primary"
+                               @click="cancelfollow()">取消订阅</el-button>
+                    <el-button class="follow"
+                               icon="star-off"
+                               v-else
+                               @click="doFollow()">订阅</el-button>
                 </div>
             </div>
             <div class="field url">
@@ -52,6 +60,7 @@ import Schemas from './Schemas';
 import Schema from './Schema';
 import MockData from './MockData';
 import CopyButton from '../common/CopyButton';
+import { mapActions } from 'vuex';
 export default {
     components: {
         CopyButton,
@@ -67,6 +76,10 @@ export default {
         }
     },
     methods: {
+        ...mapActions([
+            'follow',
+            'unfollow'
+        ]),
         edit() {
             this.$store.commit('UPDATE_API', this.api);
             this.$store.commit('CHANGE_MODE', 'edit');
@@ -75,9 +88,15 @@ export default {
         hasParams(params) {
             return params && params.filter(p => p.key).length > 0;
         },
-        follow() {
-            window.console.log(this.api);
-            window.console.log(this.followed);
+        doFollow() {
+            this.follow(this.api._id).then(rs => {
+                this.api.follower = rs.data.follower;
+            });
+        },
+        cancelfollow() {
+            this.unfollow(this.api._id).then(rs => {
+                this.api.follower = rs.data.follower;
+            });
         }
     },
     computed: {
@@ -127,7 +146,7 @@ export default {
     }
 };
 </script>
-<style>
+<style lang="less">
 .apis-doc {
     width: 100%;
     height: 100%;
@@ -168,6 +187,10 @@ export default {
     position: absolute;
     right: 0px;
     top: 0;
+
+    .el-icon-star-on {
+
+    }
 }
 .api-doc .field:last-child {
     margin-bottom: 0;

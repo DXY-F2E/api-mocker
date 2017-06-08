@@ -90,12 +90,33 @@ module.exports = app => {
             this.ctx.body = { resources }
             this.ctx.status = 200
         }
-        * follower () {
+        * follow () {
             const apiId = this.ctx.params.apiId
-            const api = yield this.service.api.getById(apiId)
-            this.success(api)
+            const authId = this.ctx.authUser._id
+            const api = (yield this.service.api.getById(apiId)).toObject()
+            const isExist = api.follower.find(f => f.toString() === authId)
+            if (isExist) {
+                this.ctx.body = api
+            } else {
+                api.follower.push(authId);
+                this.ctx.body = yield this.service.api.update(apiId, api)
+            }
         }
-        * getManageApi() {
+        * unfollow () {
+            const apiId = this.ctx.params.apiId
+            const authId = this.ctx.authUser._id
+            const api = (yield this.service.api.getById(apiId)).toObject()
+            const index = api.follower.findIndex(f => f.toString() === authId)
+            console.log(index)
+            if (index < 0) {
+                this.ctx.body = api;
+            } else {
+                api.follower.splice(index, 1)
+                console.log(api.follower)
+                this.ctx.body = yield this.service.api.update(apiId, api)
+            }
+        }
+        * getManageApi () {
             let { limit = 100, page = 1} = this.ctx.query
             this.ctx.body = yield this.service.api.getManageList()
         }

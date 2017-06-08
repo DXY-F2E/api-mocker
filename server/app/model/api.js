@@ -19,7 +19,10 @@ module.exports = mongoose => {
             required: true,
             ref: 'user'
         },
-        follower: [ObjectId],
+        follower: [{
+            type: ObjectId,
+            ref: 'user'
+        }],
         desc: String,
         createTime: {
             type: String,

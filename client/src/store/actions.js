@@ -221,6 +221,12 @@ const actions = {
             }
             return res;
         });
+    },
+    follow({ state }, apiId) {
+        return axios.put(API.API_FOLLOWER.replace(':apiId', apiId));
+    },
+    unfollow({ state }, apiId) {
+        return axios.delete(API.API_FOLLOWER.replace(':apiId', apiId));
     }
 };
 

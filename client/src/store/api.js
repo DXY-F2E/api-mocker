@@ -10,6 +10,7 @@ export default R.map((url) => `${domain}${url}`)({
     GROUP_APIS: '/server/api/:groupId',
     API: '/server/api/:groupId/:apiId',
     API_HISTORY: '/server/history/api/:apiId',
+    API_FOLLOWER: '/server/api/follower/:apiId',
     USER: '/auth/user',
     PROFILE: '/server/user'
 });
