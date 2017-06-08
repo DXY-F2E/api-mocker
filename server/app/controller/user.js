@@ -14,6 +14,11 @@ module.exports = app => {
         }
         * create() {
             const info = this.ctx.request.body
+            const user = yield this.service.user.getByEmail(info.email)
+            if (user) {
+                this.fail('此邮箱已被注册')
+                return
+            }
             const rs = yield this.service.user.create(info)
             delete rs.password
             this.service.cookie.setUser(rs)
