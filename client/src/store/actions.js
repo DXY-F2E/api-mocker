@@ -136,6 +136,12 @@ const actions = {
             return res;
         });
     },
+    copyApi({ state, commit }, api) {
+        return axios.post(API.GROUP_APIS.replace(':groupId', api.group), api).then(res => {
+            commit('INSERT_API', res.data.resources);
+            return res;
+        });
+    },
     testApi({ state, commit }, url) {
         const api = state.api;
         let config = {

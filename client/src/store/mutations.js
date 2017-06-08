@@ -8,6 +8,9 @@ const mutations = {
     INSERT_APIS(state, apis) {
         state.apiList = apis.concat(state.apiList);
     },
+    INSERT_API(state, api) {
+        state.apiList.unshift(api);
+    },
     FETCH_SUCCESS(state, data) {
         state.apiList = data.resources;
         state.apiPage = data.pages;
