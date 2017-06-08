@@ -20,7 +20,7 @@ module.exports = app => {
             const html = `
                 <strong>API：${api.name}</strong>
                 <p>修改者：${this.ctx.authUser.name}</p>
-                <p>链接地址：http:/localhost:8080/#/doc/${api.group}/${api._id}</p>
+                <p>链接地址：${app.config.clientRoot}/#/doc/${api.group}/${api._id}</p>
             `
             users.map(user => {
                 this.sent(user.email, 'Api Mocker 接口变动提醒', html)

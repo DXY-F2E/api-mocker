@@ -1,7 +1,5 @@
 module.exports = appInfo => {
     return {
-        mongoose: {
-            url: ''
-        }
+        clientRoot: 'http://f2e.dxy.net/mock'
     }
 }

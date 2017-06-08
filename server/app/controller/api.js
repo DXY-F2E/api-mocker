@@ -66,15 +66,18 @@ module.exports = app => {
             this.ctx.body = { resources }
         }
         * notifyApiChange(api, lastModifiedTime) {
-            if (api.manager === this.ctx.authUser._id) {
-                return
-            }
             // 十分钟内有修改不推送
             const interval = api.modifiedTime - lastModifiedTime
             if (interval < 1000 * 60 * 10) {
                 return
             }
-            const users = yield this.service.user.getByIds([api.manager])
+            const selfIdx = api.follower.findIndex(f => f.toString() === this.ctx.authUser._id)
+            // 如果修改者也在关注列表中，不推送自己
+            if (selfIdx >= 0) {
+                api.follower.splice(selfIdx, 1)
+            }
+            console.log(api.follower)
+            const users = yield this.service.user.getByIds(api.follower)
             this.service.email.notifyApiChange(api, users)
         }
         * getApi () {

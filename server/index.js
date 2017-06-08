@@ -1,4 +1,5 @@
 // npm run dev DO NOT read this file
+process.env.EGG_SERVER_ENV = 'prod'
 require('egg').startCluster({
     https: true,
     key: '../192.168.200.206.key',

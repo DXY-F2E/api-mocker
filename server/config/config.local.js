@@ -1,7 +1,5 @@
 module.exports = appInfo => {
     return {
-        session: {
-            httpOnly: true
-        }
+        clientRoot: 'http://localhost:8080'
     };
 };
