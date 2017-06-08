@@ -40,7 +40,7 @@ export default {
     },
     methods: {
         createApi() {
-            const query = this.groupId ? `?this.groupId=${this.groupId}` : '';
+            const query = this.groupId ? `?groupId=${this.groupId}` : '';
             this.$router.push(`/create${query}`);
         }
     }
