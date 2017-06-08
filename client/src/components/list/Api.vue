@@ -4,8 +4,10 @@
         <span class="name">{{data.name}}</span>
         <el-button-group>
           <!-- <copy-button size="mini" icon="document" :copy-data="copyData" message="复制接口链接成功"></copy-button> -->
-          <el-button size="mini" icon="document" @click.native.stop="showDoc()"></el-button>
-          <el-button size="mini" icon="delete" @click.native.stop="deleteApi()"></el-button>
+          <el-button size="mini" icon="document" @click.native.stop="showDoc"></el-button>
+          <el-button size="mini" @click.native.stop="copyApi">
+            <i class="material-icons">content_copy</i>
+          </el-button>
         </el-button-group>
         <!-- <el-button type="primary" icon="edit" size="small" class="edit-api"></el-button> -->
       </div>
@@ -19,6 +21,7 @@
 </template>
 <script>
 import CopyButton from '../common/CopyButton';
+import R from 'ramda';
 export default {
     components: {
         CopyButton
@@ -47,6 +50,26 @@ export default {
     methods: {
         showDoc() {
             this.$router.push(`/doc/${this.data.group}/${this.data._id}`);
+        },
+        getApiCopyData() {
+            const api = R.clone(this.data);
+            delete api._id;
+            delete api.createTime;
+            delete api.modifiedTime;
+            api.name = `${api.name}-副本`;
+            return api;
+        },
+        copyApi() {
+            const api = this.getApiCopyData();
+            this.$store.dispatch('copyApi', api).then(() => {
+                this.$message.success('复制成功');
+            }).catch(err => {
+                if (err.response && err.response.data) {
+                    this.$message.error(err.response.data.message);
+                } else {
+                    this.$message.error(err);
+                }
+            });
         },
         editApi(api) {
             this.$store.commit('UPDATE_API', api);
@@ -84,7 +107,7 @@ export default {
     }
 };
 </script>
-<style>
+<style lang="less">
 .el-card {
     cursor: pointer;
     transition: all 0.2s ease;
@@ -132,7 +155,7 @@ export default {
     line-height: 22px;
 }
 .card-box .name {
-    width: 140px;
+    width: 130px;
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
@@ -141,17 +164,25 @@ export default {
 .card-box .el-button-group {
     float: right;
     margin-right: -10px;
-    display: none;
+    visibility: hidden;
     cursor: pointer;
+
+    .material-icons {
+        font-size: 14px;
+        position: relative;
+        top: -1px;
+    }
 }
 .card-box:hover .el-button-group {
-    display: inline-block;
+    visibility: visible;
 }
 .card-box .el-button-group .el-button:focus,
 .card-box .el-button-group button {
     background-color: #F9FAFC;
     color: #8492A6;
     border-color: #bfcbd9;
+    width: 22px;
+    height: 22px;
 }
 .card-box .el-button-group .el-button:hover {
     /*border-color: #E5E9F2;*/
