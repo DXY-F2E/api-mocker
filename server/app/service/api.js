@@ -31,7 +31,6 @@ module.exports = app => {
                             .sort({modifiedTime: -1, createTime: -1})
                             .skip((page - 1) * limit )
                             .limit(limit)
-                            .lean()
         }
         getManageList (page, limit) {
             const cond = {
@@ -41,7 +40,7 @@ module.exports = app => {
             return this.getList(cond)
         }
         * geiRichList (cond, page, limit) {
-            const apis = yield this.getList(cond, page, limit)
+            const apis = (yield this.getList(cond, page, limit)).map(a => a.toObject())
             const userIds = apis.reduce((acc, a) => a.manager ? acc.concat(a.manager) : acc, [])
             const users = yield this.service.user.getByIds(userIds)
             const usersMap = {}

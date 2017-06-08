@@ -77,9 +77,16 @@ export default {
         },
         follow() {
             window.console.log(this.api);
+            window.console.log(this.followed);
         }
     },
     computed: {
+        user() {
+            return this.$store.state.user;
+        },
+        followed() {
+            return !!this.api.follower.find(f => f === this.user._id);
+        },
         isPreview() {
             return !!this.$route.query.preview;
         },
