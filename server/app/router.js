@@ -1,5 +1,6 @@
 module.exports = app => {
     const apiStat = app.middlewares.apiStat()
+    const credentials = app.middlewares.credentials()
 
     app.get('/server/group', 'group.getAll')
     app.post('/server/group', 'group.create')
@@ -22,10 +23,10 @@ module.exports = app => {
     app.get('/server/history/api/:apiId', 'history.getApi')
 
     // mock data
-    app.get('/client/:id', apiStat, 'client.show')
-    app.post('/client/:id', apiStat, 'client.create')
-    app.put('/client/:id', apiStat, 'client.put')
-    app.delete('/client/:id', apiStat, 'client.delete')
+    app.get('/client/:id', credentials, apiStat, 'client.show')
+    app.post('/client/:id', credentials, apiStat, 'client.create')
+    app.put('/client/:id', credentials, apiStat, 'client.put')
+    app.delete('/client/:id', credentials, apiStat, 'client.delete')
 
     app.post('/client/real', 'client.real')
 
