@@ -4,7 +4,6 @@
             <div class="field name">
                 <h2>{{api.name}}<span class="method" :class="method">{{method}}</span></h2>
                 <div class="control" v-if="!isPreview">
-                    <el-button type="primary" class="edit" icon="edit" @click="edit()">编辑</el-button>
                     <el-button class="follow"
                                icon="star-on"
                                v-if="followed"
@@ -14,6 +13,7 @@
                                icon="star-off"
                                v-else
                                @click="doFollow()">订阅</el-button>
+                    <el-button type="primary" class="edit" icon="edit" @click="edit()">编辑</el-button>
                 </div>
             </div>
             <div class="field url">
