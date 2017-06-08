@@ -107,12 +107,10 @@ module.exports = app => {
             const authId = this.ctx.authUser._id
             const api = (yield this.service.api.getById(apiId)).toObject()
             const index = api.follower.findIndex(f => f.toString() === authId)
-            console.log(index)
             if (index < 0) {
                 this.ctx.body = api;
             } else {
                 api.follower.splice(index, 1)
-                console.log(api.follower)
                 this.ctx.body = yield this.service.api.update(apiId, api)
             }
         }

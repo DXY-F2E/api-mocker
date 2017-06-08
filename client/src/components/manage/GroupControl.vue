@@ -44,7 +44,7 @@ export default {
             });
         },
         groupDelete() {
-            this.$confirm('删除后，分组内Api将都不可见，确定删除?', '提示', {
+            this.$confirm('分组内Api将一同删除，确定删除?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'

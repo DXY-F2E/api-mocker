@@ -31,6 +31,14 @@ module.exports = app => {
                 isDeleted: true
             })
         }
+        deleteGroupApis (groupId) {
+            return app.model.api.update({
+                group: groupId
+            }, {
+                modifiedTime: Date.now(),
+                isDeleted: true
+            }, { multi: true })
+        }
         getList (cond, page, limit) {
             return app.model.api
                             .find(cond)
