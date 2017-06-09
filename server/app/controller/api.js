@@ -101,7 +101,7 @@ module.exports = app => {
             if (isExist) {
                 this.ctx.body = api
             } else {
-                // api.follower.push(authId);
+                api.follower.push(authId);
                 this.ctx.body = api
             }
         }
@@ -113,7 +113,7 @@ module.exports = app => {
             if (index < 0) {
                 this.ctx.body = api;
             } else {
-                // api.follower.splice(index, 1)
+                api.follower.splice(index, 1)
                 this.ctx.body = api
             }
         }
