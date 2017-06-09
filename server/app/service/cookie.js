@@ -7,6 +7,7 @@ module.exports = app => {
       this.ctx.cookies.set(key, value, Object.assign({
         expires: expires,
         overwrite: true,
+        secure: false,
         encrypt: true // 加密传输
       }, config))
     }
