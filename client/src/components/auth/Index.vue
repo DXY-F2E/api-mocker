@@ -26,10 +26,10 @@ export default {
 }
 .login-box {
     width: 400px;
-    position: relative;
-    margin: 0 auto;
+    position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .login-box .el-form {
     background-color: #fff;
@@ -47,6 +47,7 @@ export default {
     color: #ccc;
     position: absolute;
     right: 0;
+    top: 100%;
     font-size: 14px;
     height: 32px;
     line-height: 32px;
