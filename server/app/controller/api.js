@@ -102,7 +102,7 @@ module.exports = app => {
                 this.ctx.body = api
             } else {
                 api.follower.push(authId);
-                this.ctx.body = yield this.service.api.update(apiId, api)
+                this.ctx.body = api
             }
         }
         * unfollow () {
@@ -114,7 +114,7 @@ module.exports = app => {
                 this.ctx.body = api;
             } else {
                 api.follower.splice(index, 1)
-                this.ctx.body = yield this.service.api.update(apiId, api)
+                this.ctx.body = api
             }
         }
         * getManageApi () {
