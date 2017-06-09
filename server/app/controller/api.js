@@ -97,12 +97,15 @@ module.exports = app => {
             const apiId = this.ctx.params.apiId
             const authId = this.ctx.authUser._id
             const api = (yield this.service.api.getById(apiId)).toObject()
+            api.follower = api.follower || []
             const isExist = api.follower.find(f => f.toString() === authId)
             if (isExist) {
                 this.ctx.body = api
             } else {
                 api.follower.push(authId);
-                this.ctx.body = api
+                this.ctx.body = yield this.service.api.update(apiId, {
+                    follower: api.follower
+                })
             }
         }
         * unfollow () {
@@ -114,7 +117,10 @@ module.exports = app => {
                 this.ctx.body = api;
             } else {
                 api.follower.splice(index, 1)
-                this.ctx.body = api
+                console.log(api.follower)
+                this.ctx.body = yield this.service.api.update(apiId, {
+                    follower: api.follower
+                })
             }
         }
         * getManageApi () {
