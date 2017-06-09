@@ -60,7 +60,7 @@ function buildApiResponse(api) {
     return api;
 }
 function validateApi(state) {
-    const regex = new RegExp(/^((ht|f)tps?):\/\/[\w-]+(\.[\w-]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&~+#])?$/);
+    // const regex = new RegExp(/^((ht|f)tps?):\/\/[\w-]+(\.[\w-]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&~+#])?$/);
     const api = state.api;
     let rs = {};
     if (isEmpty(api.name)) {
@@ -73,10 +73,10 @@ function validateApi(state) {
             success: false,
             msg: '接口分组不能为空'
         };
-    } else if (!isEmpty(api.prodUrl) && !regex.test(api.prodUrl)) {
+    } else if (isEmpty(api.prodUrl)) {
         rs = {
             success: false,
-            msg: '线上API路径错误'
+            msg: '线上地址不能为空'
         };
     } else if (!state.dslStatus.success) {
         rs = state.dslStatus;
