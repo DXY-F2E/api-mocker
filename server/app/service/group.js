@@ -33,7 +33,7 @@ module.exports = app => {
                 manager: this.ctx.authUser._id
             }, {
                 modifiedTime: Date.now(),
-                name: group.name + '_已删除',
+                name: `${group.name}_已删除_${group._id}`,
                 isDeleted: true
             })
         }
