@@ -22,6 +22,9 @@ module.exports = app => {
 
     app.get('/server/history/api/:apiId', 'history.getApi')
 
+    // stat
+    app.get('/server/stat/mock', 'stat.mock')
+
     // mock data
     app.get('/client/:id', credentials, apiStat, 'client.show')
     app.post('/client/:id', credentials, apiStat, 'client.create')
@@ -29,6 +32,7 @@ module.exports = app => {
     app.delete('/client/:id', credentials, apiStat, 'client.delete')
 
     app.post('/client/real', 'client.real')
+
 
     // user
     app.get('/auth/user', 'user.get')

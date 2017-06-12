@@ -31,6 +31,8 @@ const Auth = r => require.ensure([], () => r(require('@/components/auth/Index'))
 const Login = r => require.ensure([], () => r(require('@/components/auth/Login')), 'auth');
 const Register = r => require.ensure([], () => r(require('@/components/auth/Register')), 'auth');
 
+const Stat = r => require.ensure([], () => r(require('@/components/stat/Index')), 'stat');
+
 Vue.use(Router);
 
 const router = new Router({
@@ -44,6 +46,11 @@ const router = new Router({
                 auth: true
             },
             children: [
+                {
+                    path: 'stat',
+                    name: 'Stat',
+                    component: Stat
+                },
                 {
                     path: 'manage',
                     name: 'Manage',

@@ -219,6 +219,12 @@ const actions = {
     },
     unfollow({ state }, apiId) {
         return axios.delete(API.API_FOLLOWER.replace(':apiId', apiId));
+    },
+    // stat 相关
+    getMockStat({ state }, query) {
+        return axios.get(`${API.STAT}/mock`, {
+            params: query
+        });
     }
 };
 
