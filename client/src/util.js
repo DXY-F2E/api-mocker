@@ -81,11 +81,6 @@ function validateApi(state) {
             success: false,
             msg: '接口分组不能为空'
         };
-    } else if (isEmpty(api.prodUrl)) {
-        rs = {
-            success: false,
-            msg: '线上地址不能为空'
-        };
     } else if (!state.dslStatus.success) {
         rs = state.dslStatus;
     } else {

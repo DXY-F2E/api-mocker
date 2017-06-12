@@ -182,9 +182,7 @@ const actions = {
             if (err.response) {
                 commit('UPDATE_RESPONSE', err.response);
             }
-        }).catch(err => {
-            window.console.log(err);
-        });
+        }).catch(err => commit('UPDATE_RESPONSE', err));
     },
     getUser({ state, commit }) {
         return state.user || axios.get(API.USER).then(res => {
