@@ -13,6 +13,10 @@ axios.defaults.withCredentials = true;
 axios.interceptors.response.use((response) => response, catchError);
 
 const domain = getDomain();
+const buildTestParams = (api, type) => api.options.examples[type] || buildExampleFormSchema({
+    example: null,
+    params: api.options.params[type]
+});
 
 const actions = {
     getGroups({ commit }) {
@@ -172,14 +176,12 @@ const actions = {
                 }
             };
         }
-        config.params = api.options.examples.query || buildExampleFormSchema({
-            example: null,
-            params: api.options.params.query
-        });
-        config.data = Object.assign(config.data, api.options.examples.body || buildExampleFormSchema({
-            example: null,
-            params: api.options.params.body
-        }));
+        const paths = buildTestParams(api, 'path');
+        for (const key in paths) {
+            config.url += `/${paths[key]}`;
+        }
+        config.params = buildTestParams(api, 'query');
+        config.data = Object.assign(config.data, buildTestParams(api, 'body'));
         config.headers = buildExampleFormSchema(api.options.headers);
         if (config.headers.Cookie) {
             config.headers['api-cookie'] = config.headers.Cookie;

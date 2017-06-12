@@ -45,6 +45,9 @@ export default {
             }, {
                 label: 'Query',
                 name: 'query'
+            }, {
+                label: 'Path',
+                name: 'path'
             }]
         };
     },
