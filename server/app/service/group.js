@@ -21,12 +21,19 @@ module.exports = app => {
                 createTime: -1
             })
         }
-        delete(groupId) {
+        getById(groupId) {
+            return app.model.group.findOne({
+                _id: groupId
+            })
+        }
+        * delete(groupId) {
+            const group = yield this.getById(groupId)
             return app.model.group.findOneAndUpdate({
                 _id: groupId,
                 manager: this.ctx.authUser._id
             }, {
                 modifiedTime: Date.now(),
+                name: group.name + '_已删除',
                 isDeleted: true
             })
         }
