@@ -53,7 +53,7 @@ module.exports = app => {
             }
             return this.getList(cond)
         }
-        * geiRichList (cond, page, limit) {
+        * getRichList (cond, page, limit) {
             const apis = (yield this.getList(cond, page, limit)).map(a => a.toObject())
             const userIds = apis.reduce((acc, a) => a.manager ? acc.concat(a.manager) : acc, [])
             const users = yield this.service.user.getByIds(userIds)

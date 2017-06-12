@@ -31,7 +31,7 @@ module.exports = app => {
                 })
             }
             if (groupId) condition.group = groupId
-            const resources = yield this.service.api.geiRichList(condition, page, limit)
+            const resources = yield this.service.api.getRichList(condition, page, limit)
             const count = yield app.model.api.find(condition).count().exec()
             this.ctx.logger.info('getAll', this.ctx.query)
             this.ctx.body = { resources, pages: { limit, page, count}}
