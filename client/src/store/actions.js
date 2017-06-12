@@ -188,39 +188,31 @@ const actions = {
     },
     getUser({ state, commit }) {
         return state.user || axios.get(API.USER).then(res => {
-            commit('SET_USER', res.data.data);
-            return res.data.data;
+            commit('SET_USER', res.data);
+            return res.data;
         });
     },
     register({ commit }, user) {
         return axios.post(`${API.USER}/register`, user).then(res => {
-            if (res.data.success) {
-                commit('SET_USER', res.data.data);
-            }
+            commit('SET_USER', res.data);
             return res;
         });
     },
     login({ commit }, user) {
         return axios.post(`${API.USER}/login`, user).then(res => {
-            if (res.data.success) {
-                commit('SET_USER', res.data.data);
-            }
+            commit('SET_USER', res.data);
             return res;
         });
     },
     logout({ commit }) {
         return axios.get(`${API.USER}/logout`).then(res => {
-            if (res.data.success) {
-                commit('SET_USER', null);
-            }
+            commit('SET_USER', null);
             return res;
         });
     },
     updateProfile({ state, commit }, user) {
         return axios.put(`${API.PROFILE}`, user).then(res => {
-            if (res.data.success) {
-                commit('SET_USER', res.data.data);
-            }
+            commit('SET_USER', res.data);
             return res;
         });
     },

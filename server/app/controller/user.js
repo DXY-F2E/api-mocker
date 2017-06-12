@@ -51,7 +51,7 @@ module.exports = app => {
         }
         logout() {
             this.service.cookie.clearUser()
-            this.success()
+            this.success('注销成功')
         }
     }
     return UserController
