@@ -1,15 +1,16 @@
 import axios from 'axios';
 import API from './api';
-import { validateApi, buildApiResponse, buildExampleFormSchema, getDomain } from '../util';
+import {
+    validateApi,
+    buildApiResponse,
+    buildExampleFormSchema,
+    getDomain,
+    catchError
+} from '../util';
 
 // 允许跨域请求带上cookie
 axios.defaults.withCredentials = true;
-axios.interceptors.response.use((response) => response, (err) => {
-    if (err.response && err.response.status === 401) {
-        window.location.href = '#/login';
-    }
-    throw err;
-});
+axios.interceptors.response.use((response) => response, catchError);
 
 const domain = getDomain();
 

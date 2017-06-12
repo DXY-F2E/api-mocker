@@ -16,8 +16,7 @@ module.exports = app => {
             const info = this.ctx.request.body
             const user = yield this.service.user.getByEmail(info.email)
             if (user) {
-                this.fail('此邮箱已被注册')
-                return
+                this.error('此邮箱已被注册')
             }
             const rs = yield this.service.user.create(info)
             delete rs.password
@@ -28,12 +27,10 @@ module.exports = app => {
             const info = this.ctx.request.body
             const user = yield this.service.user.getByEmail(info.email)
             if (!user) {
-                this.fail('账号不存在')
-                return
+                this.error('账号不存在')
             }
             if (user.password !== md5(info.password, this.config.md5Key)) {
-                this.fail('密码错误')
-                return
+                this.error('密码错误')
             }
             delete user.password
             this.service.cookie.setUser(user)

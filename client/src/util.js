@@ -3,11 +3,19 @@ import config from '../config';
 function getDomain() {
     const protocol = window.location.href.indexOf('https') === 0 ? 'https://' : 'http://';
     return protocol + (process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax);
-    // if (process.env.NODE_ENV === 'development') {
-    //     return `http://${config.dev.ajax}`;
-    // } else {
-    //     return `https://${config.build.ajax}`;
-    // }
+}
+function catchError(err) {
+    if (err.response && err.response.status === 401) {
+        window.location.href = '#/login';
+    }
+    // console.log(err.response);
+    // throw err;
+    return Promise.reject({
+        response: err.response,
+        statusCode: err.response.status,
+        statusText: err.response.statusText,
+        msg: err.response.data.message
+    });
 }
 function isEmpty(val) {
     return !val || val.trim() === '';
@@ -103,5 +111,6 @@ export {
     validateApi,
     isEmpty,
     clone,
-    getDomain
+    getDomain,
+    catchError
 };

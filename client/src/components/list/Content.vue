@@ -57,10 +57,7 @@ export default {
                 const pages = res.data.pages;
                 this.query.page = pages.page;
                 this.count = pages.count;
-            }).catch((err) => {
-                window.console.log(err);
-                this.$message.error('加载数据失败');
-            });
+            }).catch(err => this.$message.error(`加载数据失败:${err.msg}`));
         },
         onPageNav(currentPage) {
             this.query.page = currentPage;

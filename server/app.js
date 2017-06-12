@@ -12,8 +12,12 @@ module.exports = app => {
         msg
       }
     }
-    error(data) {
-      this.ctx.throw(data.code, data.msg)
+    error(data, code = 403) {
+      if (typeof data === 'string') {
+        this.ctx.throw(code, data)
+      } else {
+        this.ctx.throw(data.code, data.msg)
+      }
     }
     notFound(msg) {
       msg = msg || 'not found'

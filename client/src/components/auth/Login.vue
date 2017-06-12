@@ -46,25 +46,14 @@ export default {
             });
         },
         login() {
-            this.$store.dispatch('login', this.loginForm).then(rs => {
-                if (rs.data.success) {
-                    this.$message.success('登录成功, 即将跳转');
-                    window.setTimeout(() => {
-                        this.$router.push({
-                            name: 'AllList'
-                        });
-                    }, 1000);
-                } else {
-                    window.console.log(rs);
-                    this.$message.error(`登录失败：${rs.data.msg}`);
-                }
-            }).catch(err => {
-                if (err.response) {
-                    this.$message.error(`登录失败：${err.response.data.message}`);
-                } else {
-                    this.$message.error(`登录失败：${err}`);
-                }
-            });
+            this.$store.dispatch('login', this.loginForm).then(() => {
+                this.$message.success('登录成功, 即将跳转');
+                window.setTimeout(() => {
+                    this.$router.push({
+                        name: 'AllList'
+                    });
+                }, 1000);
+            }).catch(err => this.$message.error(`登录失败：${err.msg}`));
         }
     }
 };

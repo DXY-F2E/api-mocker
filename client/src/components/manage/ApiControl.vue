@@ -21,13 +21,7 @@ export default {
             }).then(() => {
                 this.$message.success('删除成功');
                 this.$emit('delete', this.api);
-            }).catch(err => {
-                if (err.response && err.response.data) {
-                    this.$message.error(err.response.data.message);
-                } else {
-                    this.$message.error(err);
-                }
-            });
+            }).catch(err => this.$message.error(err.msg));
         },
         apiDoc() {
             this.$router.push({

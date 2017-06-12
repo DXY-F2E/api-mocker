@@ -86,10 +86,8 @@ export default {
                 }
                 this.$message.success('保存成功');
             }).catch(err => {
-                window.console.log(err);
                 this.saveToken = false;
-                const message = err.msg || err.response.data.message;
-                this.$message.error(`保存失败:${message}`);
+                this.$message.error(`保存失败:${err.msg}`);
             });
         },
         send() {

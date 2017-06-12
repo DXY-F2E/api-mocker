@@ -71,25 +71,14 @@ export default {
             });
         },
         register() {
-            this.$store.dispatch('register', this.registerForm).then(rs => {
-                if (rs.data.success) {
-                    this.$message.success('注册成功, 即将跳转');
-                    window.setTimeout(() => {
-                        this.$router.push({
-                            name: 'AllList'
-                        });
-                    }, 1000);
-                } else {
-                    window.console.log(rs);
-                    this.$message.error(`注册失败：${rs.data.msg}`);
-                }
-            }).catch(err => {
-                if (err.response) {
-                    this.$message.error(`注册失败：${err.response.data.message}`);
-                } else {
-                    this.$message.error(`注册失败：${err}`);
-                }
-            });
+            this.$store.dispatch('register', this.registerForm).then(() => {
+                this.$message.success('注册成功, 即将跳转');
+                window.setTimeout(() => {
+                    this.$router.push({
+                        name: 'AllList'
+                    });
+                }, 1000);
+            }).catch(err => this.$message.error(`注册失败：${err.msg}`));
         }
     }
 };

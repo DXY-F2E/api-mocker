@@ -61,13 +61,7 @@ export default {
             const api = this.getApiCopyData();
             this.$store.dispatch('copyApi', api).then(() => {
                 this.$message.success('复制成功');
-            }).catch(err => {
-                if (err.response && err.response.data) {
-                    this.$message.error(err.response.data.message);
-                } else {
-                    this.$message.error(err);
-                }
-            });
+            }).catch(err => this.$message.error(err.msg));
         },
         editApi(api) {
             this.$store.commit('UPDATE_API', api);
