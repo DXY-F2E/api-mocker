@@ -12,8 +12,7 @@
               <el-menu-item index="List" :route="{name: 'AllList'}">接口列表</el-menu-item>
               <el-menu-item index="Create" :route="{name: 'Create'}">创建接口</el-menu-item>
               <el-menu-item index="Document" :route="{name: 'Document'}">接口文档</el-menu-item>
-              <!-- 线上mongo版本不满足，先隐藏 -->
-              <!-- <el-menu-item index="Stat" :route="{name: 'Stat'}">数据统计</el-menu-item> -->
+              <el-menu-item index="Stat" :route="{name: 'Stat'}">数据统计</el-menu-item>
             </el-menu>
         </el-col>
         <el-col :span="0">
