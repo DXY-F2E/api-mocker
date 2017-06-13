@@ -16,7 +16,7 @@ module.exports = mongoose => {
         user: ObjectId,
         createDay: {
             type: String,
-            default: new Date().toLocaleDateString()
+            default: () => new Date().toLocaleDateString()
         },
         createTime: {
             type: Date,
