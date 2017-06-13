@@ -26,12 +26,12 @@ module.exports = app => {
                     $lte: end
                 }
               }},
-              { $sort: {createDay: -1} },
               { $group: {
                 // _id : { month: { $month: '$createTime' }, day: { $dayOfMonth: '$createTime' }, year: { $year: '$createTime' } },
                 _id: '$createDay',
                 count: { $sum: 1 }
-              }}
+              }},
+              { $sort: { _id: 1 } }
             ])
         }
     }
