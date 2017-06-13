@@ -1,3 +1,5 @@
+// mongo v3.4
+
 db.apistats.aggregate(
     [
         { "$addFields": {
