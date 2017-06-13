@@ -26,7 +26,7 @@ module.exports = app => {
                     $lte: end
                 }
               }},
-              { $sort: {createTime: -1} },
+              { $sort: {createDay: -1} },
               { $group: {
                 // _id : { month: { $month: '$createTime' }, day: { $dayOfMonth: '$createTime' }, year: { $year: '$createTime' } },
                 _id: '$createDay',
