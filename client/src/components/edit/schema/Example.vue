@@ -84,7 +84,7 @@ export default {
                 this.$message.error(this.status.msg);
                 return;
             }
-            const schema = buildSchemaFormExample(this.example);
+            const schema = buildSchemaFormExample(this.example, this.schema.params);
             this.$emit('buildSchema', schema);
             this.showTooltip('schema');
         }
