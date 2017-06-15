@@ -38,16 +38,22 @@ module.exports = app => {
             this.service.cache.del(key)
             this.success(true)
         }
-        get() {
+        * get() {
             const rs = this.service.cookie.getUser()
-            if (rs && rs._id) {
-                this.success(rs)
-            } else {
+            if (!rs || !rs._id) {
                 this.error({
                     code: 401,
                     msg: '未登录'
                 })
             }
+            const user = yield this.service.user.getById(rs._id)
+            if (user.modifiedTime > new Date(rs.modifiedTime)) {
+                this.error({
+                    code: 401,
+                    msg: '信息已发生变更，请重新登录'
+                })
+            }
+            this.success(rs)
         }
         * create() {
             const info = this.ctx.request.body

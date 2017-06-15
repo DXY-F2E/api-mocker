@@ -14,6 +14,11 @@ module.exports = app => {
                 // password: md5(user.password, this.config.md5Key)
             }).lean()
         }
+        getById(id) {
+            return app.model.user.findOne({
+                _id: id
+            })
+        }
         getByIds(ids) {
             return app.model.user.find({
                 _id: {
