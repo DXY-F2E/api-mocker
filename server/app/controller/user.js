@@ -1,6 +1,16 @@
 const md5 = require('blueimp-md5')
+
 module.exports = app => {
     class UserController extends app.Controller {
+        * findPassword() {
+            const { email } = this.ctx.request.body
+            const user = yield this.service.user.getByEmail(info.email)
+            if (!user) {
+                this.error('此邮箱未注册')
+            }
+            const rs = this.service.ticket.create(user._id, 'email')
+            this.success(rs)
+        }
         get() {
             const rs = this.service.cookie.getUser()
             if (rs && rs._id) {
