@@ -7,7 +7,7 @@
 export default {
 };
 </script>
-<style>
+<style lang="less">
 .auth-page {
     /* 灰白色 */
     /*background-color: #eef1f6;*/
@@ -30,6 +30,11 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    .sent-code {
+        margin-left: 10px;
+        min-width: 80px;
+    }
 }
 .login-box .el-form {
     background-color: #fff;
@@ -51,6 +56,11 @@ export default {
     font-size: 14px;
     height: 32px;
     line-height: 32px;
+
+    &.reset-pass {
+        right: auto;
+        left: 0;
+    }
 }
 .login-box .app-name {
     text-align: center;

@@ -16,7 +16,7 @@
         </el-form-item>
         <el-form-item class="control">
             <el-button type="primary" @click="validate">注册</el-button>
-            <router-link class="登录" to="login">--> 登录</router-link>
+            <router-link class="login" to="login">--> 登录</router-link>
         </el-form-item>
     </el-form>
 </div>
@@ -47,7 +47,7 @@ export default {
             },
             registerForm: {
                 email: '',
-                nickname: '',
+                name: '',
                 password: '',
                 verifyPassword: ''
             }

@@ -1,6 +1,6 @@
 const md5 = require('blueimp-md5')
 module.exports = app => {
-    class User extends app.Service {
+    class UserService extends app.Service {
         * create(user) {
             return (yield new app.model.user({
                 email: user.email,
@@ -30,6 +30,14 @@ module.exports = app => {
                 ]
             })
         }
+        updatePassword(email, password) {
+            return app.model.user.findOneAndUpdate({
+                email
+            }, {
+                password: md5(password, this.config.md5Key),
+                modifiedTime: new Date()
+            }, { new: true}).lean()
+        }
         update(user) {
             const authId = this.ctx.authUser._id;
             return app.model.user.findOneAndUpdate({
@@ -41,5 +49,5 @@ module.exports = app => {
             }, { new: true}).lean()
         }
   }
-  return User;
+  return UserService;
 };

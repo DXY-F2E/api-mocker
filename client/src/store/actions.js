@@ -220,6 +220,13 @@ const actions = {
     unfollow({ state }, apiId) {
         return axios.delete(API.API_FOLLOWER.replace(':apiId', apiId));
     },
+    sendResetPassCode({ state }, email) {
+        return axios.post(`${API.USER}/recovery/password/code`, {email});
+    },
+    resetPass({ state }, resetForm) {
+        window.console.log(resetForm);
+        return axios.put(`${API.USER}/recovery/password`, resetForm);
+    },
     // stat 相关
     getMockStat({ state }, query) {
         return axios.get(`${API.STAT}/mock`, {

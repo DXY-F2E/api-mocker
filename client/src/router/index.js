@@ -30,6 +30,7 @@ const ApiContent = r => require.ensure([], () => r(require('@/components/documen
 const Auth = r => require.ensure([], () => r(require('@/components/auth/Index')), 'auth');
 const Login = r => require.ensure([], () => r(require('@/components/auth/Login')), 'auth');
 const Register = r => require.ensure([], () => r(require('@/components/auth/Register')), 'auth');
+const ResetPass = r => require.ensure([], () => r(require('@/components/auth/ResetPass')), 'auth');
 
 const Stat = r => require.ensure([], () => r(require('@/components/stat/Index')), 'stat');
 
@@ -130,6 +131,10 @@ const router = new Router({
                 path: 'register',
                 name: 'Register',
                 component: Register
+            }, {
+                path: 'reset-pass',
+                name: 'ResetPass',
+                component: ResetPass
             }]
         }
     ]

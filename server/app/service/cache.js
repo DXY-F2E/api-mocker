@@ -18,9 +18,10 @@ module.exports = app => {
           return this.create(key, code, maxAge) && code
         }
         get (key) {
-          const value = Cache.get(key)
-          Cache.del(key)
-          return value
+          return Cache.get(key)
+        }
+        del (key) {
+          return Cache.del(key)
         }
         has (key) {
           return Cache.has(key)

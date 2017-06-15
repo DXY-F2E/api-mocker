@@ -39,6 +39,7 @@ module.exports = app => {
     app.post('/auth/user/register', 'user.create')
     app.post('/auth/user/login', 'user.login')
     app.get('/auth/user/logout', 'user.logout')
-    app.post('/auth/user/recovery/password', 'user.findPassword')
+    app.post('/auth/user/recovery/password/code', 'user.sentResetPassCode')
+    app.put('/auth/user/recovery/password', 'user.resetPassword')
     app.put('/server/user', 'user.update')
 }
