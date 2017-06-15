@@ -1,9 +1,8 @@
 const Crypto = require('crypto')
-const Cipher = Crypto.createCipher('aes192', 'a password');
-const Decipher = Crypto.createDecipher('aes192', 'a password')
 module.exports = app => {
-    class TicketHistory extends app.Service {
+    class Ticket extends app.Service {
         create(id, act, maxAge = 15 * 60 * 1000){
+            const Cipher = Crypto.createCipher('aes192', 'a password');
             const ticket = JSON.stringify({
               id,
               act,
@@ -12,20 +11,22 @@ module.exports = app => {
             return Cipher.update(ticket, 'utf8', 'hex') + Cipher.final('hex')
         }
         check(ticket, act) {
+          const Decipher = Crypto.createDecipher('aes192', 'a password')
+          let rs;
           try {
-            let rs = Decipher.update(ticket, 'hex', 'utf8') + Decipher.final('utf8');
+            rs = Decipher.update(ticket, 'hex', 'utf8') + Decipher.final('utf8');
             rs = JSON.parse(rs)
           } catch (err) {
-            this.error('ticket错误')
+            return { success: false, msg: '未知ticket' }
           }
-          if (rs.expires > new Date()) {
-            this.error('ticket过期')
+          if (new Date(rs.expires) < new Date()) {
+            return { success: false, msg: 'ticket过期' }
           }
           if (act !== rs.act) {
-            this.error('ticket错误')
+            return { success: false, msg: 'ticket错误' }
           }
-          return true
+          return {success: true}
         }
     }
-    return TicketHistory;
+    return Ticket;
 };

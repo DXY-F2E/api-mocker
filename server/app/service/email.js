@@ -10,11 +10,18 @@ module.exports = app => {
                 subject: subject,
                 html: html
             }
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    return this.ctx.logger.info('Message %s sent error: %s', error)
-                }
+            return transporter.sendMail(mailOptions).catch(error => {
+                this.ctx.logger.info('Message %s sent error: %s', error)
+                return error
             })
+        }
+        resetPassword(verifyCode, user) {
+            const html = `
+                <strong>重设密码</strong>
+                <p>账户名：${user.name}</p>
+                <p>验证码：${verifyCode}</p>
+            `
+            return this.sent(user.email, 'Api Mocker 找回密码', html)
         }
         notifyApiChange(api, users) {
             const html = `
