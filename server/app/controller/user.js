@@ -28,6 +28,8 @@ module.exports = app => {
             }
             const key = 'password_' + user._id
             const correctCode = this.service.cache.get(key)
+            this.ctx.logger.info('correctCode', correctCode)
+            this.ctx.logger.info('verifyCode', verifyCode)
             if (correctCode !== verifyCode) {
                 this.error('验证码错误')
             }
