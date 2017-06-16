@@ -1,34 +1,30 @@
-const CACHE_NAME = 'ApiMocker'
+const LRU = require("lru-cache")
 const DEFAULT_MAX_AGE = 1 * 1000 * 60
-
-const ShareCache = require('node-shared-cache')
-const Cache = new ShareCache.Cache(CACHE_NAME, 557056)
-ShareCache.release(CACHE_NAME)
+const options = {
+  max: 500,
+  // length: function (n, key) { return n * 2 + key.length },
+  // dispose: function (key, n) { n.close() },
+  maxAge: DEFAULT_MAX_AGE
+}
+const Cache = LRU(options)
 
 module.exports = app => {
     class CacheService extends app.Service {
-        create (key, value, maxAge = DEFAULT_MAX_AGE) {
-          return Cache.key = {
-            value,
-            expires: new Date(+ new Date() + maxAge).toString()
-          }
+        create (key, value, maxAge = DEFAULT_MAX_AGE ) {
+          return Cache.set(key, value, maxAge)
         }
-        verifyCodeCache (key, length, maxAge = DEFAULT_MAX_AGE) {
+        verifyCodeCache (key, length, maxAge = DEFAULT_MAX_AGE ) {
           const code = Array.from({length}, () => Math.ceil(Math.random() * 9)).join('')
-          return this.create(key, code) && code
-        }
-        isExpires(key) {
-          return new Date(Cache.key.expires) < new Date()
+          return this.create(key, code, maxAge) && code
         }
         get (key) {
-          return this.has(key) ? Cache.key.value : undefined
+          return Cache.get(key)
         }
         del (key) {
-          return delete Cache.key
+          return Cache.del(key)
         }
         has (key) {
-          const cache = Cache.key
-          return cache !== undefined && new Date(cache.expires) >= new Date()
+          return Cache.has(key)
         }
     }
     return CacheService;
