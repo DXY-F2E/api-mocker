@@ -9,7 +9,7 @@ const options = {
 const Cache = LRU(options)
 
 module.exports = app => {
-    class CacheService extends app.Service {
+    class LruCacheService extends app.Service {
         create (key, value, maxAge = DEFAULT_MAX_AGE ) {
           return Cache.set(key, value, maxAge)
         }
@@ -27,5 +27,5 @@ module.exports = app => {
           return Cache.has(key)
         }
     }
-    return CacheService;
+    return LruCacheService;
 };
