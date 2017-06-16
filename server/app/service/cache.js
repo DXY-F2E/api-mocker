@@ -18,7 +18,7 @@ module.exports = app => {
           return this.create(key, code, maxAge) && code
         }
         get (key) {
-          return Cache.get(key)
+          return Cache.peek(key)
         }
         del (key) {
           return Cache.del(key)
