@@ -23,6 +23,14 @@ module.exports = app => {
             `
             return this.sent(user.email, 'Api Mocker 找回密码', html)
         }
+        passwordTicket(ticket, user) {
+            const html = `
+                <strong>找回密码</strong>
+                <p>账户名：${user.name}</p>
+                <p>链接：${app.config.clientRoot}/#/reset-pass?ticket=${ticket}</p>
+            `
+            return this.sent(user.email, 'Api Mocker 找回密码', html)
+        }
         notifyApiChange(api, users) {
             const html = `
                 <strong>API：${api.name}</strong>

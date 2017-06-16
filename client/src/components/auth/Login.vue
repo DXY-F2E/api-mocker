@@ -10,7 +10,7 @@
         </el-form-item>
         <el-form-item class="control">
             <el-button type="primary" @click="validate">登录</el-button>
-            <router-link class="reset-pass" to="reset-pass">找回密码</router-link>
+            <router-link class="reset-pass" to="find-pass">找回密码</router-link>
             <router-link class="register" to="register">--> 注册</router-link>
         </el-form-item>
     </el-form>

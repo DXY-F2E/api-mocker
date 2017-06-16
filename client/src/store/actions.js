@@ -223,6 +223,9 @@ const actions = {
     sendResetPassCode({ state }, email) {
         return axios.post(`${API.USER}/recovery/password/code`, {email});
     },
+    sendResetPassTicket({ state }, email) {
+        return axios.post(`${API.USER}/recovery/password/ticket`, {email});
+    },
     resetPass({ state }, resetForm) {
         window.console.log(resetForm);
         return axios.put(`${API.USER}/recovery/password`, resetForm);

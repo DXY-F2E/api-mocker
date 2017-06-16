@@ -5,12 +5,12 @@
         <el-form-item prop="email">
           <el-input placeholder="email" v-model="resetForm.email" ></el-input>
         </el-form-item>
-        <el-form-item prop="verifyCode">
+        <!-- <el-form-item prop="verifyCode">
           <el-row type="flex">
               <el-input span="24" placeholder="code" v-model="resetForm.verifyCode" ></el-input>
               <el-button size="small" class="sent-code" @click="sentCode">{{codeText}}</el-button>
           </el-row>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item prop="password">
           <el-input type="password" placeholder="password" v-model="resetForm.password"></el-input>
         </el-form-item>
@@ -47,10 +47,10 @@ export default {
                     required: true,
                     trigger: 'blur'
                 }],
-                verifyCode: [{
-                    required: true,
-                    trigger: 'blur'
-                }],
+                // verifyCode: [{
+                //     required: true,
+                //     trigger: 'blur'
+                // }],
                 password: [{
                     required: true,
                     trigger: 'blur'
@@ -61,8 +61,9 @@ export default {
                 }]
             },
             resetForm: {
+                ticket: this.$route.query.ticket,
                 email: '',
-                verifyCode: '',
+                // verifyCode: '',
                 password: '',
                 verifyPassword: ''
             }

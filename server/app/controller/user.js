@@ -20,6 +20,36 @@ module.exports = app => {
                 this.error('发送验证码失败，请重试')
             }
         }
+        * sentResetPassTicket() {
+            const { email } = this.ctx.request.body
+            const user = yield this.service.user.getByEmail(email)
+            if (!user) {
+                this.error('此邮箱未注册')
+            }
+            const ticket = this.service.ticket.create(user._id, 'password')
+            const rs = yield this.service.email.passwordTicket(ticket, user)
+            if (rs && rs.messageId) {
+                this.success(true);
+            } else {
+                this.error('发送邮件失败，请重试')
+            }
+        }
+        * resetPasswordByTicket() {
+            const { email, password, ticket } = this.ctx.request.body
+            const user = yield this.service.user.getByEmail(email)
+            if (!user) {
+                this.error('此邮箱未注册')
+            }
+            const encode = this.service.ticket.check(ticket, 'password', user._id.toString(), user.modifiedTime)
+            if (!encode.success) {
+                this.error(encode.msg)
+            }
+            const rs = yield this.service.user.updatePassword(email, password)
+            if (!rs) {
+                this.error('修改失败', 500)
+            }
+            this.success(true)
+        }
         * resetPassword() {
             const { email, password, verifyCode } = this.ctx.request.body
             const user = yield this.service.user.getByEmail(email)
