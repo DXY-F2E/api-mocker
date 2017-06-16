@@ -119,6 +119,7 @@ export default {
                     return;
                 }
                 this.sendResetPassCode(this.resetForm.email).then(() => {
+                    this.$message.info('发送验证码成功，请注意查收邮件');
                     this.countDown();
                 }).catch(err => this.$message.error(`发送失败：${err.msg}`));
             });
