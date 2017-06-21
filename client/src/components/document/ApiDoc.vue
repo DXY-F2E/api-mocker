@@ -213,6 +213,10 @@ export default {
     position: relative;
     margin-bottom: 10px;
     max-width: 750px;
+
+    .code {
+        word-break: break-all;
+    }
 }
 .api-doc .field.url label {
     position: absolute;
