@@ -39,13 +39,13 @@ export default {
 }
 .doc-params .doc-params {
     /*margin-left: -20px;*/
-    /*padding-left: 20px;*/
+    padding-left: 20px;
 }
 .doc-params .doc-params .el-col.key {
     /*text-indent: 20px;*/
 }
 .doc-params .doc-params:before {
-    /*content: '';*/
+    content: '';
     position: absolute;
     width: 1px;
     left: 20px;

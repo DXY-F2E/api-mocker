@@ -1,12 +1,14 @@
 <template>
     <div class="doc-param" v-if="param.key">
         <el-row type="flex">
-            <em class="split-line" :style="splitStyle"></em>
+            <!-- <em class="split-line" :style="splitStyle"></em> -->
             <el-col class="key" :style="keyStyle">{{param.key}}</el-col>
-            <el-col class="type">{{param.type}}<code class="array-type" v-if="param.type === 'array'">[{{param.items.type}}]</code></el-col>
-            <el-col class="required">{{param.required ? '是' : '否'}}</el-col>
-            <el-col class="comment">{{param.comment ? param.comment : '无'}}</el-col>
-            <el-col class="example">{{param.example ? param.example : '无'}}</el-col>
+            <div class="row-and-col">
+                <el-col class="type">{{param.type}}<code class="array-type" v-if="param.type === 'array'">[{{param.items.type}}]</code></el-col>
+                <el-col class="required">{{param.required ? '是' : '否'}}</el-col>
+                <el-col class="comment">{{param.comment ? param.comment : '无'}}</el-col>
+                <el-col class="example">{{param.example ? param.example : '无'}}</el-col>
+            </div>
         </el-row>
         <slot name="params"></slot>
     </div>
@@ -19,6 +21,7 @@ export default {
     data() {
         return {
             keyStyle: {
+                marginLeft: `-${this.level * 20}px`,
                 textIndent: `${this.level * 20}px`
             },
             splitStyle: {
