@@ -10,7 +10,7 @@
             </el-row>
         </div>
         <div class="bd">
-            <params :params="params"></params>
+            <params :params="params" :level="0"></params>
         </div>
     </div>
 </template>
@@ -30,7 +30,6 @@ export default {
     border: 1px solid #e6e6e6;
     border-radius: 3px;
     overflow: hidden;
-    max-width: 917px;
 }
 .params-table .hd {
     background-color: #f8f8f8;
@@ -52,8 +51,8 @@ export default {
 }
 .params-table .comment,
 .params-table .example {
-    min-width: 200px;
-    max-width: 200px;
+    /*min-width: 200px;
+    max-width: 200px;*/
     word-break: break-all;
 }
 .params-table .required,

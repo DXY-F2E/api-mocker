@@ -1,12 +1,14 @@
 <template>
     <div class="doc-params">
-        <doc-param v-for="(param, key) in params" :key="key" :param="param">
+        <doc-param v-for="(param, key) in params" :key="key" :param="param" :level="level">
             <params v-if="param.type === 'object' && param.params"
                         :params="param.params"
+                        :level="nextLevel"
                         slot="params">
             </params>
             <params v-if="param.type === 'array' && param.items.type === 'object'"
                     :params="param.items.params"
+                    :level="nextLevel"
                     slot="params"></params>
         </doc-param>
     </div>
@@ -19,7 +21,12 @@ export default {
     components: {
         DocParam
     },
-    props: ['params']
+    computed: {
+        nextLevel() {
+            return this.level + 1;
+        }
+    },
+    props: ['params', 'level']
 };
 </script>
 <style type="text/css">
@@ -31,10 +38,14 @@ export default {
     z-index: 0;
 }
 .doc-params .doc-params {
-    padding-left: 20px;
+    /*margin-left: -20px;*/
+    /*padding-left: 20px;*/
+}
+.doc-params .doc-params .el-col.key {
+    /*text-indent: 20px;*/
 }
 .doc-params .doc-params:before {
-    content: '';
+    /*content: '';*/
     position: absolute;
     width: 1px;
     left: 20px;

@@ -91,6 +91,9 @@ const mutations = {
     },
     UPDATE_PREVIEW_APIS(state, data) {
         state.previewApis = data;
+    },
+    UPDATE_WINDOW_WIDTH(state, width) {
+        state.windowWidth = width;
     }
 };
 export default mutations;

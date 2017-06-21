@@ -14,9 +14,27 @@ export default {
     computed: {
         user() {
             return this.$store.state.user;
+        },
+        windowWidth: {
+            get() {
+                return this.$store.state.windowWidth;
+            },
+            set(value) {
+                this.$store.commit('UPDATE_WINDOW_WIDTH', value);
+            }
         }
     },
+    methods: {
+        windowResize() {
+            this.windowWidth = document.body.clientWidth;
+        }
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.windowResize);
+    },
     mounted() {
+        this.windowWidth = document.body.clientWidth;
+        window.addEventListener('resize', this.windowResize);
         this.$store.dispatch('getUser').then(() => {
             this.$store.dispatch('getGroups');
         });
