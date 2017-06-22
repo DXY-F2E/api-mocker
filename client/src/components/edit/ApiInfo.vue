@@ -1,5 +1,5 @@
 <template>
-    <div class="api-info el-col">
+    <div class="api-info el-col" v-side-bar>
         <el-form>
             <el-form-item label="接口名称" class="required">
                 <el-input auto-complete="off" v-model="name"></el-input>

@@ -44,6 +44,7 @@ export default {
                 toolbar: this.toolbar
             });
             this.editor.setValue(this.value);
+            window.setTimeout(() => this.editor.blur());
             this.editor.on('valuechanged', () => {
                 this.$emit('change', this.editor.getValue());
             });
