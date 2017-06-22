@@ -108,6 +108,13 @@ function validateApi(state) {
     });
 }
 
+function debounce(fun, interval) {
+    let timer = -1;
+    return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fun.apply(this, args), interval);
+    };
+}
 export {
     buildExampleFormSchema,
     buildSchemaFormExample,
@@ -116,5 +123,6 @@ export {
     isEmpty,
     clone,
     getDomain,
-    catchError
+    catchError,
+    debounce
 };
