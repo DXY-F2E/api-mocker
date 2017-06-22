@@ -212,7 +212,7 @@ export default {
     padding-left: 70px;
     position: relative;
     margin-bottom: 10px;
-    max-width: 750px;
+    /*max-width: 750px;*/
 
     .code {
         word-break: break-all;
