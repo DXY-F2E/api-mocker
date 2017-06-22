@@ -65,10 +65,12 @@ export default {
     &.key {
         flex: 2;
     }
-    &.comment,
+    &.comment {
+        min-width: 220px;
+        max-width: 220px;
+    }
     &.example {
-        min-width: 130px;
-        max-width: 50%;
+        width: 100%;
     }
     &.type {
         min-width: 130px;
