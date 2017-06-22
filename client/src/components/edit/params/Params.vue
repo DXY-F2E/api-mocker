@@ -26,6 +26,7 @@
 
 <script>
 import ApiParam from './Param';
+import { debounce } from '../../../util';
 export default {
     name: 'params',
     components: {
@@ -45,6 +46,11 @@ export default {
             required: false
         }
     },
+    data() {
+        return {
+            lazyChange: debounce(this.change, 300)
+        };
+    },
     methods: {
         change() {
             this.$emit('change', this.params);
@@ -55,7 +61,7 @@ export default {
             } else {
                 this.$set(this.params[idx], 'params', data);
             }
-            this.change();
+            this.lazyChange();
         },
         addParam(idx) {
             const param = {
@@ -64,14 +70,14 @@ export default {
                 required: true
             };
             this.params.splice(idx + 1, 0, param);
-            this.change();
+            this.lazyChange();
         },
         deleteParam(idx) {
             if (this.params.length === 1) {
                 return;
             }
             this.params.splice(idx, 1);
-            this.change();
+            this.lazyChange();
         }
     }
 };
