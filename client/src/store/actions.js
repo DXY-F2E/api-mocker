@@ -117,9 +117,18 @@ const actions = {
             throw err;
         });
     },
-    createApis({ state }, payload) {
+    createApis({ state, commit }, payload) {
         const { apis, groupId } = payload;
-        return axios.post(API.API.replace(':groupId', groupId).replace(':apiId', 'batch'), apis);
+        return axios.post(API.API.replace(':groupId', groupId).replace(':apiId', 'batch'), apis).then(res => {
+            if (res.data.apis.length > 0) {
+                res.data.apis = res.data.apis.map(a => {
+                    a.manager = state.user;
+                    return a;
+                });
+                commit('INSERT_APIS', res.data.apis);
+            }
+            return res;
+        });
     },
     updateApi({ state, commit }) {
         const api = state.api;

@@ -7,6 +7,13 @@ module.exports = app => {
             })
         }
         createApis (apis) {
+            const authId = this.ctx.authUser._id
+            apis = apis.map(api => {
+                api.creator = authId
+                api.manager = authId
+                api.follower = [authId]
+                return api
+            })
             return app.model.api.insertMany(apis)
         }
         create (api) {
