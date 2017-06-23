@@ -37,6 +37,7 @@ export default {
             this.loading = false;
         },
         initApi() {
+            this.$store.commit('CHANGE_MODE', 'edit');
             this.beginLoading();
             if (this.$route.name === 'Create') {
                 this.$store.commit('INIT_API', this.$route.query.groupId);
@@ -50,10 +51,6 @@ export default {
                     this.endLoading();
                 });
             }
-            this.$store.commit('CHANGE_MODE', 'edit');
-            window.setTimeout(() => {
-                this.$store.commit('SAVE_API');
-            });
         }
     },
     computed: mapState(['api', 'mode', 'apiUnsaved']),
