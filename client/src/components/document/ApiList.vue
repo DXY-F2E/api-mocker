@@ -53,13 +53,14 @@ export default {
 .apis.AllDoc {
     width: 100%;
     padding: 30px;
+    display: block !important;
 }
 .apis.AllDoc .group {
     display: inline-block;
     margin: 20px;
 }
 .apis {
-    transition: all 0.4s ease;
+    transition: width 0.4s ease;
     width: 288px;
     min-width: 288px;
     background-color: #f8f8f8;
