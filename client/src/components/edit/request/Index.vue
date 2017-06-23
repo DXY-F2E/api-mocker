@@ -59,23 +59,23 @@ export default {
         updateParams(data) {
             if (this.activeType === 'headers') {
                 this.$store.commit('UPDATE_API_PROPS',
-                                   ['options.headers', R.clone(data)]);
+                                   ['options.headers', data]);
                 return;
             }
             const key = `options.params.${this.activeType}`;
             this.$store.commit('UPDATE_API_PROPS',
-                               [key, R.clone(data.params)]);
+                               [key, data.params]);
             const exampleKey = `options.examples.${this.activeType}`;
             this.$store.commit('UPDATE_API_PROPS',
-                               [exampleKey, R.clone(data.example)]);
+                               [exampleKey, data.example]);
         },
         changeSchema(type) {
             this.activeType = type;
         },
         getSchemaObject(key) {
             return {
-                example: R.clone(this.examples[key]),
-                params: R.clone(this.params[key])
+                example: this.examples[key],
+                params: this.params[key]
             };
         }
     },
@@ -99,10 +99,10 @@ export default {
             return this.$store.state.api.options.headers;
         },
         params() {
-            return this.$store.state.api.options.params;
+            return R.clone(this.$store.state.api.options.params);
         },
         examples() {
-            return this.$store.state.api.options.examples;
+            return R.clone(this.$store.state.api.options.examples);
         },
         localParams() {
             const localParams = {};

@@ -70,14 +70,14 @@ export default {
                 required: true
             };
             this.params.splice(idx + 1, 0, param);
-            this.lazyChange();
+            this.change();
         },
         deleteParam(idx) {
             if (this.params.length === 1) {
                 return;
             }
             this.params.splice(idx, 1);
-            this.lazyChange();
+            this.change();
         }
     }
 };
