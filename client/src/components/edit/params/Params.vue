@@ -4,7 +4,7 @@
                    :param="param"
                    :name="name"
                    :level="level"
-                   v-for="(param, idx) in params" :key="param.key"
+                   v-for="(param, idx) in params" :key="idx"
                    @change="(data) => update(data, idx)"
                    @addParam="() => addParam(idx)"
                    @deleteParam="() => deleteParam(idx)">
@@ -47,6 +47,7 @@ export default {
     },
     methods: {
         isNext(param) {
+            window.console.log(param);
             return param.type === 'object' || (param.type === 'array' && param.items.type === 'object');
         },
         nextParams(param) {
