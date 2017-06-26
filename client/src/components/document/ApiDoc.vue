@@ -118,7 +118,7 @@ export default {
         },
         schemaParams() {
             const schemas = {};
-            for (const key in this.params) {
+            for (const key in this.api.options.params) {
                 schemas[key] = {
                     example: this.api.options.examples[key],
                     params: this.api.options.params[key]
