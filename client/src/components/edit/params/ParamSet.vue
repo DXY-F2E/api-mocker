@@ -2,7 +2,7 @@
     <div class="param set" :class="name">
         <el-row type="flex" class="row-bg" >
             <el-col class="key">
-                <el-input placeholder="key" v-model="param.key" @change="update"></el-input>
+                <el-input placeholder="key" v-model="param.key" @change="lazyUpdate"></el-input>
             </el-col>
             <el-col class="config">
                 <el-cascader
@@ -15,16 +15,17 @@
                 <el-checkbox v-model="param.required" @change="update">必填</el-checkbox>
             </el-col>
             <el-col class="comment">
-                <el-input placeholder="备注" v-model="param.comment" @change="update"></el-input>
+                <el-input placeholder="备注" v-model="param.comment" @change="lazyUpdate"></el-input>
             </el-col>
             <el-col class="example">
-                <el-input placeholder="example" v-model="example" @change="update"></el-input>
+                <el-input placeholder="example" v-model="example" @change="lazyUpdate"></el-input>
             </el-col>
         </el-row>
     </div>
 </template>
 
 <script>
+import { debounce } from '../../../util';
 export default {
     props: {
         param: {
@@ -66,10 +67,14 @@ export default {
     },
     data() {
         return {
-            selectedOptions: []
+            selectedOptions: [],
+            lazyUpdate: debounce(this.update, 300)
         };
     },
     methods: {
+        lazy(fn) {
+            return debounce(fn, 300);
+        },
         changeParamType(val) {
             this.$set(this.param, 'type', val[0]);
             if (val[0] === 'object') {

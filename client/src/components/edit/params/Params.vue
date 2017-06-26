@@ -20,7 +20,6 @@
 
 <script>
 import ApiParam from './Param';
-import { debounce } from '../../../util';
 export default {
     name: 'params',
     components: {
@@ -40,14 +39,8 @@ export default {
             required: false
         }
     },
-    data() {
-        return {
-            lazyChange: debounce(this.change, 300)
-        };
-    },
     methods: {
         isNext(param) {
-            window.console.log(param);
             return param.type === 'object' || (param.type === 'array' && param.items.type === 'object');
         },
         nextParams(param) {
@@ -62,7 +55,7 @@ export default {
             } else {
                 this.$set(this.params[idx], 'params', data);
             }
-            this.lazyChange();
+            this.change();
         },
         addParam(idx) {
             const param = {
