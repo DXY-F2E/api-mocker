@@ -104,7 +104,8 @@ module.exports = app => {
                     if (!param.key) return
                     rule[param.key] = {
                         type: param.type === 'number' ? 'checkNumber': param.type,
-                        required: param.required
+                        required: param.required,
+                        allowEmpty: param.type === 'string' ? true: false
                     }
                 })
             }
