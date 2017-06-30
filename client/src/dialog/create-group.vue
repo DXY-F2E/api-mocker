@@ -1,6 +1,6 @@
 <template>
     <el-dialog title="创建Group" v-model="visited" :show-close="false">
-        <el-form>
+        <el-form v-stop-default-enter>
             <el-input v-model="input" placeholder="输入分组名称"></el-input>
         </el-form>
         <div class="dialog-footer" slot="footer">

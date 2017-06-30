@@ -1,6 +1,6 @@
 <template>
 <div class="login-box reset-password">
-    <el-form label-position="left" :model="findForm" :rules="resetRules" ref="findForm">
+    <el-form label-position="left" :model="findForm" :rules="resetRules" ref="findForm" v-stop-default-enter>
         <p class="app-name">找回密码</p>
         <el-form-item prop="email">
           <el-input placeholder="email" v-model="findForm.email" ></el-input>
