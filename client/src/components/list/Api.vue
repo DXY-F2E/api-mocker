@@ -117,31 +117,41 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.card-box .clearfix {
-    height: 22px;
-    line-height: 22px;
-}
-.card-box .name {
-    width: 130px;
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.card-box .el-button-group {
-    float: right;
-    margin-right: -10px;
-    visibility: hidden;
-    cursor: pointer;
-
-    .material-icons {
-        font-size: 14px;
+.card-box {
+    .clearfix {
+        height: 22px;
+        line-height: 22px;
         position: relative;
-        top: -1px;
     }
-}
-.card-box:hover .el-button-group {
-    visibility: visible;
+    .name {
+        width: 100%;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .el-button-group {
+        position: absolute;
+        right: -10px;
+        top: 0;
+        visibility: hidden;
+        cursor: pointer;
+
+        .material-icons {
+            font-size: 14px;
+            position: relative;
+            top: -1px;
+        }
+    }
+
+    &:hover {
+        .name {
+            width: 130px;
+        }
+        .el-button-group {
+            visibility: visible;
+        }
+    }
 }
 .card-box .el-button-group .el-button:focus,
 .card-box .el-button-group button {
