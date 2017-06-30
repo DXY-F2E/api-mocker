@@ -3,11 +3,11 @@
         <div class="control">Status</div>
         <ul>
             <li class="item"
-                :class="[r.status.toString(), {active: activeIndex === key}]"
+                :class="[(r ? r.status : 0).toString(), {active: activeIndex === key}]"
                 v-for="(r, key) in response"
                 :key="key"
                 @click="changeSchema(key)">
-                <span>
+                <span v-if="r">
                     <em class="code">{{r.status}}</em>
                     <em class="text">[{{r.statusText}}]</em>
                 </span>

@@ -8,14 +8,8 @@
                    @change="(data) => update(data, idx)"
                    @addParam="() => addParam(idx)"
                    @deleteParam="() => deleteParam(idx)">
-            <params v-if="param.type === 'object' && param.params"
-                    :params="param.params"
-                    :name="name"
-                    slot="params"
-                    :level="level + 1"
-                    @change="(data) => update(data, idx)"></params>
-            <params v-if="param.type === 'array' && param.items.type === 'object'"
-                    :params="param.items.params"
+            <params v-if="isNext(param)"
+                    :params="nextParams(param)"
                     :name="name"
                     slot="params"
                     :level="level + 1"
@@ -46,6 +40,12 @@ export default {
         }
     },
     methods: {
+        isNext(param) {
+            return param.type === 'object' || (param.type === 'array' && param.items.type === 'object');
+        },
+        nextParams(param) {
+            return param.type === 'object' ? param.params : param.items.params;
+        },
         change() {
             this.$emit('change', this.params);
         },

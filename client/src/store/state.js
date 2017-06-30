@@ -31,7 +31,8 @@ const state = {
     dslStatus: {
         success: true,
         msg: ''
-    }
+    },
+    windowWidth: 0
 };
 
 export default state;

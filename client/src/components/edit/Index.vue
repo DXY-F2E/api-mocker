@@ -1,6 +1,6 @@
 <template>
   <div class="content" :class="mode">
-    <el-row type="flex" class="list-content" v-if="!loading">
+    <el-row type="flex" class="list-content" v-if="!loading && !loadingFail">
         <api-info></api-info>
         <api-box></api-box>
     </el-row>
@@ -21,7 +21,8 @@ export default {
     },
     data() {
         return {
-            loading: true
+            loading: true,
+            loadingFail: false
             // loadingService: Loading.service({target: this.$el});,
         };
     },
@@ -36,6 +37,7 @@ export default {
             this.loading = false;
         },
         initApi() {
+            this.$store.commit('CHANGE_MODE', 'edit');
             this.beginLoading();
             if (this.$route.name === 'Create') {
                 this.$store.commit('INIT_API', this.$route.query.groupId);
@@ -44,14 +46,11 @@ export default {
                 this.getApi(this.$route.params).then(() => {
                     this.endLoading();
                 }).catch(err => {
-                    this.$message.error(`获取数据失败:${err.response.data.message}`);
+                    this.$message.error(`获取数据失败:${err.msg}`);
+                    this.loadingFail = true;
                     this.endLoading();
                 });
             }
-            this.$store.commit('CHANGE_MODE', 'edit');
-            window.setTimeout(() => {
-                this.$store.commit('SAVE_API');
-            });
         }
     },
     computed: mapState(['api', 'mode', 'apiUnsaved']),
@@ -75,8 +74,3 @@ export default {
     }
 };
 </script>
-<style scoped>
-.content {
-    position: absolute !important;
-}
-</style>

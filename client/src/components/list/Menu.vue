@@ -64,9 +64,7 @@ export default {
         handleClickCreateGroup(groupName) {
             this.$store.dispatch('createGroup', { name: groupName}).then(() => {
                 this.showCreateDialog = false;
-            }).catch((e) => {
-                window.console.log('error', e);
-            });
+            }).catch(e => this.$message.error(e.msg));
         },
         handleClickClose() {
             this.showCreateDialog = false;

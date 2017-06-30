@@ -54,10 +54,7 @@ module.exports = app =>{
             const { id } = this.ctx.params
             const rs2 = yield this.service.group.delete(id)
             if (!rs2) {
-                this.error({
-                    code: 403,
-                    msg: '无权删除'
-                });
+                this.error('无权删除');
             }
             // 不是很合理，应该是要先删除api再删除分组，但api这里没法做权限，所以暂时先后执行
             yield this.service.api.deleteGroupApis(id)

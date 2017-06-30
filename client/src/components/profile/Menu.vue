@@ -19,21 +19,11 @@ export default {
     },
     methods: {
         logout() {
-            this.$store.dispatch('logout').then(rs => {
-                if (rs.data.success) {
-                    this.$router.push({
-                        name: 'Login'
-                    });
-                } else {
-                    this.$message.error(`注销失败：${rs.data.msg}`);
-                }
-            }).catch(err => {
-                if (err.response) {
-                    this.$message.error(`注销失败：${err.response.data.message}`);
-                } else {
-                    this.$message.error(`注销失败：${err}`);
-                }
-            });
+            this.$store.dispatch('logout').then(() => {
+                this.$router.push({
+                    name: 'Login'
+                });
+            }).catch(err => this.$message.error(`注销失败：${err.msg}`));
         }
     },
     computed: {

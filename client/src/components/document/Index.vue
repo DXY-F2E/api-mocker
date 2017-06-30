@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <el-row type="flex" class="list-content">
-        <api-list :apis="apis"></api-list>
+        <api-list :apis="apis" v-side-bar></api-list>
         <router-view :apis="apis" v-if="apis.length"></router-view>
     </el-row>
   </div>

@@ -61,6 +61,7 @@ import Schema from './Schema';
 import MockData from './MockData';
 import CopyButton from '../common/CopyButton';
 import { mapActions } from 'vuex';
+import 'simditor/styles/simditor.css';
 export default {
     components: {
         CopyButton,
@@ -115,33 +116,18 @@ export default {
         method() {
             return this.api.options.method.toUpperCase();
         },
-        examples() {
-            return this.api.options.examples;
-        },
         schemaParams() {
             const schemas = {};
-            for (const key in this.params) {
+            for (const key in this.api.options.params) {
                 schemas[key] = {
-                    example: this.examples[key],
-                    params: this.params[key]
+                    example: this.api.options.examples[key],
+                    params: this.api.options.params[key]
                 };
             }
             return schemas;
         },
-        params() {
-            return this.api.options.params;
-        },
         headers() {
             return this.api.options.headers;
-        },
-        body() {
-            return this.api.options.params.body;
-        },
-        path() {
-            return this.api.options.params.path;
-        },
-        query() {
-            return this.api.options.params.query;
         }
     }
 };
@@ -212,7 +198,11 @@ export default {
     padding-left: 70px;
     position: relative;
     margin-bottom: 10px;
-    max-width: 750px;
+    /*max-width: 750px;*/
+
+    .code {
+        word-break: break-all;
+    }
 }
 .api-doc .field.url label {
     position: absolute;

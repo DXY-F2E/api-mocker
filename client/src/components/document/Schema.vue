@@ -40,7 +40,7 @@ export default {
 <style>
 .doc-schema {
     margin-bottom: 30px;
-    max-width: 917px;
+    /*max-width: 917px;*/
 }
 .doc-schema .title {
     font-size: 14px;

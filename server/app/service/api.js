@@ -7,6 +7,13 @@ module.exports = app => {
             })
         }
         createApis (apis) {
+            const authId = this.ctx.authUser._id
+            apis = apis.map(api => {
+                api.creator = authId
+                api.manager = authId
+                api.follower = [authId]
+                return api
+            })
             return app.model.api.insertMany(apis)
         }
         create (api) {
@@ -53,9 +60,9 @@ module.exports = app => {
             }
             return this.getList(cond)
         }
-        * geiRichList (cond, page, limit) {
+        * getRichList (cond, page, limit) {
             const apis = (yield this.getList(cond, page, limit)).map(a => a.toObject())
-            const userIds = apis.reduce((acc, a) => a.manager ? acc.concat(a.manager) : acc, [])
+            const userIds = apis.filter(a => a.manager).map(a => a.manager)
             const users = yield this.service.user.getByIds(userIds)
             const usersMap = {}
             users.forEach(u => usersMap[u._id] = u)

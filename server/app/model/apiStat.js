@@ -1,3 +1,4 @@
+const moment = require('moment')
 module.exports = mongoose => {
     const { ObjectId } = mongoose.Schema.Types
     const ApiStatSchema = mongoose.Schema({
@@ -14,6 +15,10 @@ module.exports = mongoose => {
             msg: String
         },
         user: ObjectId,
+        createDay: {
+            type: String,
+            default: () => moment().format('YYYY-MM-DD')
+        },
         createTime: {
             type: Date,
             default: Date.now

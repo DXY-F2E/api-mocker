@@ -3,11 +3,19 @@ import config from '../config';
 function getDomain() {
     const protocol = window.location.href.indexOf('https') === 0 ? 'https://' : 'http://';
     return protocol + (process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax);
-    // if (process.env.NODE_ENV === 'development') {
-    //     return `http://${config.dev.ajax}`;
-    // } else {
-    //     return `https://${config.build.ajax}`;
-    // }
+}
+function catchError(err) {
+    if (err.response && err.response.status === 401) {
+        window.location.href = '#/login';
+    }
+    // console.log(err.response);
+    // throw err;
+    return Promise.reject({
+        response: err.response,
+        statusCode: err.response.status,
+        statusText: err.response.statusText,
+        msg: err.response.data.message
+    });
 }
 function isEmpty(val) {
     return !val || val.trim() === '';
@@ -15,26 +23,35 @@ function isEmpty(val) {
 function clone(val) {
     return JSON.parse(JSON.stringify(val));
 }
-function buildParams(json) {
+function findParam(params, key) {
+    if (!params || !params.length) {
+        return null;
+    }
+    return params.find(p => p.key === key);
+}
+function buildParams(json, params) {
     const schema = [];
     for (const key in json) {
         const type = typeof json[key];
-        const param = {
+        const oldParam = findParam(params, key);
+        const param = oldParam || {
             key,
-            type,
             required: true,
             comment: null
         };
+        param.type = type;
         if (type === 'object' && json[key] instanceof Array) {
             param.type = 'array';
             param.items = {
                 type: typeof json[key][0]
             };
             if (param.items.type === 'object') {
-                param.items.params = buildParams(json[key][0]);
+                param.items.params = buildParams(json[key][0], oldParam && oldParam.items && oldParam.items.params);
+            } else {
+                param.example = json[key];
             }
         } else if (type === 'object') {
-            param.params = buildParams(json[key]);
+            param.params = buildParams(json[key], oldParam && oldParam.params);
         } else {
             param.example = json[key];
         }
@@ -42,14 +59,14 @@ function buildParams(json) {
     }
     return schema;
 }
-function buildSchemaFormExample(json, statusText = 'status1', status = 200) {
+function buildSchemaFormExample(json, params = null, statusText = 'status1', status = 200) {
     const schema = {
         status,
         statusText,
         example: json,
         params: []
     };
-    schema.params = buildParams(json);
+    schema.params = buildParams(json, params);
     return schema;
 }
 function buildApiResponse(api) {
@@ -73,11 +90,6 @@ function validateApi(state) {
             success: false,
             msg: '接口分组不能为空'
         };
-    } else if (isEmpty(api.prodUrl)) {
-        rs = {
-            success: false,
-            msg: '线上地址不能为空'
-        };
     } else if (!state.dslStatus.success) {
         rs = state.dslStatus;
     } else {
@@ -96,6 +108,13 @@ function validateApi(state) {
     });
 }
 
+function debounce(fun, interval) {
+    let timer = -1;
+    return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fun.apply(this, args), interval);
+    };
+}
 export {
     buildExampleFormSchema,
     buildSchemaFormExample,
@@ -103,5 +122,7 @@ export {
     validateApi,
     isEmpty,
     clone,
-    getDomain
+    getDomain,
+    catchError,
+    debounce
 };

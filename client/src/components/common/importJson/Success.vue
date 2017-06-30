@@ -71,7 +71,6 @@ export default {
             }).then(rs => {
                 if (rs.data.apis.length > 0) {
                     this.$message.success('保存成功');
-                    this.$store.commit('INSERT_APIS', rs.data.apis);
                     this.dialogVisible = false;
                 } else {
                     this.$message.success('保存失败');

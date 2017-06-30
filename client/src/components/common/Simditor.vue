@@ -44,8 +44,11 @@ export default {
                 toolbar: this.toolbar
             });
             this.editor.setValue(this.value);
+            window.setTimeout(() => this.editor.blur());
             this.editor.on('valuechanged', () => {
-                this.$emit('change', this.editor.getValue());
+                if (this.editor.getValue() !== this.value) {
+                    this.$emit('change', this.editor.getValue());
+                }
             });
         }
     },

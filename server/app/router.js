@@ -22,6 +22,9 @@ module.exports = app => {
 
     app.get('/server/history/api/:apiId', 'history.getApi')
 
+    // stat
+    app.get('/server/stat/mock', 'stat.mock')
+
     // mock data
     app.get('/client/:id', credentials, apiStat, 'client.show')
     app.post('/client/:id', credentials, apiStat, 'client.create')
@@ -30,10 +33,14 @@ module.exports = app => {
 
     app.post('/client/real', 'client.real')
 
+
     // user
     app.get('/auth/user', 'user.get')
     app.post('/auth/user/register', 'user.create')
     app.post('/auth/user/login', 'user.login')
     app.get('/auth/user/logout', 'user.logout')
+    app.post('/auth/user/recovery/password/ticket', 'user.sentResetPassTicket')
+    app.post('/auth/user/recovery/password/code', 'user.sentResetPassCode')
+    app.put('/auth/user/recovery/password', 'user.resetPasswordByTicket')
     app.put('/server/user', 'user.update')
 }

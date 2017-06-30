@@ -7,31 +7,32 @@ module.exports = app => {
     class ApiController extends app.Controller {
         * getAll () {
             const { groupId } = this.ctx.params
-            let { limit = 30, page = 1, order = false, q = '.*'} = this.ctx.query
+            let { limit = 30, page = 1, order = false, q = ''} = this.ctx.query
             page = Number(page)
             limit = Number(limit)
+            // 超过一个字符才会去匹配
+            q = (q && q.length >= 2) ? q : '';
             const reg = new RegExp(`.*${q}.*`, 'i')
             const condition = {
                 isDeleted: false,
                 "$or": [
                     {name: reg},
-                    {url: reg},
+                    // {url: reg},
+                    // {'options.method': reg},
                     {desc: reg},
-                    {prodUrl: reg},
-                    {'options.method': reg},
+                    {prodUrl: reg}
                 ]
             }
-            // 超过三个字符才会去匹配api创建者
-            const users = (q && q.length > 2) ? yield this.service.user.find(q) : []
+            const users = q ? yield this.service.user.find(q) : []
             if (users.length) {
                 condition.$or.push({
-                    creator: {
+                    manager: {
                         $in: users.map(u => u._id)
                     }
                 })
             }
             if (groupId) condition.group = groupId
-            const resources = yield this.service.api.geiRichList(condition, page, limit)
+            const resources = yield this.service.api.getRichList(condition, page, limit)
             const count = yield app.model.api.find(condition).count().exec()
             this.ctx.logger.info('getAll', this.ctx.query)
             this.ctx.body = { resources, pages: { limit, page, count}}

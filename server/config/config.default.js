@@ -1,7 +1,7 @@
 module.exports = appInfo => {
     const config = {
         mongoose: {
-            url: 'mongodb://localhost/api-mock'
+            url: 'mongodb://127.0.0.1/api-mock'
         },
         keys: `${appInfo.name}_1490324849354_6879`,
         md5Key: '52851cb05258c8d98da1672d95729e53',

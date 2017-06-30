@@ -1,15 +1,16 @@
 import axios from 'axios';
 import API from './api';
-import { validateApi, buildApiResponse, buildExampleFormSchema, getDomain } from '../util';
+import {
+    validateApi,
+    buildApiResponse,
+    buildExampleFormSchema,
+    getDomain,
+    catchError
+} from '../util';
 
 // 允许跨域请求带上cookie
 axios.defaults.withCredentials = true;
-axios.interceptors.response.use((response) => response, (err) => {
-    if (err.response && err.response.status === 401) {
-        window.location.href = '#/login';
-    }
-    throw err;
-});
+axios.interceptors.response.use((response) => response, catchError);
 
 const domain = getDomain();
 const buildTestParams = (api, type) => api.options.examples[type] || buildExampleFormSchema({
@@ -120,9 +121,18 @@ const actions = {
             throw err;
         });
     },
-    createApis({ state }, payload) {
+    createApis({ state, commit }, payload) {
         const { apis, groupId } = payload;
-        return axios.post(API.API.replace(':groupId', groupId).replace(':apiId', 'batch'), apis);
+        return axios.post(API.API.replace(':groupId', groupId).replace(':apiId', 'batch'), apis).then(res => {
+            if (res.data.apis.length > 0) {
+                res.data.apis = res.data.apis.map(a => {
+                    a.manager = state.user;
+                    return a;
+                });
+                commit('INSERT_APIS', res.data.apis);
+            }
+            return res;
+        });
     },
     updateApi({ state, commit }) {
         const api = state.api;
@@ -183,45 +193,35 @@ const actions = {
             if (err.response) {
                 commit('UPDATE_RESPONSE', err.response);
             }
-        }).catch(err => {
-            window.console.log(err);
-        });
+        }).catch(err => commit('UPDATE_RESPONSE', err));
     },
     getUser({ state, commit }) {
         return state.user || axios.get(API.USER).then(res => {
-            commit('SET_USER', res.data.data);
-            return res.data.data;
+            commit('SET_USER', res.data);
+            return res.data;
         });
     },
     register({ commit }, user) {
         return axios.post(`${API.USER}/register`, user).then(res => {
-            if (res.data.success) {
-                commit('SET_USER', res.data.data);
-            }
+            commit('SET_USER', res.data);
             return res;
         });
     },
     login({ commit }, user) {
         return axios.post(`${API.USER}/login`, user).then(res => {
-            if (res.data.success) {
-                commit('SET_USER', res.data.data);
-            }
+            commit('SET_USER', res.data);
             return res;
         });
     },
     logout({ commit }) {
         return axios.get(`${API.USER}/logout`).then(res => {
-            if (res.data.success) {
-                commit('SET_USER', null);
-            }
+            commit('SET_USER', null);
             return res;
         });
     },
     updateProfile({ state, commit }, user) {
         return axios.put(`${API.PROFILE}`, user).then(res => {
-            if (res.data.success) {
-                commit('SET_USER', res.data.data);
-            }
+            commit('SET_USER', res.data);
             return res;
         });
     },
@@ -230,6 +230,22 @@ const actions = {
     },
     unfollow({ state }, apiId) {
         return axios.delete(API.API_FOLLOWER.replace(':apiId', apiId));
+    },
+    sendResetPassCode({ state }, email) {
+        return axios.post(`${API.USER}/recovery/password/code`, {email});
+    },
+    sendResetPassTicket({ state }, email) {
+        return axios.post(`${API.USER}/recovery/password/ticket`, {email});
+    },
+    resetPass({ state }, resetForm) {
+        window.console.log(resetForm);
+        return axios.put(`${API.USER}/recovery/password`, resetForm);
+    },
+    // stat 相关
+    getMockStat({ state }, query) {
+        return axios.get(`${API.STAT}/mock`, {
+            params: query
+        });
     }
 };
 

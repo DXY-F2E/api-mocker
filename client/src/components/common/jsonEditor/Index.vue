@@ -52,7 +52,7 @@ export default {
             }
         },
         value: {
-            type: [Object, String]
+            type: null
         },
         name: {
             type: String,
