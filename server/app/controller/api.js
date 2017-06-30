@@ -7,25 +7,26 @@ module.exports = app => {
     class ApiController extends app.Controller {
         * getAll () {
             const { groupId } = this.ctx.params
-            let { limit = 30, page = 1, order = false, q = '.*'} = this.ctx.query
+            let { limit = 30, page = 1, order = false, q = ''} = this.ctx.query
             page = Number(page)
             limit = Number(limit)
+            // 超过一个字符才会去匹配
+            q = (q && q.length >= 2) ? q : '';
             const reg = new RegExp(`.*${q}.*`, 'i')
             const condition = {
                 isDeleted: false,
                 "$or": [
                     {name: reg},
-                    {url: reg},
+                    // {url: reg},
+                    // {'options.method': reg},
                     {desc: reg},
-                    {prodUrl: reg},
-                    {'options.method': reg},
+                    {prodUrl: reg}
                 ]
             }
-            // 超过三个字符才会去匹配api创建者
-            const users = (q && q.length > 2) ? yield this.service.user.find(q) : []
+            const users = q ? yield this.service.user.find(q) : []
             if (users.length) {
                 condition.$or.push({
-                    creator: {
+                    manager: {
                         $in: users.map(u => u._id)
                     }
                 })

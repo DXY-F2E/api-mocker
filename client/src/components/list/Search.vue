@@ -4,7 +4,8 @@
         :placeholder="placeholder"
         icon="search"
         :size="size"
-        @change="handleQuery"
+        @change="handleChange"
+        @keydown.enter.native="handleQuery"
         v-model="inputValue">
     </el-input>
 </template>
@@ -17,19 +18,21 @@ export default {
         },
         size: {
             type: String
-        },
-        value: {
-            type: String
         }
     },
     data() {
         return {
-            inputValue: this.value
+            inputValue: ''
         };
     },
     methods: {
-        handleQuery(val) {
-            this.$emit('query', val);
+        handleQuery() {
+            this.$emit('query', this.inputValue);
+        },
+        handleChange(val) {
+            if (val === '') {
+                this.handleQuery();
+            }
         }
     }
 };
