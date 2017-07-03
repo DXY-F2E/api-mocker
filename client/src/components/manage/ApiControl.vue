@@ -1,18 +1,29 @@
 <template>
 <div class="api-control">
+    <el-button type="text" size="small" @click="apiManage">权限</el-button>
     <el-button type="text" size="small" @click="apiEdit">编辑</el-button>
     <el-button type="text" size="small" @click="apiDoc">文档</el-button>
     <el-button type="text" size="small" @click="apiDelete">删除</el-button>
+    <api-authority :visible="showAuthority" @hide="showAuthority = false" :api="api"></api-authority>
 </div>
 </template>
 
 <script>
+import ApiAuthority from './ApiAuthority';
 export default {
+    components: {
+        ApiAuthority
+    },
     props: {
         api: {
             type: Object,
             required: true
         }
+    },
+    data() {
+        return {
+            showAuthority: false
+        };
     },
     methods: {
         confirmDelete() {
@@ -22,6 +33,10 @@ export default {
                 this.$message.success('删除成功');
                 this.$emit('delete', this.api);
             }).catch(err => this.$message.error(err.msg));
+        },
+        apiManage() {
+            this.showAuthority = true;
+            window.console.log(this.showAuthority);
         },
         apiDoc() {
             this.$router.push({

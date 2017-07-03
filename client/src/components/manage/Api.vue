@@ -19,7 +19,7 @@
         label="创建时间">
       </el-table-column>
       <el-table-column
-        width="160"
+        width="180"
         label="操作">
         <template scope="scope">
             <control :api="scope.row" @delete="apiDelete"></control>

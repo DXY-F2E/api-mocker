@@ -48,9 +48,8 @@ module.exports = app => {
             assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
 
             delete body._id
+            delete body.manager
 
-            // Hack方法。如果api没有管理员，那本次更新操作的人将成为管理员
-            if (!body.manager) body.manager = authId
             const resources = (yield this.service.api.update(apiId, body)).toObject() // 使用lean()方法会导致无法设定schema的默认值
             if (!resources) {
                 this.error({

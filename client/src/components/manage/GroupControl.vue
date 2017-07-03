@@ -1,8 +1,8 @@
 <template>
 <div class="api-control">
-    <el-button type="text" size="small" @click="groupClaim" v-if="mode ==='unmanaged'">认领</el-button>
+    <el-button type="text" size="small" @click="groupClaim" v-if="mode === 'unmanaged'">认领</el-button>
     <el-button type="text" size="small" @click="groupDoc">文档</el-button>
-    <el-button type="text" size="small" @click="groupDelete">删除</el-button>
+    <el-button type="text" size="small" @click="groupDelete" v-if="mode === 'managed'">删除</el-button>
 </div>
 </template>
 
