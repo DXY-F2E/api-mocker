@@ -1,3 +1,4 @@
+const pathToRegexp = require('path-to-regexp')
 module.exports = app => {
     const apiStat = app.middlewares.apiStat()
     const credentials = app.middlewares.credentials()
@@ -26,10 +27,12 @@ module.exports = app => {
     app.get('/server/stat/mock', 'stat.mock')
 
     // mock data
-    app.get('/client/:id', credentials, apiStat, 'client.show')
-    app.post('/client/:id', credentials, apiStat, 'client.create')
-    app.put('/client/:id', credentials, apiStat, 'client.put')
-    app.delete('/client/:id', credentials, apiStat, 'client.delete')
+    const mockUrl = pathToRegexp('/client/:id/:url*', [])
+    // const mockUrl = '/client/:id'
+    app.get(mockUrl, credentials, apiStat, 'client.show')
+    app.post(mockUrl, credentials, apiStat, 'client.create')
+    app.put(mockUrl, credentials, apiStat, 'client.put')
+    app.delete(mockUrl, credentials, apiStat, 'client.delete')
 
     app.post('/client/real', 'client.real')
 
