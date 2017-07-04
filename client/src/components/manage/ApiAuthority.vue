@@ -6,10 +6,11 @@
                 <el-radio :label="0">所有人</el-radio>
                 <el-radio :label="1">指定</el-radio>
             </el-radio-group>
-            <div class="operator">
-                <span v-for="o in authority.operation.operator" :key="o._id">{{o.name}}</span>
-                <input type="text" v-model="query" @change="searchUsers">
-            </div>
+            <input-finder class="operator"
+                          @enter="searchUsers"
+                          :selected-data="authority.operation.operator"
+                          :query-data="queryData">
+            </input-finder>
         </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -20,7 +21,11 @@
 </template>
 
 <script>
+import InputFinder from '../common/InputFinder';
 export default {
+    components: {
+        InputFinder
+    },
     props: {
         api: Object,
         visible: Boolean
@@ -28,6 +33,7 @@ export default {
     data() {
         return {
             query: '',
+            queryData: [],
             authority: null
         };
     },
@@ -37,14 +43,21 @@ export default {
         }
     },
     methods: {
-        searchUsers() {
-            this.$store.dispatch('searchUsers', this.query).then(rs => {
+        searchUsers(val) {
+            this.$store.dispatch('searchUsers', val).then(rs => {
                 window.console.log(rs);
             });
         },
         getApiAuthority() {
             this.$store.dispatch('getApiAuthority', this.api._id).then(rs => {
                 this.authority = rs.data;
+                this.authority.operation.operator = [{
+                    _id: 1,
+                    name: '相学长'
+                }, {
+                    _id: 2,
+                    name: '李权威'
+                }];
             });
         },
         cancel() {
