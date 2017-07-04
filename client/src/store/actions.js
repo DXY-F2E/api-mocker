@@ -199,6 +199,11 @@ const actions = {
             return res.data;
         });
     },
+    searchUsers(_, query) {
+        return axios.get(`${API.PROFILE}/search`, {
+            params: {query}
+        });
+    },
     register({ commit }, user) {
         return axios.post(`${API.USER}/register`, user).then(res => {
             commit('SET_USER', res.data);
@@ -236,7 +241,6 @@ const actions = {
         return axios.post(`${API.USER}/recovery/password/ticket`, {email});
     },
     resetPass({ state }, resetForm) {
-        window.console.log(resetForm);
         return axios.put(`${API.USER}/recovery/password`, resetForm);
     },
     // stat 相关
@@ -244,6 +248,13 @@ const actions = {
         return axios.get(`${API.STAT}/mock`, {
             params: query
         });
+    },
+    // 权限相关
+    getApiAuthority({ state }, apiId) {
+        return axios.get(API.API_AUTHORITY.replace(':apiId', apiId));
+    },
+    updateApiAuthority({ state }, authoriry) {
+        return axios.get(API.API_AUTHORITY.replace(':apiId', authoriry.apiId), authoriry);
     }
 };
 

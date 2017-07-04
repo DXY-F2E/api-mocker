@@ -65,7 +65,7 @@ module.exports = app => {
             this.ctx.logger.info('modifyApi', body)
             this.ctx.body = { resources }
         }
-        * notifyApiChange(api, lastModifiedTime) {
+        * notifyApiChange (api, lastModifiedTime) {
             // 十分钟内有修改不推送
             const interval = api.modifiedTime - lastModifiedTime
             if (interval < 1000 * 60 * 10) {

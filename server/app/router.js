@@ -6,7 +6,7 @@ module.exports = app => {
     app.post('/server/group', 'group.create')
     app.get('/server/group/manage', 'group.getManageGroup')
     app.get('/server/group/unmanaged', 'group.getUnmanaged')
-    app.put('/server/group/:id/claim', 'group.claim')
+    app.put('/server/group/:id/claim', 'group.claim') // 认领分组
     app.delete('/server/group/:id', 'group.delete')
 
     app.get('/server/api/', 'api.getAll')
@@ -21,6 +21,8 @@ module.exports = app => {
     app.delete('/server/api/:groupId/:apiId', 'api.delete')
 
     app.get('/server/history/api/:apiId', 'history.getApi')
+    app.get('/server/authority/api/:apiId', 'authority.getApi')
+    app.put('/server/authority/api/:apiId', 'authority.modifyApi')
 
     // stat
     app.get('/server/stat/mock', 'stat.mock')
@@ -43,4 +45,5 @@ module.exports = app => {
     app.post('/auth/user/recovery/password/code', 'user.sentResetPassCode')
     app.put('/auth/user/recovery/password', 'user.resetPasswordByTicket')
     app.put('/server/user', 'user.update')
+    app.get('/server/user/search', 'user.search')
 }
