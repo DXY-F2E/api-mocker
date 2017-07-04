@@ -1,6 +1,6 @@
 <template>
 <el-dialog :title="title" :visible="visible" @open="getApiAuthority">
-    <el-form v-if="authority">
+    <el-form v-if="authority" v-stop-default-enter>
         <el-form-item label="编辑权限：">
             <el-radio-group v-model="authority.operation.mode">
                 <el-radio :label="0">所有人</el-radio>
