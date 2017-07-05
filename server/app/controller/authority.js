@@ -3,6 +3,7 @@ module.exports = app => {
         * modifyApi () {
             const { apiId } = this.ctx.params
             const authority = this.ctx.request.body
+            delete authority._id
 
             const isManager = yield this.service.api.isManager(apiId)
             if (!isManager) {
@@ -19,7 +20,7 @@ module.exports = app => {
         * getApi () {
             const { apiId } = this.ctx.params
             const authority = (yield this.service.apiAuthority.get(apiId)) || new app.model.apiAuthority()
-            authority.apiId = apiId;
+            authority.apiId = apiId
             this.success(authority)
         }
     }

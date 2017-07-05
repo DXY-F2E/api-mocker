@@ -38,6 +38,15 @@ module.exports = app => {
             this.ctx.body = { resources, pages: { limit, page, count}}
             this.ctx.status = 200
         }
+        judegModifyRight(authority, authId) {
+            if (!authority || authority.operation.mode === 0) {
+                return true
+            }
+            if (authority.operation.operator.find(o => o === authId)) {
+                return true
+            }
+            this.error('无权操作');
+        }
         * modifyApi () {
             const { groupId, apiId } = this.ctx.params
             const { body } = this.ctx.request
@@ -46,6 +55,9 @@ module.exports = app => {
 
             assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalid groupId')
             assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
+
+            const authority = yield this.service.apiAuthority.get(apiId)
+            this.judegModifyRight(authority, authId)
 
             delete body._id
             delete body.manager

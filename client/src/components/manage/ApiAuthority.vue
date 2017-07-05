@@ -1,16 +1,18 @@
 <template>
-<el-dialog :title="title" :visible="visible" @open="getApiAuthority">
+<el-dialog :title="title" :visible="visible" @open="getApiAuthority" :show-close="false">
     <el-form v-if="authority" v-stop-default-enter>
         <el-form-item label="编辑权限：">
             <el-radio-group v-model="authority.operation.mode">
                 <el-radio :label="0">所有人</el-radio>
                 <el-radio :label="1">指定</el-radio>
             </el-radio-group>
-            <input-finder class="operator"
-                          @enter="searchUsers"
-                          :selected-data="authority.operation.operator"
-                          :query-data="queryData">
-            </input-finder>
+            <filter-selector
+                v-show="authority.operation.mode === 1"
+                :value="operator"
+                :remoteMethod="searchUsers"
+                :options="users"
+                @change="updateOperator">
+            </filter-selector>
         </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -21,10 +23,10 @@
 </template>
 
 <script>
-import InputFinder from '../common/InputFinder';
+import FilterSelector from '../common/FilterSelector';
 export default {
     components: {
-        InputFinder
+        FilterSelector
     },
     props: {
         api: Object,
@@ -32,42 +34,57 @@ export default {
     },
     data() {
         return {
-            query: '',
-            queryData: [],
+            users: [],
             authority: null
         };
     },
     computed: {
+        allUsers() {
+            return this.$store.state.allUsers;
+        },
         title() {
-            return `${this.api.name} 权限设置`;
+            return `${this.api.name}`;
+        },
+        operator() {
+            return this.authority.operation.operator;
         }
     },
     methods: {
         searchUsers(val) {
-            this.$store.dispatch('searchUsers', val).then(rs => {
-                window.console.log(rs);
-            });
+            this.users = this.allUsers.filter(u =>
+                u.email.indexOf(val) >= 0 || u.name.indexOf(val) >= 0
+            );
+        },
+        initUsers(operators) {
+            this.users = operators.map(id =>
+                this.allUsers.find(u => u._id === id)
+            );
         },
         getApiAuthority() {
             this.$store.dispatch('getApiAuthority', this.api._id).then(rs => {
+                this.initUsers(rs.data.operation.operator);
                 this.authority = rs.data;
-                this.authority.operation.operator = [{
-                    _id: 1,
-                    name: '相学长'
-                }, {
-                    _id: 2,
-                    name: '李权威'
-                }];
             });
+        },
+        updateOperator(operators) {
+            this.authority.operation.operator = operators;
         },
         cancel() {
             this.$emit('hide');
         },
         confirm() {
-            this.$emit('hide');
+            this.$store.dispatch('updateApiAuthority', this.authority).then(rs => {
+                this.$message.success(rs.data);
+                this.$emit('hide');
+            }).catch(this.$message.error);
         }
     }
 };
 </script>
 <style>
+.filter-selector {
+    width: auto;
+    display: block;
+    margin: 10px 0 0 82px;
+}
 </style>

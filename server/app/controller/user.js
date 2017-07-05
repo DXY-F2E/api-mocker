@@ -2,8 +2,12 @@ const md5 = require('blueimp-md5')
 module.exports = app => {
     class UserController extends app.Controller {
         * search() {
-            const { query } = this.ctx.query
-            this.success(yield this.service.user.find(query))
+            const { query = '' } = this.ctx.query
+            const users = yield this.service.user.find(query).lean()
+            this.success(users.map(u => {
+                delete u.password;
+                return u;
+            }))
         }
         * sentResetPassCode() {
             const { email } = this.ctx.request.body

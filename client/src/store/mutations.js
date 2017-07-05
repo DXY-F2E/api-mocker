@@ -94,6 +94,9 @@ const mutations = {
     },
     UPDATE_WINDOW_WIDTH(state, width) {
         state.windowWidth = width;
+    },
+    SET_ALL_USERS(state, users) {
+        state.allUsers = users;
     }
 };
 export default mutations;

@@ -4,7 +4,11 @@
     <el-button type="text" size="small" @click="apiEdit">编辑</el-button>
     <el-button type="text" size="small" @click="apiDoc">文档</el-button>
     <el-button type="text" size="small" @click="apiDelete">删除</el-button>
-    <api-authority :visible="showAuthority" @hide="showAuthority = false" :api="api"></api-authority>
+    <api-authority
+        :api="api"
+        :visible="showAuthority"
+        @hide="showAuthority = false">
+    </api-authority>
 </div>
 </template>
 

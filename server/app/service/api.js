@@ -30,7 +30,7 @@ module.exports = app => {
             }, api, { new: true })
         }
         * isManager (apiId) {
-            return !!(yield app.model.api.findOneAndUpdate({
+            return !!(yield app.model.api.findOne({
                 _id: apiId,
                 manager: this.ctx.authUser._id
             }))

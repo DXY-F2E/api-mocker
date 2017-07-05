@@ -204,6 +204,12 @@ const actions = {
             params: {query}
         });
     },
+    getAllUsers({ commit }) {
+        return axios.get(`${API.PROFILE}/search`).then(res => {
+            commit('SET_ALL_USERS', res.data);
+            return res;
+        });
+    },
     register({ commit }, user) {
         return axios.post(`${API.USER}/register`, user).then(res => {
             commit('SET_USER', res.data);
@@ -254,7 +260,7 @@ const actions = {
         return axios.get(API.API_AUTHORITY.replace(':apiId', apiId));
     },
     updateApiAuthority({ state }, authoriry) {
-        return axios.get(API.API_AUTHORITY.replace(':apiId', authoriry.apiId), authoriry);
+        return axios.put(API.API_AUTHORITY.replace(':apiId', authoriry.apiId), authoriry);
     }
 };
 
