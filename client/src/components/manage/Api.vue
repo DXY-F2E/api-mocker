@@ -22,10 +22,15 @@
         width="180"
         label="操作">
         <template scope="scope">
-            <control :api="scope.row" @delete="apiDelete"></control>
+            <control :api="scope.row" @delete="apiDelete" @manage="manageApi"></control>
         </template>
       </el-table-column>
     </el-table>
+    <api-authority
+        :api="api"
+        :visible="showAuthority"
+        @hide="showAuthority = false">
+    </api-authority>
 </div>
 </template>
 
@@ -33,19 +38,27 @@
 import { mapActions } from 'vuex';
 import moment from 'moment';
 import Control from './ApiControl';
+import ApiAuthority from './ApiAuthority';
 export default {
     components: {
-        Control
+        Control,
+        ApiAuthority
     },
     data() {
         return {
-            apis: []
+            showAuthority: false,
+            apis: [],
+            api: {}
         };
     },
     methods: {
         ...mapActions([
             'getManageApi'
         ]),
+        manageApi(api) {
+            this.api = api;
+            this.showAuthority = true;
+        },
         timeFormat(row, col) {
             return moment(new Date(Number(row[col.property]))).format('YYYY-MM-DD HH:mm:ss');
         },

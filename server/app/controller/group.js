@@ -3,6 +3,18 @@ const R = require('ramda')
 
 module.exports = app =>{
     class GroupController extends app.Controller {
+        * update () {
+            const { id } = this.ctx.params
+            const group = this.ctx.request.body
+            console.log(id)
+            console.log(group)
+            const rs = yield this.service.group.update(id, group)
+            if (rs && rs._id) {
+                this.success(rs)
+            } else {
+                this.error('更新失败');
+            }
+        }
         * getAll () {
             const resources = yield app.model.group
                                        .find({isDeleted: false})

@@ -1,5 +1,14 @@
 module.exports = app => {
     class Group extends app.Service {
+        update(groupId, group) {
+            return app.model.group.findOneAndUpdate({
+                _id: groupId,
+                manager: this.ctx.authUser._id
+            }, Object.assign(
+                group,
+                { modifiedTime: Date.now() }
+            ), { new: true })
+        }
         updateTime(groupId) {
             // 此方法允许异步执行
             return app.model.group.update({_id: groupId}, {modifiedTime: Date.now()}, {new: true}).exec()

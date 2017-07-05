@@ -1,18 +1,20 @@
 <template>
 <el-dialog :title="title" :visible="visible" @open="getApiAuthority" :show-close="false">
-    <el-form v-if="authority" v-stop-default-enter>
+    <el-form v-if="authority" v-stop-default-enter label-position="left" label-width="84px">
         <el-form-item label="编辑权限：">
             <el-radio-group v-model="authority.operation.mode">
                 <el-radio :label="0">所有人</el-radio>
                 <el-radio :label="1">指定</el-radio>
             </el-radio-group>
-            <filter-selector
+            <user-selector
+                class="api-operator"
                 v-show="authority.operation.mode === 1"
                 :value="operator"
                 :remoteMethod="searchUsers"
                 :options="users"
-                @change="updateOperator">
-            </filter-selector>
+                @itemRemove="itemRemove"
+                @itemClick="itemClick">
+            </user-selector>
         </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -23,10 +25,11 @@
 </template>
 
 <script>
-import FilterSelector from '../common/FilterSelector';
+import UserSelector from '../common/UserSelector';
+import R from 'ramda';
 export default {
     components: {
-        FilterSelector
+        UserSelector
     },
     props: {
         api: Object,
@@ -50,11 +53,6 @@ export default {
         }
     },
     methods: {
-        searchUsers(val) {
-            this.users = this.allUsers.filter(u =>
-                u.email.indexOf(val) >= 0 || u.name.indexOf(val) >= 0
-            );
-        },
         initUsers(operators) {
             this.users = operators.map(id =>
                 this.allUsers.find(u => u._id === id)
@@ -66,6 +64,11 @@ export default {
                 this.authority = rs.data;
             });
         },
+        searchUsers(val) {
+            this.users = this.allUsers.filter(u =>
+                u.email.indexOf(val) >= 0 || u.name.indexOf(val) >= 0
+            );
+        },
         updateOperator(operators) {
             this.authority.operation.operator = operators;
         },
@@ -76,15 +79,22 @@ export default {
             this.$store.dispatch('updateApiAuthority', this.authority).then(rs => {
                 this.$message.success(rs.data);
                 this.$emit('hide');
-            }).catch(this.$message.error);
+            }).catch(err => this.$message.error(err.msg));
+        },
+        itemClick(val) {
+            const xor = R.converge(R.difference, [R.union, R.intersection]);
+            this.authority.operation.operator = xor(this.authority.operation.operator, [val]);
+        },
+        itemRemove(val) {
+            this.authority.operation.operator = R.without([val], this.authority.operation.operator);
         }
     }
 };
 </script>
 <style>
-.filter-selector {
+.api-operator {
     width: auto;
     display: block;
-    margin: 10px 0 0 82px;
+    margin-top: 10px;
 }
 </style>

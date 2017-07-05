@@ -1,8 +1,11 @@
 <template>
 <div class="api-control">
-    <el-button type="text" size="small" @click="groupClaim" v-if="mode === 'unmanaged'">认领</el-button>
+    <template v-if="mode === 'managed'">
+        <el-button type="text" size="small" @click="groupManage">编辑</el-button>
+        <el-button type="text" size="small" @click="groupDelete">删除</el-button>
+    </template>
     <el-button type="text" size="small" @click="groupDoc">文档</el-button>
-    <el-button type="text" size="small" @click="groupDelete" v-if="mode === 'managed'">删除</el-button>
+    <el-button type="text" size="small" @click="groupClaim" v-if="mode === 'unmanaged'">认领</el-button>
 </div>
 </template>
 
@@ -18,6 +21,11 @@ export default {
             required: true
         }
     },
+    data() {
+        return {
+            showAuthority: false
+        };
+    },
     methods: {
         groupClaim() {
             this.$store.dispatch('claimGroup', this.group._id).then(() => {
@@ -30,6 +38,9 @@ export default {
                 this.$message.success('删除成功');
                 this.$emit('delete', this.group);
             }).catch(err => this.$message.error(err.msg));
+        },
+        groupManage() {
+            this.$emit('manage', this.group);
         },
         groupDelete() {
             this.$confirm('分组内Api将一同删除，确定删除?', '提示', {

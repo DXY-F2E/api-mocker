@@ -15,6 +15,12 @@ axios.interceptors.response.use((response) => response, catchError);
 const domain = getDomain();
 
 const actions = {
+    updateGroup({ commit }, group) {
+        return axios.put(API.GROUP.replace(':groupId', group._id), group).then(res => {
+            commit('UPDATE_GROUP', res.data);
+            return res;
+        });
+    },
     getGroups({ commit }) {
         return axios.get(API.GROUPS).then(res => {
             commit('FETCH_GROUPS_SUCCESS', res.data.resources);

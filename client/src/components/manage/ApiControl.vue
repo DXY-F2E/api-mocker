@@ -4,20 +4,11 @@
     <el-button type="text" size="small" @click="apiEdit">编辑</el-button>
     <el-button type="text" size="small" @click="apiDoc">文档</el-button>
     <el-button type="text" size="small" @click="apiDelete">删除</el-button>
-    <api-authority
-        :api="api"
-        :visible="showAuthority"
-        @hide="showAuthority = false">
-    </api-authority>
 </div>
 </template>
 
 <script>
-import ApiAuthority from './ApiAuthority';
 export default {
-    components: {
-        ApiAuthority
-    },
     props: {
         api: {
             type: Object,
@@ -39,8 +30,7 @@ export default {
             }).catch(err => this.$message.error(err.msg));
         },
         apiManage() {
-            this.showAuthority = true;
-            window.console.log(this.showAuthority);
+            this.$emit('manage', this.api);
         },
         apiDoc() {
             this.$router.push({

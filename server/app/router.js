@@ -8,6 +8,7 @@ module.exports = app => {
     app.get('/server/group/unmanaged', 'group.getUnmanaged')
     app.put('/server/group/:id/claim', 'group.claim') // 认领分组
     app.delete('/server/group/:id', 'group.delete')
+    app.put('/server/group/:id', 'group.update')
 
     app.get('/server/api/', 'api.getAll')
     app.get('/server/api/manage', 'api.getManageApi')
