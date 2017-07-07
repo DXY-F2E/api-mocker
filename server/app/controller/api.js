@@ -67,9 +67,9 @@ module.exports = app => {
             this.ctx.body = { resources }
         }
         * notifyApiChange(api, lastModifiedTime) {
-            // 十分钟内有修改不推送
+            // 一小时内有修改不推送
             const interval = api.modifiedTime - lastModifiedTime
-            if (interval < 1000 * 60 * 10) {
+            if (interval < 1000 * 60 * 60) {
                 return
             }
             const selfIdx = api.follower.findIndex(f => f.toString() === this.ctx.authUser._id)
