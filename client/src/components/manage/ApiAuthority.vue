@@ -82,8 +82,7 @@ export default {
             }).catch(err => this.$message.error(err.msg));
         },
         itemClick(val) {
-            const xor = R.converge(R.difference, [R.union, R.intersection]);
-            this.authority.operation.operator = xor(this.authority.operation.operator, [val]);
+            this.authority.operation.operator = R.symmetricDifference(this.authority.operation.operator, [val]);
         },
         itemRemove(val) {
             this.authority.operation.operator = R.without([val], this.authority.operation.operator);

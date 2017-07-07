@@ -75,8 +75,7 @@ export default {
             );
         },
         itemClick(val) {
-            const xor = R.converge(R.difference, [R.union, R.intersection]);
-            this.localGroup.member = xor(this.localGroup.member, [val]);
+            this.localGroup.member = R.symmetricDifference(this.localGroup.member, [val]);
         },
         itemRemove(val) {
             this.localGroup.member = R.without([val], this.localGroup.member);
