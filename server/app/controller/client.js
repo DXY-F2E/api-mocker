@@ -30,12 +30,21 @@ module.exports = app => {
             yield this.proxy(_apiRealUrl, _apiMethod)
         }
         * proxy(url, method) {
-            url += `?${this.ctx.request.url.split('?')[1]}`
+            const query = this.ctx.request.url.split('?')[1]
+            if (query) {
+                url += `?${query}`
+            }
+            const headers = this.ctx.headers
+            // 提交的header.host是mocker的host，需要删除
+            delete headers.host
+            if (headers['api-cookie']) {
+                headers.cookie = headers['api-cookie']
+                delete headers['api-cookie']
+            }
             const opts = method === 'get' ? {} : {
-                contentType: 'json',
                 // body数据，暂时只支持json格式，未来可以从header中判断
                 data: this.ctx.request.body,
-                headers: this.ctx.headers,
+                headers: headers,
                 dataType: 'json'
             }
             opts.method = method
