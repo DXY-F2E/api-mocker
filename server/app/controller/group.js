@@ -16,10 +16,7 @@ module.exports = app =>{
             }
         }
         * getAll () {
-            const resources = yield app.model.group
-                                       .find({isDeleted: false})
-                                       .sort({modifiedTime: -1, createTime: -1})
-                                       .exec()
+            const resources = yield this.service.group.getReadableGroups()
 
             this.ctx.body = { resources }
             this.ctx.status = 200

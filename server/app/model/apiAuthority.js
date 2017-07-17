@@ -9,7 +9,7 @@ module.exports = mongoose => {
         operation: {
             mode: {
                 type: Number,
-                default: 0  // 0 - 所有人, 1 - 指定
+                default: 0  // 0 - 所有人, 1 - 组内人员 2 - 指定人员
             },
             operator: {
                 type: Array,

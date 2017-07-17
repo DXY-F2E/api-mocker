@@ -8,7 +8,7 @@
             <el-radio-group v-model="localGroup.privacy">
                 <el-radio :label="0">所有人可见</el-radio>
                 <el-radio :label="1">组内成员可见</el-radio>
-                <el-radio :label="2">自己可见</el-radio>
+                <el-radio :label="3">自己可见</el-radio>
             </el-radio-group>
         </el-form-item>
         <el-form-item label="接口操作：">

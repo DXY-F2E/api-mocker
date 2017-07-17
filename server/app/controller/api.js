@@ -38,14 +38,28 @@ module.exports = app => {
             this.ctx.body = { resources, pages: { limit, page, count}}
             this.ctx.status = 200
         }
-        judegModifyRight(authority, authId) {
-            if (!authority || authority.operation.mode === 0) {
-                return true
+        judgeGroupRight(group, authId) {
+            const { status, msg } = this.service.group.isWritable(group, authId)
+            if (status) {
+                return true;
+            } else {
+                this.error(msg);
             }
-            if (authority.operation.operator.find(o => o === authId)) {
-                return true
+        }
+        judgeApiRight(authority, group, authId) {
+            const { status, msg } = this.service.apiAuthority.isWritable(authority, group, authId)
+            if (status) {
+                return true;
+            } else {
+                this.error(msg);
             }
-            this.error('无权操作');
+        }
+        * judgeModifyRight(apiId, groupId, authId) {
+            const authority = yield this.service.apiAuthority.get(apiId)
+            const group = yield this.service.group.getById(groupId)
+
+            this.judgeGroupRight(group, authId);
+            this.judgeApiRight(authority, group, authId);
         }
         * modifyApi () {
             const { groupId, apiId } = this.ctx.params
@@ -56,8 +70,7 @@ module.exports = app => {
             assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalid groupId')
             assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
 
-            const authority = yield this.service.apiAuthority.get(apiId)
-            this.judegModifyRight(authority, authId)
+            yield this.judgeModifyRight(apiId, groupId, authId)
 
             delete body._id
             delete body.manager

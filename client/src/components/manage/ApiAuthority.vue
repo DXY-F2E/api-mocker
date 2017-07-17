@@ -4,11 +4,12 @@
         <el-form-item label="编辑权限：">
             <el-radio-group v-model="authority.operation.mode">
                 <el-radio :label="0">所有人</el-radio>
-                <el-radio :label="1">指定</el-radio>
+                <el-radio :label="1">组内人员</el-radio>
+                <el-radio :label="2">指定人员</el-radio>
             </el-radio-group>
             <user-selector
                 class="api-operator"
-                v-show="authority.operation.mode === 1"
+                v-show="authority.operation.mode === 2"
                 :value="operator"
                 :remoteMethod="searchUsers"
                 :options="users"
@@ -76,6 +77,10 @@ export default {
             this.$emit('hide');
         },
         confirm() {
+            if (this.authority.operation.mode === 2 && this.operator.length === 0) {
+                this.$message.error('请至少选择一个人');
+                return;
+            }
             this.$store.dispatch('updateApiAuthority', this.authority).then(rs => {
                 this.$message.success(rs.data);
                 this.$emit('hide');
