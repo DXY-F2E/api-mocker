@@ -6,8 +6,7 @@ module.exports = app =>{
         * update () {
             const { id } = this.ctx.params
             const group = this.ctx.request.body
-            console.log(id)
-            console.log(group)
+            delete group._id
             const rs = yield this.service.group.update(id, group)
             if (rs && rs._id) {
                 this.success(rs)
