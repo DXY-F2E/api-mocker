@@ -18,7 +18,7 @@
             </div>
             <div class="field url">
                 <div>
-                    <label>测试地址：</label>
+                    <label><code>Mock</code>地址：</label>
                     <p class="prod code">{{url}}</p>
                 </div>
                 <div v-if="api.prodUrl">
@@ -195,7 +195,7 @@ export default {
     color: #3eb63e;
 }
 .api-doc .field.url > div {
-    padding-left: 70px;
+    padding-left: 75px;
     position: relative;
     margin-bottom: 10px;
     /*max-width: 750px;*/
