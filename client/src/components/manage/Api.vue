@@ -1,7 +1,7 @@
 <template>
 <div class="manage-api">
     <el-table
-      :data="apis"
+      :data="richApis"
       style="width: 100%">
       <el-table-column
         prop="options.method"
@@ -11,6 +11,10 @@
       <el-table-column
         prop="name"
         label="接口名">
+      </el-table-column>
+      <el-table-column
+        prop="groupName"
+        label="所属分组">
       </el-table-column>
       <el-table-column
         prop="createTime"
@@ -51,10 +55,25 @@ export default {
             api: {}
         };
     },
+    computed: {
+        richApis() {
+            return this.apis.map(a => {
+                a.groupName = this.getGroup(a.group);
+                return a;
+            });
+        },
+        groups() {
+            return this.$store.state.groups;
+        }
+    },
     methods: {
         ...mapActions([
             'getManageApi'
         ]),
+        getGroup(groupId) {
+            const group = this.groups.find(g => g._id === groupId);
+            return group ? group.name : '无权查看的分组';
+        },
         manageApi(api) {
             this.api = api;
             this.showAuthority = true;
