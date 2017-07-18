@@ -107,6 +107,18 @@ export default {
                     apiId: this.api._id
                 }
             });
+        },
+        buildDevUrl() {
+            let devUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`;
+            const path = this.api.options.params.path;
+            if (path.length) {
+                path.forEach(p => {
+                    devUrl += `/:${p.key}`;
+                });
+                return devUrl;
+            } else {
+                return devUrl;
+            }
         }
     },
     beforeDestroy() {
@@ -134,7 +146,7 @@ export default {
             return this.$store.state.api._id === undefined;
         },
         url() {
-            const devUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`;
+            const devUrl = this.buildDevUrl();
             if (this.mode === 'edit') {
                 return this.api._id ? devUrl : '';
             } else if (this.testMode === 'mock') {
