@@ -2,8 +2,8 @@ module.exports = app => {
     class AuthorityController extends app.Controller {
         * modifyApi () {
             const { apiId } = this.ctx.params
-            const authority = this.ctx.request.body
-            delete authority._id
+            const { operation } = this.ctx.request.body
+            const authority = { operation }
 
             const isManager = yield this.service.api.isManager(apiId)
             if (!isManager) {
