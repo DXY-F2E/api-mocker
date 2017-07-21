@@ -33,12 +33,12 @@ module.exports = app => {
                     return { status: true }
                 case OPERATION_MEMBER:
                     return {
-                        status: !!group.member.find(m => m === authId),
+                        status: !!group.member.find(m => m.toString() === authId),
                         msg: '仅组内成员可操作'
                     }
                 case OPERATION_DESIGNEE:
                     return {
-                        status: !!operator.find(o => o === authId),
+                        status: !!operator.find(o => o.toString() === authId),
                         msg: '仅指定人员可操作'
                     }
                 default:
