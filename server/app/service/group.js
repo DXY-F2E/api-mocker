@@ -15,7 +15,7 @@ module.exports = app => {
                     return { status: true }
                 case OPERATION_MEMBER:
                     return {
-                        status: !!group.member.find(m => m === authId),
+                        status: !!group.member.find(m => m.toString() === authId),
                         msg: '仅组内成员可操作'
                     }
                 default:
