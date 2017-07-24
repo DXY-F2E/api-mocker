@@ -162,6 +162,10 @@ module.exports = app => {
             // 废弃，不需要url了
             // const nextUrl = yield util.generateApiURL(app)
 
+            const group = yield this.service.group.getById(groupId)
+
+            this.judgeGroupRight(group, this.ctx.authUser._id);
+
             const resources = yield this.service.api.create(R.merge(body, {
                 group: groupId
             }))
