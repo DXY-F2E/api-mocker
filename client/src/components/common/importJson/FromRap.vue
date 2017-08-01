@@ -46,6 +46,7 @@ export default {
                     const json = JSON.parse(e.target.responseText);
                     this.buildApisFormJson(json);
                 } catch (err) {
+                    window.console.log(err);
                     this.$message.error('json格式错误');
                 }
             };
@@ -88,7 +89,10 @@ export default {
                     param.params = this.buildParams(p.parameterList);
                 }
                 if (param.type.indexOf('array') >= 0) {
-                    param.items.type = param.type.replace('array<', '').replace('>', '');
+                    param.items = {
+                        type: param.type.replace('array<', '').replace('>', '')
+                    };
+                    param.params = this.buildParams(p.parameterList);
                     param.type = 'array';
                 }
                 return param;
