@@ -91,7 +91,7 @@ export default {
             });
         },
         send() {
-            this.testApi(this.url);
+            this.testApi(this.testMode);
         },
         onKeydown(e) {
             if (e.keyCode === 83 && (e.ctrlKey || e.metaKey)) {
@@ -109,13 +109,11 @@ export default {
             });
         },
         buildDevUrl() {
-            let devUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`;
+            const devUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`;
             const path = this.api.options.params.path;
             if (path.length) {
-                path.forEach(p => {
-                    devUrl += `/:${p.key}`;
-                });
-                return devUrl;
+                const pathUrl = path.filter(p => p.key).map(p => `/:${p.key}`).join('');
+                return pathUrl ? `${devUrl}${pathUrl}` : devUrl;
             } else {
                 return devUrl;
             }

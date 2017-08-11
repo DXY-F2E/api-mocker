@@ -163,7 +163,7 @@ const actions = {
             return res;
         });
     },
-    testApi({ state, commit }, url) {
+    testApi({ state, commit }, testMode) {
         const api = state.api;
         let config = {
             method: api.options.method,
@@ -171,13 +171,13 @@ const actions = {
             params: {},
             data: {}
         };
-        if (url !== config.url) {
+        if (testMode === 'real') {
             config = {
                 method: 'post',
                 url: `${domain}/client/real`,
                 params: {},
                 data: {
-                    _apiRealUrl: url,
+                    _apiRealUrl: api.prodUrl,
                     _apiMethod: api.options.method
                 }
             };
