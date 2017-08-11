@@ -1,5 +1,6 @@
 <template>
 <div class="api-control">
+    <el-button type="text" size="small" @click="apiManage">权限</el-button>
     <el-button type="text" size="small" @click="apiEdit">编辑</el-button>
     <el-button type="text" size="small" @click="apiDoc">文档</el-button>
     <el-button type="text" size="small" @click="apiDelete">删除</el-button>
@@ -14,6 +15,11 @@ export default {
             required: true
         }
     },
+    data() {
+        return {
+            showAuthority: false
+        };
+    },
     methods: {
         confirmDelete() {
             this.$store.dispatch('deleteApi', {
@@ -22,6 +28,9 @@ export default {
                 this.$message.success('删除成功');
                 this.$emit('delete', this.api);
             }).catch(err => this.$message.error(err.msg));
+        },
+        apiManage() {
+            this.$emit('manage', this.api);
         },
         apiDoc() {
             this.$router.push({

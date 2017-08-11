@@ -5,7 +5,7 @@
         <el-button-group>
           <el-button size="mini" icon="document" @click.native.stop="showDoc()"></el-button>
           <!-- <copy-button size="mini" icon="share" :copy-data="apiUrl" message="复制接口链接成功"></copy-button> -->
-          <el-button size="mini" @click.native.stop="copyApi">
+          <el-button size="mini" @click.native.stop="confirmCopy(data.name)">
             <i class="material-icons">content_copy</i>
           </el-button>
         </el-button-group>
@@ -56,6 +56,20 @@ export default {
             delete api.modifiedTime;
             api.name = `${api.name}-副本`;
             return api;
+        },
+        confirmCopy(apiName) {
+            this.$confirm(`确定复制接口：${apiName}?`, '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.copyApi();
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消复制'
+                });
+            });
         },
         copyApi() {
             const api = this.getApiCopyData();

@@ -14,9 +14,13 @@ module.exports = mongoose => {
             required: true
         },
         member: [ObjectId],
-        public: {
-            type: Boolean,
-            default: true
+        operation: {
+            type: Number,
+            default: 0 // 0 - 所有人可操作，1 - 组内成员可操作
+        },
+        privacy: {
+            type: Number,
+            default: 0 // 0 - 所有人可见， 1 - 组内成员可见, 3 - 仅自己可以
         },
         name: {
             type: String,

@@ -38,6 +38,29 @@ module.exports = app => {
             this.ctx.body = { resources, pages: { limit, page, count}}
             this.ctx.status = 200
         }
+        judgeGroupRight(group, authId) {
+            const { status, msg } = this.service.group.isWritable(group, authId)
+            if (status) {
+                return true;
+            } else {
+                this.error(msg);
+            }
+        }
+        judgeApiRight(authority, group, authId) {
+            const { status, msg } = this.service.apiAuthority.isWritable(authority, group, authId)
+            if (status) {
+                return true;
+            } else {
+                this.error(msg);
+            }
+        }
+        * judgeModifyRight(apiId, groupId, authId) {
+            const authority = yield this.service.apiAuthority.get(apiId)
+            const group = yield this.service.group.getById(groupId)
+
+            this.judgeGroupRight(group, authId);
+            this.judgeApiRight(authority, group, authId);
+        }
         * modifyApi () {
             const { groupId, apiId } = this.ctx.params
             const { body } = this.ctx.request
@@ -47,10 +70,11 @@ module.exports = app => {
             assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalid groupId')
             assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
 
-            delete body._id
+            yield this.judgeModifyRight(apiId, groupId, authId)
 
-            // Hack方法。如果api没有管理员，那本次更新操作的人将成为管理员
-            if (!body.manager) body.manager = authId
+            delete body._id
+            delete body.manager
+
             const resources = (yield this.service.api.update(apiId, body)).toObject() // 使用lean()方法会导致无法设定schema的默认值
             if (!resources) {
                 this.error({
@@ -66,7 +90,7 @@ module.exports = app => {
             this.ctx.logger.info('modifyApi', body)
             this.ctx.body = { resources }
         }
-        * notifyApiChange(api, lastModifiedTime) {
+        * notifyApiChange (api, lastModifiedTime) {
             // 一小时内有修改不推送
             const interval = api.modifiedTime - lastModifiedTime
             if (interval < 1000 * 60 * 60) {
@@ -137,6 +161,10 @@ module.exports = app => {
             // assert(body.dsl, 403, 'required dsl')
             // 废弃，不需要url了
             // const nextUrl = yield util.generateApiURL(app)
+
+            const group = yield this.service.group.getById(groupId)
+
+            this.judgeGroupRight(group, this.ctx.authUser._id);
 
             const resources = yield this.service.api.create(R.merge(body, {
                 group: groupId

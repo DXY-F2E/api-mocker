@@ -22,11 +22,18 @@
             width="160"
             label="操作">
             <template scope="scope">
-                <control :group="scope.row" :mode="mode" @delete="groupDelete"></control>
+                <control :group="scope.row" :mode="mode" @delete="groupDelete" @manage="manageGroup"></control>
             </template>
           </el-table-column>
         </el-table>
     </div>
+    <group-edit
+        v-if="group"
+        :visible="showGroupEdit"
+        :group="group"
+        @update="updateGroup"
+        @hide="showGroupEdit = false">
+    </group-edit>
 </div>
 </template>
 
@@ -34,13 +41,18 @@
 import { mapActions } from 'vuex';
 import moment from 'moment';
 import Control from './GroupControl';
+import GroupEdit from './GroupEdit';
+import R from 'ramda';
 export default {
     components: {
-        Control
+        Control,
+        GroupEdit
     },
     data() {
         return {
+            showGroupEdit: false,
             mode: 'managed',
+            group: null,
             groups: []
         };
     },
@@ -65,8 +77,18 @@ export default {
             });
         },
         groupDelete(group) {
-            const index = this.groups.findIndex(a => a === group);
+            const index = R.findIndex(a => a === group)(this.groups);
             this.groups.splice(index, 1);
+        },
+        manageGroup(group) {
+            window.console.log(group);
+            this.group = group;
+            this.showGroupEdit = true;
+        },
+        updateGroup(group) {
+            window.console.log(group);
+            const index = R.findIndex(R.propEq('_id', group._id))(this.groups);
+            this.$set(this.groups, index, group);
         }
     },
     mounted() {

@@ -47,13 +47,29 @@ export default {
             this.query.start = moment().subtract(days, 'days').format('YYYY-MM-DD');
             this.getMock();
         },
+        buildStat(data) {
+            const fullData = [];
+            const mapData = {};
+            data.forEach(d => {
+                mapData[d._id] = d;
+            });
+            let start = this.query.start;
+            while (start <= this.query.end) {
+                fullData.push(mapData[start] || {
+                    _id: start,
+                    count: 0
+                });
+                start = moment(start).add(1, 'days').format('YYYY-MM-DD');
+            }
+            return fullData;
+        },
         getMock() {
             this.getMockStat(this.query).then(rs => {
                 this.mockData = {
                     x: [],
                     y: []
                 };
-                rs.data.forEach(r => {
+                this.buildStat(rs.data).forEach(r => {
                     this.mockData.x.push(r._id);
                     this.mockData.y.push(r.count);
                 });

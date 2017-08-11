@@ -32,7 +32,8 @@ const state = {
         success: true,
         msg: ''
     },
-    windowWidth: 0
+    windowWidth: 0,
+    allUsers: []
 };
 
 export default state;

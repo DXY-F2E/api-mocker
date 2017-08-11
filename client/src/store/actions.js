@@ -19,6 +19,12 @@ const buildTestParams = (api, type) => api.options.examples[type] || buildExampl
 });
 
 const actions = {
+    updateGroup({ commit }, group) {
+        return axios.put(API.GROUP.replace(':groupId', group._id), group).then(res => {
+            commit('UPDATE_GROUP', res.data);
+            return res;
+        });
+    },
     getGroups({ commit }) {
         return axios.get(API.GROUPS).then(res => {
             commit('FETCH_GROUPS_SUCCESS', res.data.resources);
@@ -205,6 +211,17 @@ const actions = {
             return res.data;
         });
     },
+    searchUsers(_, query) {
+        return axios.get(`${API.PROFILE}/search`, {
+            params: {query}
+        });
+    },
+    getAllUsers({ commit }) {
+        return axios.get(`${API.PROFILE}/search`).then(res => {
+            commit('SET_ALL_USERS', res.data);
+            return res;
+        });
+    },
     register({ commit }, user) {
         return axios.post(`${API.USER}/register`, user).then(res => {
             commit('SET_USER', res.data);
@@ -242,7 +259,6 @@ const actions = {
         return axios.post(`${API.USER}/recovery/password/ticket`, {email});
     },
     resetPass({ state }, resetForm) {
-        window.console.log(resetForm);
         return axios.put(`${API.USER}/recovery/password`, resetForm);
     },
     // stat 相关
@@ -250,6 +266,13 @@ const actions = {
         return axios.get(`${API.STAT}/mock`, {
             params: query
         });
+    },
+    // 权限相关
+    getApiAuthority({ state }, apiId) {
+        return axios.get(API.API_AUTHORITY.replace(':apiId', apiId));
+    },
+    updateApiAuthority({ state }, authoriry) {
+        return axios.put(API.API_AUTHORITY.replace(':apiId', authoriry.apiId), authoriry);
     }
 };
 

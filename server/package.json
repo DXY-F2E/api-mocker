@@ -34,7 +34,7 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "start": "pm2 start index.js",
+    "start": "node index.js",
     "dev": "egg-bin dev",
     "test": "npm run test-local",
     "fix": "npm run lint -- --fix",

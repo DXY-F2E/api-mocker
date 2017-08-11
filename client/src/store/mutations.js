@@ -24,6 +24,10 @@ const mutations = {
         state.apiListLoading = false;
         state.apiListSuccess = false;
     },
+    UPDATE_GROUP(state, group) {
+        const index = R.findIndex(g => g._id === group._id)(state.groups);
+        state.groups[index] = group;
+    },
     CREATE_GROUP_SUCCESS(state, data) {
         state.groups.unshift(data);
     },
@@ -94,6 +98,9 @@ const mutations = {
     },
     UPDATE_WINDOW_WIDTH(state, width) {
         state.windowWidth = width;
+    },
+    SET_ALL_USERS(state, users) {
+        state.allUsers = users;
     }
 };
 export default mutations;

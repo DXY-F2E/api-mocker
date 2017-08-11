@@ -29,6 +29,7 @@ module.exports = app => {
         find(q) {
             const reg = new RegExp(`.*${q}.*`, 'i')
             return app.model.user.find({
+                isDeleted: false,
                 "$or": [
                     {name: reg},
                     {email: reg}
