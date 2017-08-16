@@ -20,11 +20,14 @@
                     </el-row>
                 </div>
             </el-form-item>
+            <el-form-item label="测试地址">
+                <el-input auto-complete="off" v-model="devUrl" placeholder="请填写绝对路径"></el-input>
+            </el-form-item>
             <el-form-item label="线上地址">
                 <el-input auto-complete="off" v-model="prodUrl" placeholder="请填写绝对路径"></el-input>
             </el-form-item>
             <el-form-item label="代理转发">
-                <el-tooltip content="开启后请求mock地址会转发到线上地址" placement="top"><span class="tip">?</span></el-tooltip>
+                <el-tooltip content="开启后请求mock地址会转发到线上地址" placement="top"><span class="mocker-tip">?</span></el-tooltip>
                 <el-switch v-model="proxyMode"
                            :on-value="1"
                            :off-value="0"></el-switch>
@@ -101,6 +104,14 @@ export default {
                 this.$store.commit('UPDATE_API_PROPS', ['prodUrl', value]);
             }
         },
+        devUrl: {
+            get() {
+                return this.$store.state.api.devUrl;
+            },
+            set(value) {
+                this.$store.commit('UPDATE_API_PROPS', ['devUrl', value]);
+            }
+        },
         proxyMode: {
             get() {
                 return this.$store.state.api.options.proxy.mode;
@@ -173,19 +184,5 @@ export default {
     /*margin-left: 15px;*/
     margin: 4px 0;
     font-family: monospace;
-}
-.api-info .tip {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    line-height: 16px;
-    font-size: 12px;
-    border-radius: 50%;
-    text-align: center;
-    cursor: pointer;
-    vertical-align: middle;
-    margin: 0 15px 0 -8px;
-    background: #97a8be;
-    color: #fff;
 }
 </style>

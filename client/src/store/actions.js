@@ -5,7 +5,8 @@ import {
     buildApiResponse,
     buildExampleFormSchema,
     getDomain,
-    catchError
+    catchError,
+    buildRestUrl
 } from '../util';
 
 // 允许跨域请求带上cookie
@@ -13,6 +14,10 @@ axios.defaults.withCredentials = true;
 axios.interceptors.response.use((response) => response, catchError);
 
 const domain = getDomain();
+const buildTestParams = (api, type) => api.options.examples[type] || buildExampleFormSchema({
+    example: null,
+    params: api.options.params[type]
+});
 
 const actions = {
     updateGroup({ commit }, group) {
@@ -159,7 +164,7 @@ const actions = {
             return res;
         });
     },
-    testApi({ state, commit }, url) {
+    testApi({ state, commit }, testMode) {
         const api = state.api;
         let config = {
             method: api.options.method,
@@ -167,25 +172,22 @@ const actions = {
             params: {},
             data: {}
         };
-        if (url !== config.url) {
+        const paths = buildTestParams(api, 'path');
+        if (testMode !== 'mock') {
             config = {
                 method: 'post',
                 url: `${domain}/client/real`,
                 params: {},
                 data: {
-                    _apiRealUrl: url,
+                    _apiRealUrl: buildRestUrl(api[`${testMode}Url`], paths),
                     _apiMethod: api.options.method
                 }
             };
+        } else {
+            config.url = buildRestUrl(config.url, paths);
         }
-        config.params = api.options.examples.query || buildExampleFormSchema({
-            example: null,
-            params: api.options.params.query
-        });
-        config.data = Object.assign(config.data, api.options.examples.body || buildExampleFormSchema({
-            example: null,
-            params: api.options.params.body
-        }));
+        config.params = buildTestParams(api, 'query');
+        config.data = Object.assign(config.data, buildTestParams(api, 'body'));
         config.headers = buildExampleFormSchema(api.options.headers);
         if (config.headers.Cookie) {
             config.headers['api-cookie'] = config.headers.Cookie;

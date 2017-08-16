@@ -33,6 +33,7 @@ module.exports = mongoose => {
             default: Date.now
         },
         prodUrl: String,
+        devUrl: String,
         dsl: {
             type: Object,
             required: false

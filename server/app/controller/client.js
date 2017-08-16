@@ -9,7 +9,7 @@ module.exports = app => {
 
     class ClientController extends app.Controller {
         * findApi(method) {
-            const { id } = this.ctx.params;
+            const id = this.ctx.params[0];
             if (id.length < 5) {
                 // hack方法，兼容老的存下url信息的api
                 const url = `/client/${id}`
@@ -71,9 +71,8 @@ module.exports = app => {
             }
             const delay = api.options.delay || 0
             yield sleep(delay)
-            const params = R.merge(this.ctx.request.body, this.ctx.request.query)
-            this.validateParams(api, params)
-            this.ctx.body = dslCore.renderer(params)(this.getResponse(api) || {})
+            this.validateParams(api)
+            this.ctx.body = this.getResponse(api) || {}
         }
         getResponse(api) {
             if (api.options.response && api.options.response.length > 0) {
@@ -105,11 +104,24 @@ module.exports = app => {
             const document = yield this.findApi('delete')
             yield this.handleRequest(document)
         }
-        validateParams(document, data) {
-            const rule = {};
-            const { params, method } = document.options
+        getPathParams(api) {
+            const pathParams = {}
+            const params = (this.ctx.params[1] || '').split('/')
+            api.options.params.path.forEach((p, index) => {
+                pathParams[p.key] = params[index];
+            })
+            return pathParams;
+        }
+        validateParams(api) {
+            const data = {
+                query: this.ctx.request.query,
+                body: this.ctx.body,
+                path: this.getPathParams(api)
+            }
+            const { params, method } = api.options
             for (var name in params) {
-                if (method === 'get' && name !== 'query') continue
+                const rule = {}
+                if (method === 'get' && name === 'body') continue
                 params[name].forEach(param => {
                     // 参数不存在或者参数类型不属于基本类型时，不校验
                     if (!param.key || BASE_TYPES.indexOf(param.type) === -1) return
@@ -119,8 +131,8 @@ module.exports = app => {
                         allowEmpty: param.type === 'string' ? true: false
                     }
                 })
+                this.ctx.validate(rule, data[name])
             }
-            this.ctx.validate(rule, data)
         }
     }
 

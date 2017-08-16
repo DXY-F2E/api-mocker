@@ -21,6 +21,10 @@
                     <label><code>Mock</code>地址：</label>
                     <p class="prod code">{{url}}</p>
                 </div>
+                <div v-if="api.devUrl">
+                    <label>测试地址：</label>
+                    <p class="prod code">{{api.devUrl}}</p>
+                </div>
                 <div v-if="api.prodUrl">
                     <label>线上地址：</label>
                     <p class="prod code">{{api.prodUrl}}</p>
@@ -111,7 +115,14 @@ export default {
             return !!this.$route.query.preview;
         },
         url() {
-            return `${this.$store.state.serverRoot}/client/${this.api._id}`;
+            const mockUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`;
+            const path = this.api.options.params.path;
+            if (path.length) {
+                const pathUrl = path.filter(p => p.key).map(p => `/:${p.key}`).join('');
+                return pathUrl ? `${mockUrl}${pathUrl}` : mockUrl;
+            } else {
+                return mockUrl;
+            }
         },
         method() {
             return this.api.options.method.toUpperCase();

@@ -115,7 +115,7 @@ export default {
             return type;
         },
         getTypeList() {
-            if (this.name === 'query') {
+            if (this.name === 'query' || this.name === 'path') {
                 return [{
                     value: 'string',
                     label: 'String'

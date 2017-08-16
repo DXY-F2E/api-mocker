@@ -2,6 +2,7 @@ import Schema from './apiInitSchema';
 function initData() {
     return {
         prodUrl: null,
+        devUrl: null,
         name: '',
         group: '',
         desc: null,

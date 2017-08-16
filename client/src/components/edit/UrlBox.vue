@@ -21,11 +21,16 @@
                         id="editAct"
                         @click="send()"
                         @command="updateTestMode"
-                        v-if="prodUrl">
+                        v-if="prodUrl || devUrl">
                         测试
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item command="real" v-if="testMode === 'mock'">测试线上</el-dropdown-item>
-                            <el-dropdown-item command="mock" v-else>测试Mock</el-dropdown-item>
+                            <el-dropdown-item
+                                :command="m"
+                                v-for="(m, idx) in testModes"
+                                key="idx"
+                                v-if="m !== testMode && getTestUrl(m)">
+                                测试{{m}}
+                            </el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                     <el-button id="editAct" type="success" @click="send()" v-else>测试</el-button>
@@ -57,7 +62,8 @@ export default {
         return {
             saveToken: false,
             isShowDialog: false,
-            testMode: 'mock'
+            testMode: 'mock',
+            testModes: ['mock', 'prod', 'dev']
         };
     },
     methods: {
@@ -91,7 +97,7 @@ export default {
             });
         },
         send() {
-            this.testApi(this.url);
+            this.testApi(this.testMode);
         },
         onKeydown(e) {
             if (e.keyCode === 83 && (e.ctrlKey || e.metaKey)) {
@@ -107,6 +113,19 @@ export default {
                     apiId: this.api._id
                 }
             });
+        },
+        buildMockUrl() {
+            const mockUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`;
+            const path = this.api.options.params.path;
+            if (path.length) {
+                const pathUrl = path.filter(p => p.key).map(p => `/:${p.key}`).join('');
+                return pathUrl ? `${mockUrl}${pathUrl}` : mockUrl;
+            } else {
+                return mockUrl;
+            }
+        },
+        getTestUrl(mode) {
+            return this[`${mode}Url`];
         }
     },
     beforeDestroy() {
@@ -133,18 +152,21 @@ export default {
         creating() {
             return this.$store.state.api._id === undefined;
         },
-        url() {
-            const devUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`;
-            if (this.mode === 'edit') {
-                return this.api._id ? devUrl : '';
-            } else if (this.testMode === 'mock') {
-                return devUrl;
-            } else {
-                return this.api.prodUrl;
-            }
+        mockUrl() {
+            return this.buildMockUrl();
         },
         prodUrl() {
-            return this.$store.state.api.prodUrl;
+            return this.api.prodUrl;
+        },
+        devUrl() {
+            return this.api.devUrl;
+        },
+        url() {
+            if (this.mode === 'edit') {
+                return this.api._id ? this.mockUrl : '';
+            } else {
+                return this.getTestUrl(this.testMode);
+            }
         },
         method: {
             get() {
