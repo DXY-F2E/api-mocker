@@ -122,6 +122,9 @@ export default {
                 }];
             } else {
                 const types = ['String', 'Number', 'Boolean', 'Object', 'Array'];
+                if (this.name === 'body') {
+                    types.push('File');
+                }
                 return types.map(t => {
                     const type = {
                         value: t.toLowerCase(),

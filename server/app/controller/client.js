@@ -4,6 +4,7 @@ const Mock = require('mockjs')
 const sleep = (ms) => {
   return cb => setTimeout(cb, ms)
 }
+const BASE_TYPES = ['string', 'number', 'boolean', 'object', 'array'];
 module.exports = app => {
 
     class ClientController extends app.Controller {
@@ -110,7 +111,8 @@ module.exports = app => {
             for (var name in params) {
                 if (method === 'get' && name !== 'query') continue
                 params[name].forEach(param => {
-                    if (!param.key) return
+                    // 参数不存在或者参数类型不属于基本类型时，不校验
+                    if (!param.key || BASE_TYPES.indexOf(param.type) === -1) return
                     rule[param.key] = {
                         type: param.type === 'number' ? 'checkNumber': param.type,
                         required: param.required,
