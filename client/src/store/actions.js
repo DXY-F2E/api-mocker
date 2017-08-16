@@ -5,7 +5,8 @@ import {
     buildApiResponse,
     buildExampleFormSchema,
     getDomain,
-    catchError
+    catchError,
+    buildRestUrl
 } from '../util';
 
 // 允许跨域请求带上cookie
@@ -171,20 +172,19 @@ const actions = {
             params: {},
             data: {}
         };
-        if (testMode === 'real') {
+        const paths = buildTestParams(api, 'path');
+        if (testMode !== 'mock') {
             config = {
                 method: 'post',
                 url: `${domain}/client/real`,
                 params: {},
                 data: {
-                    _apiRealUrl: api.prodUrl,
+                    _apiRealUrl: buildRestUrl(api[`${testMode}Url`], paths),
                     _apiMethod: api.options.method
                 }
             };
-        }
-        const paths = buildTestParams(api, 'path');
-        for (const key in paths) {
-            config.url += `/${paths[key]}`;
+        } else {
+            config.url = buildRestUrl(config.url, paths);
         }
         config.params = buildTestParams(api, 'query');
         config.data = Object.assign(config.data, buildTestParams(api, 'body'));

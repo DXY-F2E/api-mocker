@@ -29,6 +29,8 @@ module.exports = app => {
     // stat
     app.get('/server/stat/mock', 'stat.mock')
 
+
+    app.post('/client/real', 'client.real')
     // mock data
     const mockUrl = pathToRegexp('/client/:id/:url*', [])
     // const mockUrl = '/client/:id'
@@ -36,8 +38,6 @@ module.exports = app => {
     app.post(mockUrl, credentials, apiStat, 'client.create')
     app.put(mockUrl, credentials, apiStat, 'client.put')
     app.delete(mockUrl, credentials, apiStat, 'client.delete')
-
-    app.post('/client/real', 'client.real')
 
 
     // user

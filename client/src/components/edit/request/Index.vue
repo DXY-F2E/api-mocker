@@ -9,7 +9,14 @@
                     v-for="(r, key) in types"
                     :key="key"
                     @click="changeSchema(r.name)">
-                    <span>{{r.label}}</span>
+                    <span>
+                        {{r.label}}
+                        <el-tooltip v-if="r.tip"
+                                    :content="r.tip"
+                                    placement="top">
+                            <span class="mocker-tip">?</span>
+                        </el-tooltip>
+                    </span>
                 </li>
                 <li class="item"
                     :class="[{active: activeType === 'headers'}]"
@@ -44,10 +51,12 @@ export default {
                 name: 'body'
             }, {
                 label: 'Query',
-                name: 'query'
+                name: 'query',
+                tip: 'Get请求时的url参数，以 ? 和 & 拼接到url中'
             }, {
                 label: 'Path',
-                name: 'path'
+                name: 'path',
+                tip: 'RESTful风格的url参数，例如 http://www.dxy.cn/:userId'
             }]
         };
     },
@@ -117,33 +126,43 @@ export default {
     }
 };
 </script>
-<style>
+<style lang="less">
 .request-box {
     height: 300px;
+
+    .mocker-tip {
+        margin: 2px 3px 0 0;
+        float: right;
+        background-color: #bfcbd9;
+    }
+
+    .el-col.types {
+        position: relative;
+        min-width: 150px;
+        max-width: 150px;
+        height: 100%;
+    }
+    .types {
+        .control {
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            border-bottom: 1px solid #d1dbe5;
+        }
+        .item {
+            border-bottom: 1px solid #eee;
+            padding: 8px 10px;
+            cursor: pointer;
+            height: 36px;
+            overflow: hidden;
+            color: #79818b;
+
+            &.active {
+                background-color: #fafafa;
+                color: #333;
+            }
+        }
+    }
 }
-.request-box .el-col.types {
-    position: relative;
-    min-width: 150px;
-    max-width: 150px;
-    height: 100%;
-}
-.request-box .types .control {
-    height: 36px;
-    line-height: 36px;
-    text-align: center;
-    border-bottom: 1px solid #d1dbe5;
-}
-.request-box .types .item {
-    border-bottom: 1px solid #eee;
-    padding: 8px 10px;
-    cursor: pointer;
-    opacity: 0.6;
-    height: 36px;
-    overflow: hidden;
-}
-.request-box .types .item.active {
-    background-color: #fafafa;
-    color: #333;
-    opacity: 1;
-}
+
 </style>

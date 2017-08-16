@@ -115,7 +115,14 @@ export default {
             return !!this.$route.query.preview;
         },
         url() {
-            return `${this.$store.state.serverRoot}/client/${this.api._id}`;
+            const mockUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`;
+            const path = this.api.options.params.path;
+            if (path.length) {
+                const pathUrl = path.filter(p => p.key).map(p => `/:${p.key}`).join('');
+                return pathUrl ? `${mockUrl}${pathUrl}` : mockUrl;
+            } else {
+                return mockUrl;
+            }
         },
         method() {
             return this.api.options.method.toUpperCase();

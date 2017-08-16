@@ -108,6 +108,18 @@ function validateApi(state) {
     });
 }
 
+function buildRestUrl(baseUrl, params) {
+    for (const key in params) {
+        const placeholder = `:${key}`;
+        if (baseUrl.indexOf(placeholder) === -1) {
+            baseUrl += `/${params[key]}`;
+        } else {
+            baseUrl.replace(placeholder, params[key]);
+        }
+    }
+    return baseUrl;
+}
+
 function debounce(fun, interval) {
     let timer = -1;
     return function(...args) {
@@ -124,5 +136,6 @@ export {
     clone,
     getDomain,
     catchError,
-    debounce
+    debounce,
+    buildRestUrl
 };

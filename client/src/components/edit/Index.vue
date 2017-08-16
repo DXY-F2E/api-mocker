@@ -74,3 +74,19 @@ export default {
     }
 };
 </script>
+<style>
+.mocker-tip {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 12px;
+    border-radius: 50%;
+    text-align: center;
+    cursor: pointer;
+    vertical-align: middle;
+    margin: 0 15px 0 -8px;
+    background: #97a8be;
+    color: #fff;
+}
+</style>
