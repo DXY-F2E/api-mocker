@@ -21,6 +21,10 @@
                     <label><code>Mock</code>地址：</label>
                     <p class="prod code">{{url}}</p>
                 </div>
+                <div v-if="api.devUrl">
+                    <label>测试地址：</label>
+                    <p class="prod code">{{api.devUrl}}</p>
+                </div>
                 <div v-if="api.prodUrl">
                     <label>线上地址：</label>
                     <p class="prod code">{{api.prodUrl}}</p>

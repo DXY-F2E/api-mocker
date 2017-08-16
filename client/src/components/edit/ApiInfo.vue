@@ -20,6 +20,9 @@
                     </el-row>
                 </div>
             </el-form-item>
+            <el-form-item label="测试地址">
+                <el-input auto-complete="off" v-model="devUrl" placeholder="请填写绝对路径"></el-input>
+            </el-form-item>
             <el-form-item label="线上地址">
                 <el-input auto-complete="off" v-model="prodUrl" placeholder="请填写绝对路径"></el-input>
             </el-form-item>
