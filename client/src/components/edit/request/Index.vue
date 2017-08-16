@@ -48,7 +48,8 @@ export default {
             activeType: this.initActive(),
             types: [{
                 label: 'Body',
-                name: 'body'
+                name: 'body',
+                tip: 'POST、PUT请求时的参数，支持form、json'
             }, {
                 label: 'Query',
                 name: 'query',
@@ -130,12 +131,6 @@ export default {
 .request-box {
     height: 300px;
 
-    .mocker-tip {
-        margin: 2px 3px 0 0;
-        float: right;
-        background-color: #bfcbd9;
-    }
-
     .el-col.types {
         position: relative;
         min-width: 150px;
@@ -160,6 +155,16 @@ export default {
             &.active {
                 background-color: #fafafa;
                 color: #333;
+            }
+
+            &:hover .mocker-tip {
+                display: inline-block;
+            }
+            .mocker-tip {
+                margin: 2px 3px 0 0;
+                float: right;
+                background-color: #bfcbd9;
+                display: none;
             }
         }
     }
