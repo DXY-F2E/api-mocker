@@ -27,10 +27,15 @@
                 <el-input auto-complete="off" v-model="prodUrl" placeholder="请填写绝对路径"></el-input>
             </el-form-item>
             <el-form-item label="代理转发">
-                <el-tooltip content="开启后请求mock地址会转发到线上地址" placement="top"><span class="mocker-tip">?</span></el-tooltip>
-                <el-switch v-model="proxyMode"
+                <el-tooltip content="开启后请求mock地址会转发到指定地址" placement="top"><span class="mocker-tip">?</span></el-tooltip>
+                <el-radio-group v-model="proxyMode">
+                    <el-radio :label="0">不转发</el-radio>
+                    <el-radio :label="1">转发线上</el-radio>
+                    <el-radio :label="2">转发测试</el-radio>
+                </el-radio-group>
+                <!-- <el-switch v-model="proxyMode"
                            :on-value="1"
-                           :off-value="0"></el-switch>
+                           :off-value="0"></el-switch> -->
             </el-form-item>
             <el-form-item label="历史记录" class="history-item" v-if="history && history.records.length">
                 <api-history :history="history"></api-history>
@@ -131,7 +136,7 @@ export default {
     }
 };
 </script>
-<style>
+<style lang="less">
 .api-info {
     padding: 20px;
     width: 288px;
@@ -180,9 +185,20 @@ export default {
     display: inline-block;
     width: 100%;
 }
-.api-info .el-radio-group .el-radio {
-    /*margin-left: 15px;*/
-    margin: 4px 0;
-    font-family: monospace;
+.api-info .el-radio-group {
+    display: block;
+    margin-top: 5px;
+    .el-radio {
+        /*margin-left: 15px;*/
+        display: block;
+        margin: 5px 0;
+        color: #475669;
+        font-family: monospace;
+
+        &__label {
+            margin-left: 5px;
+        }
+    }
 }
+
 </style>

@@ -51,6 +51,8 @@ module.exports = app => {
             opts.method = method
             const result = yield this.ctx.curl(url, opts);
             this.ctx.status = result.status;
+            // 设置了gzip encoding的话，转发请求将会出错，先取消此请求头的返回
+            delete result.headers['content-encoding'];
             this.ctx.set(result.headers);
             this.ctx.body = result.data
         }
@@ -58,6 +60,10 @@ module.exports = app => {
             const { _mockProxyStatus } = this.ctx.request.query
             if (api.options.proxy.mode === 1 || _mockProxyStatus === '1') {
                 yield this.proxy(api.prodUrl, api.options.method)
+                return true
+            }
+            if (api.options.proxy.mode === 2 || _mockProxyStatus === '2') {
+                yield this.proxy(api.devUrl, api.options.method)
                 return true
             }
             return false
