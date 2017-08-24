@@ -9,7 +9,6 @@
                         <el-option label="PUT" value="put"></el-option>
                         <el-option label="DELETE" value="delete"></el-option>
                     </el-select>
-                    <!-- <el-button slot="append">Copy</el-button> -->
                     <copy-button slot="append" :copy-data="url" :disabled="creating">复制</copy-button>
                 </el-input>
             </el-col>
@@ -27,7 +26,7 @@
                             <el-dropdown-item
                                 :command="m"
                                 v-for="(m, idx) in testModes"
-                                key="idx"
+                                :key="idx"
                                 v-if="m !== testMode && getTestUrl(m)">
                                 测试{{m}}
                             </el-dropdown-item>
@@ -179,43 +178,61 @@ export default {
     }
 };
 </script>
-<style>
-.url-box .el-select .el-input__inner {
-    width: 104px;
+<style lang="less">
+.url-box {
+    .el-col.mode{
+        width: 150px;
+        text-align: right;
+    }
+
+    .el-select .el-input__inner {
+        width: 104px;
+    }
+
+    .el-input__inner {
+        &:hover,
+        &:focus {
+            border-color: #bfcbd9;
+        }
+    }
+
+    .control{
+        width: 134px;
+        text-align: right;
+    }
+
+    .el-input-group__append {
+        padding: 0;
+        overflow: hidden;
+
+        & .el-button:last-child {
+            border-right: 0;
+        }
+
+        & .el-button {
+            display: inline-block;
+            vertical-align: middle;
+            border-right: 1px solid #bfcbd9;
+            margin: 0px;
+            border-radius: 0;
+            width: 70px;
+            text-align: center;
+        }
+
+        & .el-button.is-disabled {
+            border-color: #bfcbd9;
+            border-left: none;
+            background-color: #eef1f6;
+            color: #bfcbd9;
+        }
+
+        & .el-button:not(.is-disabled):hover {
+            color: #324057;
+        }
+
+    }
 }
-.url-box .el-input__inner:hover,
-.url-box .el-input__inner:focus {
-    border-color: #bfcbd9;
-}
-.url-box .control{
-    width: 134px;
-    text-align: right;
-}
-.url-box .el-input-group__append {
-    padding: 0;
-    overflow: hidden;
-}
-.url-box .el-input-group__append .el-button:last-child {
-    border-right: 0;
-}
-.url-box .el-input-group__append .el-button {
-    display: inline-block;
-    vertical-align: middle;
-    border-right: 1px solid #bfcbd9;
-    margin: 0px;
-    border-radius: 0;
-    width: 70px;
-    text-align: center;
-}
-.url-box .el-input-group__append .el-button.is-disabled {
-    border-color: #bfcbd9;
-    border-left: none;
-    background-color: #eef1f6;
-    color: #bfcbd9;
-}
-.url-box .el-input-group__append .el-button:not(.is-disabled):hover {
-    color: #324057;
-}
+
 #editAct,
 #saveAct {
     width: 91px;
@@ -225,10 +242,6 @@ export default {
 }
 #saveAct:hover:after {
     content: '⌘ + S'
-}
-.url-box .el-col.mode{
-    width: 150px;
-    text-align: right;
 }
 .el-select-dropdown__item.is-disabled.doc {
     cursor: pointer;

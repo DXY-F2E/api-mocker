@@ -142,63 +142,72 @@ export default {
     width: 288px;
     min-width: 288px;
     background-color: #eef1f6;
+
+    .el-textarea__inner,
+    .el-input__inner {
+        background-color: #F9FAFC;
+    }
+
+    .el-form {
+        min-height: 100%;
+        padding-bottom: 50px;
+    }
+
+    .create-group {
+        color: #97a8be;
+        cursor: pointer;
+    }
+
+    .history {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .el-radio-group {
+        display: block;
+        margin-top: 5px;
+        .el-radio {
+            /*margin-left: 15px;*/
+            display: block;
+            margin: 5px 0;
+            color: #475669;
+            font-family: monospace;
+
+            &__label {
+                margin-left: 5px;
+            }
+        }
+    }
 }
-.api-info .el-textarea__inner,
-.api-info .el-input__inner {
-    background-color: #F9FAFC;
-}
+
 .group-select {
     display: inline-block;
     width: 100%;
+    .el-icon-plus {
+        width: 50px;
+        line-height: 36px;
+    }
+
+    .el-select .el-input__inner,
+    .el-select {
+        width: 100%;
+    }
 }
-.group-select .el-icon-plus {
-    width: 50px;
-    line-height: 36px;
-}
-.group-select .el-select .el-input__inner,
-.group-select .el-select {
-    width: 100%;
-}
-.api-info .el-form {
-    min-height: 100%;
-    padding-bottom: 50px;
-}
-.api-info .create-group {
-    color: #97a8be;
-    cursor: pointer;
-}
+
 .issue {
     text-align: center;
     margin-top: -30px;
+    a {
+        color: #99A9BF;
+        font-size: 12px;
+        margin: 0 35px;
+    }
 }
-.issue a {
-    color: #99A9BF;
-    font-size: 12px;
-    margin: 0 35px;
-}
+
 .el-form-item.required .el-form-item__label:after {
     content: '*';
     color: #ff4949;
     margin-left: 2px;
-}
-.api-info .history {
-    display: inline-block;
-    width: 100%;
-}
-.api-info .el-radio-group {
-    display: block;
-    margin-top: 5px;
-    .el-radio {
-        /*margin-left: 15px;*/
-        display: block;
-        margin: 5px 0;
-        color: #475669;
-        font-family: monospace;
-
-        &__label {
-            margin-left: 5px;
-        }
-    }
 }
 
 </style>
