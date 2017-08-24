@@ -73,28 +73,31 @@ export default {
     }
 };
 </script>
-<style>
+<style lang="less">
 .out-box {
     height: 300px;
+
+    .el-col {
+        position: relative;
+    }
+    .el-col.status {
+        position: relative;
+        min-width: 150px;
+        max-width: 150px;
+        height: 100%;
+        overflow-y: auto;
+    }
 }
-.out-box .el-col {
-    position: relative;
-}
-.out-box .el-col.status {
-    position: relative;
-    min-width: 150px;
-    max-width: 150px;
-    height: 100%;
-    overflow-y: auto;
-}
-.fullscreen .out-box {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-.fullscreen .schema-content{
-    height: auto;
+.fullscreen {
+    .out-box {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+    .schema-content{
+        height: auto;
+    }
 }
 </style>
