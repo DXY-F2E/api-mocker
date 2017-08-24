@@ -82,42 +82,45 @@ export default {
     }
 };
 </script>
-<style>
+<style lang="less">
 .schema-content {
     position: relative;
     border-left: 1px solid #d1dbe5;
 }
-.schema.schema-edit{
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-}
-.schema .tabs .el-tabs__item{
-    border-top: 0 !important;
-    border-radius: 0 !important;
-    margin-left: -1px;
-}
-.schema .el-tabs__header {
-    margin-bottom: 0;
-}
-.schema .el-tabs__item {
-    height: 36px;
-    line-height: 36px;
-}
-.schema .tab-item {
-    height: 100%;
-}
-.schema .el-tabs__content .structure {
-    padding: 10px 20px;
-}
-.schema .el-tabs__content {
-    position: absolute;
-    top: 36px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow-y: auto;
+.schema {
+    &.schema-edit{
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+    .tabs .el-tabs__item{
+        border-top: 0 !important;
+        border-radius: 0 !important;
+        margin-left: -1px;
+    }
+    .el-tabs__header {
+        margin-bottom: 0;
+    }
+    .el-tabs__item {
+        height: 36px;
+        line-height: 36px;
+    }
+    .tab-item {
+        height: 100%;
+    }
+    .el-tabs__content {
+        position: absolute;
+        top: 36px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow-y: auto;
+
+        .structure {
+            padding: 10px 20px;
+        }
+    }
 }
 </style>
