@@ -1,7 +1,7 @@
 module.exports = appInfo => {
     const config = {
         bodyParser: {
-            jsonLimit: '300kb'
+            jsonLimit: '500kb' // 不能再大了，再大接口实在太不合理了
         },
         mongoose: {
             url: 'mongodb://127.0.0.1/api-mock'
