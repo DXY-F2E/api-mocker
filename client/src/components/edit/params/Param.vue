@@ -22,11 +22,9 @@
 </template>
 
 <script>
-import ParamFill from './ParamFill';
 import ParamSet from './ParamSet';
 export default {
     components: {
-        ParamFill,
         ParamSet
     },
     props: {
@@ -79,52 +77,57 @@ export default {
     }
 };
 </script>
-<style>
+<style lang="less">
 .param-wrap {
     position: relative;
+
+    &.fold .params-box {
+        overflow: hidden;
+        height: 0px;
+    }
+
+    .params-box {
+        transition: height 0.3s ease;
+    }
+    .expand {
+        cursor: pointer;
+        display: inline-block;
+        width: 20px;
+        height: 36px;
+        position: absolute;
+        left: -20px;
+        top: 0px;
+        line-height: 36px;
+    }
 }
-.param-wrap .params-box {
-    transition: height 0.3s ease;
+.params-box {
+    .control {
+        min-width: 56px;
+        max-width: 56px;
+        position: absolute;
+        left: 0px;
+        top: 0;
+    }
+    .control i {
+        color: #ccc;
+        line-height: 36px;
+        width: 28px;
+        font-size: 12px;
+        cursor: pointer;
+        float: left;
+        text-align: center;
+    }
+    .control i.el-icon-plus {
+        font-size: 14px;
+    }
+    .control i:hover {
+        background-color: #EFF2F7;
+    }
+    .control i.hidden {
+        visibility: hidden;
+    }
 }
-.param-wrap.fold .params-box {
-    overflow: hidden;
-    height: 0px;
-}
-.param-wrap .expand {
-    cursor: pointer;
-    display: inline-block;
-    width: 20px;
-    height: 36px;
-    position: absolute;
-    left: -20px;
-    top: 0px;
-    line-height: 36px;
-}
-.params-box .control {
-    min-width: 56px;
-    max-width: 56px;
-    position: absolute;
-    left: 0px;
-    top: 0;
-}
-.params-box .control i {
-    color: #ccc;
-    line-height: 36px;
-    width: 28px;
-    font-size: 12px;
-    cursor: pointer;
-    float: left;
-    text-align: center;
-}
-.params-box .control i.el-icon-plus {
-    font-size: 14px;
-}
-.params-box .control i:hover {
-    background-color: #EFF2F7;
-}
-.params-box .control i.hidden {
-    visibility: hidden;
-}
+
 /*.param .el-input__inner:focus,*/
 .param .el-input__inner:hover {
     border-color: #EFF2F7;
