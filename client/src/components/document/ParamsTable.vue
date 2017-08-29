@@ -32,24 +32,26 @@ export default {
     border: 1px solid #e6e6e6;
     border-radius: 3px;
     overflow: hidden;
-}
-.params-table .hd {
-    background-color: #f8f8f8;
-}
-.params-table .el-row {
-    border-top: 1px solid #e6e6e6;
-    border-bottom: 1px solid #e6e6e6;
-    margin: -1px 0;
 
-    .row-and-col {
-        display: flex;
-        width: 100%;
-        flex: 8;
+    .hd {
+        background-color: #f8f8f8;
+    }
+    .el-row {
+        border-top: 1px solid #e6e6e6;
+        border-bottom: 1px solid #e6e6e6;
+        margin: -1px 0;
+
+        .row-and-col {
+            display: flex;
+            width: 100%;
+            flex: 8;
+        }
+    }
+    .el-row:hover {
+        background-color: #f8f8f8;
     }
 }
-.params-table .el-row:hover {
-    background-color: #f8f8f8;
-}
+
 .params-table .el-col {
     word-break: break-all;
     border-right: 1px solid #e6e6e6;

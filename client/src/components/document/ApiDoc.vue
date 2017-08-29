@@ -150,81 +150,86 @@ export default {
     overflow-x: hidden;
     overflow-y: auto;
 }
+
 .api-doc {
     width: 100%;
     padding: 30px;
-}
-.api-doc ~ .api-doc {
-    border-top: 1px solid #ddd;
-}
-.api-doc h2 {
-    border-bottom: 1px solid #ececec;
-    font-weight: bold;
-    padding: 10px 0;
-}
-.api-doc .code {
-    border: 1px solid #e6e6e6;
-    padding: 6px 10px;
-    border-radius: 3px;
-    color: #666;
-    background-color: #f8f8f8;
-}
-.api-doc .fields {
-    width: 100%;
-    min-width: 650px;
-    /*max-width: 750px;*/
-    /*margin: 0 auto;*/
-}
-.api-doc .field {
-    width: 100%;
-    position: relative;
-    margin-bottom: 30px;
-}
-.api-doc .field.name .control{
-    position: absolute;
-    right: 0px;
-    top: 0;
 
-    .el-icon-star-on {
-
+    &~.api-doc {
+        border-top: 1px solid #ddd;
     }
-}
-.api-doc .field:last-child {
-    margin-bottom: 0;
-}
-.api-doc .method {
-    color: #3eb63e;
-    font-weight: normal;
-    margin-left: 10px;
-}
-.method.post,
-.method.POST {
-    color: #f5a623;
-}
-.method.get,
-.method.GET {
-    color: #3eb63e;
-}
-.api-doc .field.url > div {
-    padding-left: 75px;
-    position: relative;
-    margin-bottom: 10px;
-    /*max-width: 750px;*/
 
+    h2 {
+        border-bottom: 1px solid #ececec;
+        font-weight: bold;
+        padding: 10px 0;
+    }
     .code {
-        word-break: break-all;
+        border: 1px solid #e6e6e6;
+        padding: 6px 10px;
+        border-radius: 3px;
+        color: #666;
+        background-color: #f8f8f8;
+    }
+
+    .fields {
+        width: 100%;
+        min-width: 650px;
+    }
+
+    .method {
+        color: #3eb63e;
+        font-weight: normal;
+        margin-left: 10px;
+    }
+
+    .field {
+        width: 100%;
+        position: relative;
+        margin-bottom: 30px;
+
+        &.name .control {
+            position: absolute;
+            right: 0px;
+            top: 0;
+        }
+        &:last-child {
+            margin-bottom: 0;
+        }
+        &.url {
+            &>div {
+                padding-left: 75px;
+                position: relative;
+                margin-bottom: 10px;
+
+                .code {
+                    word-break: break-all;
+                }
+            }
+            label {
+                position: absolute;
+                left: 0;
+                top: 10px;
+            }
+        }
+
+        &>label {
+            display: block;
+            font-size: 16px;
+            border-bottom: 1px solid #e6e6e6;
+            line-height: 2;
+            margin-bottom: 20px;
+        }
     }
 }
-.api-doc .field.url label {
-    position: absolute;
-    left: 0;
-    top: 10px;
-}
-.api-doc .field > label {
-    display: block;
-    font-size: 16px;
-    border-bottom: 1px solid #e6e6e6;
-    line-height: 2;
-    margin-bottom: 20px;
+.method {
+    &.post,
+    &.POST {
+        color: #f5a623;
+    }
+    &.get,
+    &.GET {
+        color: #3eb63e;
+    }
 }
 </style>

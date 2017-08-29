@@ -29,29 +29,27 @@ export default {
     props: ['params', 'level']
 };
 </script>
-<style type="text/css">
+<style lang="less">
 .doc-params {
     position: relative;
+
+    .doc-params {
+        padding-left: 20px;
+
+        &:before {
+            content: '';
+            position: absolute;
+            width: 1px;
+            left: 20px;
+            top: 0px;
+            bottom: 0px;
+            background-color: #e6e6e6;
+            z-index: 1;
+        }
+    }
 }
 .doc-param {
     position: relative;
     z-index: 0;
-}
-.doc-params .doc-params {
-    /*margin-left: -20px;*/
-    padding-left: 20px;
-}
-.doc-params .doc-params .el-col.key {
-    /*text-indent: 20px;*/
-}
-.doc-params .doc-params:before {
-    content: '';
-    position: absolute;
-    width: 1px;
-    left: 20px;
-    top: 0px;
-    bottom: 0px;
-    background-color: #e6e6e6;
-    z-index: 1;
 }
 </style>

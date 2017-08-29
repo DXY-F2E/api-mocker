@@ -37,41 +37,44 @@ export default {
     }
 };
 </script>
-<style>
+<style lang="less">
 .doc-schema {
     margin-bottom: 30px;
-    /*max-width: 917px;*/
+
+    .title {
+        font-size: 14px;
+        border-radius: 3px;
+        padding: 0 10px;
+        border: 1px solid #eee;
+        margin-bottom: 10px;
+        height: 30px;
+        line-height: 30px;
+        background-color: #f8f8f8;
+
+        .status-text {
+            font-size: 15px;
+        }
+        .status {
+            color: #333;
+        }
+        [class^='status 5'],
+        [class^='status 4']{
+            color: red;
+        }
+        [class^='status 3']{
+            color: #f5a623;
+        }
+        [class^='status 2']{
+            color: #3eb63e;
+        }
+        [class^='status 1']{
+            color: #aaa;
+        }
+    }
+    .example {
+        float: right;
+    }
 }
-.doc-schema .title {
-    font-size: 14px;
-    border-radius: 3px;
-    padding: 0 10px;
-    border: 1px solid #eee;
-    margin-bottom: 10px;
-    height: 30px;
-    line-height: 30px;
-    background-color: #f8f8f8;
-}
-.doc-schema .example {
-    float: right;
-}
-.title .status-text {
-    font-size: 15px;
-}
-.title .status {
-    color: #333;
-}
-.title [class^='status 5'],
-.title [class^='status 4']{
-    color: red;
-}
-.title [class^='status 3']{
-    color: #f5a623;
-}
-.title [class^='status 2']{
-    color: #3eb63e;
-}
-.title [class^='status 1']{
-    color: #aaa;
-}
+
+
 </style>
