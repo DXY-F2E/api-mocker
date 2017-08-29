@@ -68,23 +68,28 @@ export default {
 .api-list > li ~li.empty {
     display: none;
 }
-.add-api .el-card .el-card__body {
-    height: 105px;
-    line-height: 75px;
-    text-align: center;
-    font-size: 16px;
-    color: #324057;
+.add-api {
+    .el-card {
+        .el-card__body {
+            height: 105px;
+            line-height: 75px;
+            text-align: center;
+            font-size: 16px;
+            color: #324057;
+        }
+        .el-card__body .el-dialog {
+            line-height: initial;
+            text-align: left;
+        }
+    }
+    i {
+        font-size: 18px;
+        color: #99A9BF;
+        margin-right: 10px;
+    }
+    .el-upload {
+        width: 100%;
+    }
 }
-.add-api .el-card .el-card__body .el-dialog {
-    line-height: initial;
-    text-align: left;
-}
-.add-api i {
-    font-size: 18px;
-    color: #99A9BF;
-    margin-right: 10px;
-}
-.add-api .el-upload {
-    width: 100%;
-}
+
 </style>

@@ -91,45 +91,46 @@ export default {
     transition: all 0.2s ease;
     width: 219px;
     overflow: hidden;
-}
-.el-card:hover {
-    background-color: #F9FAFC;
+
+    &:hover {
+        background-color: #F9FAFC;
+    }
+    .el-card__body {
+        padding: 15px 20px;
+    }
+    .el-card__header {
+        padding: 8px 20px;
+        /*line-height: 50px;*/
+    }
 }
 .edit-api {
     float: right;
     position: relative;
     top: -4px;
 }
-.el-card .el-card__body {
-    padding: 15px 20px;
-}
-.el-card .el-card__header {
-    padding: 8px 20px;
-    /*line-height: 50px;*/
-}
+
 .item {
     color: #8492A6;
-    /*line-height: 1.5;*/
-    /*margin-bottom: 5px;*/
-}
-.item label {
-    color: #475669;
-    margin-right: 5px;
-    width: 70px;
-    display: inline-block;
-    /*text-align: right;*/
-}
-.item input {
-    border: none;
-    outline: none;
-    cursor: pointer;
-    background-color: transparent;
-    line-height: 1;
-    line-height: 20px;
-    height: 20px;
-    max-width: 100px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
+    label {
+        color: #475669;
+        margin-right: 5px;
+        width: 70px;
+        display: inline-block;
+        /*text-align: right;*/
+    }
+    input {
+        border: none;
+        outline: none;
+        cursor: pointer;
+        background-color: transparent;
+        line-height: 1;
+        line-height: 20px;
+        height: 20px;
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 .card-box {
     .clearfix {
@@ -166,18 +167,21 @@ export default {
             visibility: visible;
         }
     }
-}
-.card-box .el-button-group .el-button:focus,
-.card-box .el-button-group button {
-    background-color: #F9FAFC;
-    color: #8492A6;
-    border-color: #bfcbd9;
-    width: 22px;
-    height: 22px;
-}
-.card-box .el-button-group .el-button:hover {
-    /*border-color: #E5E9F2;*/
-    background-color: #E5E9F2;
-    color: #475669;
+
+    .el-button-group {
+        .el-button:focus,
+        button {
+            background-color: #F9FAFC;
+            color: #8492A6;
+            border-color: #bfcbd9;
+            width: 22px;
+            height: 22px;
+        }
+        .el-button:hover {
+            /*border-color: #E5E9F2;*/
+            background-color: #E5E9F2;
+            color: #475669;
+        }
+    }
 }
 </style>
