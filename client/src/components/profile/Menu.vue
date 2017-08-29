@@ -2,7 +2,7 @@
 <div class="profile-menu" v-if="user">
     <div class="name"><span>{{user.name}}</span> <i class="el-icon-caret-bottom"></i></div>
     <div class="profile-nav">
-        <router-link :to="manageRoute">权限管理</router-link>
+        <router-link :to="manageRoute">接口管理</router-link>
         <a href="javascript:;" @click="logout">注销登录</a>
     </div>
 </div>
