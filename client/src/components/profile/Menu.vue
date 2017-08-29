@@ -33,16 +33,22 @@ export default {
     }
 };
 </script>
-<style scoped>
+<style lang="less" scoped>
 .profile-menu {
     width: 120px;
     text-align: right;
     position: relative;
     cursor: pointer;
+
+    &:hover {
+        background-color: #3d4c63;
+
+        .profile-nav {
+            display: inline-block;
+        }
+    }
 }
-.profile-menu:hover {
-    background-color: #3d4c63;
-}
+
 .name {
     color: #fff;
     display: inline-block;
@@ -50,20 +56,21 @@ export default {
     text-align: center;
     line-height: 60px;
     vertical-align: top;
-}
-.name span {
-    display: inline-block;
-    max-width: 80px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    vertical-align: top;
-}
-.name i {
-    color: #fff;
-    margin-left: 5px;
-    font-size: 12px;
-    vertical-align: middle;
+
+    span {
+        display: inline-block;
+        max-width: 80px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: top;
+    }
+    i {
+        color: #fff;
+        margin-left: 5px;
+        font-size: 12px;
+        vertical-align: middle;
+    }
 }
 .profile-nav {
     display: none;
@@ -79,19 +86,18 @@ export default {
     border-bottom-right-radius: 5px;
     overflow: hidden;
     margin-top: -1px;
-}
-.profile-menu:hover .profile-nav {
-    display: inline-block;
-}
-.profile-nav a:hover {
-    background-color: #3d4c63;
-}
-.profile-nav a {
-    display: block;
-    width: 100%;
-    padding: 10px 0;
-    font-size: 12px;
-    text-align: center;
-    color: #fff;
+
+    a {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        font-size: 12px;
+        text-align: center;
+        color: #fff;
+
+        &:hover {
+            background-color: #3d4c63;
+        }
+    }
 }
 </style>
