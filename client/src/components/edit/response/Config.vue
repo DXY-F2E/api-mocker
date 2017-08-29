@@ -53,36 +53,30 @@ export default {
     }
 };
 </script>
-<style>
+<style lang="less">
 .config-box {
     display: inline-block;
     margin-left: 36px;
-    /*padding: 10px 0;*/
-    /*border-bottom: 1px solid #D3DCE6;*/
-    /*padding-left: 15px;*/
-    /*border-left: 1px solid #d3dce6;*/
-}
-.fullscreen .config-box {
-    /*padding: 10px 10px;*/
-}
-.config-box .el-input {
-    display: inline-block;
-    width: 70px;
-}
-.config-box .el-select .el-input {
-    width: 100px;
-}
-.config-box .el-input .el-input__inner {
-    border: none;
-    border-radius: 0;
-    border-bottom: 1px solid #bfcbd9;
-    height: 20px;
-}
-.config-box .unit {
-    color: #bfcbd9;
-}
-.config-box .delay.el-form-item {
-    margin: 0 20px 0 0;
-    display: inline-block;
+
+    .el-input {
+        display: inline-block;
+        width: 70px;
+    }
+    .el-select .el-input {
+        width: 100px;
+    }
+    .el-input .el-input__inner {
+        border: none;
+        border-radius: 0;
+        border-bottom: 1px solid #bfcbd9;
+        height: 20px;
+    }
+    .unit {
+        color: #bfcbd9;
+    }
+    .delay.el-form-item {
+        margin: 0 20px 0 0;
+        display: inline-block;
+    }
 }
 </style>

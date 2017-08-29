@@ -23,7 +23,6 @@ export default {
         return {
             loading: true,
             loadingFail: false
-            // loadingService: Loading.service({target: this.$el});,
         };
     },
     methods: {

@@ -1,11 +1,11 @@
 <template>
-<ul class="history">
-    <li class="record" v-for="record in records" :key="record._id" @click="recover(record)">
-        <span class="time">{{record.createTime | dateFormat}}</span>
-        <span class="name">{{record.operatorName}}</span>
-        <span class="recover">加载</span>
-    </li>
-</ul>
+    <ul class="history">
+        <li class="record" v-for="record in records" :key="record._id" @click="recover(record)">
+            <span class="time">{{record.createTime | dateFormat}}</span>
+            <span class="name">{{record.operatorName}}</span>
+            <span class="recover">加载</span>
+        </li>
+    </ul>
 </template>
 
 <script>
@@ -48,28 +48,28 @@ export default {
     }
 };
 </script>
-<style scoped>
+<style lang="less">
 .history {
     padding-left: 5px;
-}
-.record {
-    color: #8492A6;
-    line-height: 2.2;
-    cursor: pointer;
-    /*border-bottom: 1px solid #d1dbe5;*/
-}
-.record:hover {
-    color: #475669;
-}
-.record .name {
-    margin-left: 10px;
-}
-.record .recover {
-    float: right;
-    margin-left: 10px;
-    display: none;
-}
-.record:hover .recover {
-    display: inline-block;
+    .record {
+        color: #8492A6;
+        line-height: 2.2;
+        cursor: pointer;
+        /*border-bottom: 1px solid #d1dbe5;*/
+        &:hover {
+            color: #475669;
+        }
+        .name {
+            margin-left: 10px;
+        }
+        .recover {
+            float: right;
+            margin-left: 10px;
+            display: none;
+        }
+        &:hover .recover {
+            display: inline-block;
+        }
+    }
 }
 </style>

@@ -76,60 +76,62 @@ export default {
     }
 };
 </script>
-<style>
+<style lang="less">
 .params-box {
-    /*max-width: 750px;*/
-    /*background-color: #f5f5f5;*/
     position: relative;
-}
-.params-box .params-box:before {
-    content: '';
-    position: absolute;
-    width: 1px;
-    left: 0px;
-    top: 4px;
-    bottom: 16px;
-    background-color: #d1dbe5;
-}
-.params-box .params-box .param:before {
-    content: '';
-    position: absolute;
-    width: 8px;
-    height: 1px;
-    background-color: #d1dbe5;
-    left: -25px;
-    top: 19px;
-}
-.params-box .param {
-    position: relative;
-    z-index: 0;
-}
-.params-box .el-cascader .el-input {
-    width: 140px;
-}
-.params-box .fill .name {
-    min-width: 140px;
-    /*max-width: 300px;*/
-    padding-left: 10px;
-    margin-right: 10px;
-}
-.params-box .fill .name label {
-    display: block;
-    line-height: 36px;
-    height: 36px;
-    border-bottom: 1px solid #EFF2F7;
-}
-.params-box code {
-    color: #e96900;
-    margin: 0 2px;
-    border-radius: 2px;
-    white-space: nowrap;
-}
-.params-box .params-box {
-    padding-left: 25px;
-    position: relative;
-}
-.params-box.set {
-    padding-left: 66px;
+
+    &.set {
+        padding-left: 66px;
+    }
+    .params-box {
+        padding-left: 25px;
+        position: relative;
+
+        &:before {
+            content: '';
+            position: absolute;
+            width: 1px;
+            left: 0px;
+            top: 4px;
+            bottom: 16px;
+            background-color: #d1dbe5;
+        }
+
+        .param:before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 1px;
+            background-color: #d1dbe5;
+            left: -25px;
+            top: 19px;
+        }
+    }
+    .param {
+        position: relative;
+        z-index: 0;
+    }
+    .el-cascader .el-input {
+        width: 140px;
+    }
+    .fill .name {
+        min-width: 140px;
+        /*max-width: 300px;*/
+        padding-left: 10px;
+        margin-right: 10px;
+
+        label {
+            display: block;
+            line-height: 36px;
+            height: 36px;
+            border-bottom: 1px solid #EFF2F7;
+        }
+    }
+    code {
+        color: #e96900;
+        margin: 0 2px;
+        border-radius: 2px;
+        white-space: nowrap;
+    }
 }
 </style>

@@ -49,55 +49,57 @@ export default {
     }
 };
 </script>
-<style>
-.apis.AllDoc {
-    width: 100%;
-    padding: 30px;
-    display: block !important;
-}
-.apis.AllDoc .group {
-    display: inline-block;
-    margin: 20px;
-}
+<style lang="less">
 .apis {
     transition: width 0.4s ease;
     width: 288px;
     min-width: 288px;
     background-color: #f8f8f8;
-}
-.apis .el-submenu .el-menu {
-    background-color: #f8f8f8;
-}
-.apis .el-menu {
-    background-color: #f8f8f8;
-}
-.apis .el-submenu .api {
-    height: 36px;
-    line-height: 36px;
-    padding: 0 30px !important;
-}
-.apis .el-submenu.active-group .el-submenu__title{
-    /*border-bottom: 1px solid #d1dbe5;*/
-    /*background-color: #D3DCE6;*/
-}
-.apis .el-submenu .el-menu-item.api:hover {
-    background-color: #eee;
-}
-.apis .el-menu-item-group__title {
-    margin-bottom: 20px;
-}
-.apis .method {
-    display: inline-block;
-    width: 44px;
-    text-align: right;
-    margin-right: 8px;
-    font-size: 12px;
-}
-.apis .api-name {
-    vertical-align: middle;
-    display: inline-block;
-    width: 140px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
+    &.AllDoc {
+        width: 100%;
+        padding: 30px;
+        display: block !important;
+
+        .group {
+            display: inline-block;
+            margin: 20px;
+        }
+    }
+
+    .el-submenu {
+        .el-menu {
+            background-color: #f8f8f8;
+        }
+        .api {
+            height: 36px;
+            line-height: 36px;
+            padding: 0 30px !important;
+        }
+        .el-menu-item.api:hover {
+            background-color: #eee;
+        }
+    }
+
+    .el-menu {
+        background-color: #f8f8f8;
+    }
+    .el-menu-item-group__title {
+        margin-bottom: 20px;
+    }
+    .method {
+        display: inline-block;
+        width: 44px;
+        text-align: right;
+        margin-right: 8px;
+        font-size: 12px;
+    }
+    .api-name {
+        vertical-align: middle;
+        display: inline-block;
+        width: 140px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 </style>

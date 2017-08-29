@@ -143,7 +143,7 @@ export default {
     }
 };
 </script>
-<style type="text/css">
+<style lang="less">
 .type-cascader .el-cascader-menu {
     height: auto;
 }
@@ -151,36 +151,39 @@ export default {
     height: 36px;
     line-height: 35px;
 }
-.params-box .config {
-    min-width: 220px;
-    max-width: 220px;
+.params-box {
+    .config {
+        min-width: 220px;
+        max-width: 220px;
+    }
+    .headers .config {
+        min-width: 80px;
+        max-width: 80px;
+        text-align: center;
+    }
+    .example {
+        min-width: 145px;
+        max-width: 220px;
+    }
+    .comment {
+        margin-right: 20px;
+        min-width: 145px;
+        max-width: 240px;
+    }
+    .key {
+        min-width: 100px;
+    }
+    .el-input__inner {
+        border: none;
+        border-radius: 0;
+        border-bottom: 1px solid #EFF2F7;
+    }
+    .el-input-number {
+        width: 100%;
+    }
+    .el-select {
+        margin-right: 20px;
+    }
 }
-.params-box .headers .config {
-    min-width: 80px;
-    max-width: 80px;
-    text-align: center;
-}
-.params-box .example {
-    min-width: 145px;
-    max-width: 220px;
-}
-.params-box .comment {
-    margin-right: 20px;
-    min-width: 145px;
-    max-width: 240px;
-}
-.params-box .key {
-    min-width: 100px;
-}
-.params-box .el-input__inner {
-    border: none;
-    border-radius: 0;
-    border-bottom: 1px solid #EFF2F7;
-}
-.params-box .el-input-number {
-    width: 100%;
-}
-.params-box .el-select {
-    margin-right: 20px;
-}
+
 </style>
