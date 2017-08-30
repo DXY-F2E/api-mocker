@@ -33,7 +33,7 @@
 
 <script>
 import JsonEditor from '../../common/jsonEditor/Index'
-import { buildSchemaFormExample, buildExampleFormSchema } from '../../../util'
+import { buildSchemaFromExample, buildExampleFromSchema } from '../../../util'
 export default {
   components: {
     JsonEditor
@@ -65,7 +65,7 @@ export default {
       this.tooltip[name] = true
       window.setTimeout(() => {
         this.tooltip[name] = false
-      }, 700)
+      }, 1000)
     },
     updateExample (data) {
       this.status = data
@@ -76,7 +76,7 @@ export default {
       this.$store.commit('UPDATE_DSL_STATUS', data)
     },
     buildExample () {
-      this.example = buildExampleFormSchema(this.schema)
+      this.example = buildExampleFromSchema(this.schema)
       this.showTooltip('example')
     },
     buildSchema () {
@@ -84,7 +84,7 @@ export default {
         this.$message.error(this.status.msg)
         return
       }
-      const schema = buildSchemaFormExample(this.example, this.schema.params)
+      const schema = buildSchemaFromExample(this.example, this.schema.params)
       this.$emit('buildSchema', schema)
       this.showTooltip('schema')
     }

@@ -1,7 +1,7 @@
 import Mock from 'mockjs'
-let buildExampleFormSchema = null;
+let buildExampleFromSchema = null;
 let buildExample = null;
-buildExampleFormSchema = (schema) => {
+buildExampleFromSchema = (schema) => {
     const example = {};
     schema.params.forEach(param => {
         if (!param.key) return;
@@ -12,7 +12,7 @@ buildExampleFormSchema = (schema) => {
 buildExample = (param) => {
     switch (param.type) {
         case 'object':
-            return buildExampleFormSchema(param);
+            return buildExampleFromSchema(param);
         case 'array':
             return [buildExample(param.items)];
         case 'number':
@@ -23,4 +23,4 @@ buildExample = (param) => {
             return 'value';
     }
 };
-export default buildExampleFormSchema;
+export default buildExampleFromSchema;

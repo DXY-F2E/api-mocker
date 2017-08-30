@@ -18,7 +18,7 @@
 import Prism from 'prismjs'
 import ParamsTable from './ParamsTable'
 import 'prismjs/themes/prism.css'
-import { buildExampleFormSchema } from '../../util'
+import { buildExampleFromSchema } from '../../util'
 export default {
   props: ['schema', 'name'],
   data () {
@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     example () {
-      const example = this.schema.example ? this.schema.example : buildExampleFormSchema(this.schema)
+      const example = this.schema.example ? this.schema.example : buildExampleFromSchema(this.schema)
       return Prism.highlight(JSON.stringify(example, null, 4), Prism.languages.javascript)
     }
   },

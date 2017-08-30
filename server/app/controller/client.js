@@ -81,7 +81,7 @@ module.exports = app => {
         const index = api.options.responseIndex
         const idx = index === -1 ? parseInt(Math.random() * api.options.response.length) : index
         const schema = api.options.response[idx]
-        return schema.example || dslCore.buildExampleFormSchema(schema)
+        return schema.example || dslCore.buildExampleFromSchema(schema)
       }
       return api.dsl
     }
