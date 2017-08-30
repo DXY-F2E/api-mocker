@@ -18,42 +18,42 @@
 
 <script>
 export default {
-    props: {
-        title: {
-            type: String,
-            required: true
-        },
-        isExpland: {
-            type: Boolean,
-            default: true
-        }
+  props: {
+    title: {
+      type: String,
+      required: true
     },
-    methods: {
-        keyupBehavior(e) {
-            // 按Esc键退出全屏
-            if (this.fullscreen && e.keyCode === 27) {
-                this.fullscreen = false;
-            }
-        },
-        switchExpland() {
-            this.expland = !this.expland;
-        },
-        switchFullscreen() {
-            this.fullscreen = !this.fullscreen;
-            if (this.fullscreen) {
-                document.addEventListener('keyup', this.keyupBehavior);
-            } else {
-                document.removeEventListener('keyup', this.keyupBehavior);
-            }
-        }
-    },
-    data() {
-        return {
-            fullscreen: false,
-            expland: this.isExpland
-        };
+    isExpland: {
+      type: Boolean,
+      default: true
     }
-};
+  },
+  methods: {
+    keyupBehavior (e) {
+            // 按Esc键退出全屏
+      if (this.fullscreen && e.keyCode === 27) {
+        this.fullscreen = false
+      }
+    },
+    switchExpland () {
+      this.expland = !this.expland
+    },
+    switchFullscreen () {
+      this.fullscreen = !this.fullscreen
+      if (this.fullscreen) {
+        document.addEventListener('keyup', this.keyupBehavior)
+      } else {
+        document.removeEventListener('keyup', this.keyupBehavior)
+      }
+    }
+  },
+  data () {
+    return {
+      fullscreen: false,
+      expland: this.isExpland
+    }
+  }
+}
 </script>
 <style lang="less">
 .setting-field {

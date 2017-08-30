@@ -22,19 +22,19 @@
 
 <script>
 export default {
-    props: ['response', 'activeIndex'],
-    methods: {
-        addSchema() {
-            this.$emit('add');
-        },
-        changeSchema(index) {
-            this.$emit('change', index);
-        },
-        deleteSchema(index) {
-            this.$emit('delete', index);
-        }
+  props: ['response', 'activeIndex'],
+  methods: {
+    addSchema () {
+      this.$emit('add')
+    },
+    changeSchema (index) {
+      this.$emit('change', index)
+    },
+    deleteSchema (index) {
+      this.$emit('delete', index)
     }
-};
+  }
+}
 </script>
 <style lang="less">
 .response-status {

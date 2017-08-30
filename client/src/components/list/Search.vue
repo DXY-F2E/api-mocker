@@ -11,29 +11,29 @@
 </template>
 <script>
 export default {
-    props: {
-        placeholder: {
-            type: String,
-            default: '请输入条件'
-        },
-        size: {
-            type: String
-        }
+  props: {
+    placeholder: {
+      type: String,
+      default: '请输入条件'
     },
-    data() {
-        return {
-            inputValue: ''
-        };
-    },
-    methods: {
-        handleQuery() {
-            this.$emit('query', this.inputValue);
-        },
-        handleChange(val) {
-            if (val === '') {
-                this.handleQuery();
-            }
-        }
+    size: {
+      type: String
     }
-};
+  },
+  data () {
+    return {
+      inputValue: ''
+    }
+  },
+  methods: {
+    handleQuery () {
+      this.$emit('query', this.inputValue)
+    },
+    handleChange (val) {
+      if (val === '') {
+        this.handleQuery()
+      }
+    }
+  }
+}
 </script>

@@ -32,74 +32,74 @@
 </template>
 
 <script>
-import JsonEditor from '../../common/jsonEditor/Index';
-import { buildSchemaFormExample, buildExampleFormSchema } from '../../../util';
+import JsonEditor from '../../common/jsonEditor/Index'
+import { buildSchemaFormExample, buildExampleFormSchema } from '../../../util'
 export default {
-    components: {
-        JsonEditor
-    },
-    data() {
-        return {
-            status: {
-                success: true,
-                msg: ''
-            },
-            tooltip: {
-                example: false,
-                schema: false
-            }
-        };
-    },
-    computed: {
-        example: {
-            get() {
-                return this.schema.example;
-            },
-            set(val) {
-                this.$emit('buildExample', val);
-            }
-        }
-    },
-    methods: {
-        showTooltip(name) {
-            this.tooltip[name] = true;
-            window.setTimeout(() => {
-                this.tooltip[name] = false;
-            }, 700);
-        },
-        updateExample(data) {
-            this.status = data;
-            if (data.success) {
-                this.example = data.data;
-            }
-            // 此处为了业务简单，与vuex耦合
-            this.$store.commit('UPDATE_DSL_STATUS', data);
-        },
-        buildExample() {
-            this.example = buildExampleFormSchema(this.schema);
-            this.showTooltip('example');
-        },
-        buildSchema() {
-            if (!this.status.success) {
-                this.$message.error(this.status.msg);
-                return;
-            }
-            const schema = buildSchemaFormExample(this.example, this.schema.params);
-            this.$emit('buildSchema', schema);
-            this.showTooltip('schema');
-        }
-    },
-    props: {
-        schema: {
-            type: Object,
-            required: true
-        },
-        fullscreen: {
-            type: Boolean,
-            default: false
-        }
+  components: {
+    JsonEditor
+  },
+  data () {
+    return {
+      status: {
+        success: true,
+        msg: ''
+      },
+      tooltip: {
+        example: false,
+        schema: false
+      }
     }
-};
+  },
+  computed: {
+    example: {
+      get () {
+        return this.schema.example
+      },
+      set (val) {
+        this.$emit('buildExample', val)
+      }
+    }
+  },
+  methods: {
+    showTooltip (name) {
+      this.tooltip[name] = true
+      window.setTimeout(() => {
+        this.tooltip[name] = false
+      }, 700)
+    },
+    updateExample (data) {
+      this.status = data
+      if (data.success) {
+        this.example = data.data
+      }
+            // 此处为了业务简单，与vuex耦合
+      this.$store.commit('UPDATE_DSL_STATUS', data)
+    },
+    buildExample () {
+      this.example = buildExampleFormSchema(this.schema)
+      this.showTooltip('example')
+    },
+    buildSchema () {
+      if (!this.status.success) {
+        this.$message.error(this.status.msg)
+        return
+      }
+      const schema = buildSchemaFormExample(this.example, this.schema.params)
+      this.$emit('buildSchema', schema)
+      this.showTooltip('schema')
+    }
+  },
+  props: {
+    schema: {
+      type: Object,
+      required: true
+    },
+    fullscreen: {
+      type: Boolean,
+      default: false
+    }
+  }
+}
 </script>
 <style>
 .schema-example {

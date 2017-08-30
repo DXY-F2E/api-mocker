@@ -22,42 +22,42 @@
 
 <script>
 export default {
-    props: {
-        remoteMethod: Function,
-        placeholder: {
-            type: String,
-            default: '请输入进行搜索选择'
-        },
-        loading: {
-            type: Boolean,
-            default: false
-        },
-        value: {
-            type: Array,
-            default: []
-        },
-        options: {
-            type: Array,
-            default: []
-        }
+  props: {
+    remoteMethod: Function,
+    placeholder: {
+      type: String,
+      default: '请输入进行搜索选择'
     },
-    data() {
-        return {
-            localValue: this.value
-        };
+    loading: {
+      type: Boolean,
+      default: false
     },
-    methods: {
-        getUserLabel(item) {
-            return `${item.name}（${item.email}）`;
-        },
-        itemClick(val) {
-            this.$emit('itemClick', val);
-        },
-        itemRemove(val) {
-            this.$emit('itemRemove', val.value);
-        }
+    value: {
+      type: Array,
+      default: []
+    },
+    options: {
+      type: Array,
+      default: []
     }
-};
+  },
+  data () {
+    return {
+      localValue: this.value
+    }
+  },
+  methods: {
+    getUserLabel (item) {
+      return `${item.name}（${item.email}）`
+    },
+    itemClick (val) {
+      this.$emit('itemClick', val)
+    },
+    itemRemove (val) {
+      this.$emit('itemRemove', val.value)
+    }
+  }
+}
 </script>
 <style>
 .user-selector {

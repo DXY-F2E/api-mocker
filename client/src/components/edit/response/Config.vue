@@ -26,32 +26,32 @@
 
 <script>
 export default {
-    computed: {
-        response() {
-            return this.$store.state.api.options.response;
-        },
-        delay() {
-            return this.$store.state.api.options.delay;
-        },
-        responseIndex: {
-            get() {
-                return this.$store.state.api.options.responseIndex;
-            },
-            set(value) {
-                this.$store.commit('UPDATE_API_PROPS', ['options.responseIndex', value]);
-            }
-        }
+  computed: {
+    response () {
+      return this.$store.state.api.options.response
     },
-    methods: {
-        updateDelay(value) {
-            value = window.parseInt(value);
-            if (isNaN(value)) {
-                value = 0;
-            }
-            this.$store.commit('UPDATE_API_PROPS', ['options.delay', value]);
-        }
+    delay () {
+      return this.$store.state.api.options.delay
+    },
+    responseIndex: {
+      get () {
+        return this.$store.state.api.options.responseIndex
+      },
+      set (value) {
+        this.$store.commit('UPDATE_API_PROPS', ['options.responseIndex', value])
+      }
     }
-};
+  },
+  methods: {
+    updateDelay (value) {
+      value = window.parseInt(value)
+      if (isNaN(value)) {
+        value = 0
+      }
+      this.$store.commit('UPDATE_API_PROPS', ['options.delay', value])
+    }
+  }
+}
 </script>
 <style lang="less">
 .config-box {

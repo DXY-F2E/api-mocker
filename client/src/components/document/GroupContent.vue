@@ -8,21 +8,21 @@
 </template>
 
 <script>
-import ApiDoc from './ApiDoc';
+import ApiDoc from './ApiDoc'
 export default {
-    components: {
-        ApiDoc
+  components: {
+    ApiDoc
+  },
+  computed: {
+    groups () {
+      return this.$store.state.groups
     },
-    computed: {
-        groups() {
-            return this.$store.state.groups;
-        },
-        group() {
-            return this.groups.find(g => g._id === this.$route.params.groupId);
-        }
-    },
-    props: ['apis']
-};
+    group () {
+      return this.groups.find(g => g._id === this.$route.params.groupId)
+    }
+  },
+  props: ['apis']
+}
 </script>
 <style>
 .apis-doc > .title {

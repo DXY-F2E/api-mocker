@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import ChartMock from './Mock';
+import ChartMock from './Mock'
 export default {
-    components: {
-        ChartMock
-    }
-};
+  components: {
+    ChartMock
+  }
+}
 </script>
 <style lang="less">
 #statistics {

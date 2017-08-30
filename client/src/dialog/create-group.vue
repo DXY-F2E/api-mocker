@@ -15,37 +15,37 @@
  // emit: close,action
  // props: visited
  export default {
-     props: {
-         visited: {
-             default: false,
-             required: true
-         }
-     },
-     data() {
-         return {
-             input: ''
-         };
-     },
-     methods: {
-         handleClickAction() {
-             this.$emit('action', this.input);
-         },
-         handleClickCancel() {
-             this.input = '';
-             this.$emit('close', this);
-         }
-     },
-     watch: {
-         visited(val) {
-             if (!val) {
-                 this.$emit('close', this);
-             }
-         }
-     },
-     computed: {
-         actionDisabled() {
-             return !this.input;
-         }
+   props: {
+     visited: {
+       default: false,
+       required: true
      }
- };
+   },
+   data () {
+     return {
+       input: ''
+     }
+   },
+   methods: {
+     handleClickAction () {
+       this.$emit('action', this.input)
+     },
+     handleClickCancel () {
+       this.input = ''
+       this.$emit('close', this)
+     }
+   },
+   watch: {
+     visited (val) {
+       if (!val) {
+         this.$emit('close', this)
+       }
+     }
+   },
+   computed: {
+     actionDisabled () {
+       return !this.input
+     }
+   }
+ }
 </script>

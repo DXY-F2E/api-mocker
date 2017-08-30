@@ -39,62 +39,62 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import moment from 'moment';
-import Control from './ApiControl';
-import ApiAuthority from './ApiAuthority';
+import { mapActions } from 'vuex'
+import moment from 'moment'
+import Control from './ApiControl'
+import ApiAuthority from './ApiAuthority'
 export default {
-    components: {
-        Control,
-        ApiAuthority
-    },
-    data() {
-        return {
-            showAuthority: false,
-            apis: [],
-            api: {}
-        };
-    },
-    computed: {
-        richApis() {
-            return this.apis.map(a => {
-                a.groupName = this.getGroup(a.group);
-                return a;
-            });
-        },
-        groups() {
-            return this.$store.state.groups;
-        }
-    },
-    methods: {
-        ...mapActions([
-            'getManageApi'
-        ]),
-        getGroup(groupId) {
-            const group = this.groups.find(g => g._id === groupId);
-            return group ? group.name : '无权查看的分组';
-        },
-        manageApi(api) {
-            this.api = api;
-            this.showAuthority = true;
-        },
-        timeFormat(row, col) {
-            return moment(new Date(Number(row[col.property]))).format('YYYY-MM-DD HH:mm:ss');
-        },
-        getApis() {
-            this.getManageApi().then(rs => {
-                this.apis = rs.data;
-            });
-        },
-        apiDelete(api) {
-            const index = this.apis.findIndex(a => a === api);
-            this.apis.splice(index, 1);
-        }
-    },
-    mounted() {
-        this.getApis();
+  components: {
+    Control,
+    ApiAuthority
+  },
+  data () {
+    return {
+      showAuthority: false,
+      apis: [],
+      api: {}
     }
-};
+  },
+  computed: {
+    richApis () {
+      return this.apis.map(a => {
+        a.groupName = this.getGroup(a.group)
+        return a
+      })
+    },
+    groups () {
+      return this.$store.state.groups
+    }
+  },
+  methods: {
+    ...mapActions([
+      'getManageApi'
+    ]),
+    getGroup (groupId) {
+      const group = this.groups.find(g => g._id === groupId)
+      return group ? group.name : '无权查看的分组'
+    },
+    manageApi (api) {
+      this.api = api
+      this.showAuthority = true
+    },
+    timeFormat (row, col) {
+      return moment(new Date(Number(row[col.property]))).format('YYYY-MM-DD HH:mm:ss')
+    },
+    getApis () {
+      this.getManageApi().then(rs => {
+        this.apis = rs.data
+      })
+    },
+    apiDelete (api) {
+      const index = this.apis.findIndex(a => a === api)
+      this.apis.splice(index, 1)
+    }
+  },
+  mounted () {
+    this.getApis()
+  }
+}
 </script>
 <style>
 </style>

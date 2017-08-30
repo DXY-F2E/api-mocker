@@ -19,45 +19,45 @@
 
 <script>
 export default {
-    data() {
-        return {
-            loginRules: {
-                email: [{
-                    type: 'email',
-                    required: true,
-                    trigger: 'blur'
-                }],
-                password: [{
-                    required: true,
-                    trigger: 'blur'
-                }]
-            },
-            loginForm: {
-                email: '',
-                password: ''
-            }
-        };
-    },
-    methods: {
-        validate() {
-            this.$refs.loginForm.validate(rs => {
-                if (rs) {
-                    this.login();
-                }
-            });
-        },
-        login() {
-            this.$store.dispatch('login', this.loginForm).then(() => {
-                this.$message.success('登录成功, 即将跳转');
-                window.setTimeout(() => {
-                    this.$router.push({
-                        name: 'AllList'
-                    });
-                }, 1000);
-            }).catch(err => this.$message.error(`登录失败：${err.msg}`));
-        }
+  data () {
+    return {
+      loginRules: {
+        email: [{
+          type: 'email',
+          required: true,
+          trigger: 'blur'
+        }],
+        password: [{
+          required: true,
+          trigger: 'blur'
+        }]
+      },
+      loginForm: {
+        email: '',
+        password: ''
+      }
     }
-};
+  },
+  methods: {
+    validate () {
+      this.$refs.loginForm.validate(rs => {
+        if (rs) {
+          this.login()
+        }
+      })
+    },
+    login () {
+      this.$store.dispatch('login', this.loginForm).then(() => {
+        this.$message.success('登录成功, 即将跳转')
+        window.setTimeout(() => {
+          this.$router.push({
+            name: 'AllList'
+          })
+        }, 1000)
+      }).catch(err => this.$message.error(`登录失败：${err.msg}`))
+    }
+  }
+}
 </script>
 <style>
 </style>
