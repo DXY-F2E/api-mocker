@@ -6,8 +6,8 @@
 
 <script>
 export default {
-    name: 'API_Mocker'
-};
+  name: 'API_Mocker'
+}
 </script>
 
 <style>

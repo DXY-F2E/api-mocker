@@ -12,23 +12,23 @@
 </template>
 
 <script>
-import UserItem from './UserItem';
+import UserItem from './UserItem'
 export default {
-    components: {
-        UserItem
-    },
-    computed: {
-        userItems() {
-            return [{
-                label: '姓名',
-                key: 'name'
-            }, {
-                label: '邮箱',
-                key: 'email'
-            }];
-        }
+  components: {
+    UserItem
+  },
+  computed: {
+    userItems () {
+      return [{
+        label: '姓名',
+        key: 'name'
+      }, {
+        label: '邮箱',
+        key: 'email'
+      }]
     }
-};
+  }
+}
 </script>
 <style lang="less">
 .profile-box {

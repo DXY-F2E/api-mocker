@@ -5,30 +5,30 @@
 </template>
 
 <script>
-import ApiDoc from './ApiDoc';
+import ApiDoc from './ApiDoc'
 export default {
-    components: {
-        ApiDoc
-    },
-    props: ['apis'],
-    methods: {
-        getApi(route) {
-            this.api = this.apis.find(api => api._id === route.params.apiId);
-        }
-    },
-    mounted() {
-        this.getApi(this.$route);
-    },
-    beforeRouteUpdate(to, from, next) {
-        this.getApi(to);
-        next();
-    },
-    data() {
-        return {
-            api: null
-        };
+  components: {
+    ApiDoc
+  },
+  props: ['apis'],
+  methods: {
+    getApi (route) {
+      this.api = this.apis.find(api => api._id === route.params.apiId)
     }
-};
+  },
+  mounted () {
+    this.getApi(this.$route)
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.getApi(to)
+    next()
+  },
+  data () {
+    return {
+      api: null
+    }
+  }
+}
 </script>
 <style>
 </style>

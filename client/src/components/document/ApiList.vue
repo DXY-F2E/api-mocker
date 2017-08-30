@@ -26,28 +26,28 @@
 
 <script>
 export default {
-    props: ['apis'],
-    computed: {
-        defaultOpeneds() {
-            return this.group ? [this.group._id] : [];
-        },
-        groups() {
-            return this.$store.state.groups;
-        },
-        group() {
-            return this.groups.find(g => g._id === this.$route.params.groupId);
-        }
+  props: ['apis'],
+  computed: {
+    defaultOpeneds () {
+      return this.group ? [this.group._id] : []
     },
-    methods: {
-        showApiDoc(api) {
-            const { groupId, apiId } = this.$route.params;
-            if (api._id === apiId) {
-                return;
-            }
-            this.$router.push(`/doc/${groupId}/${api._id}`);
-        }
+    groups () {
+      return this.$store.state.groups
+    },
+    group () {
+      return this.groups.find(g => g._id === this.$route.params.groupId)
     }
-};
+  },
+  methods: {
+    showApiDoc (api) {
+      const { groupId, apiId } = this.$route.params
+      if (api._id === apiId) {
+        return
+      }
+      this.$router.push(`/doc/${groupId}/${api._id}`)
+    }
+  }
+}
 </script>
 <style lang="less">
 .apis {

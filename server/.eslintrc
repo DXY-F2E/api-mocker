@@ -1,9 +1,10 @@
 {
   "extends": [
-    "eslint-config-egg",
-    "@dxy/eslint-config-dxy-base"
+    "standard"
+    // "eslint-config-egg"
   ],
   "rules": {
+    "new-cap": "warn"
   },
   "globals": {
     "app": true,

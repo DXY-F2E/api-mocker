@@ -11,51 +11,51 @@
 </template>
 
 <script>
-import Params from '../params/Index';
-import R from 'ramda';
+import Params from '../params/Index'
+import R from 'ramda'
 export default {
-    components: {
-        Params
+  components: {
+    Params
+  },
+  props: ['params', 'name'],
+  methods: {
+    changeParams (data) {
+      const key = `options.params.${this.name}`
+      this.$store.commit('UPDATE_API_PROPS',
+                               [key, R.clone(data)])
     },
-    props: ['params', 'name'],
-    methods: {
-        changeParams(data) {
-            const key = `options.params.${this.name}`;
-            this.$store.commit('UPDATE_API_PROPS',
-                               [key, R.clone(data)]);
-        },
-        changeReqParams(data, value) {
-            this.$store.commit('UPDATE_REQ_PARAMS', {
-                type: this.name,
-                params: R.clone(data),
-                value
-            });
-            this.reqParams = R.clone(data);
-        },
-        getReqParams(param) {
-            this.buildReqParams(param);
-            return param;
-        },
-        buildReqParams(param) {
-            if (param.type === 'object' && param.params) {
-                param.params.map(p => this.buildReqParams(p));
-            }
-            param.value = '';
-        }
+    changeReqParams (data, value) {
+      this.$store.commit('UPDATE_REQ_PARAMS', {
+        type: this.name,
+        params: R.clone(data),
+        value
+      })
+      this.reqParams = R.clone(data)
     },
-    computed: {
-        reqParams: {
-            get() {
-                return R.clone(this.params);
+    getReqParams (param) {
+      this.buildReqParams(param)
+      return param
+    },
+    buildReqParams (param) {
+      if (param.type === 'object' && param.params) {
+        param.params.map(p => this.buildReqParams(p))
+      }
+      param.value = ''
+    }
+  },
+  computed: {
+    reqParams: {
+      get () {
+        return R.clone(this.params)
                 // const reqParams = {
                 //     type: 'object',
                 //     params: R.clone(this.params)
                 // };
                 // return this.getReqParams(reqParams);
-            }
-        }
+      }
     }
-};
+  }
+}
 </script>
 <style>
 /*.test .request-box .set,

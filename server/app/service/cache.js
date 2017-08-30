@@ -1,4 +1,4 @@
-const LRU = require("lru-cache")
+const LRU = require('lru-cache')
 const DEFAULT_MAX_AGE = 1 * 1000 * 60
 const options = {
   max: 500,
@@ -9,23 +9,23 @@ const options = {
 const Cache = LRU(options)
 
 module.exports = app => {
-    class CacheService extends app.Service {
-        create (key, value, maxAge = DEFAULT_MAX_AGE ) {
-          return Cache.set(key, value, maxAge)
-        }
-        verifyCodeCache (key, length, maxAge = DEFAULT_MAX_AGE ) {
-          const code = Array.from({length}, () => Math.ceil(Math.random() * 9)).join('')
-          return this.create(key, code, maxAge) && code
-        }
-        get (key) {
-          return Cache.get(key)
-        }
-        del (key) {
-          return Cache.del(key)
-        }
-        has (key) {
-          return Cache.has(key)
-        }
+  class CacheService extends app.Service {
+    create (key, value, maxAge = DEFAULT_MAX_AGE) {
+      return Cache.set(key, value, maxAge)
     }
-    return CacheService;
-};
+    verifyCodeCache (key, length, maxAge = DEFAULT_MAX_AGE) {
+      const code = Array.from({ length }, () => Math.ceil(Math.random() * 9)).join('')
+      return this.create(key, code, maxAge) && code
+    }
+    get (key) {
+      return Cache.get(key)
+    }
+    del (key) {
+      return Cache.del(key)
+    }
+    has (key) {
+      return Cache.has(key)
+    }
+    }
+  return CacheService
+}

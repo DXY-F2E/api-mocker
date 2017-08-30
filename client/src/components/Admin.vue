@@ -6,41 +6,41 @@
 </template>
 
 <script>
-import AppHeader from './common/Header';
+import AppHeader from './common/Header'
 export default {
-    components: {
-        AppHeader
+  components: {
+    AppHeader
+  },
+  computed: {
+    user () {
+      return this.$store.state.user
     },
-    computed: {
-        user() {
-            return this.$store.state.user;
-        },
-        windowWidth: {
-            get() {
-                return this.$store.state.windowWidth;
-            },
-            set(value) {
-                this.$store.commit('UPDATE_WINDOW_WIDTH', value);
-            }
-        }
-    },
-    methods: {
-        windowResize() {
-            this.windowWidth = document.body.clientWidth;
-        }
-    },
-    beforeDestroy() {
-        window.removeEventListener('resize', this.windowResize);
-    },
-    mounted() {
-        this.windowWidth = document.body.clientWidth;
+    windowWidth: {
+      get () {
+        return this.$store.state.windowWidth
+      },
+      set (value) {
+        this.$store.commit('UPDATE_WINDOW_WIDTH', value)
+      }
+    }
+  },
+  methods: {
+    windowResize () {
+      this.windowWidth = document.body.clientWidth
+    }
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.windowResize)
+  },
+  mounted () {
+    this.windowWidth = document.body.clientWidth
         // 暂时无用
         // window.addEventListener('resize', this.windowResize);
-        this.$store.dispatch('getUser').then(() => {
-            this.$store.dispatch('getGroups');
-        });
-    }
-};
+    this.$store.dispatch('getUser').then(() => {
+      this.$store.dispatch('getGroups')
+    })
+  }
+}
 </script>
 <style lang="less">
 .content {

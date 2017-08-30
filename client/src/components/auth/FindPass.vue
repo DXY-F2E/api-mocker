@@ -14,54 +14,54 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions } from 'vuex'
 export default {
-    computed: {
-        codeText() {
-            if (this.sentCodeToken) {
-                return `${this.interval}s`;
-            } else {
-                return '发送验证码';
-            }
-        }
-    },
-    data() {
-        return {
-            resetRules: {
-                email: [{
-                    type: 'email',
-                    required: true,
-                    trigger: 'blur'
-                }]
-            },
-            findForm: {
-                email: ''
-            }
-        };
-    },
-    methods: {
-        ...mapActions(['sendResetPassTicket', 'resetPass']),
-        validate() {
-            if (this.sentCodeToken) {
-                return;
-            }
-            this.$refs.findForm.validateField('email', rs => {
-                if (rs) {
-                    this.$message.error('请填写正确的邮箱地址');
-                    return;
-                }
-                this.sentCodeToken = true;
-                this.sendResetPassTicket(this.findForm.email).then(() => {
-                    this.$message.info('发送验证码成功，请注意查收邮件');
-                    this.sentCodeToken = false;
-                }).catch(err => {
-                    this.$message.error(`发送失败：${err.msg}`);
-                    this.sentCodeToken = false;
-                });
-            });
-        }
+  computed: {
+    codeText () {
+      if (this.sentCodeToken) {
+        return `${this.interval}s`
+      } else {
+        return '发送验证码'
+      }
     }
-};
+  },
+  data () {
+    return {
+      resetRules: {
+        email: [{
+          type: 'email',
+          required: true,
+          trigger: 'blur'
+        }]
+      },
+      findForm: {
+        email: ''
+      }
+    }
+  },
+  methods: {
+    ...mapActions(['sendResetPassTicket', 'resetPass']),
+    validate () {
+      if (this.sentCodeToken) {
+        return
+      }
+      this.$refs.findForm.validateField('email', rs => {
+        if (rs) {
+          this.$message.error('请填写正确的邮箱地址')
+          return
+        }
+        this.sentCodeToken = true
+        this.sendResetPassTicket(this.findForm.email).then(() => {
+          this.$message.info('发送验证码成功，请注意查收邮件')
+          this.sentCodeToken = false
+        }).catch(err => {
+          this.$message.error(`发送失败：${err.msg}`)
+          this.sentCodeToken = false
+        })
+      })
+    }
+  }
+}
 </script>
 <style>
 </style>

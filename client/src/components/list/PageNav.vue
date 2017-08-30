@@ -12,39 +12,39 @@
 
 <script>
 export default {
-    props: {
-        total: {
-            type: Number,
-            default: 0
-        },
-        query: {
-            type: Object,
-            default() {
-                return {
-                    page: 1,
-                    limit: 16
-                };
-            }
-        },
-        onPageNav: {
-            type: Function,
-            required: true
-        }
+  props: {
+    total: {
+      type: Number,
+      default: 0
     },
-    computed: {
-        showNav() {
-            return this.total > this.query.limit;
+    query: {
+      type: Object,
+      default () {
+        return {
+          page: 1,
+          limit: 16
         }
+      }
     },
-    methods: {
-        handleCurrentChange(currentPage) {
-            if (currentPage === this.query.page) {
-                return;
-            }
-            this.onPageNav(currentPage);
-        }
+    onPageNav: {
+      type: Function,
+      required: true
     }
-};
+  },
+  computed: {
+    showNav () {
+      return this.total > this.query.limit
+    }
+  },
+  methods: {
+    handleCurrentChange (currentPage) {
+      if (currentPage === this.query.page) {
+        return
+      }
+      this.onPageNav(currentPage)
+    }
+  }
+}
 </script>
 <style>
 .page-nav {

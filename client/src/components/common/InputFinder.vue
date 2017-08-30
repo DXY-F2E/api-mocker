@@ -13,36 +13,36 @@
 
 <script>
 export default {
-    props: {
-        selectedData: {
-            type: Array,
-            default: []
-        },
-        queryData: {
-            type: Array,
-            default: []
-        }
+  props: {
+    selectedData: {
+      type: Array,
+      default: []
     },
-    data() {
-        return {
-            query: ''
-        };
-    },
-    methods: {
-        enter(val) {
-            this.$emit('enter', val);
-        },
-        input(val) {
-            this.$emit('input', val);
-        },
-        select(val) {
-            this.$emit('select', val);
-        },
-        delete(val) {
-            this.$emit('delete', val);
-        }
+    queryData: {
+      type: Array,
+      default: []
     }
-};
+  },
+  data () {
+    return {
+      query: ''
+    }
+  },
+  methods: {
+    enter (val) {
+      this.$emit('enter', val)
+    },
+    input (val) {
+      this.$emit('input', val)
+    },
+    select (val) {
+      this.$emit('select', val)
+    },
+    delete (val) {
+      this.$emit('delete', val)
+    }
+  }
+}
 </script>
 <style lang="less">
 .input-finder {

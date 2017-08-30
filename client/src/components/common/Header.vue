@@ -23,17 +23,17 @@
 </template>
 
 <script>
-import ProfileMenu from '../profile/Menu';
+import ProfileMenu from '../profile/Menu'
 export default {
-    components: {
-        ProfileMenu
-    },
-    computed: {
-        activeIndex() {
-            return this.$route.matched[1] ? this.$route.matched[1].name : '';
-        }
+  components: {
+    ProfileMenu
+  },
+  computed: {
+    activeIndex () {
+      return this.$route.matched[1] ? this.$route.matched[1].name : ''
     }
-};
+  }
+}
 </script>
 <style scoped>
 .header {

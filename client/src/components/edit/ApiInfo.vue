@@ -57,84 +57,84 @@
 </template>
 
 <script>
-import createGroup from '../../dialog/create-group';
-import ApiHistory from './ApiHistory';
+import createGroup from '../../dialog/create-group'
+import ApiHistory from './ApiHistory'
 export default {
-    components: {
-        createGroup,
-        ApiHistory
-    },
-    data() {
-        return {
-            showCreateGroup: false
-        };
-    },
-    methods: {
-        handleClickCreateGroup(groupName) {
-            this.$store.dispatch('createGroup', { name: groupName }).then(() => {
-                this.showCreateGroup = false;
-            }).catch(e => this.$message.error(e.msg));
-        },
-        handleClickClose() {
-            this.showCreateGroup = false;
-        }
-    },
-    created() {
-        this.originTitle = document.title;
-    },
-    beforeDestroy() {
-        document.title = this.originTitle;
-    },
-    computed: {
-        groups() {
-            return this.$store.state.groups;
-        },
-        history() {
-            return this.$store.state.api.history;
-        },
-        name: {
-            get() {
-                document.title = this.$store.state.api.name || '未命名接口';
-                return this.$store.state.api.name;
-            },
-            set(value) {
-                this.$store.commit('UPDATE_API_PROPS', ['name', value]);
-            }
-        },
-        prodUrl: {
-            get() {
-                return this.$store.state.api.prodUrl;
-            },
-            set(value) {
-                this.$store.commit('UPDATE_API_PROPS', ['prodUrl', value]);
-            }
-        },
-        devUrl: {
-            get() {
-                return this.$store.state.api.devUrl;
-            },
-            set(value) {
-                this.$store.commit('UPDATE_API_PROPS', ['devUrl', value]);
-            }
-        },
-        proxyMode: {
-            get() {
-                return this.$store.state.api.options.proxy.mode;
-            },
-            set(value) {
-                this.$store.commit('UPDATE_API_PROPS', ['options.proxy.mode', value]);
-            }
-        },
-        group: {
-            get() {
-                return this.$store.state.api.group;
-            },
-            set(value) {
-                this.$store.commit('UPDATE_API_PROPS', ['group', value]);
-            }
-        }
+  components: {
+    createGroup,
+    ApiHistory
+  },
+  data () {
+    return {
+      showCreateGroup: false
     }
-};
+  },
+  methods: {
+    handleClickCreateGroup (groupName) {
+      this.$store.dispatch('createGroup', { name: groupName }).then(() => {
+        this.showCreateGroup = false
+      }).catch(e => this.$message.error(e.msg))
+    },
+    handleClickClose () {
+      this.showCreateGroup = false
+    }
+  },
+  created () {
+    this.originTitle = document.title
+  },
+  beforeDestroy () {
+    document.title = this.originTitle
+  },
+  computed: {
+    groups () {
+      return this.$store.state.groups
+    },
+    history () {
+      return this.$store.state.api.history
+    },
+    name: {
+      get () {
+        document.title = this.$store.state.api.name || '未命名接口'
+        return this.$store.state.api.name
+      },
+      set (value) {
+        this.$store.commit('UPDATE_API_PROPS', ['name', value])
+      }
+    },
+    prodUrl: {
+      get () {
+        return this.$store.state.api.prodUrl
+      },
+      set (value) {
+        this.$store.commit('UPDATE_API_PROPS', ['prodUrl', value])
+      }
+    },
+    devUrl: {
+      get () {
+        return this.$store.state.api.devUrl
+      },
+      set (value) {
+        this.$store.commit('UPDATE_API_PROPS', ['devUrl', value])
+      }
+    },
+    proxyMode: {
+      get () {
+        return this.$store.state.api.options.proxy.mode
+      },
+      set (value) {
+        this.$store.commit('UPDATE_API_PROPS', ['options.proxy.mode', value])
+      }
+    },
+    group: {
+      get () {
+        return this.$store.state.api.group
+      },
+      set (value) {
+        this.$store.commit('UPDATE_API_PROPS', ['group', value])
+      }
+    }
+  }
+}
 </script>
 <style lang="less">
 .api-info {

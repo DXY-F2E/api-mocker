@@ -20,33 +20,33 @@
 
 <script>
 export default {
-    props: {
-        param: {
-            type: Object,
-            required: true
-        }
-    },
-    computed: {
-        valueString() {
-            if (this.param.type === 'string') {
-                return this.param.value;
-            } else {
-                return JSON.stringify(this.param.value);
-            }
-        }
-    },
-    methods: {
-        getPlaceholder(p) {
-            return p.required ? '必填' : '选填';
-        },
-        updateReqParam() {
-            this.$emit('change', this.param);
-        },
-        expand() {
-            this.$emit('expand');
-        }
+  props: {
+    param: {
+      type: Object,
+      required: true
     }
-};
+  },
+  computed: {
+    valueString () {
+      if (this.param.type === 'string') {
+        return this.param.value
+      } else {
+        return JSON.stringify(this.param.value)
+      }
+    }
+  },
+  methods: {
+    getPlaceholder (p) {
+      return p.required ? '必填' : '选填'
+    },
+    updateReqParam () {
+      this.$emit('change', this.param)
+    },
+    expand () {
+      this.$emit('expand')
+    }
+  }
+}
 </script>
 <style>
 </style>

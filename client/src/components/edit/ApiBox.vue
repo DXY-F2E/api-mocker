@@ -29,40 +29,40 @@
 </template>
 
 <script>
-import RequestBox from './request/Index';
-import ResultBox from './ResultBox';
-import UrlBox from './UrlBox';
-import Response from './response/Index';
-import DescBox from './DescBox';
-import SettingField from './SettingField';
-import ResponseConfig from './response/Config';
+import RequestBox from './request/Index'
+import ResultBox from './ResultBox'
+import UrlBox from './UrlBox'
+import Response from './response/Index'
+import DescBox from './DescBox'
+import SettingField from './SettingField'
+import ResponseConfig from './response/Config'
 export default {
-    components: {
-        RequestBox,
-        Response,
-        ResultBox,
-        DescBox,
-        UrlBox,
-        ResponseConfig,
-        SettingField
-    },
-    data() {
-        return {
-            resActive: 'body'
-        };
-    },
-    computed: {
-        mode() {
-            return this.$store.state.mode;
-        },
-        method() {
-            return this.$store.state.api.options.method;
-        },
-        response() {
-            return this.$store.state.api.options.response;
-        }
+  components: {
+    RequestBox,
+    Response,
+    ResultBox,
+    DescBox,
+    UrlBox,
+    ResponseConfig,
+    SettingField
+  },
+  data () {
+    return {
+      resActive: 'body'
     }
-};
+  },
+  computed: {
+    mode () {
+      return this.$store.state.mode
+    },
+    method () {
+      return this.$store.state.api.options.method
+    },
+    response () {
+      return this.$store.state.api.options.response
+    }
+  }
+}
 </script>
 <style>
 .api-box {

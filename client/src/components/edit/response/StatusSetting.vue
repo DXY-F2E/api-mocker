@@ -11,37 +11,37 @@
 
 <script>
 export default {
-    props: {
-        schema: {
-            type: Object,
-            required: true
-        }
-    },
-    computed: {
-        status: {
-            get() {
-                return this.schema.status;
-            },
-            set(val) {
-                this.$emit('change', {
-                    status: val,
-                    statusText: this.statusText
-                });
-            }
-        },
-        statusText: {
-            get() {
-                return this.schema.statusText;
-            },
-            set(val) {
-                this.$emit('change', {
-                    status: this.status,
-                    statusText: val
-                });
-            }
-        }
+  props: {
+    schema: {
+      type: Object,
+      required: true
     }
-};
+  },
+  computed: {
+    status: {
+      get () {
+        return this.schema.status
+      },
+      set (val) {
+        this.$emit('change', {
+          status: val,
+          statusText: this.statusText
+        })
+      }
+    },
+    statusText: {
+      get () {
+        return this.schema.statusText
+      },
+      set (val) {
+        this.$emit('change', {
+          status: this.status,
+          statusText: val
+        })
+      }
+    }
+  }
+}
 </script>
 <style>
 .status-form {

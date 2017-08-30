@@ -20,31 +20,31 @@
 </template>
 
 <script>
-import Api from './Api';
-import { mapState } from 'vuex';
-import ImportRapJson from '../common/importJson/FromRap';
+import Api from './Api'
+import { mapState } from 'vuex'
+import ImportRapJson from '../common/importJson/FromRap'
 
 export default {
-    components: {
-        Api,
-        ImportRapJson
+  components: {
+    Api,
+    ImportRapJson
+  },
+  computed: {
+    ...mapState(['apiList', 'apiListLoading', 'groups']),
+    groupId () {
+      return this.$route.params.groupId
     },
-    computed: {
-        ...mapState(['apiList', 'apiListLoading', 'groups']),
-        groupId() {
-            return this.$route.params.groupId;
-        },
-        group() {
-            return this.groups.find(g => g._id === this.groupId) || {};
-        }
-    },
-    methods: {
-        createApi() {
-            const query = this.groupId ? `?groupId=${this.groupId}` : '';
-            this.$router.push(`/create${query}`);
-        }
+    group () {
+      return this.groups.find(g => g._id === this.groupId) || {}
     }
-};
+  },
+  methods: {
+    createApi () {
+      const query = this.groupId ? `?groupId=${this.groupId}` : ''
+      this.$router.push(`/create${query}`)
+    }
+  }
+}
 </script>
 <style lang='less'>
 .api-list {
