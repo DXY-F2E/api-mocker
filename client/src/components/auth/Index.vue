@@ -24,6 +24,7 @@ export default {
     right: 0;
     bottom: 0;
 }
+
 .login-box {
     width: 400px;
     position: absolute;
@@ -35,38 +36,39 @@ export default {
         margin-left: 10px;
         min-width: 80px;
     }
-}
-.login-box .el-form {
-    background-color: #fff;
-    /*box-shadow: 0 0 15px 1px #ddd;*/
-    border-radius: 3px;
-    padding: 20px 30px;
-}
-.login-box .control {
-    text-align: center;
-}
-.login-box .control button{
-    width: 100%;
-}
-.login-box .control a {
-    color: #ccc;
-    position: absolute;
-    right: 0;
-    top: 100%;
-    font-size: 14px;
-    height: 32px;
-    line-height: 32px;
-
-    &.reset-pass {
-        right: auto;
-        left: 0;
+    .el-form {
+        background-color: #fff;
+        border-radius: 3px;
+        padding: 20px 30px;
     }
-}
-.login-box .app-name {
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: #475669;
-    position: relative;
+
+    .control {
+        text-align: center;
+        button {
+            width: 100%;
+        }
+        a {
+            color: #ccc;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            font-size: 14px;
+            height: 32px;
+            line-height: 32px;
+
+            &.reset-pass {
+                right: auto;
+                left: 0;
+            }
+        }
+    }
+
+    .app-name {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #475669;
+        position: relative;
+    }
 }
 </style>

@@ -16,15 +16,6 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
-  computed: {
-    codeText () {
-      if (this.sentCodeToken) {
-        return `${this.interval}s`
-      } else {
-        return '发送验证码'
-      }
-    }
-  },
   data () {
     return {
       resetRules: {
@@ -40,7 +31,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['sendResetPassTicket', 'resetPass']),
+    ...mapActions(['sendResetPassTicket']),
     validate () {
       if (this.sentCodeToken) {
         return

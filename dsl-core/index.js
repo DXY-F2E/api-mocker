@@ -1,2 +1,4 @@
-export { default as renderer } from './src/renderer.js'
-export { default as buildExampleFromSchema } from './src/buildExampleFromSchema.js'
+module.exports = {
+  // renderer: require('./src/renderer.js').default,
+  buildExampleFromSchema: require('./src/buildExampleFromSchema.js')
+}

@@ -1,4 +1,4 @@
-import Mock from 'mockjs'
+var Mock = require('mockjs')
 let buildExampleFromSchema = null;
 let buildExample = null;
 buildExampleFromSchema = (schema) => {
@@ -23,4 +23,4 @@ buildExample = (param) => {
             return 'value';
     }
 };
-export default buildExampleFromSchema;
+module.exports = buildExampleFromSchema;

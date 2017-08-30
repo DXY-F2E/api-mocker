@@ -39,6 +39,7 @@ module.exports = app => {
       if (rs && rs.messageId) {
         this.success(true)
       } else {
+        console.log(rs)
         this.error('发送邮件失败，请重试')
       }
     }
