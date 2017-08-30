@@ -25,12 +25,12 @@
     </el-col>
 </template>
 <script>
-import createGroupDialog from '../../dialog/create-group'
+import CreateGroupDialog from '@/components/common/CreateGroup'
 import Search from './Search'
 export default {
   components: {
     Search,
-    createGroupDialog
+    CreateGroupDialog
   },
   computed: {
     groupList () {

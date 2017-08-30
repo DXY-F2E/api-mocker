@@ -57,11 +57,11 @@
 </template>
 
 <script>
-import createGroup from '../../dialog/create-group'
+import CreateGroup from '@/components/common/CreateGroup'
 import ApiHistory from './ApiHistory'
 export default {
   components: {
-    createGroup,
+    CreateGroup,
     ApiHistory
   },
   data () {

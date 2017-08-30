@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="创建Group" v-model="visited" :show-close="false">
+    <el-dialog title="创建Group" v-model="visited" :show-close="false" class="create-group-dialog">
         <el-form v-stop-default-enter>
             <el-input v-model="input" placeholder="输入分组名称"></el-input>
         </el-form>
@@ -49,3 +49,8 @@
    }
  }
 </script>
+<style>
+.create-group-dialog .el-input__inner {
+  background: #fff;
+}
+</style>
