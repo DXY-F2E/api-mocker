@@ -19,13 +19,17 @@
     "ramda": "0.23.0"
   },
   "devDependencies": {
-    "@dxy/eslint-config-dxy-base": "1.2.1",
     "autod": "^2.7.1",
     "egg-bin": "^3.1.0",
     "egg-ci": "^1.5.0",
     "egg-mock": "^3.2.0",
     "eslint": "^3.18.0",
     "eslint-config-egg": "^3.2.0",
+    "eslint-config-standard": "10.2.1",
+    "eslint-plugin-import": "2.7.0",
+    "eslint-plugin-node": "5.1.1",
+    "eslint-plugin-promise": "3.5.0",
+    "eslint-plugin-standard": "3.0.1",
     "pm2": "2.4.2",
     "supertest": "^3.0.0",
     "webstorm-disable-index": "^1.1.2"

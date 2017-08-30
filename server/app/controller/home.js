@@ -1,10 +1,8 @@
-const groupModel = require('../model/group.js');
-
 module.exports = app => {
-    class HomeController extends app.Controller {
-        * index() {
-            this.ctx.body = 'hi, egg';
-        }
+  class HomeController extends app.Controller {
+    * index () {
+      this.ctx.body = 'hi, egg'
+    }
   }
-    return HomeController;
-};
+  return HomeController
+}

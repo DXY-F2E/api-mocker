@@ -1,5 +1,5 @@
 module.exports = appInfo => {
-    return {
-        clientRoot: 'http://localhost:8080'
-    };
-};
+  return {
+    clientRoot: 'http://localhost:8080'
+  }
+}
