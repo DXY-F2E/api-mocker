@@ -10,9 +10,9 @@
 import NavMenu from './Menu'
 import ListContent from './Content'
 export default {
-  components: {
-    NavMenu,
-    ListContent
-  }
+    components: {
+        NavMenu,
+        ListContent
+    }
 }
 </script>

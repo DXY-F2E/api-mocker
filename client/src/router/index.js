@@ -38,110 +38,110 @@ const Stat = r => require.ensure([], () => r(require('@/components/stat/Index'))
 Vue.use(Router)
 
 const router = new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'Admin',
-      redirect: '/list/all',
-      component: Admin,
-      meta: {
-        auth: true
-      },
-      children: [
+    routes: [
         {
-          path: 'stat',
-          name: 'Stat',
-          component: Stat
-        },
-        {
-          path: 'manage',
-          name: 'Manage',
-          component: Manage,
-          children: [{
-            path: 'profile',
-            name: 'Profile',
-            component: Profile
-          }, {
-            path: 'group',
-            name: 'ManageGroup',
-            component: ManageGroup
-          }, {
-            path: 'api',
-            name: 'ManageApi',
-            component: ManageApi
-          }]
-        },
-        {
-          path: 'create',
-          name: 'Create',
-          component: Edit
-        },
-        {
-          path: '/edit/:groupId/:apiId',
-          name: 'Edit',
-          component: Edit
-        },
-        {
-          path: 'list',
-          component: List,
-          redirect: '/list/all',
-          name: 'List',
-          children: [{
-            path: 'all',
-            name: 'AllList'
+            path: '/',
+            name: 'Admin',
+            redirect: '/list/all',
+            component: Admin,
+            meta: {
+                auth: true
+            },
+            children: [
+                {
+                    path: 'stat',
+                    name: 'Stat',
+                    component: Stat
+                },
+                {
+                    path: 'manage',
+                    name: 'Manage',
+                    component: Manage,
+                    children: [{
+                        path: 'profile',
+                        name: 'Profile',
+                        component: Profile
+                    }, {
+                        path: 'group',
+                        name: 'ManageGroup',
+                        component: ManageGroup
+                    }, {
+                        path: 'api',
+                        name: 'ManageApi',
+                        component: ManageApi
+                    }]
+                },
+                {
+                    path: 'create',
+                    name: 'Create',
+                    component: Edit
+                },
+                {
+                    path: '/edit/:groupId/:apiId',
+                    name: 'Edit',
+                    component: Edit
+                },
+                {
+                    path: 'list',
+                    component: List,
+                    redirect: '/list/all',
+                    name: 'List',
+                    children: [{
+                        path: 'all',
+                        name: 'AllList'
                         // component: ListContent
-          }, {
-            path: ':groupId',
-            name: 'GruopList'
+                    }, {
+                        path: ':groupId',
+                        name: 'GruopList'
                         // component: ListContent
-          }]
+                    }]
+                },
+                {
+                    path: 'doc',
+                    component: Document,
+                    name: 'Document',
+                    redirect: '/doc/all',
+                    children: [{
+                        path: 'all',
+                        name: 'AllDoc',
+                        component: DocOverview
+                    }, {
+                        path: ':groupId',
+                        name: 'GroupDoc',
+                        component: GroupContent
+                    }, {
+                        path: ':groupId/:apiId',
+                        name: 'ApiDoc',
+                        component: ApiContent
+                    }]
+                }
+            ]
         },
         {
-          path: 'doc',
-          component: Document,
-          name: 'Document',
-          redirect: '/doc/all',
-          children: [{
-            path: 'all',
-            name: 'AllDoc',
-            component: DocOverview
-          }, {
-            path: ':groupId',
-            name: 'GroupDoc',
-            component: GroupContent
-          }, {
-            path: ':groupId/:apiId',
-            name: 'ApiDoc',
-            component: ApiContent
-          }]
+            path: '/',
+            name: 'Auth',
+            component: Auth,
+            meta: {
+                auth: true
+            },
+            children: [{
+                path: 'login',
+                name: 'Login',
+                component: Login
+            }, {
+                path: 'register',
+                name: 'Register',
+                component: Register
+            }, {
+                path: 'reset-pass',
+                name: 'ResetPass',
+                component: ResetPass
+            }, {
+                path: 'find-pass',
+                name: 'FindPass',
+                component: FindPass
+            }]
         }
-      ]
-    },
-    {
-      path: '/',
-      name: 'Auth',
-      component: Auth,
-      meta: {
-        auth: true
-      },
-      children: [{
-        path: 'login',
-        name: 'Login',
-        component: Login
-      }, {
-        path: 'register',
-        name: 'Register',
-        component: Register
-      }, {
-        path: 'reset-pass',
-        name: 'ResetPass',
-        component: ResetPass
-      }, {
-        path: 'find-pass',
-        name: 'FindPass',
-        component: FindPass
-      }]
-    }
-  ]
+    ]
 })
 export default router

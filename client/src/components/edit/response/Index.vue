@@ -25,52 +25,52 @@ import Status from './Status'
 import StatusSetting from './StatusSetting'
 import R from 'ramda'
 export default {
-  props: {
-    response: {
-      type: Array,
-      required: true
+    props: {
+        response: {
+            type: Array,
+            required: true
+        },
+        fullscreen: {
+            type: Boolean,
+            default: false
+        }
     },
-    fullscreen: {
-      type: Boolean,
-      default: false
-    }
-  },
-  components: {
-    Status,
-    StatusSetting,
-    Schema
-  },
-  data () {
-    return {
-      activeIndex: 0
-    }
-  },
-  methods: {
-    changeSchema (index) {
-      this.activeIndex = index
+    components: {
+        Status,
+        StatusSetting,
+        Schema
     },
-    deleteResponse (index) {
-      this.$store.commit('DELETE_API_RESPONSE', index)
-      if (this.activeIndex !== 0) {
-        this.activeIndex --
-      }
+    data () {
+        return {
+            activeIndex: 0
+        }
     },
-    addResponse () {
-      this.$store.commit('ADD_API_RESPONSE')
-      this.activeIndex = this.response.length - 1
-    },
-    updateStatus ({ status, statusText }) {
-      const schema = R.clone(this.response[this.activeIndex])
-      schema.status = status
-      schema.statusText = statusText
-      this.updateResponse(schema)
-    },
-    updateResponse (schema) {
-      const key = `options.response.${this.activeIndex}`
-      this.$store.commit('UPDATE_API_PROPS',
+    methods: {
+        changeSchema (index) {
+            this.activeIndex = index
+        },
+        deleteResponse (index) {
+            this.$store.commit('DELETE_API_RESPONSE', index)
+            if (this.activeIndex !== 0) {
+                this.activeIndex --
+            }
+        },
+        addResponse () {
+            this.$store.commit('ADD_API_RESPONSE')
+            this.activeIndex = this.response.length - 1
+        },
+        updateStatus ({ status, statusText }) {
+            const schema = R.clone(this.response[this.activeIndex])
+            schema.status = status
+            schema.statusText = statusText
+            this.updateResponse(schema)
+        },
+        updateResponse (schema) {
+            const key = `options.response.${this.activeIndex}`
+            this.$store.commit('UPDATE_API_PROPS',
                                [key, R.clone(schema)])
+        }
     }
-  }
 }
 </script>
 <style lang="less">

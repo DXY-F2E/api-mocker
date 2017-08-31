@@ -20,21 +20,21 @@ import ParamsTable from './ParamsTable'
 import 'prismjs/themes/prism.css'
 import { buildExampleFromSchema } from '../../util'
 export default {
-  props: ['schema', 'name'],
-  data () {
-    return {
-      isShowExample: false
+    props: ['schema', 'name'],
+    data () {
+        return {
+            isShowExample: false
+        }
+    },
+    computed: {
+        example () {
+            const example = this.schema.example ? this.schema.example : buildExampleFromSchema(this.schema)
+            return Prism.highlight(JSON.stringify(example, null, 4), Prism.languages.javascript)
+        }
+    },
+    components: {
+        ParamsTable
     }
-  },
-  computed: {
-    example () {
-      const example = this.schema.example ? this.schema.example : buildExampleFromSchema(this.schema)
-      return Prism.highlight(JSON.stringify(example, null, 4), Prism.languages.javascript)
-    }
-  },
-  components: {
-    ParamsTable
-  }
 }
 </script>
 <style lang="less">

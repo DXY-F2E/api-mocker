@@ -22,41 +22,41 @@
 
 <script>
 export default {
-  props: {
-    remoteMethod: Function,
-    placeholder: {
-      type: String,
-      default: '请输入进行搜索选择'
+    props: {
+        remoteMethod: Function,
+        placeholder: {
+            type: String,
+            default: '请输入进行搜索选择'
+        },
+        loading: {
+            type: Boolean,
+            default: false
+        },
+        value: {
+            type: Array,
+            default: []
+        },
+        options: {
+            type: Array,
+            default: []
+        }
     },
-    loading: {
-      type: Boolean,
-      default: false
+    data () {
+        return {
+            localValue: this.value
+        }
     },
-    value: {
-      type: Array,
-      default: []
-    },
-    options: {
-      type: Array,
-      default: []
+    methods: {
+        getUserLabel (item) {
+            return `${item.name}（${item.email}）`
+        },
+        itemClick (val) {
+            this.$emit('itemClick', val)
+        },
+        itemRemove (val) {
+            this.$emit('itemRemove', val.value)
+        }
     }
-  },
-  data () {
-    return {
-      localValue: this.value
-    }
-  },
-  methods: {
-    getUserLabel (item) {
-      return `${item.name}（${item.email}）`
-    },
-    itemClick (val) {
-      this.$emit('itemClick', val)
-    },
-    itemRemove (val) {
-      this.$emit('itemRemove', val.value)
-    }
-  }
 }
 </script>
 <style>

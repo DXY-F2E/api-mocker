@@ -21,59 +21,59 @@
 <script>
 import ApiParam from './Param'
 export default {
-  name: 'params',
-  components: {
-    ApiParam
-  },
-  props: {
-    level: {
-      type: Number,
-      required: true
+    name: 'params',
+    components: {
+        ApiParam
     },
-    params: {
-      type: Array,
-      required: true
+    props: {
+        level: {
+            type: Number,
+            required: true
+        },
+        params: {
+            type: Array,
+            required: true
+        },
+        name: {
+            type: String,
+            required: false
+        }
     },
-    name: {
-      type: String,
-      required: false
+    methods: {
+        isNext (param) {
+            return param.type === 'object' || (param.type === 'array' && param.items.type === 'object')
+        },
+        nextParams (param) {
+            return param.type === 'object' ? param.params : param.items.params
+        },
+        change () {
+            this.$emit('change', this.params)
+        },
+        update (data, idx) {
+            if (data.length === undefined) {
+                this.$set(this.params, idx, data)
+            } else {
+                this.$set(this.params[idx], 'params', data)
+            }
+            this.change()
+        },
+        addParam (idx) {
+            const param = {
+                key: null,
+                type: 'string',
+                required: true
+            }
+            this.params.splice(idx + 1, 0, param)
+            this.change()
+        },
+        deleteParam (idx) {
+            if (this.params.length === 1) {
+                return
+            }
+            this.params.splice(idx, 1)
+            this.change()
+        }
     }
-  },
-  methods: {
-    isNext (param) {
-      return param.type === 'object' || (param.type === 'array' && param.items.type === 'object')
-    },
-    nextParams (param) {
-      return param.type === 'object' ? param.params : param.items.params
-    },
-    change () {
-      this.$emit('change', this.params)
-    },
-    update (data, idx) {
-      if (data.length === undefined) {
-        this.$set(this.params, idx, data)
-      } else {
-        this.$set(this.params[idx], 'params', data)
-      }
-      this.change()
-    },
-    addParam (idx) {
-      const param = {
-        key: null,
-        type: 'string',
-        required: true
-      }
-      this.params.splice(idx + 1, 0, param)
-      this.change()
-    },
-    deleteParam (idx) {
-      if (this.params.length === 1) {
-        return
-      }
-      this.params.splice(idx, 1)
-      this.change()
-    }
-  }
 }
 </script>
 <style lang="less">

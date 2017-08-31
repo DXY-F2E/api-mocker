@@ -39,61 +39,61 @@
 import UserSelector from '../common/UserSelector'
 import R from 'ramda'
 export default {
-  components: {
-    UserSelector
-  },
-  props: {
-    group: Object,
-    visible: Boolean
-  },
-  data () {
-    return {
-      localGroup: R.clone(this.group),
-      users: []
-    }
-  },
-  mounted () {
-    this.initUsers()
-  },
-  computed: {
-    allUsers () {
-      return this.$store.state.allUsers
+    components: {
+        UserSelector
     },
-    title () {
-      return `${this.localGroup.name}`
-    }
-  },
-  methods: {
-    initUsers () {
-      this.users = this.localGroup.member.map(id =>
+    props: {
+        group: Object,
+        visible: Boolean
+    },
+    data () {
+        return {
+            localGroup: R.clone(this.group),
+            users: []
+        }
+    },
+    mounted () {
+        this.initUsers()
+    },
+    computed: {
+        allUsers () {
+            return this.$store.state.allUsers
+        },
+        title () {
+            return `${this.localGroup.name}`
+        }
+    },
+    methods: {
+        initUsers () {
+            this.users = this.localGroup.member.map(id =>
                 this.allUsers.find(u => u._id === id)
             )
-    },
-    searchUsers (val) {
-      this.users = this.allUsers.filter(u =>
+        },
+        searchUsers (val) {
+            this.users = this.allUsers.filter(u =>
                 u.email.indexOf(val) >= 0 || u.name.indexOf(val) >= 0
             )
-    },
-    itemClick (val) {
-      this.localGroup.member = R.symmetricDifference(this.localGroup.member, [val])
-    },
-    itemRemove (val) {
-      this.localGroup.member = R.without([val], this.localGroup.member)
-    },
-    initLocalGroup () {
-      this.localGroup = R.clone(this.group)
-      this.initUsers()
-    },
-    cancel () {
-      this.$emit('hide')
-    },
-    confirm () {
-      this.$store.dispatch('updateGroup', this.localGroup).then(rs => {
-        this.$message.success('更新成功')
-        this.$emit('update', rs.data)
-        this.$emit('hide')
-      }).catch(err => this.$message.error(err.msg))
+        },
+        itemClick (val) {
+            this.localGroup.member = R.symmetricDifference(this.localGroup.member, [val])
+        },
+        itemRemove (val) {
+            this.localGroup.member = R.without([val], this.localGroup.member)
+        },
+        initLocalGroup () {
+            this.localGroup = R.clone(this.group)
+            this.initUsers()
+        },
+        cancel () {
+            this.$emit('hide')
+        },
+        confirm () {
+            this.$store.dispatch('updateGroup', this.localGroup).then(rs => {
+                this.$message.success('更新成功')
+                this.$emit('update', rs.data)
+                this.$emit('hide')
+            }).catch(err => this.$message.error(err.msg))
+        }
     }
-  }
 }
 </script>

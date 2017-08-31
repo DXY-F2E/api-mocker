@@ -28,59 +28,59 @@
 import CreateGroupDialog from '@/components/common/CreateGroup'
 import Search from './Search'
 export default {
-  components: {
-    Search,
-    CreateGroupDialog
-  },
-  computed: {
-    groupList () {
-      return this.$store.state.groups.filter(g => g.name.toLowerCase().indexOf(this.query.toLowerCase()) >= 0)
-    }
-  },
-  data () {
-    return {
-      showCreateDialog: false,
-      isShowSearch: false,
-      query: ''
-    }
-  },
-  methods: {
-    showSearch () {
-      this.isShowSearch = true
-      window.setTimeout(() => {
-        document.querySelector('#search-group input').focus()
-      })
+    components: {
+        Search,
+        CreateGroupDialog
     },
-    onQuery (val) {
-      this.query = val
-    },
-    handleClickGroup (group) {
-      if (group && group._id) {
-        this.$router.replace(`/list/${group._id}`)
-      } else {
-        this.$router.replace('/')
-      }
-    },
-    handleClickCreateGroup (groupName) {
-      this.$store.dispatch('createGroup', { name: groupName }).then(() => {
-        this.showCreateDialog = false
-      }).catch(e => this.$message.error(e.msg))
-    },
-    handleClickClose () {
-      this.showCreateDialog = false
-    },
-    handleClickShowDialog () {
-      this.showCreateDialog = true
-    },
-    showGroupDoc (group) {
-      this.$router.push({
-        name: 'GroupDoc',
-        params: {
-          groupId: group._id
+    computed: {
+        groupList () {
+            return this.$store.state.groups.filter(g => g.name.toLowerCase().indexOf(this.query.toLowerCase()) >= 0)
         }
-      })
+    },
+    data () {
+        return {
+            showCreateDialog: false,
+            isShowSearch: false,
+            query: ''
+        }
+    },
+    methods: {
+        showSearch () {
+            this.isShowSearch = true
+            window.setTimeout(() => {
+                document.querySelector('#search-group input').focus()
+            })
+        },
+        onQuery (val) {
+            this.query = val
+        },
+        handleClickGroup (group) {
+            if (group && group._id) {
+                this.$router.replace(`/list/${group._id}`)
+            } else {
+                this.$router.replace('/')
+            }
+        },
+        handleClickCreateGroup (groupName) {
+            this.$store.dispatch('createGroup', { name: groupName }).then(() => {
+                this.showCreateDialog = false
+            }).catch(e => this.$message.error(e.msg))
+        },
+        handleClickClose () {
+            this.showCreateDialog = false
+        },
+        handleClickShowDialog () {
+            this.showCreateDialog = true
+        },
+        showGroupDoc (group) {
+            this.$router.push({
+                name: 'GroupDoc',
+                params: {
+                    groupId: group._id
+                }
+            })
+        }
     }
-  }
 }
 </script>
 <style lang="less">

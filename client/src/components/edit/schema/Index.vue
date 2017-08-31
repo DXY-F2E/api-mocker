@@ -31,55 +31,55 @@ import R from 'ramda'
 import JsonEditor from '../../common/jsonEditor/Index'
 import Example from './Example'
 export default {
-  components: {
-    Params,
-    Example,
-    JsonEditor
-  },
-  props: {
-    name: String,
-    active: {
-      type: String,
-      default: 'structure'
+    components: {
+        Params,
+        Example,
+        JsonEditor
     },
-    exampleName: {
-      type: String,
-      default: 'Example'
+    props: {
+        name: String,
+        active: {
+            type: String,
+            default: 'structure'
+        },
+        exampleName: {
+            type: String,
+            default: 'Example'
+        },
+        schema: {
+            type: Object,
+            required: true
+        },
+        fullscreen: {
+            type: Boolean,
+            default: false
+        }
     },
-    schema: {
-      type: Object,
-      required: true
+    computed: {
+        localSchema () {
+            return R.clone(this.schema)
+        },
+        activeTab () {
+            return this.active
+        }
     },
-    fullscreen: {
-      type: Boolean,
-      default: false
+    methods: {
+        schemaChanged (rs) {
+            if (rs.success) {
+                this.updateSchema(rs.data)
+            }
+        },
+        paramsChanged () {
+            this.updateSchema(this.localSchema)
+        },
+        updateExample (example) {
+            this.localSchema.example = example
+            this.$emit('change', this.localSchema)
+        },
+        updateSchema (data) {
+            this.$emit('change', data)
+        }
     }
-  },
-  computed: {
-    localSchema () {
-      return R.clone(this.schema)
-    },
-    activeTab () {
-      return this.active
-    }
-  },
-  methods: {
-    schemaChanged (rs) {
-      if (rs.success) {
-        this.updateSchema(rs.data)
-      }
-    },
-    paramsChanged () {
-      this.updateSchema(this.localSchema)
-    },
-    updateExample (example) {
-      this.localSchema.example = example
-      this.$emit('change', this.localSchema)
-    },
-    updateSchema (data) {
-      this.$emit('change', data)
-    }
-  }
 }
 </script>
 <style lang="less">

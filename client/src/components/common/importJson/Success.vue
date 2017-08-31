@@ -28,59 +28,59 @@
 
 <script>
 export default {
-  props: {
-    visible: Boolean,
-    apisData: Array
-  },
-  data () {
-    return {
-      activeGroup: this.apisData[0] ? this.apisData[0].groupName : ''
-    }
-  },
-  computed: {
-    dialogVisible: {
-      get () {
-        return this.visible
-      },
-      set (val) {
-        this.$emit('visibleChange', val)
-      }
-    }
-  },
-  methods: {
-    preview (groupIndex, apiIndex) {
-      const previewApis = this.apisData[groupIndex].apis.map((api, idx) => {
-        api._id = idx.toString()
-        return api
-      })
-      window.sessionStorage.setItem('_previewApis', JSON.stringify(previewApis))
-      const rootDomain = window.location.href.split('#')[0]
-      const url = `${rootDomain}#/doc/${this.apisData[groupIndex].groupId}/${apiIndex}?preview=1`
-      window.open(url, '_blank')
+    props: {
+        visible: Boolean,
+        apisData: Array
     },
-    deleteApi (groupIndex, apiIndex) {
-      this.apisData[groupIndex].apis.splice(apiIndex, 1)
-            // 因为splice删除的是数组里的数组，所以得手动set触发视图更新
-      this.$set(this.apisData, groupIndex, this.apisData[groupIndex])
-    },
-    handleConfirm () {
-      const data = this.apisData[0]
-      this.$store.dispatch('createApis', {
-        groupId: data.groupId,
-        apis: data.apis
-      }).then(rs => {
-        if (rs.data.apis.length > 0) {
-          this.$message.success('保存成功')
-          this.dialogVisible = false
-        } else {
-          this.$message.success('保存失败')
+    data () {
+        return {
+            activeGroup: this.apisData[0] ? this.apisData[0].groupName : ''
         }
-      }).catch(err => {
-        const message = err.msg || err.response.data.message
-        this.$message.error(`保存失败:${message}`)
-      })
+    },
+    computed: {
+        dialogVisible: {
+            get () {
+                return this.visible
+            },
+            set (val) {
+                this.$emit('visibleChange', val)
+            }
+        }
+    },
+    methods: {
+        preview (groupIndex, apiIndex) {
+            const previewApis = this.apisData[groupIndex].apis.map((api, idx) => {
+                api._id = idx.toString()
+                return api
+            })
+            window.sessionStorage.setItem('_previewApis', JSON.stringify(previewApis))
+            const rootDomain = window.location.href.split('#')[0]
+            const url = `${rootDomain}#/doc/${this.apisData[groupIndex].groupId}/${apiIndex}?preview=1`
+            window.open(url, '_blank')
+        },
+        deleteApi (groupIndex, apiIndex) {
+            this.apisData[groupIndex].apis.splice(apiIndex, 1)
+            // 因为splice删除的是数组里的数组，所以得手动set触发视图更新
+            this.$set(this.apisData, groupIndex, this.apisData[groupIndex])
+        },
+        handleConfirm () {
+            const data = this.apisData[0]
+            this.$store.dispatch('createApis', {
+                groupId: data.groupId,
+                apis: data.apis
+            }).then(rs => {
+                if (rs.data.apis.length > 0) {
+                    this.$message.success('保存成功')
+                    this.dialogVisible = false
+                } else {
+                    this.$message.success('保存失败')
+                }
+            }).catch(err => {
+                const message = err.msg || err.response.data.message
+                this.$message.error(`保存失败:${message}`)
+            })
+        }
     }
-  }
 }
 </script>
 <style lang="less">

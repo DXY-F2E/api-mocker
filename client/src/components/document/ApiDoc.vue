@@ -67,80 +67,80 @@ import CopyButton from '../common/CopyButton'
 import { mapActions } from 'vuex'
 import 'simditor/styles/simditor.css'
 export default {
-  components: {
-    CopyButton,
-    Schemas,
-    Schema,
-    ParamsTable,
-    MockData
-  },
-  props: {
-    api: {
-      type: Object,
-      required: true
-    }
-  },
-  methods: {
-    ...mapActions([
-      'follow',
-      'unfollow'
-    ]),
-    edit () {
-      this.$store.commit('UPDATE_API', this.api)
-      this.$store.commit('CHANGE_MODE', 'edit')
-      this.$router.push(`/edit/${this.api.group}/${this.api._id}`)
+    components: {
+        CopyButton,
+        Schemas,
+        Schema,
+        ParamsTable,
+        MockData
     },
-    hasParams (params) {
-      return params && params.filter(p => p.key).length > 0
-    },
-    doFollow () {
-      this.follow(this.api._id).then(rs => {
-        this.api.follower = rs.data.follower
-      })
-    },
-    cancelfollow () {
-      this.unfollow(this.api._id).then(rs => {
-        this.api.follower = rs.data.follower
-      })
-    }
-  },
-  computed: {
-    user () {
-      return this.$store.state.user
-    },
-    followed () {
-      return !!this.api.follower.find(f => f === this.user._id)
-    },
-    isPreview () {
-      return !!this.$route.query.preview
-    },
-    url () {
-      const mockUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`
-      const path = this.api.options.params.path
-      if (path.length) {
-        const pathUrl = path.filter(p => p.key).map(p => `/:${p.key}`).join('')
-        return pathUrl ? `${mockUrl}${pathUrl}` : mockUrl
-      } else {
-        return mockUrl
-      }
-    },
-    method () {
-      return this.api.options.method.toUpperCase()
-    },
-    schemaParams () {
-      const schemas = {}
-      for (const key in this.api.options.params) {
-        schemas[key] = {
-          example: this.api.options.examples[key],
-          params: this.api.options.params[key]
+    props: {
+        api: {
+            type: Object,
+            required: true
         }
-      }
-      return schemas
     },
-    headers () {
-      return this.api.options.headers
+    methods: {
+        ...mapActions([
+            'follow',
+            'unfollow'
+        ]),
+        edit () {
+            this.$store.commit('UPDATE_API', this.api)
+            this.$store.commit('CHANGE_MODE', 'edit')
+            this.$router.push(`/edit/${this.api.group}/${this.api._id}`)
+        },
+        hasParams (params) {
+            return params && params.filter(p => p.key).length > 0
+        },
+        doFollow () {
+            this.follow(this.api._id).then(rs => {
+                this.api.follower = rs.data.follower
+            })
+        },
+        cancelfollow () {
+            this.unfollow(this.api._id).then(rs => {
+                this.api.follower = rs.data.follower
+            })
+        }
+    },
+    computed: {
+        user () {
+            return this.$store.state.user
+        },
+        followed () {
+            return !!this.api.follower.find(f => f === this.user._id)
+        },
+        isPreview () {
+            return !!this.$route.query.preview
+        },
+        url () {
+            const mockUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`
+            const path = this.api.options.params.path
+            if (path.length) {
+                const pathUrl = path.filter(p => p.key).map(p => `/:${p.key}`).join('')
+                return pathUrl ? `${mockUrl}${pathUrl}` : mockUrl
+            } else {
+                return mockUrl
+            }
+        },
+        method () {
+            return this.api.options.method.toUpperCase()
+        },
+        schemaParams () {
+            const schemas = {}
+            for (const key in this.api.options.params) {
+                schemas[key] = {
+                    example: this.api.options.examples[key],
+                    params: this.api.options.params[key]
+                }
+            }
+            return schemas
+        },
+        headers () {
+            return this.api.options.headers
+        }
     }
-  }
 }
 </script>
 <style lang="less">

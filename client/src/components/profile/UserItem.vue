@@ -19,53 +19,53 @@
 <script>
 import R from 'ramda'
 export default {
-  props: {
-    item: {
-      type: Object,
-      required: true
-    }
-  },
-  data () {
-    return {
-      mode: 'read',
-      tempValue: this.item.value
-    }
-  },
-  computed: {
-    user () {
-      return this.$store.state.user
-    }
-  },
-  methods: {
-    validateEmail () {
-      const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      if (!reg.test(this.tempValue)) {
-        this.$message.error('邮箱格式错误')
-        return false
-      } else {
-        return true
-      }
+    props: {
+        item: {
+            type: Object,
+            required: true
+        }
     },
-    validate () {
-      if (!this.tempValue) {
-        this.$message.error(`${this.item.label}不能为空`)
-        return false
-      }
-      return this.item.key === 'email' ? this.validateEmail() : true
+    data () {
+        return {
+            mode: 'read',
+            tempValue: this.item.value
+        }
     },
-    handleValueChange (val) {
-      this.tempValue = val
+    computed: {
+        user () {
+            return this.$store.state.user
+        }
     },
-    updateProfile () {
-      if (!this.validate()) { return }
-      const data = R.clone(this.user)
-      data[this.item.key] = this.tempValue
-      this.$store.dispatch('updateProfile', data).then(() => {
-        this.mode = 'read'
-        this.$message.success('保存成功')
-      })
+    methods: {
+        validateEmail () {
+            const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            if (!reg.test(this.tempValue)) {
+                this.$message.error('邮箱格式错误')
+                return false
+            } else {
+                return true
+            }
+        },
+        validate () {
+            if (!this.tempValue) {
+                this.$message.error(`${this.item.label}不能为空`)
+                return false
+            }
+            return this.item.key === 'email' ? this.validateEmail() : true
+        },
+        handleValueChange (val) {
+            this.tempValue = val
+        },
+        updateProfile () {
+            if (!this.validate()) { return }
+            const data = R.clone(this.user)
+            data[this.item.key] = this.tempValue
+            this.$store.dispatch('updateProfile', data).then(() => {
+                this.mode = 'read'
+                this.$message.success('保存成功')
+            })
+        }
     }
-  }
 }
 </script>
 <style lang="less">

@@ -25,132 +25,132 @@ import R from 'ramda'
 // import editorEvent from './Event.js';
 
 export default {
-  data () {
-    return {
-      isFullscreen: false,
-      template: null,
-      silent: false
-    }
-  },
-  props: {
-    parseTool: {
-      type: Boolean,
-      default: false
+    data () {
+        return {
+            isFullscreen: false,
+            template: null,
+            silent: false
+        }
     },
-    fullscreenTool: {
-      type: Boolean,
-      default: false
+    props: {
+        parseTool: {
+            type: Boolean,
+            default: false
+        },
+        fullscreenTool: {
+            type: Boolean,
+            default: false
+        },
+        templates: {
+            type: Array
+        },
+        id: {
+            type: String,
+            default () {
+                const random = Math.ceil(Math.random() * 1000000)
+                return `jsonEditorId_${random}`
+            }
+        },
+        value: {
+            type: null
+        },
+        name: {
+            type: String,
+            default: 'Json'
+        },
+        height: {
+            type: String,
+            default: '100%'
+        },
+        readonly: Boolean,
+        resizeAct: null
     },
-    templates: {
-      type: Array
+    watch: {
+        resizeAct () {
+            this.editorResize()
+        },
+        value (newVal) {
+            if (!R.equals(newVal, this.getValue().data)) {
+                this.setValue()
+            }
+        }
     },
-    id: {
-      type: String,
-      default () {
-        const random = Math.ceil(Math.random() * 1000000)
-        return `jsonEditorId_${random}`
-      }
-    },
-    value: {
-      type: null
-    },
-    name: {
-      type: String,
-      default: 'Json'
-    },
-    height: {
-      type: String,
-      default: '100%'
-    },
-    readonly: Boolean,
-    resizeAct: null
-  },
-  watch: {
-    resizeAct () {
-      this.editorResize()
-    },
-    value (newVal) {
-      if (!R.equals(newVal, this.getValue().data)) {
-        this.setValue()
-      }
-    }
-  },
-  methods: {
-    editorResize () {
-      window.setTimeout(() => {
-        this.editor.resize(true)
-      })
-    },
-    keyupBehavior (e) {
+    methods: {
+        editorResize () {
+            window.setTimeout(() => {
+                this.editor.resize(true)
+            })
+        },
+        keyupBehavior (e) {
             // 按Esc键退出全屏
-      if (this.isFullscreen && e.keyCode === 27) {
-        this.fullscreen()
-      }
-    },
-    fullscreen () {
-      this.isFullscreen = !this.isFullscreen
-      window.setTimeout(() => {
-        this.editor.resize(true)
-        this.editor.focus()
-      })
-    },
-    setTemplateVal () {
-      const data = JSON.parse(this.templates[this.template])
-      this.editor.setValue(JSON.stringify(data, null, '\t'), 1)
-    },
-    validate () {
-      try {
-        JSON.parse(this.editor.getValue())
-        return true
-      } catch (err) {
-        this.$message.error('response 未正确填写')
-        return false
-      }
-    },
-    setValue () {
-      this.silent = true
-      if (this.value) {
-        this.editor.setValue(JSON.stringify(this.value, null, '\t'), 1)
-      } else {
-        this.editor.setValue('')
-      }
-      this.silent = false
-    },
-    getValue () {
-      try {
-        const value = this.editor.getValue()
-        const data = (value === '') ? '' : JSON.parse(this.editor.getValue())
-        return {
-          data,
-          success: true
-        }
-      } catch (err) {
-        return {
-          success: false,
-          msg: `${this.name}格式错误`
-        }
-      }
-    },
-    parseEditor () {
-      let value = this.editor.getValue()
-      try {
-        value = JSON.parse(value)
-        this.editor.setValue(JSON.stringify(value, null, '\t'), 1)
-      } catch (err) {
-        this.$message.error('请正确填写JSON')
-      }
-    },
-    initEditor () {
-      this.editor.setReadOnly(this.readonly)
-      this.editor.getSession().on('change', () => {
-        if (this.silent) {
-          return
-        }
-        const data = this.getValue()
-        if (!data.success) {
-          this.$emit('change', data)
-          return
-        }
+            if (this.isFullscreen && e.keyCode === 27) {
+                this.fullscreen()
+            }
+        },
+        fullscreen () {
+            this.isFullscreen = !this.isFullscreen
+            window.setTimeout(() => {
+                this.editor.resize(true)
+                this.editor.focus()
+            })
+        },
+        setTemplateVal () {
+            const data = JSON.parse(this.templates[this.template])
+            this.editor.setValue(JSON.stringify(data, null, '\t'), 1)
+        },
+        validate () {
+            try {
+                JSON.parse(this.editor.getValue())
+                return true
+            } catch (err) {
+                this.$message.error('response 未正确填写')
+                return false
+            }
+        },
+        setValue () {
+            this.silent = true
+            if (this.value) {
+                this.editor.setValue(JSON.stringify(this.value, null, '\t'), 1)
+            } else {
+                this.editor.setValue('')
+            }
+            this.silent = false
+        },
+        getValue () {
+            try {
+                const value = this.editor.getValue()
+                const data = (value === '') ? '' : JSON.parse(this.editor.getValue())
+                return {
+                    data,
+                    success: true
+                }
+            } catch (err) {
+                return {
+                    success: false,
+                    msg: `${this.name}格式错误`
+                }
+            }
+        },
+        parseEditor () {
+            let value = this.editor.getValue()
+            try {
+                value = JSON.parse(value)
+                this.editor.setValue(JSON.stringify(value, null, '\t'), 1)
+            } catch (err) {
+                this.$message.error('请正确填写JSON')
+            }
+        },
+        initEditor () {
+            this.editor.setReadOnly(this.readonly)
+            this.editor.getSession().on('change', () => {
+                if (this.silent) {
+                    return
+                }
+                const data = this.getValue()
+                if (!data.success) {
+                    this.$emit('change', data)
+                    return
+                }
                 // if (Object.keys(data.data).length <= 0) {
                 //     this.$emit('change', {
                 //         success: false,
@@ -158,31 +158,31 @@ export default {
                 //     });
                 //     return;
                 // }
-        this.$emit('change', data)
-      })
-      this.setValue()
-    }
-  },
-  beforeDestroy () {
+                this.$emit('change', data)
+            })
+            this.setValue()
+        }
+    },
+    beforeDestroy () {
         // editorEvent.$off('resize', this.editorResize);
-    this.editor.destroy()
-  },
-  mounted () {
-    this.editor = ace.edit(this.id)
-    this.editor.getSession().setOptions({
-      mode: 'ace/mode/json',
-      tabSize: 4,
-      useSoftTabs: true
-    })
+        this.editor.destroy()
+    },
+    mounted () {
+        this.editor = ace.edit(this.id)
+        this.editor.getSession().setOptions({
+            mode: 'ace/mode/json',
+            tabSize: 4,
+            useSoftTabs: true
+        })
         // Automatically scrolling cursor into view after selection change this will be disabled in the next version set editor.$blockScrolling = Infinity to disable this message
-    this.editor.$blockScrolling = Infinity
+        this.editor.$blockScrolling = Infinity
 
         // 设置自动高度，然而并没什么用
         // this.editor.setAutoScrollEditorIntoView(true);
 
         // editorEvent.$on('resize', this.editorResize);
-    this.initEditor()
-  }
+        this.initEditor()
+    }
 }
 </script>
 <style>

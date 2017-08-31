@@ -16,20 +16,20 @@
 
 <script>
 export default {
-  name: 'docParam',
-  props: ['param', 'level'],
-  data () {
-    return {
-      keyStyle: {
-        marginLeft: `-${this.level * 20}px`,
-        textIndent: `${this.level * 20}px`
-      },
-      splitStyle: {
-        width: this.level ? '1px' : 0,
-        left: `${this.level * 20}px`
-      }
+    name: 'docParam',
+    props: ['param', 'level'],
+    data () {
+        return {
+            keyStyle: {
+                marginLeft: `-${this.level * 20}px`,
+                textIndent: `${this.level * 20}px`
+            },
+            splitStyle: {
+                width: this.level ? '1px' : 0,
+                left: `${this.level * 20}px`
+            }
+        }
     }
-  }
 }
 </script>
 <style>

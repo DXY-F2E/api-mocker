@@ -10,18 +10,18 @@
 <script>
 import ApiDoc from './ApiDoc'
 export default {
-  components: {
-    ApiDoc
-  },
-  computed: {
-    groups () {
-      return this.$store.state.groups
+    components: {
+        ApiDoc
     },
-    group () {
-      return this.groups.find(g => g._id === this.$route.params.groupId)
-    }
-  },
-  props: ['apis']
+    computed: {
+        groups () {
+            return this.$store.state.groups
+        },
+        group () {
+            return this.groups.find(g => g._id === this.$route.params.groupId)
+        }
+    },
+    props: ['apis']
 }
 </script>
 <style>

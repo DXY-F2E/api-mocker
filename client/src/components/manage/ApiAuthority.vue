@@ -29,70 +29,70 @@
 import UserSelector from '../common/UserSelector'
 import R from 'ramda'
 export default {
-  components: {
-    UserSelector
-  },
-  props: {
-    api: Object,
-    visible: Boolean
-  },
-  data () {
-    return {
-      users: [],
-      authority: null
-    }
-  },
-  computed: {
-    allUsers () {
-      return this.$store.state.allUsers
+    components: {
+        UserSelector
     },
-    title () {
-      return `${this.api.name}`
+    props: {
+        api: Object,
+        visible: Boolean
     },
-    operator () {
-      return this.authority.operation.operator
-    }
-  },
-  methods: {
-    initUsers (operators) {
-      this.users = operators.map(id =>
+    data () {
+        return {
+            users: [],
+            authority: null
+        }
+    },
+    computed: {
+        allUsers () {
+            return this.$store.state.allUsers
+        },
+        title () {
+            return `${this.api.name}`
+        },
+        operator () {
+            return this.authority.operation.operator
+        }
+    },
+    methods: {
+        initUsers (operators) {
+            this.users = operators.map(id =>
                 this.allUsers.find(u => u._id === id)
             )
-    },
-    getApiAuthority () {
-      this.$store.dispatch('getApiAuthority', this.api._id).then(rs => {
-        this.initUsers(rs.data.operation.operator)
-        this.authority = rs.data
-      })
-    },
-    searchUsers (val) {
-      this.users = this.allUsers.filter(u =>
+        },
+        getApiAuthority () {
+            this.$store.dispatch('getApiAuthority', this.api._id).then(rs => {
+                this.initUsers(rs.data.operation.operator)
+                this.authority = rs.data
+            })
+        },
+        searchUsers (val) {
+            this.users = this.allUsers.filter(u =>
                 u.email.indexOf(val) >= 0 || u.name.indexOf(val) >= 0
             )
-    },
-    updateOperator (operators) {
-      this.authority.operation.operator = operators
-    },
-    cancel () {
-      this.$emit('hide')
-    },
-    confirm () {
-      if (this.authority.operation.mode === 2 && this.operator.length === 0) {
-        this.$message.error('请至少选择一个人')
-        return
-      }
-      this.$store.dispatch('updateApiAuthority', this.authority).then(rs => {
-        this.$message.success(rs.data)
-        this.$emit('hide')
-      }).catch(err => this.$message.error(err.msg))
-    },
-    itemClick (val) {
-      this.authority.operation.operator = R.symmetricDifference(this.authority.operation.operator, [val])
-    },
-    itemRemove (val) {
-      this.authority.operation.operator = R.without([val], this.authority.operation.operator)
+        },
+        updateOperator (operators) {
+            this.authority.operation.operator = operators
+        },
+        cancel () {
+            this.$emit('hide')
+        },
+        confirm () {
+            if (this.authority.operation.mode === 2 && this.operator.length === 0) {
+                this.$message.error('请至少选择一个人')
+                return
+            }
+            this.$store.dispatch('updateApiAuthority', this.authority).then(rs => {
+                this.$message.success(rs.data)
+                this.$emit('hide')
+            }).catch(err => this.$message.error(err.msg))
+        },
+        itemClick (val) {
+            this.authority.operation.operator = R.symmetricDifference(this.authority.operation.operator, [val])
+        },
+        itemRemove (val) {
+            this.authority.operation.operator = R.without([val], this.authority.operation.operator)
+        }
     }
-  }
 }
 </script>
 <style>

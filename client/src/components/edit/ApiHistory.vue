@@ -11,41 +11,41 @@
 <script>
 import R from 'ramda'
 export default {
-  props: {
-    history: Object
-  },
-  methods: {
-    recover (record) {
-      if (this.apiUnsaved) {
-        this.$confirm('当前有未保存的内容, 是否加载?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.recoverAct(record)
-        })
-      } else {
-        this.recoverAct(record)
-      }
+    props: {
+        history: Object
     },
-    recoverAct (record) {
+    methods: {
+        recover (record) {
+            if (this.apiUnsaved) {
+                this.$confirm('当前有未保存的内容, 是否加载?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.recoverAct(record)
+                })
+            } else {
+                this.recoverAct(record)
+            }
+        },
+        recoverAct (record) {
             // 数组 slice 方法是浅复制，所以这里需要深拷贝一份
-      const data = R.clone(record.data)
-      data.history = this.history
-      this.$store.commit('UPDATE_API', data)
+            const data = R.clone(record.data)
+            data.history = this.history
+            this.$store.commit('UPDATE_API', data)
             // apiUnsaved -> false
-      this.$store.commit('SAVE_API')
-      this.$message.info('加载成功，再保存将会覆盖最新值')
-    }
-  },
-  computed: {
-    apiUnsaved () {
-      return this.$store.state.apiUnsaved
+            this.$store.commit('SAVE_API')
+            this.$message.info('加载成功，再保存将会覆盖最新值')
+        }
     },
-    records () {
-      return this.history.records.slice().reverse()
+    computed: {
+        apiUnsaved () {
+            return this.$store.state.apiUnsaved
+        },
+        records () {
+            return this.history.records.slice().reverse()
+        }
     }
-  }
 }
 </script>
 <style lang="less">

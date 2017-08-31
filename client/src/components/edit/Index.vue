@@ -15,62 +15,62 @@ import ApiInfo from './ApiInfo'
 import ApiBox from './ApiBox'
 import { mapActions, mapState } from 'vuex'
 export default {
-  components: {
-    ApiInfo,
-    ApiBox
-  },
-  data () {
-    return {
-      loading: true,
-      loadingFail: false
-    }
-  },
-  methods: {
-    ...mapActions([
-      'getApi'
-    ]),
-    beginLoading () {
-      this.loading = true
+    components: {
+        ApiInfo,
+        ApiBox
     },
-    endLoading () {
-      this.loading = false
+    data () {
+        return {
+            loading: true,
+            loadingFail: false
+        }
     },
-    initApi () {
-      this.$store.commit('CHANGE_MODE', 'edit')
-      this.beginLoading()
-      if (this.$route.name === 'Create') {
-        this.$store.commit('INIT_API', this.$route.query.groupId)
-        this.endLoading()
-      } else {
-        this.getApi(this.$route.params).then(() => {
-          this.endLoading()
-        }).catch(err => {
-          this.$message.error(`获取数据失败:${err.msg}`)
-          this.loadingFail = true
-          this.endLoading()
+    methods: {
+        ...mapActions([
+            'getApi'
+        ]),
+        beginLoading () {
+            this.loading = true
+        },
+        endLoading () {
+            this.loading = false
+        },
+        initApi () {
+            this.$store.commit('CHANGE_MODE', 'edit')
+            this.beginLoading()
+            if (this.$route.name === 'Create') {
+                this.$store.commit('INIT_API', this.$route.query.groupId)
+                this.endLoading()
+            } else {
+                this.getApi(this.$route.params).then(() => {
+                    this.endLoading()
+                }).catch(err => {
+                    this.$message.error(`获取数据失败:${err.msg}`)
+                    this.loadingFail = true
+                    this.endLoading()
+                })
+            }
+        }
+    },
+    computed: mapState(['api', 'mode', 'apiUnsaved']),
+    beforeRouteEnter (to, from, next) {
+        next(vm => {
+            vm.initApi()
         })
-      }
+    },
+    beforeRouteLeave (to, from, next) {
+        if (this.apiUnsaved) {
+            this.$confirm('有未保存的内容, 是否离开?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                next()
+            }).catch(() => {})
+        } else {
+            next()
+        }
     }
-  },
-  computed: mapState(['api', 'mode', 'apiUnsaved']),
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      vm.initApi()
-    })
-  },
-  beforeRouteLeave (to, from, next) {
-    if (this.apiUnsaved) {
-      this.$confirm('有未保存的内容, 是否离开?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        next()
-      }).catch(() => {})
-    } else {
-      next()
-    }
-  }
 }
 </script>
 <style>

@@ -1,24 +1,24 @@
 <template>
 <div class="login-box">
-    <el-form label-position="left" :model="registerForm" :rules="registerRules" ref="registerForm">
-        <p class="app-name">账号注册</p>
-        <el-form-item prop="email">
-            <el-input placeholder="email" v-model="registerForm.email" ></el-input>
-        </el-form-item>
-        <el-form-item prop="name">
-            <el-input placeholder="name" v-model="registerForm.name" ></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-            <el-input type="password" placeholder="password" v-model="registerForm.password"></el-input>
-        </el-form-item>
-        <el-form-item prop="verifyPassword">
-            <el-input type="password" placeholder="verify password" v-model="registerForm.verifyPassword"></el-input>
-        </el-form-item>
-        <el-form-item class="control">
-            <el-button type="primary" @click="validate">注册</el-button>
-            <router-link class="login" to="login">--> 登录</router-link>
-        </el-form-item>
-    </el-form>
+  <el-form label-position="left" :model="registerForm" :rules="registerRules" ref="registerForm">
+    <p class="app-name">账号注册</p>
+    <el-form-item prop="email">
+      <el-input placeholder="email" v-model="registerForm.email" ></el-input>
+    </el-form-item>
+    <el-form-item prop="name">
+      <el-input placeholder="name" v-model="registerForm.name" ></el-input>
+    </el-form-item>
+    <el-form-item prop="password">
+      <el-input type="password" placeholder="password" v-model="registerForm.password"></el-input>
+    </el-form-item>
+    <el-form-item prop="verifyPassword">
+      <el-input type="password" placeholder="verify password" v-model="registerForm.verifyPassword"></el-input>
+    </el-form-item>
+    <el-form-item class="control">
+      <el-button type="primary" @click="validate">注册</el-button>
+      <router-link class="login" to="login">--> 登录</router-link>
+    </el-form-item>
+  </el-form>
 </div>
 </template>
 

@@ -17,16 +17,16 @@
 <script>
 import DocParam from './Param'
 export default {
-  name: 'params',
-  components: {
-    DocParam
-  },
-  computed: {
-    nextLevel () {
-      return this.level + 1
-    }
-  },
-  props: ['params', 'level']
+    name: 'params',
+    components: {
+        DocParam
+    },
+    computed: {
+        nextLevel () {
+            return this.level + 1
+        }
+    },
+    props: ['params', 'level']
 }
 </script>
 <style lang="less">

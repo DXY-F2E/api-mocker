@@ -14,12 +14,12 @@
 <script>
 import ManageNav from './Nav'
 export default {
-  components: {
-    ManageNav
-  },
-  mounted () {
-    this.$store.dispatch('getAllUsers')
-  }
+    components: {
+        ManageNav
+    },
+    mounted () {
+        this.$store.dispatch('getAllUsers')
+    }
 }
 </script>
 <style>

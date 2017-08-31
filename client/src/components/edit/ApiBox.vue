@@ -37,31 +37,31 @@ import DescBox from './DescBox'
 import SettingField from './SettingField'
 import ResponseConfig from './response/Config'
 export default {
-  components: {
-    RequestBox,
-    Response,
-    ResultBox,
-    DescBox,
-    UrlBox,
-    ResponseConfig,
-    SettingField
-  },
-  data () {
-    return {
-      resActive: 'body'
-    }
-  },
-  computed: {
-    mode () {
-      return this.$store.state.mode
+    components: {
+        RequestBox,
+        Response,
+        ResultBox,
+        DescBox,
+        UrlBox,
+        ResponseConfig,
+        SettingField
     },
-    method () {
-      return this.$store.state.api.options.method
+    data () {
+        return {
+            resActive: 'body'
+        }
     },
-    response () {
-      return this.$store.state.api.options.response
+    computed: {
+        mode () {
+            return this.$store.state.mode
+        },
+        method () {
+            return this.$store.state.api.options.method
+        },
+        response () {
+            return this.$store.state.api.options.response
+        }
     }
-  }
 }
 </script>
 <style>

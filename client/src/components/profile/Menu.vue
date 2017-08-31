@@ -10,27 +10,27 @@
 
 <script>
 export default {
-  data () {
-    return {
-      manageRoute: {
-        name: 'ManageApi'
-      }
+    data () {
+        return {
+            manageRoute: {
+                name: 'ManageApi'
+            }
+        }
+    },
+    methods: {
+        logout () {
+            this.$store.dispatch('logout').then(() => {
+                this.$router.push({
+                    name: 'Login'
+                })
+            }).catch(err => this.$message.error(`注销失败：${err.msg}`))
+        }
+    },
+    computed: {
+        user () {
+            return this.$store.state.user
+        }
     }
-  },
-  methods: {
-    logout () {
-      this.$store.dispatch('logout').then(() => {
-        this.$router.push({
-          name: 'Login'
-        })
-      }).catch(err => this.$message.error(`注销失败：${err.msg}`))
-    }
-  },
-  computed: {
-    user () {
-      return this.$store.state.user
-    }
-  }
 }
 </script>
 <style lang="less" scoped>

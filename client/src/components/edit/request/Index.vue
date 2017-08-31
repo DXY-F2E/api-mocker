@@ -39,92 +39,92 @@
 import Schema from '../schema/Index'
 import R from 'ramda'
 export default {
-  components: {
-    Schema
-  },
-  props: ['fullscreen', 'method'],
-  data () {
-    return {
-      activeType: this.initActive(),
-      types: [{
-        label: 'Body',
-        name: 'body',
-        tip: 'POST、PUT请求时的参数，支持form、json'
-      }, {
-        label: 'Query',
-        name: 'query',
-        tip: 'Get请求时的url参数，以 ? 和 & 拼接到url中'
-      }, {
-        label: 'Path',
-        name: 'path',
-        tip: 'RESTful风格的url参数，例如 http://www.dxy.cn/:userId'
-      }]
-    }
-  },
-  methods: {
-    initActive () {
-      if (this.method === 'get') {
-        return 'query'
-      } else {
-        return 'body'
-      }
+    components: {
+        Schema
     },
-    updateParams (data) {
-      if (this.activeType === 'headers') {
-        this.$store.commit('UPDATE_API_PROPS',
+    props: ['fullscreen', 'method'],
+    data () {
+        return {
+            activeType: this.initActive(),
+            types: [{
+                label: 'Body',
+                name: 'body',
+                tip: 'POST、PUT请求时的参数，支持form、json'
+            }, {
+                label: 'Query',
+                name: 'query',
+                tip: 'Get请求时的url参数，以 ? 和 & 拼接到url中'
+            }, {
+                label: 'Path',
+                name: 'path',
+                tip: 'RESTful风格的url参数，例如 http://www.dxy.cn/:userId'
+            }]
+        }
+    },
+    methods: {
+        initActive () {
+            if (this.method === 'get') {
+                return 'query'
+            } else {
+                return 'body'
+            }
+        },
+        updateParams (data) {
+            if (this.activeType === 'headers') {
+                this.$store.commit('UPDATE_API_PROPS',
                                    ['options.headers', data])
-        return
-      }
-      const key = `options.params.${this.activeType}`
-      this.$store.commit('UPDATE_API_PROPS',
+                return
+            }
+            const key = `options.params.${this.activeType}`
+            this.$store.commit('UPDATE_API_PROPS',
                                [key, data.params])
-      const exampleKey = `options.examples.${this.activeType}`
-      this.$store.commit('UPDATE_API_PROPS',
+            const exampleKey = `options.examples.${this.activeType}`
+            this.$store.commit('UPDATE_API_PROPS',
                                [exampleKey, data.example])
+        },
+        changeSchema (type) {
+            this.activeType = type
+        },
+        getSchemaObject (key) {
+            return {
+                example: this.examples[key],
+                params: this.params[key]
+            }
+        }
     },
-    changeSchema (type) {
-      this.activeType = type
+    watch: {
+        method (val) {
+            if (this.activeType === 'headers') {
+                return
+            }
+            if (val === 'get') {
+                this.activeType = 'query'
+            } else {
+                this.activeType = 'body'
+            }
+        }
     },
-    getSchemaObject (key) {
-      return {
-        example: this.examples[key],
-        params: this.params[key]
-      }
+    computed: {
+        activeSchema () {
+            return this.activeType === 'headers' ? this.headers : this.localParams[this.activeType]
+        },
+        headers () {
+            return this.$store.state.api.options.headers
+        },
+        params () {
+            return R.clone(this.$store.state.api.options.params)
+        },
+        examples () {
+            return R.clone(this.$store.state.api.options.examples)
+        },
+        localParams () {
+            const localParams = {}
+            for (const key in this.params) {
+                localParams[key] = this.getSchemaObject(key)
+            }
+            return localParams
+        }
     }
-  },
-  watch: {
-    method (val) {
-      if (this.activeType === 'headers') {
-        return
-      }
-      if (val === 'get') {
-        this.activeType = 'query'
-      } else {
-        this.activeType = 'body'
-      }
-    }
-  },
-  computed: {
-    activeSchema () {
-      return this.activeType === 'headers' ? this.headers : this.localParams[this.activeType]
-    },
-    headers () {
-      return this.$store.state.api.options.headers
-    },
-    params () {
-      return R.clone(this.$store.state.api.options.params)
-    },
-    examples () {
-      return R.clone(this.$store.state.api.options.examples)
-    },
-    localParams () {
-      const localParams = {}
-      for (const key in this.params) {
-        localParams[key] = this.getSchemaObject(key)
-      }
-      return localParams
-    }
-  }
 }
 </script>
 <style lang="less">

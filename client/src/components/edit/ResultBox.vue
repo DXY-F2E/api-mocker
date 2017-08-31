@@ -11,41 +11,41 @@
 <script>
 import JsonEditor from '../common/jsonEditor/Index'
 export default {
-  components: {
-    JsonEditor
-  },
-  props: {
-    fullscreen: {
-      type: Boolean,
-      default: false
+    components: {
+        JsonEditor
     },
-    resActive: {
-      type: String,
-      required: true
-    }
-  },
-  computed: {
-    jsonData () {
-      return this.getResponseData()
+    props: {
+        fullscreen: {
+            type: Boolean,
+            default: false
+        },
+        resActive: {
+            type: String,
+            required: true
+        }
     },
-    response () {
-      return this.$store.state.response
+    computed: {
+        jsonData () {
+            return this.getResponseData()
+        },
+        response () {
+            return this.$store.state.response
+        }
+    },
+    methods: {
+        getResponseData () {
+            if (this.resActive === 'body') {
+                return this.response.data
+            } else if (this.resActive === 'header') {
+                return Object.assign({
+                    status: this.response.status,
+                    statusText: this.response.statusText
+                }, this.response.headers)
+            } else {
+                return this.response
+            }
+        }
     }
-  },
-  methods: {
-    getResponseData () {
-      if (this.resActive === 'body') {
-        return this.response.data
-      } else if (this.resActive === 'header') {
-        return Object.assign({
-          status: this.response.status,
-          statusText: this.response.statusText
-        }, this.response.headers)
-      } else {
-        return this.response
-      }
-    }
-  }
 }
 </script>
 <style>

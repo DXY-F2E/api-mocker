@@ -22,67 +22,67 @@
 import CopyButton from '../common/CopyButton'
 import R from 'ramda'
 export default {
-  components: {
-    CopyButton
-  },
-  props: {
-    data: {
-      type: Object,
-      require: true
+    components: {
+        CopyButton
     },
-    index: {
-      type: Number,
-      require: true
+    props: {
+        data: {
+            type: Object,
+            require: true
+        },
+        index: {
+            type: Number,
+            require: true
+        }
+    },
+    computed: {
+        manager () {
+            return this.data.manager ? this.data.manager.name : '未知'
+        }
+    },
+    data () {
+        return {
+            apiUrl: `${this.$store.state.serverRoot}/client/${this.data._id}`
+        }
+    },
+    methods: {
+        showDoc () {
+            this.$router.push(`/doc/${this.data.group}/${this.data._id}`)
+        },
+        getApiCopyData () {
+            const api = R.clone(this.data)
+            delete api._id
+            delete api.createTime
+            delete api.modifiedTime
+            api.name = `${api.name}-副本`
+            return api
+        },
+        confirmCopy (apiName) {
+            this.$confirm(`确定复制接口：${apiName}?`, '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.copyApi()
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消复制'
+                })
+            })
+        },
+        copyApi () {
+            const api = this.getApiCopyData()
+            this.$store.dispatch('copyApi', api).then(() => {
+                this.$message.success('复制成功')
+            }).catch(err => this.$message.error(err.msg))
+        },
+        editApi (api) {
+            this.$store.commit('UPDATE_API', api)
+            this.$store.commit('CHANGE_MODE', 'edit')
+            this.$router.push(`/edit/${api.group}/${api._id}`)
+        }
     }
-  },
-  computed: {
-    manager () {
-      return this.data.manager ? this.data.manager.name : '未知'
-    }
-  },
-  data () {
-    return {
-      apiUrl: `${this.$store.state.serverRoot}/client/${this.data._id}`
-    }
-  },
-  methods: {
-    showDoc () {
-      this.$router.push(`/doc/${this.data.group}/${this.data._id}`)
-    },
-    getApiCopyData () {
-      const api = R.clone(this.data)
-      delete api._id
-      delete api.createTime
-      delete api.modifiedTime
-      api.name = `${api.name}-副本`
-      return api
-    },
-    confirmCopy (apiName) {
-      this.$confirm(`确定复制接口：${apiName}?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.copyApi()
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消复制'
-        })
-      })
-    },
-    copyApi () {
-      const api = this.getApiCopyData()
-      this.$store.dispatch('copyApi', api).then(() => {
-        this.$message.success('复制成功')
-      }).catch(err => this.$message.error(err.msg))
-    },
-    editApi (api) {
-      this.$store.commit('UPDATE_API', api)
-      this.$store.commit('CHANGE_MODE', 'edit')
-      this.$router.push(`/edit/${api.group}/${api._id}`)
-    }
-  }
 }
 </script>
 <style lang="less">

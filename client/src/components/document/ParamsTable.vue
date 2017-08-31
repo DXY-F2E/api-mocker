@@ -20,10 +20,10 @@
 <script>
 import Params from './Params'
 export default {
-  components: {
-    Params
-  },
-  props: ['params']
+    components: {
+        Params
+    },
+    props: ['params']
 }
 </script>
 <style lang="less">

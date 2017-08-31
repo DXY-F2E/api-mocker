@@ -24,57 +24,57 @@
 <script>
 import ParamSet from './ParamSet'
 export default {
-  components: {
-    ParamSet
-  },
-  props: {
-    level: {
-      type: Number,
-      required: true
+    components: {
+        ParamSet
     },
-    params: {
-      type: Array,
-      required: true
+    props: {
+        level: {
+            type: Number,
+            required: true
+        },
+        params: {
+            type: Array,
+            required: true
+        },
+        param: {
+            type: Object,
+            required: true
+        },
+        name: {
+            type: String,
+            required: false
+        }
     },
-    param: {
-      type: Object,
-      required: true
+    data () {
+        return {
+            styleObject: {
+                left: `-${51 + (this.level * 25)}px`
+            },
+            expanded: false
+        }
     },
-    name: {
-      type: String,
-      required: false
+    computed: {
+        isShowExpand () {
+            return (this.param.type === 'object') || (this.param.type === 'array' && this.param.items.type === 'object')
+        }
+    },
+    methods: {
+        buildObject () {
+            this.expanded = true
+        },
+        updateParam () {
+            this.$emit('change', this.param)
+        },
+        addParam () {
+            this.$emit('addParam')
+        },
+        deleteParam () {
+            this.$emit('deleteParam')
+        },
+        expandParam () {
+            this.expanded = !this.expanded
+        }
     }
-  },
-  data () {
-    return {
-      styleObject: {
-        left: `-${51 + (this.level * 25)}px`
-      },
-      expanded: false
-    }
-  },
-  computed: {
-    isShowExpand () {
-      return (this.param.type === 'object') || (this.param.type === 'array' && this.param.items.type === 'object')
-    }
-  },
-  methods: {
-    buildObject () {
-      this.expanded = true
-    },
-    updateParam () {
-      this.$emit('change', this.param)
-    },
-    addParam () {
-      this.$emit('addParam')
-    },
-    deleteParam () {
-      this.$emit('deleteParam')
-    },
-    expandParam () {
-      this.expanded = !this.expanded
-    }
-  }
 }
 </script>
 <style lang="less">

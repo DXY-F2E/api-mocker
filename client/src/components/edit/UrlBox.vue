@@ -54,128 +54,128 @@
 import { mapActions } from 'vuex'
 import CopyButton from '../common/CopyButton'
 export default {
-  components: {
-    CopyButton
-  },
-  data () {
-    return {
-      saveToken: false,
-      isShowDialog: false,
-      testMode: 'mock',
-      testModes: ['mock', 'prod', 'dev']
-    }
-  },
-  methods: {
-    ...mapActions([
-      'saveApi',
-      'testApi'
-    ]),
-    updateTestMode (val) {
-      this.testMode = val
+    components: {
+        CopyButton
     },
-    save () {
-      if (this.saveToken) {
-        return
-      }
-      this.saveToken = true
-      this.saveApi().then(() => {
-        this.saveToken = false
-        if (this.$route.name === 'Create' && this.api._id) {
-          this.$router.push({
-            name: 'Edit',
-            params: {
-              groupId: this.api.group,
-              apiId: this.api._id
+    data () {
+        return {
+            saveToken: false,
+            isShowDialog: false,
+            testMode: 'mock',
+            testModes: ['mock', 'prod', 'dev']
+        }
+    },
+    methods: {
+        ...mapActions([
+            'saveApi',
+            'testApi'
+        ]),
+        updateTestMode (val) {
+            this.testMode = val
+        },
+        save () {
+            if (this.saveToken) {
+                return
             }
-          })
+            this.saveToken = true
+            this.saveApi().then(() => {
+                this.saveToken = false
+                if (this.$route.name === 'Create' && this.api._id) {
+                    this.$router.push({
+                        name: 'Edit',
+                        params: {
+                            groupId: this.api.group,
+                            apiId: this.api._id
+                        }
+                    })
+                }
+                this.$message.success('保存成功')
+            }).catch(err => {
+                this.saveToken = false
+                this.$message.error(`保存失败:${err.msg}`)
+            })
+        },
+        send () {
+            this.testApi(this.testMode)
+        },
+        onKeydown (e) {
+            if (e.keyCode === 83 && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault()
+                this.save()
+            }
+        },
+        showDoc () {
+            this.$router.push({
+                name: 'ApiDoc',
+                params: {
+                    groupId: this.api.group,
+                    apiId: this.api._id
+                }
+            })
+        },
+        buildMockUrl () {
+            const mockUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`
+            const path = this.api.options.params.path
+            if (path.length) {
+                const pathUrl = path.filter(p => p.key).map(p => `/:${p.key}`).join('')
+                return pathUrl ? `${mockUrl}${pathUrl}` : mockUrl
+            } else {
+                return mockUrl
+            }
+        },
+        getTestUrl (mode) {
+            return this[`${mode}Url`]
         }
-        this.$message.success('保存成功')
-      }).catch(err => {
-        this.saveToken = false
-        this.$message.error(`保存失败:${err.msg}`)
-      })
     },
-    send () {
-      this.testApi(this.testMode)
+    beforeDestroy () {
+        document.removeEventListener('keydown', this.onKeydown)
     },
-    onKeydown (e) {
-      if (e.keyCode === 83 && (e.ctrlKey || e.metaKey)) {
-        e.preventDefault()
-        this.save()
-      }
+    mounted () {
+        document.addEventListener('keydown', this.onKeydown)
     },
-    showDoc () {
-      this.$router.push({
-        name: 'ApiDoc',
-        params: {
-          groupId: this.api.group,
-          apiId: this.api._id
+    computed: {
+        mode: {
+            get () {
+                return this.$store.state.mode
+            },
+            set () {
+                this.$store.commit('CHANGE_MODE')
+            }
+        },
+        modeName () {
+            return this.$store.state.mode === 'edit' ? '编辑' : '测试'
+        },
+        api () {
+            return this.$store.state.api
+        },
+        creating () {
+            return this.$store.state.api._id === undefined
+        },
+        mockUrl () {
+            return this.buildMockUrl()
+        },
+        prodUrl () {
+            return this.api.prodUrl
+        },
+        devUrl () {
+            return this.api.devUrl
+        },
+        url () {
+            if (this.mode === 'edit') {
+                return this.api._id ? this.mockUrl : ''
+            } else {
+                return this.getTestUrl(this.testMode)
+            }
+        },
+        method: {
+            get () {
+                return this.$store.state.api.options.method
+            },
+            set (value) {
+                this.$store.commit('UPDATE_API_PROPS', ['options.method', value])
+            }
         }
-      })
-    },
-    buildMockUrl () {
-      const mockUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`
-      const path = this.api.options.params.path
-      if (path.length) {
-        const pathUrl = path.filter(p => p.key).map(p => `/:${p.key}`).join('')
-        return pathUrl ? `${mockUrl}${pathUrl}` : mockUrl
-      } else {
-        return mockUrl
-      }
-    },
-    getTestUrl (mode) {
-      return this[`${mode}Url`]
     }
-  },
-  beforeDestroy () {
-    document.removeEventListener('keydown', this.onKeydown)
-  },
-  mounted () {
-    document.addEventListener('keydown', this.onKeydown)
-  },
-  computed: {
-    mode: {
-      get () {
-        return this.$store.state.mode
-      },
-      set () {
-        this.$store.commit('CHANGE_MODE')
-      }
-    },
-    modeName () {
-      return this.$store.state.mode === 'edit' ? '编辑' : '测试'
-    },
-    api () {
-      return this.$store.state.api
-    },
-    creating () {
-      return this.$store.state.api._id === undefined
-    },
-    mockUrl () {
-      return this.buildMockUrl()
-    },
-    prodUrl () {
-      return this.api.prodUrl
-    },
-    devUrl () {
-      return this.api.devUrl
-    },
-    url () {
-      if (this.mode === 'edit') {
-        return this.api._id ? this.mockUrl : ''
-      } else {
-        return this.getTestUrl(this.testMode)
-      }
-    },
-    method: {
-      get () {
-        return this.$store.state.api.options.method
-      },
-      set (value) {
-        this.$store.commit('UPDATE_API_PROPS', ['options.method', value])
-      }
-    }
-  }
 }
 </script>
 <style lang="less">

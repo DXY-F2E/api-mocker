@@ -7,9 +7,9 @@
 <script>
 import Schema from './Schema'
 export default {
-  components: {
-    Schema
-  },
-  props: ['schemas', 'name']
+    components: {
+        Schema
+    },
+    props: ['schemas', 'name']
 }
 </script>
