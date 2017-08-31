@@ -140,7 +140,10 @@ export default {
   .el-input__inner {
     background-color: #F9FAFC;
   }
-
+  // 防止创建分组的输入框背景色被覆盖
+  .create-group-dialog .el-input__inner {
+    background-color: #fff;
+  }
   .el-form {
     min-height: 100%;
     padding-bottom: 50px;
