@@ -4,6 +4,6 @@ module.exports = app => {
       const { start, end } = this.ctx.query
       this.ctx.body = yield this.service.stat.getMockStat(start, end)
     }
-    }
+  }
   return StatController
 }

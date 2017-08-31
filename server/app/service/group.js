@@ -3,10 +3,10 @@ const {
     PRIVACY_ALL,
     PRIVACY_MEMBER,
     PRIVACY_SELF,
-
     OPERATION_ALL,
     OPERATION_MEMBER
 } = authority
+
 module.exports = app => {
   class Group extends app.Service {
     isWritable (group, authId) {
@@ -44,13 +44,10 @@ module.exports = app => {
       return app.model.group.findOneAndUpdate({
         _id: groupId,
         manager: this.ctx.authUser._id
-      }, Object.assign(
-                group,
-                { modifiedTime: Date.now() }
-            ), { new: true })
+      }, Object.assign(group, { modifiedTime: Date.now() }), { new: true })
     }
     updateTime (groupId) {
-            // 此方法允许异步执行
+      // 此方法允许异步执行
       return app.model.group.update({ _id: groupId }, { modifiedTime: Date.now() }, { new: true }).exec()
     }
     create (group) {
@@ -101,6 +98,6 @@ module.exports = app => {
         manager: this.ctx.authUser._id
       })
     }
-    }
+  }
   return Group
 }

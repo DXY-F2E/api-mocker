@@ -15,7 +15,6 @@ module.exports = app => {
     }
     * getAll () {
       const resources = yield this.service.group.getReadableGroups()
-
       this.ctx.body = { resources }
       this.ctx.status = 200
     }
@@ -45,28 +44,26 @@ module.exports = app => {
       this.ctx.body = yield this.service.group.getUnmanaged()
     }
     * claim () {
+      // 认领分组，历史遗留问题，可忽略此接口
       const groupId = this.ctx.params.id
       this.ctx.body = yield this.service.group.claim(groupId)
     }
     * create () {
       const { body } = this.ctx.request
-
       assert(body.name, 403, 'required group name')
-
       const resources = yield this.service.group.create(body)
-
       this.ctx.body = { resources }
     }
     * delete () {
       const { id } = this.ctx.params
-      const rs2 = yield this.service.group.delete(id)
-      if (!rs2) {
+      const rs = yield this.service.group.delete(id)
+      if (!rs) {
         this.error('无权删除')
       }
-            // 不是很合理，应该是要先删除api再删除分组，但api这里没法做权限，所以暂时先后执行
+      // 不是很合理，应该是要先删除api再删除分组，但api这里没法做权限，所以暂时先后执行
       yield this.service.api.deleteGroupApis(id)
       this.ctx.status = 204
     }
-    }
+  }
   return GroupController
 }

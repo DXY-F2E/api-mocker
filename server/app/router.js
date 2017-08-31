@@ -26,19 +26,19 @@ module.exports = app => {
   app.get('/server/authority/api/:apiId', 'authority.getApi')
   app.put('/server/authority/api/:apiId', 'authority.modifyApi')
 
-    // stat
+  // stat
   app.get('/server/stat/mock', 'stat.mock')
 
   app.post('/client/real', 'client.real')
-    // mock data
+  // mock data
   const mockUrl = pathToRegexp('/client/:id/:url*', [])
-    // const mockUrl = '/client/:id'
+  // const mockUrl = '/client/:id'
   app.get(mockUrl, credentials, apiStat, 'client.show')
   app.post(mockUrl, credentials, apiStat, 'client.create')
   app.put(mockUrl, credentials, apiStat, 'client.put')
   app.delete(mockUrl, credentials, apiStat, 'client.delete')
 
-    // user
+  // user
   app.get('/auth/user', 'user.get')
   app.post('/auth/user/register', 'user.create')
   app.post('/auth/user/login', 'user.login')

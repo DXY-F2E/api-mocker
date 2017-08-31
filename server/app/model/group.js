@@ -27,7 +27,7 @@ module.exports = mongoose => {
       required: true,
       unique: true
     },
-    level: {
+    level: { // 分组的层级，默认第一级，预留字段，暂时无用。
       type: Number,
       required: true,
       default: 1
@@ -40,7 +40,7 @@ module.exports = mongoose => {
       type: String,
       default: Date.now
     },
-    desc: String,
+    desc: String, // 分组描述，预留字段，暂时无用。
     isDeleted: {
       type: Boolean,
       default: false

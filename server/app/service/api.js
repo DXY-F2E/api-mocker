@@ -54,10 +54,10 @@ module.exports = app => {
     }
     getList (cond, page, limit) {
       return app.model.api
-                            .find(cond)
-                            .sort({ modifiedTime: -1, createTime: -1 })
-                            .skip((page - 1) * limit)
-                            .limit(limit)
+                      .find(cond)
+                      .sort({ modifiedTime: -1, createTime: -1 })
+                      .skip((page - 1) * limit)
+                      .limit(limit)
     }
     getManageList (page, limit) {
       const cond = {
@@ -77,6 +77,6 @@ module.exports = app => {
         return api
       })
     }
-    }
+  }
   return Api
 }

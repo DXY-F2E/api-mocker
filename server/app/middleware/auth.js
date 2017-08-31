@@ -6,7 +6,6 @@ module.exports = (options, app) => {
         this.authUser = user
         yield next
       } else {
-                // yield next
         this.status = 401
       }
     } else {

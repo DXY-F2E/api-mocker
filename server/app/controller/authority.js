@@ -23,6 +23,6 @@ module.exports = app => {
       authority.apiId = apiId
       this.success(authority)
     }
-    }
+  }
   return AuthorityController
 }

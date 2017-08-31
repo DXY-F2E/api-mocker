@@ -15,11 +15,9 @@ module.exports = app => {
       const condition = {
         isDeleted: false,
         $or: [
-                    { name: reg },
-                    // {url: reg},
-                    // {'options.method': reg},
-                    { desc: reg },
-                    { prodUrl: reg }
+          { name: reg },
+          { desc: reg },
+          { prodUrl: reg }
         ]
       }
       const users = q ? yield this.service.user.find(q) : []
@@ -33,7 +31,6 @@ module.exports = app => {
       if (groupId) condition.group = groupId
       const resources = yield this.service.api.getRichList(condition, page, limit)
       const count = yield app.model.api.find(condition).count().exec()
-      this.ctx.logger.info('getAll', this.ctx.query)
       this.ctx.body = { resources, pages: { limit, page, count } }
       this.ctx.status = 200
     }
@@ -83,8 +80,6 @@ module.exports = app => {
       this.service.group.updateTime(groupId)
             // 存下历史记录，并将所有记录返回
       resources.history = yield this.service.apiHistory.push(resources)
-
-      this.ctx.logger.info('modifyApi', body)
       this.ctx.body = { resources }
     }
     * notifyApiChange (api, lastModifiedTime) {
@@ -111,7 +106,6 @@ module.exports = app => {
       const resources = (yield app.model.api.findOne({ _id: apiId, isDeleted: false })).toObject()
       resources.history = yield this.service.apiHistory.get(resources)
 
-      this.ctx.logger.info('getApi')
       this.ctx.body = { resources }
       this.ctx.status = 200
     }
@@ -166,7 +160,6 @@ module.exports = app => {
 
       this.service.group.updateTime(groupId)
 
-      this.ctx.logger.info('createApi', body)
       this.ctx.body = { resources }
       this.ctx.status = 200
     }
@@ -195,6 +188,6 @@ module.exports = app => {
       this.ctx.logger.info('deleteApi')
       this.ctx.status = 204
     }
-    }
+  }
   return ApiController
 }

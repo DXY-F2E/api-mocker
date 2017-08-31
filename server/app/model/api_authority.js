@@ -6,7 +6,7 @@ module.exports = mongoose => {
       unique: true,
       ref: 'api'
     },
-    operation: {
+    operation: { // 编辑权限
       mode: {
         type: Number,
         default: 0  // 0 - 所有人, 1 - 组内人员 2 - 指定人员
