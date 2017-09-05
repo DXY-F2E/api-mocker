@@ -42,7 +42,6 @@ prod_client:|dsl-core
 	else \
 		rm -rf ./dist/*; \
 	fi
-	cp -rf client/dist/* ./dist/
 # 开发模式
 client:|dsl-core
 	cd client && npm install && npm run dev
