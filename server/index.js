@@ -8,10 +8,3 @@ require('egg').startCluster({
   workers: 4,
   port: process.env.PORT || 7001 // default to 7001
 })
-
-// https 链接走 ngnix转发
-// require('egg').startCluster({
-//     https: false,
-//     baseDir: __dirname,
-//     port: process.env.PORT || 7001 // default to 7001
-// });

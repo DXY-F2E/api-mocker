@@ -20,7 +20,8 @@ module.exports = {
     // `npm run build --report`
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report,
-    ajax: 'f2e.dxy.net/mock-api'
+    // 服务端接口的根路径
+    serverRoot: 'f2e.dxy.net/mock-api'
   },
   dev: {
     env: require('./dev.env'),
@@ -35,6 +36,6 @@ module.exports = {
     // In our experience, they generally work as expected,
     // just be aware of this issue when enabling this option.
     cssSourceMap: false,
-    ajax: 'localhost:7001'
+    serverRoot: 'localhost:7001'
   }
 }

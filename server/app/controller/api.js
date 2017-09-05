@@ -83,9 +83,8 @@ module.exports = app => {
       this.ctx.body = { resources }
     }
     * notifyApiChange (api, lastModifiedTime) {
-      // 一小时内有修改不推送
       const interval = api.modifiedTime - lastModifiedTime
-      if (interval < 1000 * 60 * 60) {
+      if (interval < this.config.pushInterval.api) {
         return
       }
       const selfIdx = api.follower.findIndex(f => f.toString() === this.ctx.authUser._id)
@@ -93,7 +92,6 @@ module.exports = app => {
       if (selfIdx >= 0) {
         api.follower.splice(selfIdx, 1)
       }
-      console.log(api.follower)
       const users = yield this.service.user.getByIds(api.follower)
       this.service.email.notifyApiChange(api, users)
     }

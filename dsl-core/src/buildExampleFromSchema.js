@@ -1,7 +1,6 @@
-var Mock = require('mockjs')
-let buildExampleFromSchema = null;
-let buildExample = null;
-buildExampleFromSchema = (schema) => {
+var Mock = require('mockjs');
+
+function buildExampleFromSchema (schema) {
     const example = {};
     schema.params.forEach(param => {
         if (!param.key) return;
@@ -9,7 +8,7 @@ buildExampleFromSchema = (schema) => {
     });
     return Mock.mock(example);
 };
-buildExample = (param) => {
+function buildExample (param) {
     switch (param.type) {
         case 'object':
             return buildExampleFromSchema(param);
@@ -18,7 +17,7 @@ buildExample = (param) => {
         case 'number':
             return Math.ceil(Math.random() * 10000);
         case 'boolean':
-            return Math.ceil(Math.random() * 2) > 1 ? true : false
+            return Math.ceil(Math.random() * 2) > 1 ? true : false;
         default:
             return 'value';
     }

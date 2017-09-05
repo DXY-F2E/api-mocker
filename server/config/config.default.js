@@ -7,12 +7,18 @@ module.exports = appInfo => {
       url: 'mongodb://127.0.0.1/api-mock'
     },
     keys: `${appInfo.name}_1490324849354_6879`,
+    // 密码加密的key
     md5Key: '52851cb05258c8d98da1672d95729e53',
-    cookieKey: '591e7709eb277373342ac137',
+    // 允许跨域携带cookie
     cors: {
       credentials: true
     },
     middleware: [ 'auth' ],
+    // 邮件推送间隔
+    pushInterval: {
+      // 一个小时内修改api不会连续推送
+      api: 1000 * 60 * 60
+    },
     // 发送邮件配置
     transporter: {
       appName: 'Api Mocker',

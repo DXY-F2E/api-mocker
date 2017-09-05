@@ -39,6 +39,7 @@
   },
   "scripts": {
     "start": "node index.js",
+    "pm2": "pm2 start index.js",
     "dev": "egg-bin dev",
     "test": "npm run test-local",
     "fix": "npm run lint -- --fix",

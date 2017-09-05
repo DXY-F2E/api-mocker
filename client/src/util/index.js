@@ -9,7 +9,7 @@ export { default as schemaModel } from './schemaModel'
 
 export function getDomain () {
   const protocol = window.location.href.indexOf('https') === 0 ? 'https://' : 'http://'
-  return protocol + (process.env.NODE_ENV === 'development' ? config.dev.ajax : config.build.ajax)
+  return protocol + (process.env.NODE_ENV === 'development' ? config.dev.serverRoot : config.build.serverRoot)
 }
 
 export function buildRestUrl (baseUrl, params) {
