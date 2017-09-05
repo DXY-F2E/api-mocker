@@ -9,12 +9,12 @@ module.exports = app => {
       let { limit = 30, page = 1, q = '' } = this.ctx.query
       page = Number(page)
       limit = Number(limit)
+      const condition = { isDeleted: false }
       // 超过一个字符才会去匹配
-      q = (q && q.length >= 2) ? q : ''
-      const reg = new RegExp(`.*${q}.*`, 'i')
-      const condition = {
-        isDeleted: false,
-        $or: [
+      if (q && q.length >= 2) {
+        const reg = new RegExp(`.*${q}.*`, 'i')
+        condition.$or = [
+          { _id: q },
           { name: reg },
           { desc: reg },
           { prodUrl: reg }
