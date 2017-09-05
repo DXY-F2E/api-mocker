@@ -1,41 +1,23 @@
 <template>
-<div class="manage-api">
-    <el-table
-      :data="richApis"
-      style="width: 100%">
-      <el-table-column
-        prop="options.method"
-        label="方法"
-        width="70">
+  <div class="manage-api">
+    <el-table :data="richApis" style="width: 100%">
+      <el-table-column prop="options.method" label="方法" width="70">
       </el-table-column>
-      <el-table-column
-        prop="name"
-        label="接口名">
+      <el-table-column prop="name" label="接口名">
       </el-table-column>
-      <el-table-column
-        prop="groupName"
-        label="所属分组">
+      <el-table-column prop="groupName" label="所属分组">
       </el-table-column>
-      <el-table-column
-        prop="createTime"
-        :formatter="timeFormat"
-        width="200"
-        label="创建时间">
+      <el-table-column prop="createTime" :formatter="timeFormat" width="200" label="创建时间">
       </el-table-column>
-      <el-table-column
-        width="180"
-        label="操作">
+      <el-table-column width="180" label="操作">
         <template scope="scope">
-            <control :api="scope.row" @delete="apiDelete" @manage="manageApi"></control>
+          <control :api="scope.row" @delete="apiDelete" @manage="manageApi"></control>
         </template>
       </el-table-column>
     </el-table>
-    <api-authority
-        :api="api"
-        :visible="showAuthority"
-        @hide="showAuthority = false">
+    <api-authority :api="api" :visible="showAuthority" @hide="showAuthority = false">
     </api-authority>
-</div>
+  </div>
 </template>
 
 <script>

@@ -1,19 +1,19 @@
 <template>
 <div class="login-box">
-    <el-form label-position="left" :model="loginForm" ref="loginForm" :rules="loginRules" @keyup.enter.native="validate">
-        <p class="app-name">接口管理系统</p>
-        <el-form-item prop="email">
-            <el-input placeholder="email" v-model="loginForm.email" ></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-            <el-input type="password" placeholder="password" v-model="loginForm.password"></el-input>
-        </el-form-item>
-        <el-form-item class="control">
-            <el-button type="primary" @click="validate">登录</el-button>
-            <router-link class="reset-pass" to="find-pass">找回密码</router-link>
-            <router-link class="register" to="register">--> 注册</router-link>
-        </el-form-item>
-    </el-form>
+  <el-form label-position="left" :model="loginForm" ref="loginForm" :rules="loginRules" @keyup.enter.native="validate">
+    <p class="app-name">接口管理系统</p>
+    <el-form-item prop="email">
+      <el-input placeholder="email" v-model="loginForm.email" ></el-input>
+    </el-form-item>
+    <el-form-item prop="password">
+      <el-input type="password" placeholder="password" v-model="loginForm.password"></el-input>
+    </el-form-item>
+    <el-form-item class="control">
+      <el-button type="primary" @click="validate">登录</el-button>
+      <router-link class="reset-pass" to="find-pass">找回密码</router-link>
+      <router-link class="register" to="register">--> 注册</router-link>
+    </el-form-item>
+  </el-form>
 </div>
 </template>
 

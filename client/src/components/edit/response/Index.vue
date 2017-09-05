@@ -1,21 +1,21 @@
 <template>
 <el-row type="flex" class="out-box">
-    <el-col class="status">
-        <status :response="response"
-                :active-index="activeIndex"
-                @add="addResponse"
-                @delete="deleteResponse"
-                @change="changeSchema"></status>
-    </el-col>
-    <el-col class="schema-content">
-        <schema :schema="response[activeIndex]"
-                :fullscreen="fullscreen"
-                @change="updateResponse">
-            <el-tab-pane class="tab-item" label="Status" name="status">
-                <status-setting :schema="response[activeIndex]" @change="updateStatus"></status-setting>
-            </el-tab-pane>
-        </schema>
-    </el-col>
+  <el-col class="status">
+    <status :response="response"
+            :active-index="activeIndex"
+            @add="addResponse"
+            @delete="deleteResponse"
+            @change="changeSchema"></status>
+  </el-col>
+  <el-col class="schema-content">
+    <schema :schema="response[activeIndex]"
+            :fullscreen="fullscreen"
+            @change="updateResponse">
+      <el-tab-pane class="tab-item" label="Status" name="status">
+        <status-setting :schema="response[activeIndex]" @change="updateStatus"></status-setting>
+      </el-tab-pane>
+    </schema>
+  </el-col>
 </el-row>
 </template>
 
@@ -68,36 +68,36 @@ export default {
     updateResponse (schema) {
       const key = `options.response.${this.activeIndex}`
       this.$store.commit('UPDATE_API_PROPS',
-                               [key, R.clone(schema)])
+               [key, R.clone(schema)])
     }
   }
 }
 </script>
 <style lang="less">
 .out-box {
-    height: 300px;
+  height: 300px;
 
-    .el-col {
-        position: relative;
-    }
-    .el-col.status {
-        position: relative;
-        min-width: 150px;
-        max-width: 150px;
-        height: 100%;
-        overflow-y: auto;
-    }
+  .el-col {
+    position: relative;
+  }
+  .el-col.status {
+    position: relative;
+    min-width: 150px;
+    max-width: 150px;
+    height: 100%;
+    overflow-y: auto;
+  }
 }
 .fullscreen {
-    .out-box {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
-    .schema-content{
-        height: auto;
-    }
+  .out-box {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .schema-content{
+    height: auto;
+  }
 }
 </style>

@@ -1,10 +1,10 @@
 <template>
-  <div class="content">
-    <el-row type="flex" class="list-content">
-        <api-list :apis="apis" v-side-bar></api-list>
-        <router-view :apis="apis" v-if="apis.length"></router-view>
-    </el-row>
-  </div>
+ <div class="content">
+  <el-row type="flex" class="list-content">
+    <api-list :apis="apis" v-side-bar></api-list>
+    <router-view :apis="apis" v-if="apis.length"></router-view>
+  </el-row>
+ </div>
 </template>
 <script>
 import ApiList from './ApiList'
@@ -42,7 +42,7 @@ export default {
     }
   },
   beforeRouteUpdate (to, from, next) {
-        // 切换不同组的文档，需重新获取下apis
+    // 切换不同组的文档，需重新获取下apis
     if (to.params.groupId !== from.params.groupId) {
       this.getApis(to)
     }

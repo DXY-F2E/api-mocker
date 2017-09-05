@@ -1,13 +1,13 @@
 <template>
-    <el-col :span="24">
-        <div class="content-wrap">
-            <div id="content">
-                <search @query="onQuery" placeholder="回车搜索：api名称、线上地址、管理员"></search>
-                <api-list></api-list>
-                <page-nav :query="query" :total="count" :on-page-nav="onPageNav"></page-nav>
-            </div>
-        </div>
-    </el-col>
+  <el-col :span="24">
+    <div class="content-wrap">
+      <div id="content">
+        <search @query="onQuery" placeholder="回车搜索：api名称、线上地址、管理员"></search>
+        <api-list></api-list>
+        <page-nav :query="query" :total="count" :on-page-nav="onPageNav"></page-nav>
+      </div>
+    </div>
+  </el-col>
 </template>
 <script>
 import Search from './Search'
@@ -83,19 +83,17 @@ export default {
 </script>
 <style>
 .content-wrap {
-    padding: 20px;
-    background-color: #F9FAFC;
-    min-height: 100%;
-    position: relative;
+  padding: 20px;
+  background-color: #F9FAFC;
+  min-height: 100%;
+  position: relative;
 }
 .api-list-box {
-    /*margin: 10px -10px;*/
-    /*width: 100%;*/
-    position: absolute;
-    top: 65px;
-    bottom: 90px;
-    overflow-y: auto;
-    left: 10px;
-    right: 10px;
+  position: absolute;
+  top: 65px;
+  bottom: 90px;
+  overflow-y: auto;
+  left: 10px;
+  right: 10px;
 }
 </style>

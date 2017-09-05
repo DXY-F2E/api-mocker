@@ -9,17 +9,15 @@ module.exports = app => {
       let { limit = 30, page = 1, q = '' } = this.ctx.query
       page = Number(page)
       limit = Number(limit)
-            // 超过一个字符才会去匹配
+      // 超过一个字符才会去匹配
       q = (q && q.length >= 2) ? q : ''
       const reg = new RegExp(`.*${q}.*`, 'i')
       const condition = {
         isDeleted: false,
         $or: [
-                    { name: reg },
-                    // {url: reg},
-                    // {'options.method': reg},
-                    { desc: reg },
-                    { prodUrl: reg }
+          { name: reg },
+          { desc: reg },
+          { prodUrl: reg }
         ]
       }
       const users = q ? yield this.service.user.find(q) : []
@@ -33,7 +31,6 @@ module.exports = app => {
       if (groupId) condition.group = groupId
       const resources = yield this.service.api.getRichList(condition, page, limit)
       const count = yield app.model.api.find(condition).count().exec()
-      this.ctx.logger.info('getAll', this.ctx.query)
       this.ctx.body = { resources, pages: { limit, page, count } }
       this.ctx.status = 200
     }
@@ -81,20 +78,18 @@ module.exports = app => {
       }
       yield this.notifyApiChange(resources, lastModifiedTime)
       this.service.group.updateTime(groupId)
-            // 存下历史记录，并将所有记录返回
+      // 存下历史记录，并将所有记录返回
       resources.history = yield this.service.apiHistory.push(resources)
-
-      this.ctx.logger.info('modifyApi', body)
       this.ctx.body = { resources }
     }
     * notifyApiChange (api, lastModifiedTime) {
-            // 一小时内有修改不推送
+      // 一小时内有修改不推送
       const interval = api.modifiedTime - lastModifiedTime
       if (interval < 1000 * 60 * 60) {
         return
       }
       const selfIdx = api.follower.findIndex(f => f.toString() === this.ctx.authUser._id)
-            // 如果修改者也在关注列表中，不推送自己
+      // 如果修改者也在关注列表中，不推送自己
       if (selfIdx >= 0) {
         api.follower.splice(selfIdx, 1)
       }
@@ -111,7 +106,6 @@ module.exports = app => {
       const resources = (yield app.model.api.findOne({ _id: apiId, isDeleted: false })).toObject()
       resources.history = yield this.service.apiHistory.get(resources)
 
-      this.ctx.logger.info('getApi')
       this.ctx.body = { resources }
       this.ctx.status = 200
     }
@@ -166,7 +160,6 @@ module.exports = app => {
 
       this.service.group.updateTime(groupId)
 
-      this.ctx.logger.info('createApi', body)
       this.ctx.body = { resources }
       this.ctx.status = 200
     }
@@ -195,6 +188,6 @@ module.exports = app => {
       this.ctx.logger.info('deleteApi')
       this.ctx.status = 204
     }
-    }
+  }
   return ApiController
 }

@@ -1,6 +1,6 @@
 <template>
 <div class="editor-box">
-    <div :id="editorId" class="quill-editor"></div>
+  <div :id="editorId" class="quill-editor"></div>
 </div>
 </template>
 
@@ -22,11 +22,11 @@ export default {
       type: Array,
       default () {
         return [
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
-          ['bold', 'italic', 'underline', 'strike', { color: [] }, { background: [] }],
-          [{ list: 'ordered' }, { list: 'bullet' }, { align: [] }],
-          ['link', 'image', 'blockquote', 'code-block'],
-          ['clean']
+     [{ header: [1, 2, 3, 4, 5, 6, false] }],
+     ['bold', 'italic', 'underline', 'strike', { color: [] }, { background: [] }],
+     [{ list: 'ordered' }, { list: 'bullet' }, { align: [] }],
+     ['link', 'image', 'blockquote', 'code-block'],
+     ['clean']
         ]
       }
     },
@@ -75,13 +75,13 @@ export default {
 </script>
 <style>
 .editor-box .ql-editor{
-    min-height: 300px;
+  min-height: 300px;
 }
 .editor-box .ql-toolbar.ql-snow {
-    border: none;
-    border-bottom: 1px solid #D3DCE6;
+  border: none;
+  border-bottom: 1px solid #D3DCE6;
 }
 .editor-box .ql-container.ql-snow {
-    border: none;
+  border: none;
 }
 </style>

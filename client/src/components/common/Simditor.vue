@@ -1,6 +1,6 @@
 <template>
 <div class="editor-box">
-    <textarea :id="id" :placeholder="placeholder" autofocus></textarea>
+  <textarea :id="id" :placeholder="placeholder" autofocus></textarea>
 </div>
 </template>
 
@@ -59,13 +59,13 @@ export default {
 </script>
 <style>
 .editor-box .simditor {
-    border: none;
+  border: none;
 }
 #desc-editor {
-    min-height: 200px;
+  min-height: 200px;
 }
 .editor-box .simditor .simditor-body p,
 .editor-box .editor-style p {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 </style>

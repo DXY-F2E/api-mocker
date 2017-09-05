@@ -1,11 +1,11 @@
 <template>
 <el-form label-position="right" label-width="105px" class="status-form">
-    <el-form-item label="Status Code" class="status-code">
-        <el-input v-model="status"></el-input>
-    </el-form-item>
-    <el-form-item label="Status Text" class="status-text">
-        <el-input v-model="statusText"></el-input>
-    </el-form-item>
+  <el-form-item label="Status Code" class="status-code">
+    <el-input v-model="status"></el-input>
+  </el-form-item>
+  <el-form-item label="Status Text" class="status-text">
+    <el-input v-model="statusText"></el-input>
+  </el-form-item>
 </el-form>
 </template>
 
@@ -45,10 +45,10 @@ export default {
 </script>
 <style>
 .status-form {
-    padding-top: 20px;
+  padding-top: 20px;
 }
 .status-form .el-form-item {
-    width: 240px;
-    display: inline-block;
+  width: 240px;
+  display: inline-block;
 }
 </style>

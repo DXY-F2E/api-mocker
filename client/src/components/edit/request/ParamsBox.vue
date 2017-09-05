@@ -1,13 +1,13 @@
 <template>
-    <div>
-        <params :params="params"
-                :name="name"
-                @updateParams="changeParams"></params>
-        <params :params="reqParams"
-                :name="name"
-                mode="fill"
-                @updateParams="changeReqParams"></params>
-    </div>
+  <div>
+    <params :params="params"
+            :name="name"
+            @updateParams="changeParams"></params>
+    <params :params="reqParams"
+            :name="name"
+            mode="fill"
+            @updateParams="changeReqParams"></params>
+  </div>
 </template>
 
 <script>
@@ -21,8 +21,7 @@ export default {
   methods: {
     changeParams (data) {
       const key = `options.params.${this.name}`
-      this.$store.commit('UPDATE_API_PROPS',
-                               [key, R.clone(data)])
+      this.$store.commit('UPDATE_API_PROPS', [key, R.clone(data)])
     },
     changeReqParams (data, value) {
       this.$store.commit('UPDATE_REQ_PARAMS', {
@@ -47,19 +46,10 @@ export default {
     reqParams: {
       get () {
         return R.clone(this.params)
-                // const reqParams = {
-                //     type: 'object',
-                //     params: R.clone(this.params)
-                // };
-                // return this.getReqParams(reqParams);
       }
     }
   }
 }
 </script>
 <style>
-/*.test .request-box .set,
-.edit .request-box .fill {
-    display: none;
-}*/
 </style>

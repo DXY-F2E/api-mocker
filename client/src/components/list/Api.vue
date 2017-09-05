@@ -1,37 +1,28 @@
 <template>
-    <el-card class="card-box" @click.native="editApi(data)">
-      <div slot="header" class="clearfix">
-        <span class="name">{{data.name}}</span>
-        <el-button-group>
-          <el-button size="mini" icon="document" @click.native.stop="showDoc()"></el-button>
-          <!-- <copy-button size="mini" icon="share" :copy-data="apiUrl" message="复制接口链接成功"></copy-button> -->
-          <el-button size="mini" @click.native.stop="confirmCopy(data.name)">
-            <i class="material-icons">content_copy</i>
-          </el-button>
-        </el-button-group>
-      </div>
-      <div class="text item">
-          <label class="manager"><code>Manager:</code></label><input v-model="manager" readonly :id="data._id" />
-      </div>
-      <div class="text item">
-          <label><code>Method :</code></label>{{data.options.method}}
-      </div>
-    </el-card>
+  <el-card class="card-box" @click.native="editApi(data)">
+   <div slot="header" class="clearfix">
+    <span class="name">{{data.name}}</span>
+    <el-button-group>
+     <el-button size="mini" icon="document" @click.native.stop="showDoc()"></el-button>
+     <el-button size="mini" @click.native.stop="confirmCopy(data.name)">
+      <i class="material-icons">content_copy</i>
+     </el-button>
+    </el-button-group>
+   </div>
+   <div class="text item">
+     <label class="manager"><code>Manager:</code></label><input v-model="manager" readonly :id="data._id" />
+   </div>
+   <div class="text item">
+     <label><code>Method :</code></label>{{data.options.method}}
+   </div>
+  </el-card>
 </template>
 <script>
-import CopyButton from '../common/CopyButton'
 import R from 'ramda'
 export default {
-  components: {
-    CopyButton
-  },
   props: {
     data: {
       type: Object,
-      require: true
-    },
-    index: {
-      type: Number,
       require: true
     }
   },
@@ -87,101 +78,98 @@ export default {
 </script>
 <style lang="less">
 .el-card {
-    cursor: pointer;
-    transition: all 0.2s ease;
-    width: 219px;
-    overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 219px;
+  overflow: hidden;
 
-    &:hover {
-        background-color: #F9FAFC;
-    }
-    .el-card__body {
-        padding: 15px 20px;
-    }
-    .el-card__header {
-        padding: 8px 20px;
-        /*line-height: 50px;*/
-    }
+  &:hover {
+    background-color: #F9FAFC;
+  }
+  .el-card__body {
+    padding: 15px 20px;
+  }
+  .el-card__header {
+    padding: 8px 20px;
+  }
 }
 .edit-api {
-    float: right;
-    position: relative;
-    top: -4px;
+  float: right;
+  position: relative;
+  top: -4px;
 }
 
 .item {
-    color: #8492A6;
+  color: #8492A6;
 
-    label {
-        color: #475669;
-        margin-right: 5px;
-        width: 70px;
-        display: inline-block;
-        /*text-align: right;*/
-    }
-    input {
-        border: none;
-        outline: none;
-        cursor: pointer;
-        background-color: transparent;
-        line-height: 1;
-        line-height: 20px;
-        height: 20px;
-        max-width: 100px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+  label {
+    color: #475669;
+    margin-right: 5px;
+    width: 70px;
+    display: inline-block;
+  }
+  input {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    line-height: 1;
+    line-height: 20px;
+    height: 20px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 .card-box {
-    .clearfix {
-        height: 22px;
-        line-height: 22px;
-        position: relative;
+  .clearfix {
+    height: 22px;
+    line-height: 22px;
+    position: relative;
+  }
+  .name {
+    width: 100%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .el-button-group {
+    position: absolute;
+    right: -10px;
+    top: 0;
+    visibility: hidden;
+    cursor: pointer;
+
+    .material-icons {
+      font-size: 14px;
+      position: relative;
+      top: -1px;
     }
+  }
+
+  &:hover {
     .name {
-        width: 100%;
-        display: inline-block;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      width: 130px;
     }
     .el-button-group {
-        position: absolute;
-        right: -10px;
-        top: 0;
-        visibility: hidden;
-        cursor: pointer;
-
-        .material-icons {
-            font-size: 14px;
-            position: relative;
-            top: -1px;
-        }
+      visibility: visible;
     }
+  }
 
-    &:hover {
-        .name {
-            width: 130px;
-        }
-        .el-button-group {
-            visibility: visible;
-        }
+  .el-button-group {
+    .el-button:focus,
+    button {
+      background-color: #F9FAFC;
+      color: #8492A6;
+      border-color: #bfcbd9;
+      width: 22px;
+      height: 22px;
     }
-
-    .el-button-group {
-        .el-button:focus,
-        button {
-            background-color: #F9FAFC;
-            color: #8492A6;
-            border-color: #bfcbd9;
-            width: 22px;
-            height: 22px;
-        }
-        .el-button:hover {
-            /*border-color: #E5E9F2;*/
-            background-color: #E5E9F2;
-            color: #475669;
-        }
+    .el-button:hover {
+      background-color: #E5E9F2;
+      color: #475669;
     }
+  }
 }
 </style>

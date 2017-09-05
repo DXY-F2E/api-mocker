@@ -1,11 +1,11 @@
 <template>
-    <ul class="history">
-        <li class="record" v-for="record in records" :key="record._id" @click="recover(record)">
-            <span class="time">{{record.createTime | dateFormat}}</span>
-            <span class="name">{{record.operatorName}}</span>
-            <span class="recover">加载</span>
-        </li>
-    </ul>
+  <ul class="history">
+    <li class="record" v-for="record in records" :key="record._id" @click="recover(record)">
+      <span class="time">{{record.createTime | dateFormat}}</span>
+      <span class="name">{{record.operatorName}}</span>
+      <span class="recover">加载</span>
+    </li>
+  </ul>
 </template>
 
 <script>
@@ -29,11 +29,11 @@ export default {
       }
     },
     recoverAct (record) {
-            // 数组 slice 方法是浅复制，所以这里需要深拷贝一份
+      // 数组 slice 方法是浅复制，所以这里需要深拷贝一份
       const data = R.clone(record.data)
       data.history = this.history
       this.$store.commit('UPDATE_API', data)
-            // apiUnsaved -> false
+      // apiUnsaved -> false
       this.$store.commit('SAVE_API')
       this.$message.info('加载成功，再保存将会覆盖最新值')
     }
@@ -50,26 +50,26 @@ export default {
 </script>
 <style lang="less">
 .history {
-    padding-left: 5px;
-    .record {
-        color: #8492A6;
-        line-height: 2.2;
-        cursor: pointer;
-        /*border-bottom: 1px solid #d1dbe5;*/
-        &:hover {
-            color: #475669;
-        }
-        .name {
-            margin-left: 10px;
-        }
-        .recover {
-            float: right;
-            margin-left: 10px;
-            display: none;
-        }
-        &:hover .recover {
-            display: inline-block;
-        }
+  padding-left: 5px;
+  .record {
+    color: #8492A6;
+    line-height: 2.2;
+    cursor: pointer;
+    /*border-bottom: 1px solid #d1dbe5;*/
+    &:hover {
+      color: #475669;
     }
+    .name {
+      margin-left: 10px;
+    }
+    .recover {
+      float: right;
+      margin-left: 10px;
+      display: none;
+    }
+    &:hover .recover {
+      display: inline-block;
+    }
+  }
 }
 </style>

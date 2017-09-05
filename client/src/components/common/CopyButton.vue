@@ -1,7 +1,7 @@
 <template>
-    <el-button :size="size" :icon="icon" :disabled="disabled" @click.native.stop="copy()">
-        <slot></slot>
-    </el-button>
+  <el-button :size="size" :icon="icon" :disabled="disabled" @click.native.stop="copy()">
+    <slot></slot>
+  </el-button>
 </template>
 
 <script>
@@ -42,7 +42,7 @@ export default {
 </script>
 <style>
 .el-button > .copyInput {
-    position: fixed;
-    left: -9999999;
+  position: fixed;
+  left: -9999999;
 }
 </style>

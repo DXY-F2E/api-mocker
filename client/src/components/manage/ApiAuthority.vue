@@ -1,27 +1,27 @@
 <template>
 <el-dialog :title="title" :visible="visible" @open="getApiAuthority" :show-close="false">
-    <el-form v-if="authority" v-stop-default-enter label-position="left" label-width="84px">
-        <el-form-item label="编辑权限：">
-            <el-radio-group v-model="authority.operation.mode">
-                <el-radio :label="0">所有人</el-radio>
-                <el-radio :label="1">组内人员</el-radio>
-                <el-radio :label="2">指定人员</el-radio>
-            </el-radio-group>
-            <user-selector
-                class="api-operator"
-                v-show="authority.operation.mode === 2"
-                :value="operator"
-                :remoteMethod="searchUsers"
-                :options="users"
-                @itemRemove="itemRemove"
-                @itemClick="itemClick">
-            </user-selector>
-        </el-form-item>
-    </el-form>
-    <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="confirm">确 定</el-button>
-    </div>
+  <el-form v-if="authority" v-stop-default-enter label-position="left" label-width="84px">
+    <el-form-item label="编辑权限：">
+      <el-radio-group v-model="authority.operation.mode">
+        <el-radio :label="0">所有人</el-radio>
+        <el-radio :label="1">组内人员</el-radio>
+        <el-radio :label="2">指定人员</el-radio>
+      </el-radio-group>
+      <user-selector
+        class="api-operator"
+        v-show="authority.operation.mode === 2"
+        :value="operator"
+        :remoteMethod="searchUsers"
+        :options="users"
+        @itemRemove="itemRemove"
+        @itemClick="itemClick">
+      </user-selector>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="cancel">取 消</el-button>
+    <el-button type="primary" @click="confirm">确 定</el-button>
+  </div>
 </el-dialog>
 </template>
 
@@ -56,8 +56,8 @@ export default {
   methods: {
     initUsers (operators) {
       this.users = operators.map(id =>
-                this.allUsers.find(u => u._id === id)
-            )
+        this.allUsers.find(u => u._id === id)
+      )
     },
     getApiAuthority () {
       this.$store.dispatch('getApiAuthority', this.api._id).then(rs => {
@@ -67,8 +67,8 @@ export default {
     },
     searchUsers (val) {
       this.users = this.allUsers.filter(u =>
-                u.email.indexOf(val) >= 0 || u.name.indexOf(val) >= 0
-            )
+        u.email.indexOf(val) >= 0 || u.name.indexOf(val) >= 0
+      )
     },
     updateOperator (operators) {
       this.authority.operation.operator = operators
@@ -97,8 +97,8 @@ export default {
 </script>
 <style>
 .api-operator {
-    width: auto;
-    display: block;
-    margin-top: 10px;
+  width: auto;
+  display: block;
+  margin-top: 10px;
 }
 </style>

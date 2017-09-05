@@ -1,5 +1,5 @@
 <template>
-    <simditor id="desc-editor" placeholder="其他备注" v-model="desc" @change="updateDesc"></simditor>
+  <simditor id="desc-editor" placeholder="其他备注" v-model="desc" @change="updateDesc"></simditor>
 </template>
 
 <script>
@@ -23,6 +23,6 @@ export default {
 </script>
 <style>
 #desc-editor {
-    min-height: 200px;
+  min-height: 200px;
 }
 </style>

@@ -1,15 +1,15 @@
 <template>
 <div class="chart mock-chart">
-    <div class="header">
-        <h4>Mock请求量</h4>
-        <el-button-group class="control" :class="interval">
-            <el-button class="week" @click="getData('week')">周</el-button>
-            <el-button class="mouth" @click="getData('mouth')">月</el-button>
-            <el-button class="quarter" @click="getData('quarter')">季</el-button>
-        </el-button-group>
-    </div>
-    <chart-line v-if="mockData.x.length"
-                :data="mockData"></chart-line>
+  <div class="header">
+    <h4>Mock请求量</h4>
+    <el-button-group class="control" :class="interval">
+      <el-button class="week" @click="getData('week')">周</el-button>
+      <el-button class="mouth" @click="getData('mouth')">月</el-button>
+      <el-button class="quarter" @click="getData('quarter')">季</el-button>
+    </el-button-group>
+  </div>
+  <chart-line v-if="mockData.x.length"
+        :data="mockData"></chart-line>
 </div>
 </template>
 
@@ -85,8 +85,8 @@ export default {
 .week .week,
 .mouth .mouth,
 .quarter .quarter {
-    color: #20a0ff;
-    border-color: #20a0ff;
-    z-index: 1;
+  color: #20a0ff;
+  border-color: #20a0ff;
+  z-index: 1;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-    <div class="doc-mock-data">
-        <pre class="code"><code v-html="html"></code></pre>
-    </div>
+  <div class="doc-mock-data">
+    <pre class="code"><code v-html="html"></code></pre>
+  </div>
 </template>
 
 <script>

@@ -1,28 +1,28 @@
 <template>
 <el-dialog class="import-json-check"
-           title="解析Json成功，请核对"
-           :visible.sync="dialogVisible"
-           size="small">
-    <div class="import-apis">
-        <el-tabs v-model="activeGroup" type="card">
-            <el-tab-pane v-for="(item, index) in apisData"
-                         :key="index"
-                         :label="item.groupName"
-                         :name="item.groupName">
-                <ul>
-                    <li v-for="(api, idx) in item.apis" :key="idx" class="api">
-                        <span class="name">{{api.name}}</span>
-                        <span class="control preview" @click="preview(index, idx)">预览</span>
-                        <span class="control delete" @click="deleteApi(index, idx)">删除</span>
-                    </li>
-                </ul>
-            </el-tab-pane>
-        </el-tabs>
-    </div>
-    <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="handleConfirm">保 存</el-button>
-    </span>
+     title="解析Json成功，请核对"
+     :visible.sync="dialogVisible"
+     size="small">
+  <div class="import-apis">
+    <el-tabs v-model="activeGroup" type="card">
+      <el-tab-pane v-for="(item, index) in apisData"
+            :key="index"
+            :label="item.groupName"
+            :name="item.groupName">
+        <ul>
+          <li v-for="(api, idx) in item.apis" :key="idx" class="api">
+            <span class="name">{{api.name}}</span>
+            <span class="control preview" @click="preview(index, idx)">预览</span>
+            <span class="control delete" @click="deleteApi(index, idx)">删除</span>
+          </li>
+        </ul>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
+  <span slot="footer" class="dialog-footer">
+  <el-button @click="dialogVisible = false">取 消</el-button>
+  <el-button type="primary" @click="handleConfirm">保 存</el-button>
+  </span>
 </el-dialog>
 </template>
 
@@ -60,7 +60,7 @@ export default {
     },
     deleteApi (groupIndex, apiIndex) {
       this.apisData[groupIndex].apis.splice(apiIndex, 1)
-            // 因为splice删除的是数组里的数组，所以得手动set触发视图更新
+      // 因为splice删除的是数组里的数组，所以得手动set触发视图更新
       this.$set(this.apisData, groupIndex, this.apisData[groupIndex])
     },
     handleConfirm () {
@@ -85,24 +85,24 @@ export default {
 </script>
 <style lang="less">
 .import-apis .api {
-    display: flex;
-    border-bottom: 1px solid #EFF2F7;
-    padding: 10px 0;
+  display: flex;
+  border-bottom: 1px solid #EFF2F7;
+  padding: 10px 0;
 
-    & > span {
-        display: block;
-    }
-    .name {
-        flex: 999;
-    }
-    .control {
-        min-width: 40px;
-        text-align: center;
-        color: #8492A6;
-    }
+  & > span {
+    display: block;
+  }
+  .name {
+    flex: 999;
+  }
+  .control {
+    min-width: 40px;
+    text-align: center;
+    color: #8492A6;
+  }
 }
 .import-apis .el-tabs__content {
-    max-height: 300px;
-    overflow-y: auto;
+  max-height: 300px;
+  overflow-y: auto;
 }
 </style>

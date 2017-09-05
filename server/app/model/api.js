@@ -9,17 +9,17 @@ module.exports = mongoose => {
       type: String,
       unique: false
     },
-    creator: {
+    creator: { // 创建者
       type: ObjectId,
       required: true,
       ref: 'user'
     },
-    manager: {
+    manager: { // 管理员
       type: ObjectId,
       required: true,
       ref: 'user'
     },
-    follower: [{
+    follower: [{ // 订阅者
       type: ObjectId,
       ref: 'user'
     }],
@@ -34,10 +34,6 @@ module.exports = mongoose => {
     },
     prodUrl: String,
     devUrl: String,
-    dsl: {
-      type: Object,
-      required: false
-    },
     options: {
       method: String,
       proxy: {

@@ -1,27 +1,27 @@
 <template>
-    <div class="param set" :class="name">
-        <el-row type="flex" class="row-bg" >
-            <el-col class="key">
-                <el-input placeholder="key" v-model="param.key" @change="lazyUpdate"></el-input>
-            </el-col>
-            <el-col class="config">
-                <el-cascader
-                    v-if="name !== 'headers'"
-                    popper-class="type-cascader"
-                    @change="changeParamType"
-                    :options="tpyeList"
-                    v-model="apiType">
-                </el-cascader>
-                <el-checkbox v-model="param.required" @change="update">必填</el-checkbox>
-            </el-col>
-            <el-col class="comment">
-                <el-input placeholder="备注" v-model="param.comment" @change="lazyUpdate"></el-input>
-            </el-col>
-            <el-col class="example">
-                <el-input placeholder="example" v-model="example" @change="lazyUpdate"></el-input>
-            </el-col>
-        </el-row>
-    </div>
+  <div class="param set" :class="name">
+    <el-row type="flex" class="row-bg" >
+      <el-col class="key">
+        <el-input placeholder="key" v-model="param.key" @change="lazyUpdate"></el-input>
+      </el-col>
+      <el-col class="config">
+        <el-cascader
+          v-if="name !== 'headers'"
+          popper-class="type-cascader"
+          @change="changeParamType"
+          :options="tpyeList"
+          v-model="apiType">
+        </el-cascader>
+        <el-checkbox v-model="param.required" @change="update">必填</el-checkbox>
+      </el-col>
+      <el-col class="comment">
+        <el-input placeholder="备注" v-model="param.comment" @change="lazyUpdate"></el-input>
+      </el-col>
+      <el-col class="example">
+        <el-input placeholder="example" v-model="example" @change="lazyUpdate"></el-input>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -145,45 +145,45 @@ export default {
 </script>
 <style lang="less">
 .type-cascader .el-cascader-menu {
-    height: auto;
+  height: auto;
 }
 .param.set .el-checkbox {
-    height: 36px;
-    line-height: 35px;
+  height: 36px;
+  line-height: 35px;
 }
 .params-box {
-    .config {
-        min-width: 220px;
-        max-width: 220px;
-    }
-    .headers .config {
-        min-width: 80px;
-        max-width: 80px;
-        text-align: center;
-    }
-    .example {
-        min-width: 145px;
-        max-width: 220px;
-    }
-    .comment {
-        margin-right: 20px;
-        min-width: 145px;
-        max-width: 240px;
-    }
-    .key {
-        min-width: 100px;
-    }
-    .el-input__inner {
-        border: none;
-        border-radius: 0;
-        border-bottom: 1px solid #EFF2F7;
-    }
-    .el-input-number {
-        width: 100%;
-    }
-    .el-select {
-        margin-right: 20px;
-    }
+  .config {
+    min-width: 220px;
+    max-width: 220px;
+  }
+  .headers .config {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+  }
+  .example {
+    min-width: 145px;
+    max-width: 220px;
+  }
+  .comment {
+    margin-right: 20px;
+    min-width: 145px;
+    max-width: 240px;
+  }
+  .key {
+    min-width: 100px;
+  }
+  .el-input__inner {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #EFF2F7;
+  }
+  .el-input-number {
+    width: 100%;
+  }
+  .el-select {
+    margin-right: 20px;
+  }
 }
 
 </style>

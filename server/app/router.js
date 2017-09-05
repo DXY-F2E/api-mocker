@@ -7,7 +7,7 @@ module.exports = app => {
   app.post('/server/group', 'group.create')
   app.get('/server/group/manage', 'group.getManageGroup')
   app.get('/server/group/unmanaged', 'group.getUnmanaged')
-  app.put('/server/group/:id/claim', 'group.claim') // 认领分组
+  app.put('/server/group/:id/claim', 'group.claim') // 认领分组，这是历史原因导致的接口，可以不关心
   app.delete('/server/group/:id', 'group.delete')
   app.put('/server/group/:id', 'group.update')
 
@@ -26,19 +26,19 @@ module.exports = app => {
   app.get('/server/authority/api/:apiId', 'authority.getApi')
   app.put('/server/authority/api/:apiId', 'authority.modifyApi')
 
-    // stat
+  // stat
   app.get('/server/stat/mock', 'stat.mock')
 
   app.post('/client/real', 'client.real')
-    // mock data
+  // mock data
   const mockUrl = pathToRegexp('/client/:id/:url*', [])
-    // const mockUrl = '/client/:id'
+  // const mockUrl = '/client/:id'
   app.get(mockUrl, credentials, apiStat, 'client.show')
   app.post(mockUrl, credentials, apiStat, 'client.create')
   app.put(mockUrl, credentials, apiStat, 'client.put')
   app.delete(mockUrl, credentials, apiStat, 'client.delete')
 
-    // user
+  // user
   app.get('/auth/user', 'user.get')
   app.post('/auth/user/register', 'user.create')
   app.post('/auth/user/login', 'user.login')

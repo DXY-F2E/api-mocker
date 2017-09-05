@@ -1,61 +1,61 @@
 <template>
-    <div class="api-doc" :id="api._id">
-        <div class="fields">
-            <div class="field name">
-                <h2>{{api.name}}<span class="method" :class="method">{{method}}</span></h2>
-                <div class="control" v-if="!isPreview">
-                    <el-button class="follow"
-                               icon="star-on"
-                               v-if="followed"
-                               type="primary"
-                               @click="cancelfollow()">取消订阅</el-button>
-                    <el-button class="follow"
-                               icon="star-off"
-                               v-else
-                               @click="doFollow()">订阅</el-button>
-                    <el-button type="primary" class="edit" icon="edit" @click="edit()">编辑</el-button>
-                </div>
-            </div>
-            <div class="field url">
-                <div>
-                    <label><code>Mock</code>地址：</label>
-                    <p class="prod code">{{url}}</p>
-                </div>
-                <div v-if="api.devUrl">
-                    <label>测试地址：</label>
-                    <p class="prod code">{{api.devUrl}}</p>
-                </div>
-                <div v-if="api.prodUrl">
-                    <label>线上地址：</label>
-                    <p class="prod code">{{api.prodUrl}}</p>
-                </div>
-            </div>
-            <div class="field">
-                <label>提交参数</label>
-                <schema v-for="(schema, key) in schemaParams"
-                        v-if="hasParams(schema.params)"
-                        :name="key"
-                        :schema="schema"
-                        :key="key"></schema>
-            </div>
-            <div class="field" v-if="headers.params.length">
-                <label>请求头</label>
-                <schema :schema="headers" name="headers"></schema>
-            </div>
-            <div class="field" v-if="api.options.response && api.options.response.length">
-                <label>返回结果</label>
-                <schemas :schemas="api.options.response" name="response"></schemas>
-            </div>
-            <div class="field mock-data" v-else>
-                <label>Mock数据</label>
-                <mock-data :mock-data="api.dsl"></mock-data>
-            </div>
-            <div class="field desc" v-show="api.desc">
-                <label>其他备注</label>
-                <div class="editor-style" v-html="api.desc"></div>
-            </div>
+  <div class="api-doc" :id="api._id">
+    <div class="fields">
+      <div class="field name">
+        <h2>{{api.name}}<span class="method" :class="method">{{method}}</span></h2>
+        <div class="control" v-if="!isPreview">
+          <el-button class="follow"
+                     icon="star-on"
+                     v-if="followed"
+                     type="primary"
+                     @click="cancelfollow()">取消订阅</el-button>
+          <el-button class="follow"
+                     icon="star-off"
+                     v-else
+                     @click="doFollow()">订阅</el-button>
+          <el-button type="primary" class="edit" icon="edit" @click="edit()">编辑</el-button>
         </div>
+      </div>
+      <div class="field url">
+        <div>
+          <label><code>Mock</code>地址：</label>
+          <p class="prod code">{{url}}</p>
+        </div>
+        <div v-if="api.devUrl">
+          <label>测试地址：</label>
+          <p class="prod code">{{api.devUrl}}</p>
+        </div>
+        <div v-if="api.prodUrl">
+          <label>线上地址：</label>
+          <p class="prod code">{{api.prodUrl}}</p>
+        </div>
+      </div>
+      <div class="field">
+        <label>提交参数</label>
+        <schema v-for="(schema, key) in schemaParams"
+                v-if="hasParams(schema.params)"
+                :name="key"
+                :schema="schema"
+                :key="key"></schema>
+      </div>
+      <div class="field" v-if="headers.params.length">
+        <label>请求头</label>
+        <schema :schema="headers" name="headers"></schema>
+      </div>
+      <div class="field" v-if="api.options.response && api.options.response.length">
+        <label>返回结果</label>
+        <schemas :schemas="api.options.response" name="response"></schemas>
+      </div>
+      <div class="field mock-data" v-else>
+        <label>Mock数据</label>
+        <mock-data :mock-data="api.dsl"></mock-data>
+      </div>
+      <div class="field desc" v-show="api.desc">
+        <label>其他备注</label>
+        <div class="editor-style" v-html="api.desc"></div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -145,91 +145,91 @@ export default {
 </script>
 <style lang="less">
 .apis-doc {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .api-doc {
+  width: 100%;
+  padding: 30px;
+
+  &~.api-doc {
+    border-top: 1px solid #ddd;
+  }
+
+  h2 {
+    border-bottom: 1px solid #ececec;
+    font-weight: bold;
+    padding: 10px 0;
+  }
+  .code {
+    border: 1px solid #e6e6e6;
+    padding: 6px 10px;
+    border-radius: 3px;
+    color: #666;
+    background-color: #f8f8f8;
+  }
+
+  .fields {
     width: 100%;
-    padding: 30px;
+    min-width: 650px;
+  }
 
-    &~.api-doc {
-        border-top: 1px solid #ddd;
-    }
+  .method {
+    color: #3eb63e;
+    font-weight: normal;
+    margin-left: 10px;
+  }
 
-    h2 {
-        border-bottom: 1px solid #ececec;
-        font-weight: bold;
-        padding: 10px 0;
-    }
-    .code {
-        border: 1px solid #e6e6e6;
-        padding: 6px 10px;
-        border-radius: 3px;
-        color: #666;
-        background-color: #f8f8f8;
-    }
+  .field {
+    width: 100%;
+    position: relative;
+    margin-bottom: 30px;
 
-    .fields {
-        width: 100%;
-        min-width: 650px;
+    &.name .control {
+      position: absolute;
+      right: 0px;
+      top: 0;
     }
-
-    .method {
-        color: #3eb63e;
-        font-weight: normal;
-        margin-left: 10px;
+    &:last-child {
+      margin-bottom: 0;
     }
-
-    .field {
-        width: 100%;
+    &.url {
+      &>div {
+        padding-left: 75px;
         position: relative;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
 
-        &.name .control {
-            position: absolute;
-            right: 0px;
-            top: 0;
+        .code {
+          word-break: break-all;
         }
-        &:last-child {
-            margin-bottom: 0;
-        }
-        &.url {
-            &>div {
-                padding-left: 75px;
-                position: relative;
-                margin-bottom: 10px;
-
-                .code {
-                    word-break: break-all;
-                }
-            }
-            label {
-                position: absolute;
-                left: 0;
-                top: 10px;
-            }
-        }
-
-        &>label {
-            display: block;
-            font-size: 16px;
-            border-bottom: 1px solid #e6e6e6;
-            line-height: 2;
-            margin-bottom: 20px;
-        }
+      }
+      label {
+        position: absolute;
+        left: 0;
+        top: 10px;
+      }
     }
+
+    &>label {
+      display: block;
+      font-size: 16px;
+      border-bottom: 1px solid #e6e6e6;
+      line-height: 2;
+      margin-bottom: 20px;
+    }
+  }
 }
 .method {
-    &.post,
-    &.POST {
-        color: #f5a623;
-    }
-    &.get,
-    &.GET {
-        color: #3eb63e;
-    }
+  &.post,
+  &.POST {
+    color: #f5a623;
+  }
+  &.get,
+  &.GET {
+    color: #3eb63e;
+  }
 }
 </style>

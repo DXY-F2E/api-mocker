@@ -45,6 +45,6 @@ module.exports = app => {
           return { status: true }
       }
     }
-    }
+  }
   return ApiAuthority
 }

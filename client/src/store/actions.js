@@ -3,7 +3,7 @@ import API from './api'
 import {
     validateApi,
     buildApiResponse,
-    buildExampleFormSchema,
+    buildExampleFromSchema,
     getDomain,
     catchError,
     buildRestUrl
@@ -14,7 +14,7 @@ axios.defaults.withCredentials = true
 axios.interceptors.response.use((response) => response, catchError)
 
 const domain = getDomain()
-const buildTestParams = (api, type) => api.options.examples[type] || buildExampleFormSchema({
+const buildTestParams = (api, type) => api.options.examples[type] || buildExampleFromSchema({
   example: null,
   params: api.options.params[type]
 })
@@ -188,7 +188,7 @@ const actions = {
     }
     config.params = buildTestParams(api, 'query')
     config.data = Object.assign(config.data, buildTestParams(api, 'body'))
-    config.headers = buildExampleFormSchema(api.options.headers)
+    config.headers = buildExampleFromSchema(api.options.headers)
     if (config.headers.Cookie) {
       config.headers['api-cookie'] = config.headers.Cookie
       delete config.headers.Cookie

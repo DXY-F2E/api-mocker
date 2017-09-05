@@ -1,7 +1,7 @@
 <template>
-    <div class="apis-doc">
-        <api-doc :api="api" v-if="api"></api-doc>
-    </div>
+  <div class="apis-doc">
+    <api-doc :api="api" v-if="api"></api-doc>
+  </div>
 </template>
 
 <script>

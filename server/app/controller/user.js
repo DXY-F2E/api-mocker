@@ -135,6 +135,6 @@ module.exports = app => {
       this.service.cookie.clearUser()
       this.success('注销成功')
     }
-    }
+  }
   return UserController
 }

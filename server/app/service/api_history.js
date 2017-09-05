@@ -35,6 +35,6 @@ module.exports = app => {
         upsert: true
       })
     }
-    }
+  }
   return ApiHistory
 }

@@ -1,3 +1,6 @@
+/**
+ * 缓存service,目前无用，可作为验证码服务
+ */
 const LRU = require('lru-cache')
 const DEFAULT_MAX_AGE = 1 * 1000 * 60
 const options = {
@@ -26,6 +29,6 @@ module.exports = app => {
     has (key) {
       return Cache.has(key)
     }
-    }
+  }
   return CacheService
 }

@@ -11,7 +11,6 @@ module.exports = app => {
     getByEmail (email) {
       return app.model.user.findOne({
         email
-                // password: md5(user.password, this.config.md5Key)
       }).lean()
     }
     getById (id) {

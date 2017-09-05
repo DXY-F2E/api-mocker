@@ -8,7 +8,7 @@ module.exports = app => {
     * findApi (method) {
       const id = this.ctx.params[0]
       if (id.length < 5) {
-                // hack方法，兼容老的存下url信息的api
+        // hack方法，兼容老的存下url信息的api
         const url = `/client/${id}`
         return yield app.model.api.findOne({ url, 'options.method': method }).exec()
       }
@@ -22,6 +22,7 @@ module.exports = app => {
           message: '真实地址为空'
         }
       }
+      // 删除这两个参数，代理其他参数
       delete this.ctx.request.body._apiRealUrl
       delete this.ctx.request.body._apiMethod
       yield this.proxy(_apiRealUrl, _apiMethod)
@@ -32,14 +33,12 @@ module.exports = app => {
         url += `?${query}`
       }
       const headers = this.ctx.headers
-            // 提交的header.host是mocker的host，需要删除
-      delete headers.host
-      if (headers['api-cookie']) {
+      delete headers.host // 提交的header.host是mocker的host，需要删除
+      if (headers['api-cookie']) { // 如果请求头带有此字段，则设置cookie
         headers.cookie = headers['api-cookie']
         delete headers['api-cookie']
       }
-      const opts = method === 'get' ? {} : {
-                // body数据，暂时只支持json格式，未来可以从header中判断
+      const opts = method === 'get' ? {} : { // body数据，暂时只支持json格式，未来可以从header中判断
         data: this.ctx.request.body,
         headers,
         dataType: 'json'
@@ -47,18 +46,17 @@ module.exports = app => {
       opts.method = method
       const result = yield this.ctx.curl(url, opts)
       this.ctx.status = result.status
-            // 设置了gzip encoding的话，转发请求将会出错，先取消此请求头的返回
-      delete result.headers['content-encoding']
+      delete result.headers['content-encoding'] // 设置了gzip encoding的话，转发请求将会出错，先取消此请求头的返回
       this.ctx.set(result.headers)
       this.ctx.body = result.data
     }
-    * handleProxy (api) {
+    * handleProxy (api) { // 如果url中带有_mockProxyStatus此参数，则开启代理转发
       const { _mockProxyStatus } = this.ctx.request.query
-      if (api.options.proxy.mode === 1 || _mockProxyStatus === '1') {
+      if (api.options.proxy.mode === 1 || _mockProxyStatus === '1') { // 代理转发线上
         yield this.proxy(api.prodUrl, api.options.method)
         return true
       }
-      if (api.options.proxy.mode === 2 || _mockProxyStatus === '2') {
+      if (api.options.proxy.mode === 2 || _mockProxyStatus === '2') { // 代理转发测试
         yield this.proxy(api.devUrl, api.options.method)
         return true
       }
@@ -81,31 +79,32 @@ module.exports = app => {
         const index = api.options.responseIndex
         const idx = index === -1 ? parseInt(Math.random() * api.options.response.length) : index
         const schema = api.options.response[idx]
-        return schema.example || dslCore.buildExampleFormSchema(schema)
+        return schema.example || dslCore.buildExampleFromSchema(schema)
+      } else {
+        return {}
       }
-      return api.dsl
     }
-        // get/:id
+    // get/:id
     * show () {
       const document = yield this.findApi('get')
       yield this.handleRequest(document)
     }
-        // post /
+    // post /
     * create () {
       const document = yield this.findApi('post')
       yield this.handleRequest(document)
     }
-        // put
+    // put
     * put () {
       const document = yield this.findApi('put')
       yield this.handleRequest(document)
     }
-        // delete
+    // delete
     * delete () {
       const document = yield this.findApi('delete')
       yield this.handleRequest(document)
     }
-    getPathParams (api) {
+    getPathParams (api) { // 获取RESTful风格Url参数
       const pathParams = {}
       const params = (this.ctx.params[1] || '').split('/')
       api.options.params.path.forEach((p, index) => {
@@ -122,9 +121,10 @@ module.exports = app => {
       const { params, method } = api.options
       for (const name in params) {
         const rule = {}
+        // get请求不校验body
         if (method === 'get' && name === 'body') continue
         params[name].forEach(param => {
-                    // 参数不存在或者参数类型不属于基本类型时，不校验
+          // 参数不存在或者参数类型不属于基本类型时，不校验
           if (!param.key || BASE_TYPES.indexOf(param.type) === -1) return
           rule[param.key] = {
             type: param.type === 'number' ? 'checkNumber' : param.type,

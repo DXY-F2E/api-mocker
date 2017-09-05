@@ -1,10 +1,10 @@
 <template>
-    <div class="apis-doc" v-if="group">
-        <div class="title">
-            {{group.name}}接口文档
-        </div>
-        <api-doc :api="api" v-for="api in apis" key="api._id"></api-doc>
+  <div class="apis-doc" v-if="group">
+    <div class="title">
+      {{group.name}}接口文档
     </div>
+    <api-doc :api="api" v-for="api in apis" :key="api._id"></api-doc>
+  </div>
 </template>
 
 <script>
@@ -26,8 +26,8 @@ export default {
 </script>
 <style>
 .apis-doc > .title {
-    padding: 30px;
-    font-size: 28px;
-    border-bottom: 1px solid #ddd;
+  padding: 30px;
+  font-size: 28px;
+  border-bottom: 1px solid #ddd;
 }
 </style>

@@ -1,67 +1,60 @@
 <template>
-    <div class="api-info el-col" v-side-bar>
-        <el-form>
-            <el-form-item label="接口名称" class="required">
-                <el-input auto-complete="off" v-model="name"></el-input>
-            </el-form-item>
-            <el-form-item label="接口分组" class="required">
-                <i class="el-icon-plus title-icon create-group" @click="showCreateGroup = true"></i>
-                <div class="group-select">
-                    <el-row type="flex" >
-                        <el-col :span="24">
-                            <el-select placeholder="请选择分组" filterable v-model="group">
-                                <el-option v-for="group in groups"
-                                           :key="group._id"
-                                           :label="group.name"
-                                           :value="group._id">
-                                </el-option>
-                            </el-select>
-                        </el-col>
-                    </el-row>
-                </div>
-            </el-form-item>
-            <el-form-item label="测试地址">
-                <el-input auto-complete="off" v-model="devUrl" placeholder="请填写绝对路径"></el-input>
-            </el-form-item>
-            <el-form-item label="线上地址">
-                <el-input auto-complete="off" v-model="prodUrl" placeholder="请填写绝对路径"></el-input>
-            </el-form-item>
-            <el-form-item label="代理转发">
-                <el-tooltip content="开启后请求mock地址会转发到指定地址" placement="top"><span class="mocker-tip">?</span></el-tooltip>
-                <el-radio-group v-model="proxyMode">
-                    <el-radio :label="0">不转发</el-radio>
-                    <el-radio :label="1">转发线上</el-radio>
-                    <el-radio :label="2">转发测试</el-radio>
-                </el-radio-group>
-                <!-- <el-switch v-model="proxyMode"
-                           :on-value="1"
-                           :off-value="0"></el-switch> -->
-            </el-form-item>
-            <el-form-item label="历史记录" class="history-item" v-if="history && history.records.length">
-                <api-history :history="history"></api-history>
-            </el-form-item>
-
-            <!-- <el-form-item >
-                <el-button type="info">文档</el-button>
-            </el-form-item> -->
-        </el-form>
-        <p class="issue">
-            <a href="http://gitlab.dxy.net/f2e/api-mocker/wikis/home" target="_blank">Click For Help</a>
-            <a href="http://gitlab.dxy.net/f2e/api-mocker/issues" target="_blank">Issue</a>
-        </p>
-        <create-group
-            :visited="showCreateGroup"
-            @action="handleClickCreateGroup"
-            @close="handleClickClose"/>
-    </div>
+  <div class="api-info el-col" v-side-bar>
+    <el-form>
+      <el-form-item label="接口名称" class="required">
+        <el-input auto-complete="off" v-model="name"></el-input>
+      </el-form-item>
+      <el-form-item label="接口分组" class="required">
+        <i class="el-icon-plus title-icon create-group" @click="showCreateGroup = true"></i>
+        <div class="group-select">
+          <el-row type="flex" >
+            <el-col :span="24">
+              <el-select placeholder="请选择分组" filterable v-model="group">
+                <el-option v-for="group in groups"
+                           :key="group._id"
+                           :label="group.name"
+                           :value="group._id">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+        </div>
+      </el-form-item>
+      <el-form-item label="测试地址">
+        <el-input auto-complete="off" v-model="devUrl" placeholder="请填写绝对路径"></el-input>
+      </el-form-item>
+      <el-form-item label="线上地址">
+        <el-input auto-complete="off" v-model="prodUrl" placeholder="请填写绝对路径"></el-input>
+      </el-form-item>
+      <el-form-item label="代理转发">
+        <el-tooltip content="开启后请求mock地址会转发到指定地址" placement="top"><span class="mocker-tip">?</span></el-tooltip>
+        <el-radio-group v-model="proxyMode">
+          <el-radio :label="0">不转发</el-radio>
+          <el-radio :label="1">转发线上</el-radio>
+          <el-radio :label="2">转发测试</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="历史记录" class="history-item" v-if="history && history.records.length">
+        <api-history :history="history"></api-history>
+      </el-form-item>
+    </el-form>
+    <p class="issue">
+      <a href="http://gitlab.dxy.net/f2e/api-mocker/wikis/home" target="_blank">Click For Help</a>
+      <a href="http://gitlab.dxy.net/f2e/api-mocker/issues" target="_blank">Issue</a>
+    </p>
+    <create-group
+      :visited="showCreateGroup"
+      @action="handleClickCreateGroup"
+      @close="handleClickClose"/>
+  </div>
 </template>
 
 <script>
-import createGroup from '../../dialog/create-group'
+import CreateGroup from '@/components/common/CreateGroup'
 import ApiHistory from './ApiHistory'
 export default {
   components: {
-    createGroup,
+    CreateGroup,
     ApiHistory
   },
   data () {
@@ -138,76 +131,79 @@ export default {
 </script>
 <style lang="less">
 .api-info {
-    padding: 20px;
-    width: 288px;
-    min-width: 288px;
-    background-color: #eef1f6;
+  padding: 20px;
+  width: 288px;
+  min-width: 288px;
+  background-color: #eef1f6;
 
-    .el-textarea__inner,
-    .el-input__inner {
-        background-color: #F9FAFC;
+  .el-textarea__inner,
+  .el-input__inner {
+    background-color: #F9FAFC;
+  }
+  // 防止创建分组的输入框背景色被覆盖
+  .create-group-dialog .el-input__inner {
+    background-color: #fff;
+  }
+  .el-form {
+    min-height: 100%;
+    padding-bottom: 50px;
+  }
+
+  .create-group {
+    color: #97a8be;
+    cursor: pointer;
+  }
+
+  .history {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .el-radio-group {
+    display: block;
+    margin-top: 5px;
+    .el-radio {
+      /*margin-left: 15px;*/
+      display: block;
+      margin: 5px 0;
+      color: #475669;
+      font-family: monospace;
+
+      &__label {
+        margin-left: 5px;
+      }
     }
-
-    .el-form {
-        min-height: 100%;
-        padding-bottom: 50px;
-    }
-
-    .create-group {
-        color: #97a8be;
-        cursor: pointer;
-    }
-
-    .history {
-        display: inline-block;
-        width: 100%;
-    }
-
-    .el-radio-group {
-        display: block;
-        margin-top: 5px;
-        .el-radio {
-            /*margin-left: 15px;*/
-            display: block;
-            margin: 5px 0;
-            color: #475669;
-            font-family: monospace;
-
-            &__label {
-                margin-left: 5px;
-            }
-        }
-    }
+  }
 }
 
 .group-select {
-    display: inline-block;
-    width: 100%;
-    .el-icon-plus {
-        width: 50px;
-        line-height: 36px;
-    }
+  display: inline-block;
+  width: 100%;
+  .el-icon-plus {
+    width: 50px;
+    line-height: 36px;
+  }
 
-    .el-select .el-input__inner,
-    .el-select {
-        width: 100%;
-    }
+  .el-select .el-input__inner,
+  .el-select {
+    width: 100%;
+  }
 }
 
 .issue {
-    text-align: center;
-    margin-top: -30px;
-    a {
-        color: #99A9BF;
-        font-size: 12px;
-        margin: 0 35px;
-    }
+  text-align: center;
+  margin-top: -30px;
+  a {
+    color: #99A9BF;
+    font-size: 12px;
+    margin: 0 35px;
+  }
 }
 
 .el-form-item.required .el-form-item__label:after {
-    content: '*';
-    color: #ff4949;
-    margin-left: 2px;
+  content: '*';
+  color: #ff4949;
+  margin-left: 2px;
 }
 
 </style>

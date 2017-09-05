@@ -1,9 +1,9 @@
 <template>
-    <params :params="params"
-            :name="name"
-            class="set"
-            :level="1"
-            @change="update"></params>
+  <params :params="params"
+          :name="name"
+          class="set"
+          :level="1"
+          @change="update"></params>
 </template>
 
 <script>

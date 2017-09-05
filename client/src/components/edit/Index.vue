@@ -1,13 +1,13 @@
 <template>
-  <div class="content" :class="mode">
-    <el-row type="flex" class="list-content" v-if="!loading && !loadingFail">
-        <api-info></api-info>
-        <api-box></api-box>
-    </el-row>
-    <div class="loading" v-show="loading">
-        <div class="el-loading-mask"><div class="el-loading-spinner"><svg viewBox="25 25 50 50" class="circular"><circle cx="50" cy="50" r="20" fill="none" class="path"></circle></svg><!----></div></div>
-    </div>
+ <div class="content" :class="mode">
+  <el-row type="flex" class="list-content" v-if="!loading && !loadingFail">
+    <api-info></api-info>
+    <api-box></api-box>
+  </el-row>
+  <div class="loading" v-show="loading">
+    <div class="el-loading-mask"><div class="el-loading-spinner"><svg viewBox="25 25 50 50" class="circular"><circle cx="50" cy="50" r="20" fill="none" class="path"></circle></svg><!----></div></div>
   </div>
+ </div>
 </template>
 
 <script>
@@ -75,17 +75,17 @@ export default {
 </script>
 <style>
 .mocker-tip {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    line-height: 16px;
-    font-size: 12px;
-    border-radius: 50%;
-    text-align: center;
-    cursor: pointer;
-    vertical-align: middle;
-    margin: 0 15px 0 -8px;
-    background: #97a8be;
-    color: #fff;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  font-size: 12px;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+  vertical-align: middle;
+  margin: 0 15px 0 -8px;
+  background: #97a8be;
+  color: #fff;
 }
 </style>

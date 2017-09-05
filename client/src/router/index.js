@@ -1,16 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Admin from '@/components/Admin'
-// import List from '@/components/list/Index';
-// import ListContent from '@/components/list/Content';
-// import Edit from '@/components/edit/Index';
-// import Document from '@/components/document/Index';
-// import DocOverview from '@/components/document/Overview';
-// import GroupContent from '@/components/document/GroupContent';
-// import ApiContent from '@/components/document/ApiContent';
-// import Auth from '@/components/auth/Index';
-// import Login from '@/components/auth/Login';
-// import Register from '@/components/auth/Register';
 
 const Manage = r => require.ensure([], () => r(require('@/components/manage/Index')), 'manage')
 const Profile = r => require.ensure([], () => r(require('@/components/profile/Index')), 'manage')
@@ -18,7 +8,6 @@ const ManageGroup = r => require.ensure([], () => r(require('@/components/manage
 const ManageApi = r => require.ensure([], () => r(require('@/components/manage/Api')), 'manage')
 
 const List = r => require.ensure([], () => r(require('@/components/list/Index')), 'list')
-// const ListContent = r => require.ensure([], () => r(require('@/components/list/Content')), 'list');
 
 const Edit = r => require.ensure([], () => r(require('@/components/edit/Index')), 'edit')
 
@@ -89,11 +78,9 @@ const router = new Router({
           children: [{
             path: 'all',
             name: 'AllList'
-                        // component: ListContent
           }, {
             path: ':groupId',
             name: 'GruopList'
-                        // component: ListContent
           }]
         },
         {

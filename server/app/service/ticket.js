@@ -35,6 +35,6 @@ module.exports = app => {
       }
       return { success: true, data: rs }
     }
-    }
+  }
   return Ticket
 }

@@ -6,6 +6,6 @@ module.exports = app => {
       this.ctx.body = { histories }
       this.ctx.status = 200
     }
-    }
+  }
   return HistoryController
 }

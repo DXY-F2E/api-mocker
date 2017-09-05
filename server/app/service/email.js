@@ -17,30 +17,30 @@ module.exports = app => {
     }
     resetPassword (verifyCode, user) {
       const html = `
-                <strong>重设密码</strong>
-                <p>账户名：${user.name}</p>
-                <p>验证码：${verifyCode}</p>
-            `
+        <strong>重设密码</strong>
+        <p>账户名：${user.name}</p>
+        <p>验证码：${verifyCode}</p>
+      `
       return this.sent(user.email, 'Api Mocker 找回密码', html)
     }
     passwordTicket (ticket, user) {
       const html = `
-                <strong>找回密码</strong>
-                <p>账户名：${user.name}</p>
-                <p>链接：${app.config.clientRoot}/#/reset-pass?ticket=${ticket}</p>
-            `
+        <strong>找回密码</strong>
+        <p>账户名：${user.name}</p>
+        <p>链接：${app.config.clientRoot}/#/reset-pass?ticket=${ticket}</p>
+      `
       return this.sent(user.email, 'Api Mocker 找回密码', html)
     }
     notifyApiChange (api, users) {
       const html = `
-                <strong>API：${api.name}</strong>
-                <p>修改者：${this.ctx.authUser.name}</p>
-                <p>链接地址：${app.config.clientRoot}/#/doc/${api.group}/${api._id}</p>
-            `
+        <strong>API：${api.name}</strong>
+        <p>修改者：${this.ctx.authUser.name}</p>
+        <p>链接地址：${app.config.clientRoot}/#/doc/${api.group}/${api._id}</p>
+      `
       users.map(user => {
         this.sent(user.email, 'Api Mocker 接口变动提醒', html)
       })
     }
-    }
+  }
   return Email
 }

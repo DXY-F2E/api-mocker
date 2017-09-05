@@ -1,17 +1,17 @@
 <template>
 <div>
-    <el-upload action=""
-               :auto-upload="false"
-               :show-file-list="false"
-               accept="application/json"
-               ref="importRapJson"
-               :on-change="importJsonFromRap">
-        <i class="el-icon-upload2"></i>导入Rap Json
-    </el-upload>
-    <success v-if="importSuccess"
-             :visible="importSuccess"
-             :apis-data="apisData"
-             @visibleChange="visibleChange"></success>
+  <el-upload action=""
+       :auto-upload="false"
+       :show-file-list="false"
+       accept="application/json"
+       ref="importRapJson"
+       :on-change="importJsonFromRap">
+    <i class="el-icon-upload2"></i>导入Rap Json
+  </el-upload>
+  <success v-if="importSuccess"
+      :visible="importSuccess"
+      :apis-data="apisData"
+      @visibleChange="visibleChange"></success>
 </div>
 </template>
 

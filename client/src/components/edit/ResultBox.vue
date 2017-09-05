@@ -1,10 +1,10 @@
 <template>
 <div class="result-box">
-    <json-editor id="json-editor"
-                 v-model="jsonData"
-                 name="返回数据"
-                 :resize-act="fullscreen"
-                 readonly></json-editor>
+  <json-editor id="json-editor"
+               v-model="jsonData"
+               name="返回数据"
+               :resize-act="fullscreen"
+               readonly></json-editor>
 </div>
 </template>
 
@@ -50,6 +50,6 @@ export default {
 </script>
 <style>
 .result-box {
-    height: 300px;
+  height: 300px;
 }
 </style>
