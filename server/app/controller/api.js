@@ -9,7 +9,7 @@ module.exports = app => {
       let { limit = 30, page = 1, q = '' } = this.ctx.query
       page = Number(page)
       limit = Number(limit)
-            // 超过一个字符才会去匹配
+      // 超过一个字符才会去匹配
       q = (q && q.length >= 2) ? q : ''
       const reg = new RegExp(`.*${q}.*`, 'i')
       const condition = {
@@ -78,18 +78,18 @@ module.exports = app => {
       }
       yield this.notifyApiChange(resources, lastModifiedTime)
       this.service.group.updateTime(groupId)
-            // 存下历史记录，并将所有记录返回
+      // 存下历史记录，并将所有记录返回
       resources.history = yield this.service.apiHistory.push(resources)
       this.ctx.body = { resources }
     }
     * notifyApiChange (api, lastModifiedTime) {
-            // 一小时内有修改不推送
+      // 一小时内有修改不推送
       const interval = api.modifiedTime - lastModifiedTime
       if (interval < 1000 * 60 * 60) {
         return
       }
       const selfIdx = api.follower.findIndex(f => f.toString() === this.ctx.authUser._id)
-            // 如果修改者也在关注列表中，不推送自己
+      // 如果修改者也在关注列表中，不推送自己
       if (selfIdx >= 0) {
         api.follower.splice(selfIdx, 1)
       }

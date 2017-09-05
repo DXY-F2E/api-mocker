@@ -7,7 +7,7 @@ module.exports = app => {
   app.post('/server/group', 'group.create')
   app.get('/server/group/manage', 'group.getManageGroup')
   app.get('/server/group/unmanaged', 'group.getUnmanaged')
-  app.put('/server/group/:id/claim', 'group.claim') // 认领分组，历史原因导致的接口，可以不关心
+  app.put('/server/group/:id/claim', 'group.claim') // 认领分组，这是历史原因导致的接口，可以不关心
   app.delete('/server/group/:id', 'group.delete')
   app.put('/server/group/:id', 'group.update')
 
