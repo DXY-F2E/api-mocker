@@ -9,4 +9,4 @@ function Schema (index = 1) {
     comment: null
   }]
 }
-module.exports = Schema
+export default Schema

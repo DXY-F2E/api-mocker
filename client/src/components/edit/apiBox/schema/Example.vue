@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import JsonEditor from '../../common/jsonEditor/Index'
-import { buildSchemaFromExample, buildExampleFromSchema } from '../../../util'
+import JsonEditor from '@/components/common/jsonEditor/Index'
+import { buildSchemaFromExample, buildExampleFromSchema } from '@/util'
 export default {
   components: {
     JsonEditor

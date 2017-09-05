@@ -4,8 +4,8 @@ import Admin from '@/components/Admin'
 
 const Manage = r => require.ensure([], () => r(require('@/components/manage/Index')), 'manage')
 const Profile = r => require.ensure([], () => r(require('@/components/profile/Index')), 'manage')
-const ManageGroup = r => require.ensure([], () => r(require('@/components/manage/Group')), 'manage')
-const ManageApi = r => require.ensure([], () => r(require('@/components/manage/Api')), 'manage')
+const ManageGroup = r => require.ensure([], () => r(require('@/components/manage/group/Index')), 'manage')
+const ManageApi = r => require.ensure([], () => r(require('@/components/manage/api/Index')), 'manage')
 
 const List = r => require.ensure([], () => r(require('@/components/list/Index')), 'list')
 

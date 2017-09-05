@@ -1,5 +1,4 @@
-import apiInit from './apiInitData'
-import { getDomain } from '../util'
+import { getDomain, apiInitData } from '@/util'
 
 const domain = getDomain()
 
@@ -9,7 +8,7 @@ const state = {
   apiList: [],
   apiListLoading: false,
   apiListSuccess: true,
-  api: apiInit(),
+  api: apiInitData(),
   apiUnsaved: false,
   mode: 'edit',
   reqParams: {

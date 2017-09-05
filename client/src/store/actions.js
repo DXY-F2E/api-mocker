@@ -1,5 +1,5 @@
 import axios from 'axios'
-import API from './api'
+import API from '@/config/api'
 import {
     validateApi,
     buildApiResponse,
@@ -7,7 +7,7 @@ import {
     getDomain,
     catchError,
     buildRestUrl
-} from '../util'
+} from '@/util'
 
 // 允许跨域请求带上cookie
 axios.defaults.withCredentials = true
@@ -190,15 +190,14 @@ const actions = {
     config.data = Object.assign(config.data, buildTestParams(api, 'body'))
     config.headers = buildExampleFromSchema(api.options.headers)
     if (config.headers.Cookie) {
+      // 由于安全策略，前端不能设置cookie，所以把cookie信息放其他的头中传送
       config.headers['api-cookie'] = config.headers.Cookie
       delete config.headers.Cookie
     }
-        // config.params = state.reqParams.query.value;
-        // config.data = state.reqParams.body.value;
     return axios(config).then(res => {
       commit('UPDATE_RESPONSE', res)
     }, err => {
-      window.console.log('error')
+      window.console.log('testApi: error')
       window.console.log(err)
       if (err.response) {
         commit('UPDATE_RESPONSE', err.response)

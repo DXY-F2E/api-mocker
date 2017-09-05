@@ -4,6 +4,8 @@ export { default as buildSchemaFromExample } from './buildSchemaFromExample'
 export { default as buildApiResponse } from './buildApiResponse'
 export { default as validateApi } from './validateApi'
 export { default as catchError } from './catchError'
+export { default as apiInitData } from './apiInitData'
+export { default as schemaModel } from './schemaModel'
 
 export function getDomain () {
   const protocol = window.location.href.indexOf('https') === 0 ? 'https://' : 'http://'

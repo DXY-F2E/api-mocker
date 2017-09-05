@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import JsonEditor from '../common/jsonEditor/Index'
+import JsonEditor from '@/components/common/jsonEditor/Index'
 export default {
   components: {
     JsonEditor

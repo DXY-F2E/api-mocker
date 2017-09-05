@@ -8,12 +8,10 @@
 </template>
 <script>
 import ApiList from './ApiList'
-import ApiDoc from './ApiDoc'
-import API from '../../store/api'
+import API from '@/config/api'
 export default {
   components: {
-    ApiList,
-    ApiDoc
+    ApiList
   },
   data () {
     return {

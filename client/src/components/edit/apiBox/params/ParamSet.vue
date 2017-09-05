@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { debounce } from '../../../util'
+import { debounce } from '@/util'
 export default {
   props: {
     param: {

@@ -1,4 +1,4 @@
-import Schema from './apiInitSchema'
+import Schema from './schemaModel'
 function initData () {
   return {
     prodUrl: null,

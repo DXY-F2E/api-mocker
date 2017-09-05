@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import ApiInfo from './ApiInfo'
-import ApiBox from './ApiBox'
+import ApiInfo from './apiInfo/Index'
+import ApiBox from './apiBox/Index'
 import { mapActions, mapState } from 'vuex'
 export default {
   components: {

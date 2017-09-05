@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import ApiDoc from './ApiDoc'
+import ApiDoc from './apiDoc/Index'
 export default {
   components: {
     ApiDoc

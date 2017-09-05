@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Simditor from '../common/Simditor'
+import Simditor from '@/components/common/Simditor'
 
 export default {
   components: {

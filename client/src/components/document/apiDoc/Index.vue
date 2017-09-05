@@ -63,8 +63,9 @@ import ParamsTable from './ParamsTable'
 import Schemas from './Schemas'
 import Schema from './Schema'
 import MockData from './MockData'
-import CopyButton from '../common/CopyButton'
+import CopyButton from '@/components/common/CopyButton'
 import { mapActions } from 'vuex'
+// 为了接口描述在文档中显示的跟编辑时样式一致而引入
 import 'simditor/styles/simditor.css'
 export default {
   components: {

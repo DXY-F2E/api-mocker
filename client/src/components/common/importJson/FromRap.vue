@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ApiInit from '../../../store/apiInitData'
+import ApiInit from '@/util/apiInitData'
 import Success from './Success'
 export default {
   components: {

@@ -1,6 +1,5 @@
-import apiInit from './apiInitData'
-import Schema from './apiInitSchema'
-import R from 'ramda' // dev: 0.9m
+import { apiInitData, schemaModel as Schema } from '@/util'
+import R from 'ramda'
 const mutations = {
   FETCH_GROUPS_SUCCESS (state, groups) {
     state.groups = groups
@@ -35,7 +34,7 @@ const mutations = {
     state.apiList = data
   },
   INIT_API (state, groupId) {
-    state.api = apiInit()
+    state.api = apiInitData()
     state.api.group = groupId
   },
   UPDATE_API_PROPS (state, propValuePair) {

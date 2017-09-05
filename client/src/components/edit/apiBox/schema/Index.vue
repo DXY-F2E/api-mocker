@@ -29,7 +29,7 @@
 <script>
 import Params from '../params/Index'
 import R from 'ramda'
-import JsonEditor from '../../common/jsonEditor/Index'
+import JsonEditor from '@/components/common/jsonEditor/Index'
 import Example from './Example'
 export default {
   components: {

@@ -52,7 +52,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import CopyButton from '../common/CopyButton'
+import CopyButton from '@/components/common/CopyButton'
 export default {
   components: {
     CopyButton

@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import UserSelector from '../common/UserSelector'
+import UserSelector from '@/components/common/UserSelector'
 import R from 'ramda'
 export default {
   components: {

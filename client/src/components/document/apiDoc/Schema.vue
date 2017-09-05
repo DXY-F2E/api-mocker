@@ -17,7 +17,7 @@
 import Prism from 'prismjs'
 import ParamsTable from './ParamsTable'
 import 'prismjs/themes/prism.css'
-import { buildExampleFromSchema } from '../../util'
+import { buildExampleFromSchema } from '@/util'
 export default {
   props: ['schema', 'name'],
   data () {

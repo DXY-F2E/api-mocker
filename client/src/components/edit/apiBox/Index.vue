@@ -30,20 +30,20 @@
 
 <script>
 import RequestBox from './request/Index'
+import Response from './response/Index'
+import ResponseConfig from './response/Config'
 import ResultBox from './ResultBox'
 import UrlBox from './UrlBox'
-import Response from './response/Index'
 import DescBox from './DescBox'
 import SettingField from './SettingField'
-import ResponseConfig from './response/Config'
 export default {
   components: {
     RequestBox,
     Response,
+    ResponseConfig,
     ResultBox,
     DescBox,
     UrlBox,
-    ResponseConfig,
     SettingField
   },
   data () {
