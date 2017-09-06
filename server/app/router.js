@@ -46,6 +46,7 @@ module.exports = app => {
   app.post('/auth/user/recovery/password/ticket', 'user.sentResetPassTicket')
   app.post('/auth/user/recovery/password/code', 'user.sentResetPassCode')
   app.put('/auth/user/recovery/password', 'user.resetPasswordByTicket')
+  app.put('/server/user/password', 'user.updatePassword')
   app.put('/server/user', 'user.update')
   app.get('/server/user/search', 'user.search')
 }

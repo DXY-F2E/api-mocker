@@ -43,6 +43,15 @@ module.exports = app => {
         modifiedTime: new Date()
       }, { new: true }).lean()
     }
+    updatePasswordByOldPassword (oldPassword, newPassword) {
+      return app.model.user.findOneAndUpdate({
+        _id: this.ctx.authUser._id,
+        password: md5(oldPassword, this.config.md5Key)
+      }, {
+        password: md5(newPassword, this.config.md5Key),
+        modifiedTime: new Date()
+      }, { new: true }).lean()
+    }
     update (user) {
       const authId = this.ctx.authUser._id
       return app.model.user.findOneAndUpdate({

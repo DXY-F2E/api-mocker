@@ -45,6 +45,7 @@ export default {
           trigger: 'blur'
         }],
         password: [{
+          validator: this.validateNewPass,
           required: true,
           trigger: 'blur'
         }],
@@ -61,6 +62,13 @@ export default {
     }
   },
   methods: {
+    validateNewPass (rule, value, callback) {
+      if (value === this.passwordForm.originPassword) {
+        callback(new Error('new password cannot equal to old password'))
+      } else {
+        callback()
+      }
+    },
     validateVerifyPass (rule, value, callback) {
       if (value === '') {
         callback(new Error('verify password is required'))
@@ -72,8 +80,14 @@ export default {
     },
     handleSave () {
       this.$refs.passwordForm.validate(rs => {
-        if (rs) console.log(rs)
+        if (rs) this.updatePassword()
       })
+    },
+    updatePassword () {
+      this.$store.dispatch('updatePassword', this.passwordForm).then(() => {
+        this.$message.success('更新成功')
+        this.dialogVisible = false
+      }).catch(err => this.$message.error(err.msg))
     },
     handleCancel () {
       this.dialogVisible = false
