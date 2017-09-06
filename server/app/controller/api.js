@@ -28,7 +28,15 @@ module.exports = app => {
           }
         })
       }
-      if (groupId) condition.group = groupId
+      // 传了groupId 则选择分组下的api,没有的话，先获取可见的分组，再去读取api
+      if (groupId) {
+        condition.group = groupId
+      } else {
+        const groups = yield this.service.group.getReadableGroups()
+        condition.group = {
+          $in: groups.map(g => g._id)
+        }
+      }
       const resources = yield this.service.api.getRichList(condition, page, limit)
       const count = yield app.model.api.find(condition).count().exec()
       this.ctx.body = { resources, pages: { limit, page, count } }
