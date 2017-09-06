@@ -30,9 +30,9 @@
         <el-tooltip placement="top" popper-class="api-proxy-tip">
           <span class="mocker-tip">?</span>
           <div slot="content">
-            <p>开启后请求mock地址会转发到指定地址，除此外也可以在请求Mock URL时，带上query参数来设置：</p>
-            <p>{ mockURL }?_mockProxyStatus=1，转发线上</p>
-            <p>{ mockURL }?_mockProxyStatus=2，转发测试</p>
+            <p>开启后请求mock地址会转发到指定地址，除此外，为便于前端代码控制，也可以在请求Mock URL时，带上query参数来设置：</p>
+            <p>转发线上：{ mockURL }?_mockProxyStatus=1</p>
+            <p>转发测试：{ mockURL }?_mockProxyStatus=2</p>
           </div>
         </el-tooltip>
         <el-radio-group v-model="proxyMode">
@@ -138,7 +138,7 @@ export default {
 </script>
 <style lang="less">
 .api-proxy-tip {
-  width: 500px;
+  width: 450px;
 }
 .api-info {
   padding: 20px;
