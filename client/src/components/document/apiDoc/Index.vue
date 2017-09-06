@@ -131,6 +131,10 @@ export default {
     schemaParams () {
       const schemas = {}
       for (const key in this.api.options.params) {
+        // get方法没有body参数
+        if (this.method === 'GET' && key === 'body') {
+          continue
+        }
         schemas[key] = {
           example: this.api.options.examples[key],
           params: this.api.options.params[key]
