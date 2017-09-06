@@ -131,6 +131,23 @@ module.exports = app => {
       this.service.cookie.setUser(rs)
       this.success(rs)
     }
+    * updatePassword () {
+      const { originPassword, password, verifyPassword } = this.ctx.request.body
+      if (originPassword.trim() === '' || password.trim() === '' || verifyPassword.trim() === '') {
+        this.error('信息不能为空')
+      }
+      if (password !== verifyPassword) {
+        this.error('确认密码不一致')
+      }
+      console.log(this.ctx.request.body)
+      const rs = yield this.service.user.updatePasswordByOldPassword(originPassword, password)
+      if (!rs) {
+        this.error('密码错误')
+      }
+      delete rs.password
+      this.service.cookie.setUser(rs)
+      this.success(rs)
+    }
     logout () {
       this.service.cookie.clearUser()
       this.success('注销成功')

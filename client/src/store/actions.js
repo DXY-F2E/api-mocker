@@ -260,13 +260,19 @@ const actions = {
   resetPass ({ state }, resetForm) {
     return axios.put(`${API.USER}/recovery/password`, resetForm)
   },
-    // stat 相关
+  updatePassword ({ commit }, resetForm) {
+    return axios.put(`${API.PROFILE}/password`, resetForm).then(res => {
+      commit('SET_USER', res.data)
+      return res
+    })
+  },
+  // stat 相关
   getMockStat ({ state }, query) {
     return axios.get(`${API.STAT}/mock`, {
       params: query
     })
   },
-    // 权限相关
+  // 权限相关
   getApiAuthority ({ state }, apiId) {
     return axios.get(API.API_AUTHORITY.replace(':apiId', apiId))
   },

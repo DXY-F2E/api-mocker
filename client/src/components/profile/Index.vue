@@ -5,7 +5,7 @@
               :key="item.key"
               :item="item">
     </user-item>
-    <el-form-item label="团队">丁香园</el-form-item>
+    <password></password>
     <input type="text" class="hidden" name="为了阻止单个input回车触发submit">
   </el-form>
 </div>
@@ -13,9 +13,11 @@
 
 <script>
 import UserItem from './UserItem'
+import Password from './Password'
 export default {
   components: {
-    UserItem
+    UserItem,
+    Password
   },
   computed: {
     userItems () {
