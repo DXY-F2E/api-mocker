@@ -27,7 +27,14 @@
         <el-input auto-complete="off" v-model="prodUrl" placeholder="请填写绝对路径"></el-input>
       </el-form-item>
       <el-form-item label="代理转发">
-        <el-tooltip content="开启后请求mock地址会转发到指定地址" placement="top"><span class="mocker-tip">?</span></el-tooltip>
+        <el-tooltip placement="top" popper-class="api-proxy-tip">
+          <span class="mocker-tip">?</span>
+          <div slot="content">
+            <p>开启后请求mock地址会转发到指定地址，除此外也可以在请求Mock URL时，带上query参数来设置：</p>
+            <p>{ mockURL }?_mockProxyStatus=1，转发线上</p>
+            <p>{ mockURL }?_mockProxyStatus=2，转发测试</p>
+          </div>
+        </el-tooltip>
         <el-radio-group v-model="proxyMode">
           <el-radio :label="0">不转发</el-radio>
           <el-radio :label="1">转发线上</el-radio>
@@ -130,6 +137,9 @@ export default {
 }
 </script>
 <style lang="less">
+.api-proxy-tip {
+  width: 500px;
+}
 .api-info {
   padding: 20px;
   width: 288px;
