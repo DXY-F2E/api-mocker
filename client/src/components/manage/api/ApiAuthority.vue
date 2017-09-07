@@ -87,6 +87,7 @@ export default {
       }).catch(err => this.$message.error(err.msg))
     },
     itemClick (val) {
+      // 如果存在则移除，如果不存在则添加
       this.authority.operation.operator = R.symmetricDifference(this.authority.operation.operator, [val])
     },
     itemRemove (val) {
