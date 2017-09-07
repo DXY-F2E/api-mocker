@@ -143,7 +143,6 @@ module.exports = app => {
         this.ctx.body = api
       } else {
         api.follower.splice(index, 1)
-        console.log(api.follower)
         this.ctx.body = yield this.service.api.update(apiId, {
           follower: api.follower
         })

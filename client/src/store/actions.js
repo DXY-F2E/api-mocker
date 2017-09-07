@@ -99,9 +99,9 @@ const actions = {
     return axios.put(`${API.GROUP.replace(':groupId', groupId)}/claim`)
   },
   getApiHistory ({ commit, state }) {
-        // 此接口暂时无用
+    // 此接口暂时无用
     return axios.get(API.API_HISTORY.replace(':apiId', state.api._id)).then(res => {
-            // commit('UPDATE_API_HISTORY', res.data);
+      // commit('UPDATE_API_HISTORY', res.data);
       commit('SAVE_API')
       window.console.log(res)
       return res.data.history
@@ -145,7 +145,6 @@ const actions = {
     const api = state.api
     const { group, _id } = api
     return axios.put(API.API.replace(':groupId', group).replace(':apiId', _id), api).then(res => {
-      console.log(res.data.resources.options.response[0].example)
       commit('UPDATE_API', res.data.resources)
       commit('SAVE_API')
       return res
