@@ -1,4 +1,4 @@
-import Schema from './schemaModel'
+import Schema from '@/model/schema'
 function initData () {
   return {
     prodUrl: null,

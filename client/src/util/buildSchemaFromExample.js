@@ -1,46 +1,53 @@
+import Param from '@/model/param'
+import R from 'ramda'
 function findParam (params, key) {
   if (!params || !params.length) {
     return null
   }
   return params.find(p => p.key === key)
 }
-function buildParams (json, params) {
-  const schema = []
+function buildParams (json, oldParams) {
+  const params = []
   for (const key in json) {
-    const type = typeof json[key]
-    const oldParam = findParam(params, key)
-    const param = oldParam || {
+    const jsonValue = json[key]
+    const type = typeof jsonValue
+    // null, {}, [] 都属于空，属性则为选填
+    const required = !(R.isEmpty(jsonValue) || jsonValue === null)
+    const oldParam = findParam(oldParams, key)
+    const param = new Param({
+      ...(oldParam || {}),
       key,
-      required: true,
-      comment: null
-    }
-    param.type = type
-    if (type === 'object' && json[key] instanceof Array) {
+      type,
+      required
+    })
+    if (type === 'object' && jsonValue instanceof Array) {
       param.type = 'array'
-      param.items = {
-        type: typeof json[key][0]
-      }
+      param.items = { type: typeof jsonValue[0] }
       if (param.items.type === 'object') {
-        param.items.params = buildParams(json[key][0], oldParam && oldParam.items && oldParam.items.params)
+        param.items.params = buildParams(jsonValue[0], oldParam && oldParam.items && oldParam.items.params)
       } else {
-        param.example = json[key]
+        param.example = jsonValue
       }
     } else if (type === 'object') {
-      param.params = buildParams(json[key], oldParam && oldParam.params)
+      param.params = buildParams(jsonValue, oldParam && oldParam.params)
     } else {
-      param.example = json[key]
+      param.example = jsonValue
     }
-    schema.push(param)
+    params.push(param)
   }
-  return schema
+  // 保证在页面上呈现一个可填项
+  if (params.length === 0) {
+    params.push(new Param())
+  }
+  return params
 }
-export default (json, params = null, statusText = 'status1', status = 200) => {
+export default (json, oldParams = null, statusText = 'status1', status = 200) => {
   const schema = {
     status,
     statusText,
     example: json,
     params: []
   }
-  schema.params = buildParams(json, params)
+  schema.params = buildParams(json, oldParams)
   return schema
 }

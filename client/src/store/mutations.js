@@ -1,5 +1,7 @@
-import { apiInitData, schemaModel as Schema } from '@/util'
+import { apiInitData } from '@/util'
+import Schema from '@/model/schema'
 import R from 'ramda'
+
 const mutations = {
   FETCH_GROUPS_SUCCESS (state, groups) {
     state.groups = groups
