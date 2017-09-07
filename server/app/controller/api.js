@@ -14,11 +14,15 @@ module.exports = app => {
       if (q && q.length >= 2) {
         const reg = new RegExp(`.*${q}.*`, 'i')
         condition.$or = [
-          { _id: q },
           { name: reg },
           { desc: reg },
-          { prodUrl: reg }
+          { prodUrl: reg },
+          { devUrl: reg }
         ]
+        // 符合objectId的话，添加id的查询
+        if (q.match(/^[0-9a-fA-F]{24}$/)) {
+          condition.$or.unshift({_id: q})
+        }
       }
       const users = q ? yield this.service.user.find(q) : []
       if (users.length) {
