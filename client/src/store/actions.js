@@ -144,7 +144,8 @@ const actions = {
   updateApi ({ state, commit }) {
     const api = state.api
     const { group, _id } = api
-    return axios.put(API.API.replace(':groupId', group).replace(':apiId', _id), state.api).then(res => {
+    return axios.put(API.API.replace(':groupId', group).replace(':apiId', _id), api).then(res => {
+      console.log(res.data.resources.options.response[0].example)
       commit('UPDATE_API', res.data.resources)
       commit('SAVE_API')
       return res

@@ -80,8 +80,8 @@ module.exports = app => {
 
       delete body._id
       delete body.manager
-
-      const resources = (yield this.service.api.update(apiId, body)).toObject() // 使用lean()方法会导致无法设定schema的默认值
+      // 使用lean()方法会导致无法设定schema的默认值,minimize: false 为了防止清掉空对象
+      const resources = (yield this.service.api.update(apiId, body)).toObject({ minimize: false })
       if (!resources) {
         this.error({
           code: '500',
