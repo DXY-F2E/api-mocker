@@ -37,11 +37,6 @@ prod_server:|dsl-core
 	cd server && npm install && npm start
 prod_client:|dsl-core
 	cd client && npm install && npm run build
-	if [ ! -d dist ]; then \
-		mkdir dist; \
-	else \
-		rm -rf ./dist/*; \
-	fi
 # 开发模式
 client:|dsl-core
 	cd client && npm install && npm run dev
