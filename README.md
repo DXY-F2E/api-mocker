@@ -1,8 +1,31 @@
 # 接口约定测试系统
-> api-mocker
 
-## 第三方定制部署
+## 技术栈与第三方库
 
+* ES6
+* ESLint (Standard)
+* [Ramda](https://github.com/ramda/ramda)
+* ...
+
+### Client
+
+* [Vue](https://github.com/vuejs/vue)全家桶（vue + vuex + vue-router + webpack）
+* [ElementUI](https://github.com/ElemeFE/element), [Mock.js](https://github.com/nuysoft/Mock), etc...
+* Less
+
+### Server
+
+* [Egg](https://github.com/eggjs/egg), [Koa](https://github.com/koajs/koa)
+* [MongoDB](https://github.com/mongodb/mongo)
+* [Mongoose](https://github.com/Automattic/mongoose)
+
+## 部署相关
+
+### 开发环境要求
+```json
+"node": ">= 6.0.0",
+"npm": ">= 3.0.0"
+```
 ### Config - Server
 
 需要https支持的话，证书路径的配置在入口 `server/index.js` 中。其他服务端的配置都在 `server/config`目录下。其中：
