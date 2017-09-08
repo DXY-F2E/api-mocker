@@ -86,7 +86,7 @@ module.exports = app => {
         })
       }
       const user = yield this.service.user.getById(rs._id)
-      if (user.modifiedTime > new Date(rs.modifiedTime)) {
+      if (!user || user.modifiedTime > new Date(rs.modifiedTime)) {
         this.error({
           code: 401,
           msg: '信息已发生变更，请重新登录'
