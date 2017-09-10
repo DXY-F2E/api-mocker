@@ -31,6 +31,24 @@
 5. 如若参数类型选择对象或者对象数组（`array[object]`），则可以再选择子一级参数。
 6. 暂不支持嵌套数组，若选择数组，那么数组里每个值类型都应该一样。
 
+为方便大家理解`Schema`，以及与`Example`的关系，附上 `Schema`的整体json结构。
+```javascript
+Param = {
+  key: String,            // 参数名
+  type: String,           // 参数类型，string|number|boolean|object|array
+  comment: String,        // 备注
+  example: String,        // 参数示例值
+  items: {                // 当参数类型为array时，此字段生效
+    type: String          // 数组的参数类型
+    params: Array[Param]  // 当数组参数类型为object类型时，此字段生效，意义为数组内对象的参数模型
+  }
+}
+Schema = {
+  example: Object,
+  params: Array[Param]
+}
+```
+
 ### 关于Example
 
 * 每个参数结构体（Schema）都有对应的Example。代表这个参数结构体的示例值。系统支持example与schema的相互转换。
