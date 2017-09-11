@@ -49,6 +49,8 @@
 
 客户端配置在 `client/config/index.js` 中。其中：
 
+`docsUrl`: 文档地址，可自行配置到自己的git仓库；
+
 `serverRoot`: 服务端接口根路径;
 
 `assetsPublicPath`: 静态文件公共路径，所有的静态文件资源地址，以此路径开头。请根据自身发布需求配置。
