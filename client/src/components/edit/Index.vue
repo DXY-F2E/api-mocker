@@ -37,6 +37,7 @@ export default {
     },
     initApi () {
       this.$store.commit('CHANGE_MODE', 'edit')
+      this.$store.commit('UPDATE_RESPONSE', {})
       this.beginLoading()
       if (this.$route.name === 'Create') {
         this.$store.commit('INIT_API', this.$route.query.groupId)
