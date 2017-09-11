@@ -1,0 +1,7 @@
+## 其他常见问题
+
+**请求Mock URL出现404 not found。**
+
+请先确认请求协议是否正确。为严格定义接口，系统会严格判断请求协议。若发起请求类型不对，接口会返回404。
+
+**若有其他问题，欢迎提[Issues](http://gitlab.dxy.net/f2e/api-mocker/issues)或者PR**

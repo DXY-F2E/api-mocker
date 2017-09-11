@@ -1,5 +1,7 @@
 # 接口约定测试系统
 
+> API-Mocker，不仅仅是Mocker
+
 ## 技术栈与第三方库
 
 * ES6
@@ -46,6 +48,8 @@
 ### Config - Client
 
 客户端配置在 `client/config/index.js` 中。其中：
+
+`docsUrl`: 文档地址，可自行配置到自己的git仓库；
 
 `serverRoot`: 服务端接口根路径;
 

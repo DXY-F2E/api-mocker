@@ -45,10 +45,6 @@
         <api-history :history="history"></api-history>
       </el-form-item>
     </el-form>
-    <p class="issue">
-      <a href="http://gitlab.dxy.net/f2e/api-mocker/wikis/home" target="_blank">Click For Help</a>
-      <a href="http://gitlab.dxy.net/f2e/api-mocker/issues" target="_blank">Issue</a>
-    </p>
     <create-group
       :visited="showCreateGroup"
       @action="handleClickCreateGroup"
