@@ -1,15 +1,14 @@
-"use strict"
-const R = require('ramda')
+'use strict'
 
 function counter () {
-    return this.ctx.counter ++ 
+  return this.ctx.counter++
 }
 
 function random () {
-    return Math.random()
+  return Math.random()
 }
 
 exports = {
-    counter,
-    random,
+  counter,
+  random
 }
