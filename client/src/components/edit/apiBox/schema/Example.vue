@@ -74,7 +74,10 @@ export default {
       this.$store.commit('UPDATE_DSL_STATUS', data)
     },
     buildExample () {
-      this.example = buildExampleFromSchema(this.schema)
+      this.example = buildExampleFromSchema({
+        ...this.schema,
+        example: null
+      })
       this.showTooltip('example')
     },
     buildSchema () {

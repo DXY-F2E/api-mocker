@@ -1,8 +1,8 @@
-import R from 'ramda'
-import { compile, debugCompile } from './compiler'
+const R = require('ramda')
+const { compile, debugCompile } = require('./compiler')
 
 /**
-* 
+*
 * @param {Object} inject a symbol table
 * @param {bool} default is false
 * @returns {Function} renderTemplate
@@ -27,4 +27,4 @@ function renderer (inject, debug = false) {
   }
 }
 
-export default renderer
+module.exports = renderer

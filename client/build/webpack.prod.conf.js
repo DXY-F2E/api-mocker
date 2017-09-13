@@ -12,6 +12,12 @@ var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var env = config.build.env
 
 var webpackConfig = merge(baseWebpackConfig, {
+  // 让所有引用了ramda库的外部依赖包都引用mocker项目的ramda npm包
+  resolve: {
+    alias: {
+      ramda: path.join(process.cwd(), 'node_modules/ramda')
+    }
+  },
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,

@@ -1,5 +1,5 @@
-import R from 'ramda'
-import { tree } from 'treehugger-node'
+const R = require('ramda')
+const tree = require('treehugger-node/tree')
 const SHADOW_PATTERN = /\$\{[^{}]*\}/g
 
 const mapKey = R.curry((fn, obj) => {
@@ -73,7 +73,7 @@ const buildGrammarTree = (shadow) => {
 const debugCompile = R.compose(buildGrammarTree, shadow(R.__, true), _shadow(R.__, true))
 const compile = R.compose(buildGrammarTree, shadow(R.__, false), _shadow(R.__, false))
 
-export {
+module.exports = {
   compile,
   debugCompile,
   shadow,
