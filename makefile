@@ -1,12 +1,9 @@
 SHELL := /bin/bash
 
-.PHONY: dsl-core prerequ-program client server prod_server prod_client
+.PHONY: prerequ-program client server prod_server prod_client
 
-DSL_SRC = $(wildcard dsl-core/src/*.js)
-DSL_LIBS = $(DSL_SRC:dsl-core/src/%=dsl-core/lib/%)
 
 install:|prerequ-program
-
 
 define require_install
 	if test "$(shell which $(1))" = ""; \
@@ -23,20 +20,15 @@ prerequ-program:
 	if [ "${shell pgrep mongod}" = "" ]; then mongod --bind_ip 127.0.0.1 --fork --dbpath ./db/ --logpath ./db/mongod.log; fi
 	@echo "start mongod success!"
 
-$(DSL_LIBS): $(DSL_SRC)
-	cd dsl-core  && npm install && npm run build
-
-dsl-core: $(DSL_LIBS)
-
 # 开发模式
-server:|dsl-core
+server:
 	cd server && npm install && npm run dev
 
 
-prod_server:|dsl-core
+prod_server:
 	cd server && npm install && npm start
-prod_client:|dsl-core
+prod_client:
 	cd client && npm install && npm run build
 # 开发模式
-client:|dsl-core
+client:
 	cd client && npm install && npm run dev
