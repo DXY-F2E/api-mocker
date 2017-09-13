@@ -1,4 +1,4 @@
-const dslCore = require('../../../dsl-core/index.js')
+const buildExampleFromSchema = require('mocker-dsl-core/lib/buildExampleFromSchema')
 
 const sleep = ms => cb => setTimeout(cb, ms)
 
@@ -79,7 +79,7 @@ module.exports = app => {
         const index = api.options.responseIndex
         const idx = index === -1 ? parseInt(Math.random() * api.options.response.length) : index
         const schema = api.options.response[idx]
-        return dslCore.buildExampleFromSchema(schema)
+        return buildExampleFromSchema(schema)
       } else {
         return {}
       }
