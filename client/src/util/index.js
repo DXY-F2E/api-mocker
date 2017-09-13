@@ -1,5 +1,5 @@
 import config from '../../config'
-export { buildExampleFromSchema } from 'mocker-dsl-core'
+export { default as buildExampleFromSchema } from 'mocker-dsl-core/lib/buildExampleFromSchema'
 export { default as buildSchemaFromExample } from './buildSchemaFromExample'
 export { default as buildApiResponse } from './buildApiResponse'
 export { default as validateApi } from './validateApi'

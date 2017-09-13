@@ -19,11 +19,14 @@ module.exports = merge(baseWebpackConfig, {
   // cheap-module-eval-source-map is faster for development
   devtool: '#cheap-module-eval-source-map',
   plugins: [
+    // 作用域提升
+    new webpack.optimize.ModuleConcatenationPlugin(),
     // 避免引入全部的moment locales包
     new webpack.ContextReplacementPlugin(
       /moment[/\\]locale$/,
       /zh-cn/
     ),
+    // 区分文件大小写
     new CaseSensitivePathsPlugin(),
     new webpack.DefinePlugin({
       'process.env': config.dev.env

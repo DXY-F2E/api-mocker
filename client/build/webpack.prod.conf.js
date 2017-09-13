@@ -31,6 +31,8 @@ var webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
+    // 作用域提升
+    new webpack.optimize.ModuleConcatenationPlugin(),
     // 避免引入全部的moment locales包
     new webpack.ContextReplacementPlugin(
       /moment[/\\]locale$/,
