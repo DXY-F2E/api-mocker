@@ -83,10 +83,6 @@
 
 * `make prod_client` 或者 `cd client && npm install && npm run build`
 
-*** 此处需要调整
-
-若用make命令资源文件会放在`./dist/`下面(注: 不是 `./client/dist`)，直接进行nginx托管即可
-
 ***
 
 ### Server
