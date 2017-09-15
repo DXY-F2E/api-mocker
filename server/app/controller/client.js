@@ -126,6 +126,10 @@ module.exports = app => {
         params[name].forEach(param => {
           // 参数不存在或者参数类型不属于基本类型时，不校验
           if (!param.key || BASE_TYPES.indexOf(param.type) === -1) return
+          // 重置boolean型的query参数
+          if (method === 'get' && param.type === 'boolean' && ['false', 'true'].find(b => b === data.query[param.key])) {
+            data.query[param.key] = JSON.parse(data.query[param.key])
+          }
           rule[param.key] = {
             type: param.type === 'number' ? 'checkNumber' : param.type,
             required: param.required,
@@ -137,7 +141,7 @@ module.exports = app => {
     }
   }
 
-    // 数字校验-允许提交字符串格式的数字
+  // 数字校验-允许提交字符串格式的数字
   app.validator.addRule('checkNumber', (rule, value) => {
     if (value && !isNaN(value)) {
       value = Number(value)

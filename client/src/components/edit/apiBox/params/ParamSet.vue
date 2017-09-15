@@ -115,30 +115,28 @@ export default {
       return type
     },
     getTypeList () {
+      const types = []
       if (this.name === 'query' || this.name === 'path') {
-        return [{
-          value: 'string',
-          label: 'String'
-        }]
+        types.push('String', 'Number', 'Boolean')
       } else {
-        const types = ['String', 'Number', 'Boolean', 'Object', 'Array']
+        types.push('String', 'Number', 'Boolean', 'Object', 'Array')
         if (this.name === 'body') {
           types.push('File')
         }
-        return types.map(t => {
-          const type = {
+      }
+      return types.map(t => {
+        const type = {
+          value: t.toLowerCase(),
+          label: t
+        }
+        if (t === 'Array') {
+          type.children = ['String', 'Number', 'Boolean', 'Object'].map(t => ({
             value: t.toLowerCase(),
             label: t
-          }
-          if (t === 'Array') {
-            type.children = ['String', 'Number', 'Boolean', 'Object'].map(t => ({
-              value: t.toLowerCase(),
-              label: t
-            }))
-          }
-          return type
-        })
-      }
+          }))
+        }
+        return type
+      })
     }
   }
 }
