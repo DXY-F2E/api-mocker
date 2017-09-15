@@ -2,6 +2,5 @@ node_modules/
 ~*
 dist/
 npm-debug*
-dsl-core/lib/
 db/
 package-lock.json
