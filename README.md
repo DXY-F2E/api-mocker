@@ -42,7 +42,7 @@
 
 `bodyParser.jsonLimit`: 接口请求信息最大限制。因为接口更新时，数据量比较大，所以得设置一下。
 
-其他相关配置，请看egg.js文档中[相关内容](https://eggjs.org/zh-cn/basics/config.html#container)。
+其他相关配置，请看文件注释以及egg.js文档中[相关内容](https://eggjs.org/zh-cn/basics/config.html#container)。
 
 
 ### Config - Client
