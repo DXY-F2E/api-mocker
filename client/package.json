@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "api-mocker-client",
   "author": "zhangfx",
+  "license": "GPL-3.0",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
