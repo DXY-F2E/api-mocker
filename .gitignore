@@ -1,0 +1,8 @@
+node_modules/
+~*
+dist/
+npm-debug*
+db/
+package-lock.json
+server/appveyor.yml
+server/.travis.yml
