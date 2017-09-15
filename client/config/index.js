@@ -3,7 +3,7 @@ var path = require('path')
 
 module.exports = {
   appName: 'DXY API Mocker',
-  docsUrl: 'http://gitlab.dxy.net/f2e/api-mocker/tree/master/docs#api-mocker',
+  docsUrl: 'https://github.com/DXY-F2E/api-mocker/tree/master/docs#api-mocker',
   build: {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
