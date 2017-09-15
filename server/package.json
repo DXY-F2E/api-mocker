@@ -1,0 +1,60 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "api-mocker-server",
+  "private": true,
+  "dependencies": {
+    "blueimp-md5": "2.7.0",
+    "egg": "1.8.0",
+    "egg-cors": "1.0.0",
+    "egg-mongoose": "1.1.1",
+    "egg-redis": "1.0.1",
+    "egg-validate": "1.0.0",
+    "http-assert": "1.2.0",
+    "lru-cache": "4.1.1",
+    "mocker-dsl-core": "0.1.2",
+    "moment": "2.18.1",
+    "nodemailer": "4.0.1",
+    "path-to-regexp": "1.7.0",
+    "ramda": "0.23.0"
+  },
+  "devDependencies": {
+    "autod": "^2.7.1",
+    "egg-bin": "^3.1.0",
+    "egg-ci": "^1.5.0",
+    "egg-mock": "^3.2.0",
+    "eslint": "^3.18.0",
+    "eslint-config-standard": "10.2.1",
+    "eslint-plugin-import": "2.7.0",
+    "eslint-plugin-node": "5.1.1",
+    "eslint-plugin-promise": "3.5.0",
+    "eslint-plugin-standard": "3.0.1",
+    "pm2": "2.4.2",
+    "supertest": "^3.0.0",
+    "webstorm-disable-index": "^1.1.2"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "pm2": "pm2 start index.js",
+    "dev": "egg-bin dev",
+    "test": "npm run test-local",
+    "fix": "npm run lint -- --fix",
+    "test-local": "egg-bin test",
+    "cov": "egg-bin cov",
+    "lint": "eslint .",
+    "ci": "npm run lint && npm run cov",
+    "autod": "autod"
+  },
+  "ci": {
+    "version": "6"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "zhangfx",
+  "license": "MIT"
+}

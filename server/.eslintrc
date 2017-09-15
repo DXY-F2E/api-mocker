@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "standard"
+    // "eslint-config-egg"
+  ],
+  "rules": {
+    "new-cap": "warn"
+  },
+  "globals": {
+    "app": true,
+    "request": true,
+    "mm": true,
+    "mock": true,
+    "assert": true,
+  }
+}
