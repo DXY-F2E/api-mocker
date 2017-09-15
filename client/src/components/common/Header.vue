@@ -1,7 +1,7 @@
 <template>
  <div class="header">
   <el-row type="flex" >
-    <el-col :span="0" class="logo"><h1>DXY API Mocker</h1></el-col>
+    <el-col :span="0" class="logo"><h1>{{appName}}</h1></el-col>
     <el-col :span="24">
       <el-menu theme="dark"
           :default-active="activeIndex"
@@ -30,6 +30,11 @@ import config from '../../../config'
 export default {
   components: {
     ProfileMenu
+  },
+  data () {
+    return {
+      appName: config.appName
+    }
   },
   methods: {
     showDocs (e) {
