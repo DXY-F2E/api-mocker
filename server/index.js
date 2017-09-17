@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'production'
+
 require('egg').startCluster({
   // 若需要https服务，请取消注释，并配置好证书文件
   // https: true,
