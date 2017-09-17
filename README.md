@@ -101,14 +101,14 @@
 
 其他相关配置，请参考vue-cli脚手架[webpack模板](https://github.com/vuejs-templates/webpack)
 
-### **以ngnix做部署步骤示例**
+### **以nginx做部署步骤示例**
 
 假设api-mocker项目文件夹路径为 `__api_mocker_path`
 
 网络域名为 `your-mocker.com`
 
 1. 发布启动(prods)，请参考上述执行命令
-2. ngnix添加配置项：
+2. nginx添加配置项：
 ```bash
 server {
 
@@ -128,4 +128,4 @@ server {
 2. 修改`client/config/index.js`文件下的`serverRoot`，改为 `your-mocker.com/mock-api`
 3. 访问`http://your-mocker.com/mock`
 
-> 注: 若是服务器带宽较低，可将客户端部署到cdn，配好路由，每次发布重新更新下dist目录下`index.html`文件缓存。或者只把`client/dist/static`目录同步到cdn，自己ngnix再做转发配置
+> 注: 若是服务器带宽较低，可将客户端部署到cdn，配好路由，每次发布重新更新下dist目录下`index.html`文件缓存。或者只把`client/dist/static`目录同步到cdn，自己nginx再做转发配置
