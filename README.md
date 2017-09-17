@@ -2,12 +2,20 @@
 
 > API-Mocker，不仅仅是Mocker
 
+***
+
+## 目录
+- [技术栈与第三方库](#技术栈与第三方库)
+- [安装与启动](#安装与启动)
+- [部署相关](#部署相关)
+
+***
+
 ## 技术栈与第三方库
 
 * ES6
 * ESLint (Standard)
 * [Ramda](https://github.com/ramda/ramda)
-* ...
 
 ### Client
 
@@ -21,9 +29,45 @@
 * [MongoDB](https://github.com/mongodb/mongo)
 * [Mongoose](https://github.com/Automattic/mongoose)
 
+***
+
+## 安装与启动
+
+安装依赖外部命令(`mongod`)
+
+* `make install`
+
+同时该命令也会确保`mongod`的启动，如果未启动会在本地建立`db`目录，并启动`mongod`.
+如果服务器新开机可重新执行`make install`确保数据库启动.
+
+## 开发启动(dev)
+
+### Client
+
+* `make client` 或者  `cd client && npm install && npm run dev`
+
+### Server
+
+* `make server` 或者 `cd server && npm install && npm run dev`
+
+## 发布启动(prods)
+
+### Client
+
+* `make prod_client` 或者 `cd client && npm install && npm run build`
+
+### Server
+
+* `make prod_server` 或者 `cd server && npm install && npm start`
+
+默认端口号为7001
+
+***
+
+
 ## 部署相关
 
-### 开发环境要求
+### 环境要求
 ```json
 "node": ">= 6.0.0",
 "npm": ">= 3.0.0"
@@ -57,36 +101,31 @@
 
 其他相关配置，请参考vue-cli脚手架[webpack模板](https://github.com/vuejs-templates/webpack)
 
+### **以ngnix做部署步骤示例**
 
-## Install
+假设api-mocker项目文件夹路径为 `__api_mocker_path`
 
-安装依赖外部命令(`mongod`)
+网络域名为 `your-mocker.com`
 
-* `make install`
+1. 发布启动(prods)，请参考上述执行命令
+2. ngnix添加配置项：
+```bash
+server {
 
-同时该命令也会确保`mongod`的启动，如果未启动会在本地建立`db`目录，并启动`mongod`.
-如果服务器新开机可重新执行`make install`确保数据库启动.
+        listen       80;
+        server_name  localhost;
 
-## 开发启动(dev)
+        location /mock-api/ {
+            proxy_pass http://127.0.0.1:7001/;
+        }
 
-### Client
+        location /mock {
+            autoindex on;
+            alias __api_mocker_path/client/dist;
+        }
+}
+```
+2. 修改`client/config/index.js`文件下的`serverRoot`，改为 `your-mocker.com/mock-api`
+3. 访问`http://your-mocker.com/mock`
 
-* `make client` 或者  `cd client && npm install && npm run dev`
-
-### Server
-
-* `make server` 或者 `cd server && npm install && npm run dev`
-
-## 发布启动(prods)
-
-### Client
-
-* `make prod_client` 或者 `cd client && npm install && npm run build`
-
-***
-
-### Server
-
-* `make prod_server` 或者 `cd server && npm install && npm start`
-
-默认端口号为7001
+> 注: 若是服务器带宽较低，可将客户端部署到cdn，配好路由，每次发布重新更新下dist目录下`index.html`文件缓存。或者只把`client/dist/static`目录同步到cdn，自己ngnix再做转发配置
