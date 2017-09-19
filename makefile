@@ -8,7 +8,7 @@ install:|prerequ-program
 define require_install
 	if test "$(shell which $(1))" = ""; \
 	then \
-		brew install $(2) \
+		brew install $(2); \
 	else \
 		echo $(1) is exists. skip install; \
 	fi
