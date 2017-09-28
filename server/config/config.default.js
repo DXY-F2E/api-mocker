@@ -18,7 +18,7 @@ module.exports = appInfo => {
     // 邮件推送间隔
     pushInterval: {
       // 一个小时内修改api不会连续推送
-      api: 1
+      api: 1000 * 60 * 60
     },
     // 发送邮件配置
     transporter: {
