@@ -75,7 +75,7 @@ export default {
     .api {
       height: 36px;
       line-height: 36px;
-      padding: 0 30px !important;
+      padding: 0 20px !important;
     }
     .el-menu-item.api:hover {
       background-color: #eee;
@@ -98,7 +98,7 @@ export default {
   .api-name {
     vertical-align: middle;
     display: inline-block;
-    width: 140px;
+    width: 196px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
