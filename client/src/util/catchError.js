@@ -2,7 +2,11 @@ export default (err) => {
   if (err.response && err.response.status === 401) {
     window.location.href = '#/login'
   }
-    // console.log(err.response);
+  if (!err.response) {
+    return Promise.reject({
+      msg: '请求无响应'
+    })
+  }
     // throw err;
   return Promise.reject({
     response: err.response,

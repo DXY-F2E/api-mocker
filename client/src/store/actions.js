@@ -11,7 +11,7 @@ import {
 
 // 允许跨域请求带上cookie
 axios.defaults.withCredentials = true
-axios.interceptors.response.use((response) => response, catchError)
+axios.interceptors.response.use(null, catchError)
 
 const domain = getDomain()
 const buildTestParams = (api, type) => api.options.examples[type] || buildExampleFromSchema({

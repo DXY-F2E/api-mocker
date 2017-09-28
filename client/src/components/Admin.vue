@@ -38,6 +38,8 @@ export default {
     // window.addEventListener('resize', this.windowResize);
     this.$store.dispatch('getUser').then(() => {
       this.$store.dispatch('getGroups')
+    }).catch(() => {
+      window.location.href = '#/login'
     })
   }
 }
