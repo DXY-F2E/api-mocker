@@ -99,6 +99,11 @@ module.exports = app => {
       const document = yield this.findApi('put')
       yield this.handleRequest(document)
     }
+    // patch
+    * patch () {
+      const document = yield this.findApi('patch')
+      yield this.handleRequest(document)
+    }
     // delete
     * delete () {
       const document = yield this.findApi('delete')
