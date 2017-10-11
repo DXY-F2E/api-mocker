@@ -227,6 +227,12 @@ const actions = {
       return res
     })
   },
+  dxyLogin ({ commit }, ticket) {
+    return axios.post(`${API.USER}/dxy-login`, { ticket }).then(res => {
+      commit('SET_USER', res.data)
+      return res
+    })
+  },
   login ({ commit }, user) {
     return axios.post(`${API.USER}/login`, user).then(res => {
       commit('SET_USER', res.data)
