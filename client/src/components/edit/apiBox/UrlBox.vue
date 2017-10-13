@@ -7,6 +7,7 @@
             <el-option label="GET" value="get"></el-option>
             <el-option label="POST" value="post"></el-option>
             <el-option label="PUT" value="put"></el-option>
+            <el-option label="PATCH" value="patch"></el-option>
             <el-option label="DELETE" value="delete"></el-option>
           </el-select>
           <copy-button slot="append" :copy-data="url" :disabled="creating">复制</copy-button>

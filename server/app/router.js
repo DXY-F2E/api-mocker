@@ -36,6 +36,7 @@ module.exports = app => {
   app.get(mockUrl, credentials, apiStat, 'client.show')
   app.post(mockUrl, credentials, apiStat, 'client.create')
   app.put(mockUrl, credentials, apiStat, 'client.put')
+  app.patch(mockUrl, credentials, apiStat, 'client.patch')
   app.delete(mockUrl, credentials, apiStat, 'client.delete')
 
   // user

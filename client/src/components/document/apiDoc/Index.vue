@@ -228,6 +228,10 @@ export default {
   }
 }
 .method {
+  &.put,
+  &.PUT,
+  &.PATCH,
+  &.patch,
   &.post,
   &.POST {
     color: #f5a623;

@@ -99,6 +99,11 @@ module.exports = app => {
       const document = yield this.findApi('put')
       yield this.handleRequest(document)
     }
+    // patch
+    * patch () {
+      const document = yield this.findApi('patch')
+      yield this.handleRequest(document)
+    }
     // delete
     * delete () {
       const document = yield this.findApi('delete')
@@ -112,10 +117,18 @@ module.exports = app => {
       })
       return pathParams
     }
+    getValidatorType (method, paramType) {
+      // 若参数是以query 或者 restful 或者 x-www-form-urlencoded 方式提交的，则允许字符串格式的数字与布尔值
+      const isUnstrict = method === 'query' || method === 'path' || this.ctx.header['content-type'].indexOf('x-www-form-urlencoded')
+      if (isUnstrict && ['number', 'boolean'].indexOf(paramType) > -1) {
+        return `unstrict_${paramType}`
+      }
+      return paramType
+    }
     validateParams (api) {
       const data = {
         query: this.ctx.request.query,
-        body: this.ctx.body,
+        body: this.ctx.request.body,
         path: this.getPathParams(api)
       }
       const { params, method } = api.options
@@ -126,12 +139,8 @@ module.exports = app => {
         params[name].forEach(param => {
           // 参数不存在或者参数类型不属于基本类型时，不校验
           if (!param.key || BASE_TYPES.indexOf(param.type) === -1) return
-          // 重置boolean型的query参数
-          if (method === 'get' && param.type === 'boolean' && ['false', 'true'].find(b => b === data.query[param.key])) {
-            data.query[param.key] = JSON.parse(data.query[param.key])
-          }
           rule[param.key] = {
-            type: param.type === 'number' ? 'checkNumber' : param.type,
+            type: this.getValidatorType(name, param.type),
             required: param.required,
             allowEmpty: param.type === 'string'
           }
@@ -142,13 +151,18 @@ module.exports = app => {
   }
 
   // 数字校验-允许提交字符串格式的数字
-  app.validator.addRule('checkNumber', (rule, value) => {
+  app.validator.addRule('unstrict_number', (rule, value) => {
     if (value && !isNaN(value)) {
       value = Number(value)
     }
     if (typeof value !== 'number') {
       return 'should be a number'
     }
+  })
+  app.validator.addRule('unstrict_boolean', (rule, value) => {
+    if (typeof value === 'boolean') return
+    if (value === 'false' || value === 'true') return
+    return 'should be a boolean'
   })
 
   return ClientController
