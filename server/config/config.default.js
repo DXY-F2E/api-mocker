@@ -6,10 +6,9 @@ module.exports = appInfo => {
     mongoose: {
       url: 'mongodb://127.0.0.1/api-mock'
     },
-    // cookie 加密的keys
-    keys: `${appInfo.name}_{{cookie_secret_key}}`,
+    keys: `${appInfo.name}_1490324849354_6879`,
     // 密码加密的key
-    md5Key: '{{password_secret_key}}',
+    md5Key: '52851cb05258c8d98da1672d95729e53',
     // 允许跨域携带cookie
     cors: {
       credentials: true
@@ -27,8 +26,10 @@ module.exports = appInfo => {
       secure: true,
       port: 465,
       auth: {
-        user: '{{email_address}}',
-        pass: '{{email_password}}'
+        // user: 'apimocker@126.com',
+        // pass: 'mocker2017'
+        user: '1329114717@qq.com',
+        pass: 'rpmikdcidlipbagd'
       }
     }
   }
