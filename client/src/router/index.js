@@ -18,6 +18,7 @@ const ApiContent = r => require.ensure([], () => r(require('@/components/documen
 
 const Auth = r => require.ensure([], () => r(require('@/components/auth/Index')), 'auth')
 const Login = r => require.ensure([], () => r(require('@/components/auth/Login')), 'auth')
+const DxyLogin = r => require.ensure([], () => r(require('@/components/auth/DxyLogin')), 'auth')
 const Register = r => require.ensure([], () => r(require('@/components/auth/Register')), 'auth')
 const FindPass = r => require.ensure([], () => r(require('@/components/auth/FindPass')), 'auth')
 const ResetPass = r => require.ensure([], () => r(require('@/components/auth/ResetPass')), 'auth')
@@ -112,6 +113,10 @@ const router = new Router({
         auth: true
       },
       children: [{
+        path: 'dxy-login',
+        name: 'DxyLogin',
+        component: DxyLogin
+      }, {
         path: 'login',
         name: 'Login',
         component: Login
