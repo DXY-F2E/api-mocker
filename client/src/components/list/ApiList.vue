@@ -13,6 +13,11 @@
             <import-rap-json :group="group"></import-rap-json>
           </el-card>
         </li>
+        <li class="add-api">
+          <el-card>
+            <import-swagger-json :group="group"></import-swagger-json>
+          </el-card>
+        </li>
       </template>
       <li class="empty">暂无接口</li>
     </ul>
@@ -23,11 +28,13 @@
 import Api from './Api'
 import { mapState } from 'vuex'
 import ImportRapJson from '../common/importJson/FromRap'
+import ImportSwaggerJson from '../common/importJson/FromSwagger'
 
 export default {
   components: {
     Api,
-    ImportRapJson
+    ImportRapJson,
+    ImportSwaggerJson
   },
   computed: {
     ...mapState(['apiList', 'apiListLoading', 'groups']),
