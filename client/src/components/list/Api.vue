@@ -3,7 +3,7 @@
    <div slot="header" class="clearfix">
     <span class="name">{{data.name}}</span>
     <el-button-group>
-     <el-button size="mini" icon="document" @click.native.stop="showDoc()"></el-button>
+     <el-button size="mini" icon="document" @click.native.stop="showDoc(data)"></el-button>
      <el-button size="mini" @click.native.stop="confirmCopy(data.name)">
       <i class="material-icons">content_copy</i>
      </el-button>
@@ -33,12 +33,14 @@ export default {
   },
   data () {
     return {
-      apiUrl: `${this.$store.state.serverRoot}/client/${this.data._id}`
+      apiUrl: `${this.$store.state.serverRoot}/client/${this.data._id}`,
+      rootDomain: window.location.href.split('#')[0]
     }
   },
   methods: {
-    showDoc () {
-      this.$router.push(`/doc/${this.data.group}/${this.data._id}`)
+    showDoc (api) {
+      const url = `${this.rootDomain}#/doc/${api.group}/${api._id}`
+      window.open(url, '_blank')
     },
     getApiCopyData () {
       const api = R.clone(this.data)
@@ -71,7 +73,8 @@ export default {
     editApi (api) {
       this.$store.commit('UPDATE_API', api)
       this.$store.commit('CHANGE_MODE', 'edit')
-      this.$router.push(`/edit/${api.group}/${api._id}`)
+      const url = `${this.rootDomain}#/edit/${api.group}/${api._id}`
+      window.open(url, '_blank')
     }
   }
 }
