@@ -5,8 +5,8 @@
       :auto-upload="false"
       :show-file-list="false"
       accept="application/json"
-      ref="importRapJson"
-      :on-change="importJsonFromRap"
+      ref="importSwaggerJson"
+      :on-change="importJsonFromSwagger"
     >
       <i class="el-icon-upload2"></i>导入Swagger Json
     </el-upload>
@@ -94,7 +94,7 @@ export default {
     visibleChange (val) {
       this.importSuccess = val
     },
-    importJsonFromRap (file) {
+    importJsonFromSwagger (file) {
       const oReq = new XMLHttpRequest()
       oReq.onload = (e) => {
         try {
@@ -107,7 +107,7 @@ export default {
       }
       oReq.open('get', file.url, true)
       oReq.send()
-      this.$refs.importRapJson.clearFiles()
+      this.$refs.importSwaggerJson.clearFiles()
     },
     buildReqParams (params, parameterList, methodType) {
       const newParams = this.buildParams(parameterList)
@@ -207,34 +207,6 @@ export default {
 
       console.log(info, paths, definitions, title)
 
-      // let moduleList = []
-      // if (json.modelJSON) {
-      //   moduleList = JSON.parse(json.modelJSON).moduleList
-      // } else if (json.projectData) {
-      //   moduleList = json.projectData.moduleList
-      // } else {
-      //   this.$message.error('json格式错误')
-      //   return
-      // }
-      // const apis = []
-      // moduleList.forEach(module => {
-      //   module.pageList.forEach(page => {
-      //     page.actionList.forEach(action => {
-      //       window.console.log(action)
-      //       const apiName = `${module.name}-${page.name}-${action.name}`
-      //       const api = new ApiInit()
-      //       api.name = apiName
-      //       api.desc = action.description
-      //       api.prodUrl = action.requestUrl
-      //       api.group = this.group._id
-      //       const requestType = Number(action.requestType)
-      //       api.options.method = this.methods[requestType - 1]
-      //       api.options.params = this.buildReqParams(api.options.params, action.requestParameterList, requestType)
-      //       api.options.response = this.buildResponse(action.responseParameterList)
-      //       apis.push(api)
-      //     })
-      //   })
-      // })
       this.importSuccess = true
       this.apisData[0] = {
         groupName: this.group.name,
