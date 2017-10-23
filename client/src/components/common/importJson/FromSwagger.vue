@@ -25,6 +25,12 @@
 import ApiInit from '@/util/apiInitData'
 import Success from './Success'
 
+let _definitions = {} // 组件全局 definations
+/**
+ * 处理 swagger 中的数据类型和 api-mocker 数据类型的映射
+ * @param  {string} type swagger 数据类型
+ * @return {string}      api-mocker 数据类型
+ */
 function getSwaggerType (type) {
   switch (type) {
     case 'integer': {
@@ -35,12 +41,29 @@ function getSwaggerType (type) {
     }
   }
 }
+/**
+ * 该函数判断传入的对象之中是否包含 $ref 的属性
+ * @param  {obj}  obj 被判断的对象
+ * @return {Boolean}     含有 $ref 属性 返回true, 否则返回false
+ */
 function isHas$refProperty (obj) {
   return obj.hasOwnProperty('$ref')
 }
-function handleSwaggerSchema (schema, definitions) {
+/**
+ * 处理swagger中的含有json引用的情况
+ * @param  {object} schema      可能包含变量的对象
+ * @param  {object} definitions 该json中定义的所有变量 **弃用** => 现在存储在了组件内部的全局变量
+ * @return {object}             被变量替换完成之后的json
+ */
+function handleSwaggerSchema (schema) {
   if (!isHas$refProperty(schema)) {
-    if (schema.type !== 'object' || schema.type !== 'array') { // 如果只返回一个常量, 目前api-mocker无法支持 在外层包一层result
+    if (schema.type === 'array') { // 如果返回一个非json数据, 目前api-mocker无法支持 在外层包一层result
+      return {
+        result: handleSwaggerSchema(schema.items)
+      }
+    }
+
+    if (schema.type !== 'object') { // 如果只返回一个非json数据, 目前api-mocker无法支持 在外层包一层result
       return swaggerObjectToArray({
         result: {
           type: getSwaggerType(schema.type)
@@ -48,17 +71,51 @@ function handleSwaggerSchema (schema, definitions) {
       })
     }
 
-    return schema
+    return Object.assign({
+      params: []
+    }, schema)
   } else {
-    let ref = schema['$ref'].match(/.*\/(.*?)$/)[1]
-    console.log(ref)
-    schema = swaggerObjectToArray(definitions[ref].properties)
+    let ref = schema['$ref'].match(/.*\/(.*?)$/)[1] // key
+    let refObj = _definitions[ref] // refObj refreanced by the ref
 
-    console.log(schema)
-    return schema
+    if (!refObj) {
+      return {}
+    }
+
+    let { properties, ...refObjNoProperties } = refObj
+    let params = swaggerObjectToArray(properties)
+
+    params = params.map(item => {
+      if (!isHas$refProperty(item)) {
+        return item
+      } else {
+        return handleSwaggerSchema(item)
+      }
+    })
+
+    return {
+      ...refObjNoProperties,
+      params
+    }
   }
 }
-// for response
+/**
+ * 将 swagger 中的对象转换成 [{ name: key, ...value }] 形式
+ * @param  {obj} obj 对象
+ * @return {array}     生成的数组
+ *
+ * @example
+ *
+ * {
+ *   'foo': { type: 'integer', format: 'int32' },
+ *   'bar': { type: 'integer', 'format': 'int32' }
+ * }
+ *                   ||
+ *                   ||
+ *                   ||
+ *                   \/
+ * [{ name: 'foo', type: 'integer', 'format': 'int32' }, { name: 'bar', type: 'integer', 'format': 'int32' }]
+ */
 function swaggerObjectToArray (obj) {
   const array = []
 
@@ -94,16 +151,22 @@ export default {
     visibleChange (val) {
       this.importSuccess = val
     },
+    /**
+     * 从用户上传的文件中提取数据并构建apis, 该文件之中保存的必须是标准的JSON对象字符串
+     * <http://www.json.org/json-zh.html>
+     * @param  {[type]} file js file对象
+     * @return {[type]}      [description]
+     */
     importJsonFromSwagger (file) {
       const oReq = new XMLHttpRequest()
       oReq.onload = (e) => {
-        try {
-          const json = JSON.parse(e.target.responseText)
-          this.buildApisFormJson(json)
-        } catch (err) {
-          window.console.log(err)
-          this.$message.error('json格式错误')
-        }
+        // try {
+        const json = JSON.parse(e.target.responseText)
+        this.buildApisFormJson(json)
+        // } catch (err) {
+          // window.console.log(err)
+          // this.$message.error('json格式错误')
+        // }
       }
       oReq.open('get', file.url, true)
       oReq.send()
@@ -118,13 +181,25 @@ export default {
       }
       return params
     },
-    buildResponse (parameterList, definitions) {
+    /**
+     * 构建所有响应的响应体, 循环该接口应该有的响应状态数组
+     * @param  {Array} responseList 响应数组
+     * @return {[type]}             构建出来的响应体数组
+     */
+    buildResponse (responseList) {
       const statusArray = []
 
-      for (let [statusCode, content] of Object.entries(parameterList)) {
+      for (let [statusCode, content] of Object.entries(responseList)) {
         let params = []
         if (content.schema) { // 如果该响应有响应体
-          params = this.buildParams(handleSwaggerSchema(content.schema, definitions))
+          const handledSchema = handleSwaggerSchema(content.schema)
+          const getedParams = handledSchema.params || (handledSchema.result && handledSchema.result.params)
+
+          if (getedParams && getedParams.params) {
+            params = this.buildParams(getedParams)
+          } else {
+            params = []
+          }
         }
         statusArray.push({
           status: statusCode,
@@ -135,30 +210,42 @@ export default {
       }
       return statusArray
     },
+    /**
+     * 构建响应或请求的参数列表
+     * @param  {array} parameterList 参数数组
+     * @return {array}               构建出来的参数数组
+     */
     buildParams (parameterList) {
-      return parameterList.map(p => {
-        const param = {
-          key: p.name,
-          type: getSwaggerType(p.type),
-          required: true,
-          comment: p.description,
-          example: p.default
+      return parameterList.map(item => {
+        var param = {
+          key: item.name,
+          type: getSwaggerType(item.type),
+          required: !!item.required,
+          example: item.default,
+          comment: item.description
         }
-        if (param.type === 'object' && p.properties) {
-          param.params = this.buildParams(swaggerObjectToArray(p.properties))
+
+        if (param.type === 'object' && item.params) {
+          param.params = this.buildParams(item.params)
         } else {
           param.params = []
         }
+
         if (param.type.indexOf('array') >= 0) {
           param.items = {
-            type: param.type.replace('array<', '').replace('>', '')
+            type: item.items && getSwaggerType(item.items.type)
           }
-          param.params = this.buildParams([p.items])
           param.type = 'array'
         }
+
         return param
       })
     },
+    /**
+     * 从swagger json配置文件中构建apis
+     * @param  {json} json json对象
+     * @return {[type]}     构建完成之后组件弹窗
+     */
     buildApisFormJson (json) {
       // swagger 导出 JSON 格式
       /*
@@ -180,9 +267,10 @@ export default {
        */
       let {
         info = {},
-        paths = {},
-        definitions = {}
+        paths = {}
       } = json || {}
+      _definitions = json.definitions || {}
+
       let { title = '' } = info
 
       const swaggerApis = []
@@ -197,7 +285,7 @@ export default {
           api.group = this.group._id
           api.options.method = method
           api.options.params = this.buildReqParams(api.options.params, methodValue.parameters || [], method)
-          api.options.response = this.buildResponse(methodValue.responses, definitions)
+          api.options.response = this.buildResponse(methodValue.responses)
 
           swaggerApis.push(api)
         }
@@ -205,7 +293,7 @@ export default {
 
       console.log(swaggerApis)
 
-      console.log(info, paths, definitions, title)
+      console.log(info, paths, _definitions, title)
 
       this.importSuccess = true
       this.apisData[0] = {
