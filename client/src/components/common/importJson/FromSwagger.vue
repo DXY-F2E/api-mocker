@@ -55,11 +55,17 @@ function isHas$refProperty (obj) {
  * @param  {object} definitions 该json中定义的所有变量 **弃用** => 现在存储在了组件内部的全局变量
  * @return {object}             被变量替换完成之后的json
  */
-function handleSwaggerSchema (schema) {
+function handleSwaggerSchema (schema, _execCount = 0) {
+  if (_execCount >= 5) {
+    // 如果调用函数次数过多, 说明这个API是一个循环引用的API,
+    // 为了防止浏览器栈溢出, 抛出错误
+    throw new RangeError('递归执行过多, 终止')
+  }
+
   if (!isHas$refProperty(schema)) {
     if (schema.type === 'array') { // 如果返回一个非json数据, 目前api-mocker无法支持 在外层包一层result
       return {
-        result: handleSwaggerSchema(schema.items)
+        result: handleSwaggerSchema(schema.items, _execCount + 1)
       }
     }
 
@@ -89,7 +95,7 @@ function handleSwaggerSchema (schema) {
       if (!isHas$refProperty(item)) {
         return item
       } else {
-        return handleSwaggerSchema(item)
+        return handleSwaggerSchema(item, _execCount + 1)
       }
     })
 
@@ -173,11 +179,21 @@ export default {
       this.$refs.importSwaggerJson.clearFiles()
     },
     buildReqParams (params, parameterList, methodType) {
-      const newParams = this.buildParams(parameterList)
       if (methodType === 'get') {
+        const newParams = this.buildParams(parameterList)
         params.query = newParams
       } else {
-        params.body = newParams
+        const queryParams = parameterList.filter(item => item.in === 'query')
+        const pathParams = parameterList.filter(item => item.in === 'path')
+        const bodyParams = parameterList.filter(item => item.in === 'body')
+
+        const buildedQueryParams = this.buildParams(queryParams)
+        const buildedPathParams = this.buildParams(pathParams)
+        const buildedBodyParams = this.buildParams(bodyParams.map(item => handleSwaggerSchema(item.schema)))
+
+        params.query = buildedQueryParams
+        params.path = buildedPathParams
+        params.body = buildedBodyParams
       }
       return params
     },
@@ -195,7 +211,7 @@ export default {
           const handledSchema = handleSwaggerSchema(content.schema)
           const getedParams = handledSchema.params || (handledSchema.result && handledSchema.result.params)
 
-          if (getedParams && getedParams.params) {
+          if (getedParams) {
             params = this.buildParams(getedParams)
           } else {
             params = []
@@ -276,18 +292,23 @@ export default {
       const swaggerApis = []
 
       for (let [key, value] of Object.entries(paths)) {
-        for (let method in value) {
-          const methodValue = value[method]
-          const { summary } = methodValue
-          const api = new ApiInit()
-          api.name = `${title}-${key}`
-          api.desc = summary
-          api.group = this.group._id
-          api.options.method = method
-          api.options.params = this.buildReqParams(api.options.params, methodValue.parameters || [], method)
-          api.options.response = this.buildResponse(methodValue.responses)
+        try {
+          for (let method in value) {
+            const methodValue = value[method]
+            const { summary } = methodValue
+            const api = new ApiInit()
+            api.name = `${title}-${key}`
+            api.desc = summary
+            api.group = this.group._id
+            api.options.method = method
+            api.options.params = this.buildReqParams(api.options.params, methodValue.parameters || [], method)
+            api.options.response = this.buildResponse(methodValue.responses)
 
-          swaggerApis.push(api)
+            swaggerApis.push(api)
+          }
+        } catch (e) {
+          console.log(`${key} API 有误 无法解析`)
+          console.warn(e)
         }
       }
 
