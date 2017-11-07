@@ -166,13 +166,13 @@ export default {
     importJsonFromSwagger (file) {
       const oReq = new XMLHttpRequest()
       oReq.onload = (e) => {
-        // try {
-        const json = JSON.parse(e.target.responseText)
-        this.buildApisFormJson(json)
-        // } catch (err) {
-          // window.console.log(err)
-          // this.$message.error('json格式错误')
-        // }
+        try {
+          const json = JSON.parse(e.target.responseText)
+          this.buildApisFormJson(json)
+        } catch (err) {
+          window.console.log(err)
+          this.$message.error('json格式错误')
+        }
       }
       oReq.open('get', file.url, true)
       oReq.send()
@@ -297,6 +297,7 @@ export default {
             const methodValue = value[method]
             const { summary } = methodValue
             const api = new ApiInit()
+            api.prodUrl = key
             api.name = `${title}-${key}`
             api.desc = summary
             api.group = this.group._id
