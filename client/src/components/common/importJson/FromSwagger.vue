@@ -298,7 +298,7 @@ export default {
             const { summary } = methodValue
             const api = new ApiInit()
             api.prodUrl = key
-            api.name = `${title}-${key}`
+            api.name = `${title}-${summary}`
             api.desc = summary
             api.group = this.group._id
             api.options.method = method
