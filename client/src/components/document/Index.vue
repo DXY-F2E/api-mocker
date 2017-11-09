@@ -30,7 +30,10 @@ export default {
       }
       const query = {
         page: 1,
-        limit: 10000
+        limit: 10000,
+        order: {
+          name: 1
+        }
       }
       this.$http.get(API.GROUP_APIS.replace(':groupId', route.params.groupId), {
         params: query

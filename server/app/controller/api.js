@@ -6,7 +6,8 @@ module.exports = app => {
   class ApiController extends app.Controller {
     * getAll () {
       const { groupId } = this.ctx.params
-      let { limit = 30, page = 1, q = '' } = this.ctx.query
+      let { limit = 30, page = 1, q = '', order = '{}' } = this.ctx.query
+      order = JSON.parse(order)
       page = Number(page)
       limit = Number(limit)
       const condition = { isDeleted: false }
@@ -41,7 +42,7 @@ module.exports = app => {
           $in: groups.map(g => g._id)
         }
       }
-      const resources = yield this.service.api.getRichList(condition, page, limit)
+      const resources = yield this.service.api.getRichList(condition, page, limit, order)
       const count = yield app.model.api.find(condition).count().exec()
       this.ctx.body = { resources, pages: { limit, page, count } }
       this.ctx.status = 200
