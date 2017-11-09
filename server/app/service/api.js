@@ -52,10 +52,10 @@ module.exports = app => {
         isDeleted: true
       }, { multi: true })
     }
-    getList (cond, page, limit) {
+    getList (cond, page, limit, order = {}) {
       return app.model.api
                       .find(cond)
-                      .sort({ modifiedTime: -1, createTime: -1 })
+                      .sort(Object.assign(order, { modifiedTime: -1, createTime: -1 }))
                       .skip((page - 1) * limit)
                       .limit(limit)
     }
@@ -66,8 +66,8 @@ module.exports = app => {
       }
       return this.getList(cond)
     }
-    * getRichList (cond, page, limit) {
-      const apis = (yield this.getList(cond, page, limit)).map(a => a.toObject())
+    * getRichList (cond, page, limit, order) {
+      const apis = (yield this.getList(cond, page, limit, order)).map(a => a.toObject())
       const userIds = apis.filter(a => a.manager).map(a => a.manager)
       const users = yield this.service.user.getByIds(userIds)
       const usersMap = {}

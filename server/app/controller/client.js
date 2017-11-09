@@ -47,7 +47,7 @@ module.exports = app => {
       const result = yield this.ctx.curl(url, opts)
       this.ctx.status = result.status
       delete result.headers['content-encoding'] // 设置了gzip encoding的话，转发请求将会出错，先取消此请求头的返回
-      this.ctx.set(result.headers)
+      delete result.headers['access-control-allow-origin'] // 开发环境不一定在api服务端这个允许头内，故将其删除，防止代理失败
       this.ctx.body = result.data
     }
     * handleProxy (api) { // 如果url中带有_mockProxyStatus此参数，则开启代理转发

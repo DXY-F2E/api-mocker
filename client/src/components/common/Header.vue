@@ -54,7 +54,6 @@ export default {
   padding: 0 40px;
   background-color: #324157;
   text-align: left;
-  min-width: 870px;
 }
 .el-menu {
   border-radius: 0;
