@@ -316,10 +316,6 @@ export default {
             const { summary } = methodValue
             const api = new ApiInit()
 
-            if (~key.indexOf('faq/detail')) {
-              debugger
-            }
-
             api.prodUrl = key
             api.name = `${title}-${summary}`
             api.desc = summary
