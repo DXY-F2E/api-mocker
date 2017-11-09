@@ -266,7 +266,8 @@ export default {
 
         if (param.type.indexOf('array') >= 0) {
           param.items = {
-            type: item.items && getSwaggerType(item.items.type)
+            type: item.items && getSwaggerType(item.items.type),
+            params: item.items && item.items.type === 'object' && this.buildParams(item.items.params)
           }
           param.type = 'array'
         }
