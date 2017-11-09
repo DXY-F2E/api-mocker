@@ -56,13 +56,13 @@ function isHas$refProperty (obj) {
  * @return {object}             被变量替换完成之后的json
  */
 function handleSwaggerSchema (schema, _execCount = 0) {
-  if (_execCount >= 5) {
+  if (_execCount >= 50) {
     // 如果调用函数次数过多, 说明这个API是一个循环引用的API,
     // 为了防止浏览器栈溢出, 抛出错误
     throw new RangeError('递归执行过多, 终止')
   }
 
-  if (!isHas$refProperty(schema)) {
+  if (!isHas$refProperty(schema) && _execCount === 0) {
     if (schema.type === 'array') { // 如果返回一个非json数据, 目前api-mocker无法支持 在外层包一层result
       return {
         result: handleSwaggerSchema(schema.items, _execCount + 1)
@@ -92,10 +92,27 @@ function handleSwaggerSchema (schema, _execCount = 0) {
     let params = swaggerObjectToArray(properties)
 
     params = params.map(item => {
+      const { type } = item
+
+      if (type === 'array') { // 类型是数组
+        if (isHas$refProperty(item.items)) {
+          item.items = Object.assign({}, {
+            name: item.name,
+            description: item.description
+          }, handleSwaggerSchema(item.items, _execCount + 1))
+          return item
+        }
+
+        return item
+      }
+
       if (!isHas$refProperty(item)) {
         return item
       } else {
-        return handleSwaggerSchema(item, _execCount + 1)
+        return Object.assign({}, {
+          name: item.name,
+          description: item.description
+        }, handleSwaggerSchema(item, _execCount + 1))
       }
     })
 
@@ -297,6 +314,11 @@ export default {
             const methodValue = value[method]
             const { summary } = methodValue
             const api = new ApiInit()
+
+            if (~key.indexOf('faq/detail')) {
+              debugger
+            }
+
             api.prodUrl = key
             api.name = `${title}-${summary}`
             api.desc = summary
