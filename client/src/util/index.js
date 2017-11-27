@@ -17,7 +17,7 @@ export function buildRestUrl (baseUrl, params) {
     if (baseUrl.indexOf(placeholder) === -1) {
       baseUrl += `/${params[key]}`
     } else {
-      baseUrl.replace(placeholder, params[key])
+      baseUrl = baseUrl.replace(placeholder, params[key])
     }
   }
   return baseUrl

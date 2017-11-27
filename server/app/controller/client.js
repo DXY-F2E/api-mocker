@@ -38,26 +38,41 @@ module.exports = app => {
         headers.cookie = headers['api-cookie']
         delete headers['api-cookie']
       }
-      const opts = method === 'get' ? {} : { // body数据，暂时只支持json格式，未来可以从header中判断
-        data: this.ctx.request.body,
+      const opts = {
         headers,
-        dataType: 'json'
+        method,
+        data: this.ctx.request.body
       }
-      opts.method = method
       const result = yield this.ctx.curl(url, opts)
       this.ctx.status = result.status
       delete result.headers['content-encoding'] // 设置了gzip encoding的话，转发请求将会出错，先取消此请求头的返回
       delete result.headers['access-control-allow-origin'] // 开发环境不一定在api服务端这个允许头内，故将其删除，防止代理失败
+      this.ctx.set(result.headers)
       this.ctx.body = result.data
     }
-    * handleProxy (api) { // 如果url中带有_mockProxyStatus此参数，则开启代理转发
+    buildRestUrl (baseUrl, api) {
+      const params = this.getPathParams(api)
+      if (Object.keys(params).length <= 0) {
+        return baseUrl
+      }
+      for (const key in params) {
+        const placeholder = `:${key}`
+        if (baseUrl.indexOf(placeholder) === -1) {
+          baseUrl += `/${params[key]}`
+        } else {
+          baseUrl = baseUrl.replace(placeholder, params[key])
+        }
+      }
+      return baseUrl
+    }
+    * handleProxy (api) { // 如果url中带有_mockProxyStatus此参数，也开启代理转发
       const { _mockProxyStatus } = this.ctx.request.query
       if (api.options.proxy.mode === 1 || _mockProxyStatus === '1') { // 代理转发线上
-        yield this.proxy(api.prodUrl, api.options.method)
+        yield this.proxy(this.buildRestUrl(api.prodUrl, api), api.options.method)
         return true
       }
       if (api.options.proxy.mode === 2 || _mockProxyStatus === '2') { // 代理转发测试
-        yield this.proxy(api.devUrl, api.options.method)
+        yield this.proxy(this.buildRestUrl(api.devUrl, api), api.options.method)
         return true
       }
       return false
@@ -113,7 +128,7 @@ module.exports = app => {
       const pathParams = {}
       const params = (this.ctx.params[1] || '').split('/')
       api.options.params.path.forEach((p, index) => {
-        pathParams[p.key] = params[index]
+        return p.key && params[index] && (pathParams[p.key] = params[index])
       })
       return pathParams
     }
