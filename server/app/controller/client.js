@@ -39,6 +39,7 @@ module.exports = app => {
         delete headers['api-cookie']
       }
       const opts = {
+        rejectUnauthorized: false, // 代理https请求时忽略证书校验
         headers,
         method,
         data: this.ctx.request.body
