@@ -9,7 +9,7 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/mock/',
+    assetsPublicPath: '/',
     productionSourceMap: false,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -23,7 +23,7 @@ module.exports = {
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report,
     // 服务端接口的根路径
-    serverRoot: 'f2e.dxy.net/mock-api'
+    serverRoot: 'server.api-mocker.com'
   },
   dev: {
     env: require('./dev.env'),
