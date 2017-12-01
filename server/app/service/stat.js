@@ -4,7 +4,7 @@ module.exports = app => {
   class Stat extends app.Service {
     // 保存数据方法异步执行
     saveApiStat (apiId, behavior, result) {
-      return app.model.apiStat({
+      return app.model.ApiStat({
         apiId,
         behavior,
         result
@@ -17,7 +17,7 @@ module.exports = app => {
       })
     }
     getMockStat (start, end) {
-      return app.model.apiStat.aggregate([
+      return app.model.ApiStat.aggregate([
         {
           $match: {
             behavior: API_BEHAVIOR_MOCK,

@@ -27,13 +27,13 @@ module.exports = app => {
         isDeleted: false,
         name: reg
       }
-      const resources = yield app.model.group
-                                       .find(cond)
-                                       .sort({ modifiedTime: -1, createTime: -1 })
-                                       .skip((page - 1) * limit)
-                                       .limit(limit)
-                                       .exec()
-      const count = yield app.model.group.find(cond).count().exec()
+      const resources = yield app.model.Group
+        .find(cond)
+        .sort({ modifiedTime: -1, createTime: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .exec()
+      const count = yield app.model.Group.find(cond).count().exec()
       this.ctx.body = { resources, pages: { limit, page, count } }
       this.ctx.status = 200
     }

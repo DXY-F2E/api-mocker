@@ -2,24 +2,24 @@ const md5 = require('blueimp-md5')
 module.exports = app => {
   class UserService extends app.Service {
     * create (user) {
-      return (yield app.model.user({
+      return (yield app.model.User({
         email: user.email,
         password: md5(user.password, this.config.md5Key),
         name: user.name
       }).save()).toObject()
     }
     getByEmail (email) {
-      return app.model.user.findOne({
+      return app.model.User.findOne({
         email
       }).lean()
     }
     getById (id) {
-      return app.model.user.findOne({
+      return app.model.User.findOne({
         _id: id
       })
     }
     getByIds (ids) {
-      return app.model.user.find({
+      return app.model.User.find({
         _id: {
           $in: ids
         }
@@ -27,7 +27,7 @@ module.exports = app => {
     }
     find (q) {
       const reg = new RegExp(`.*${q}.*`, 'i')
-      return app.model.user.find({
+      return app.model.User.find({
         isDeleted: false,
         $or: [
           { name: reg },
@@ -36,7 +36,7 @@ module.exports = app => {
       })
     }
     updatePassword (email, password) {
-      return app.model.user.findOneAndUpdate({
+      return app.model.User.findOneAndUpdate({
         email
       }, {
         password: md5(password, this.config.md5Key),
@@ -44,7 +44,7 @@ module.exports = app => {
       }, { new: true }).lean()
     }
     updatePasswordByOldPassword (oldPassword, newPassword) {
-      return app.model.user.findOneAndUpdate({
+      return app.model.User.findOneAndUpdate({
         _id: this.ctx.authUser._id,
         password: md5(oldPassword, this.config.md5Key)
       }, {
@@ -54,7 +54,7 @@ module.exports = app => {
     }
     update (user) {
       const authId = this.ctx.authUser._id
-      return app.model.user.findOneAndUpdate({
+      return app.model.User.findOneAndUpdate({
         _id: authId
       }, {
         name: user.name,

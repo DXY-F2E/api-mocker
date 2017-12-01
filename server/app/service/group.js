@@ -1,10 +1,10 @@
 const { authority } = require('../../constants')
 const {
-    PRIVACY_ALL,
-    PRIVACY_MEMBER,
-    PRIVACY_SELF,
-    OPERATION_ALL,
-    OPERATION_MEMBER
+  PRIVACY_ALL,
+  PRIVACY_MEMBER,
+  PRIVACY_SELF,
+  OPERATION_ALL,
+  OPERATION_MEMBER
 } = authority
 
 module.exports = app => {
@@ -38,17 +38,17 @@ module.exports = app => {
           manager: authId
         }]
       }
-      return app.model.group.find(cond).sort({ modifiedTime: -1, createTime: -1 })
+      return app.model.Group.find(cond).sort({ modifiedTime: -1, createTime: -1 })
     }
     update (groupId, group) {
-      return app.model.group.findOneAndUpdate({
+      return app.model.Group.findOneAndUpdate({
         _id: groupId,
         manager: this.ctx.authUser._id
       }, Object.assign(group, { modifiedTime: Date.now() }), { new: true })
     }
     updateTime (groupId) {
       // 此方法允许异步执行
-      return app.model.group.update({ _id: groupId }, { modifiedTime: Date.now() }, { new: true }).exec()
+      return app.model.Group.update({ _id: groupId }, { modifiedTime: Date.now() }, { new: true }).exec()
     }
     create (group) {
       const authId = this.ctx.authUser._id
@@ -57,10 +57,10 @@ module.exports = app => {
         creator: authId,
         manager: authId
       }
-      return app.model.group(_group).save()
+      return app.model.Group(_group).save()
     }
     getUserGroups (user, rights) {
-      return app.model.group.find({
+      return app.model.Group.find({
         [rights]: user,
         isDeleted: false
       }).sort({
@@ -68,13 +68,13 @@ module.exports = app => {
       })
     }
     getById (groupId) {
-      return app.model.group.findOne({
+      return app.model.Group.findOne({
         _id: groupId
       })
     }
     * delete (groupId) {
       const group = yield this.getById(groupId)
-      return app.model.group.findOneAndUpdate({
+      return app.model.Group.findOneAndUpdate({
         _id: groupId,
         manager: this.ctx.authUser._id
       }, {
@@ -90,7 +90,7 @@ module.exports = app => {
       return this.getUserGroups(null, 'manager')
     }
     claim (groupId) {
-      return app.model.group.findOneAndUpdate({
+      return app.model.Group.findOneAndUpdate({
         _id: groupId,
         manager: null
       }, {

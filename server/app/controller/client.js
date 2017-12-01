@@ -10,9 +10,9 @@ module.exports = app => {
       if (id.length < 5) {
         // hack方法，兼容老的存下url信息的api
         const url = `/client/${id}`
-        return yield app.model.api.findOne({ url, 'options.method': method }).exec()
+        return yield app.model.Api.findOne({ url, 'options.method': method }).exec()
       }
-      return yield app.model.api.findOne({ _id: id, 'options.method': method }).exec()
+      return yield app.model.Api.findOne({ _id: id, 'options.method': method }).exec()
     }
     * real () {
       const { _apiRealUrl, _apiMethod } = this.ctx.request.body

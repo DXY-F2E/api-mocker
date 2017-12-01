@@ -1,7 +1,7 @@
 module.exports = app => {
   class Api extends app.Service {
     getById (apiId) {
-      return app.model.api.findOne({
+      return app.model.Api.findOne({
         _id: apiId,
         isDeleted: false
       })
@@ -14,29 +14,29 @@ module.exports = app => {
         api.follower = [ authId ]
         return api
       })
-      return app.model.api.insertMany(apis)
+      return app.model.Api.insertMany(apis)
     }
     create (api) {
       const authId = this.ctx.authUser._id
       api.creator = authId
       api.manager = authId
       api.follower = [ authId ]
-      return app.model.api(api).save()
+      return app.model.Api(api).save()
     }
     update (apiId, api) {
       api.modifiedTime = Date.now()
-      return app.model.api.findOneAndUpdate({
+      return app.model.Api.findOneAndUpdate({
         _id: apiId
       }, api, { new: true })
     }
     * isManager (apiId) {
-      return !!(yield app.model.api.findOne({
+      return !!(yield app.model.Api.findOne({
         _id: apiId,
         manager: this.ctx.authUser._id
       }))
     }
     delete (apiId) {
-      return app.model.api.findOneAndUpdate({
+      return app.model.Api.findOneAndUpdate({
         _id: apiId,
         manager: this.ctx.authUser._id
       }, {
@@ -45,7 +45,7 @@ module.exports = app => {
       })
     }
     deleteGroupApis (groupId) {
-      return app.model.api.update({
+      return app.model.Api.update({
         group: groupId
       }, {
         modifiedTime: Date.now(),
@@ -53,11 +53,11 @@ module.exports = app => {
       }, { multi: true })
     }
     getList (cond, page, limit, order = {}) {
-      return app.model.api
-                      .find(cond)
-                      .sort(Object.assign(order, { modifiedTime: -1, createTime: -1 }))
-                      .skip((page - 1) * limit)
-                      .limit(limit)
+      return app.model.Api
+        .find(cond)
+        .sort(Object.assign(order, { modifiedTime: -1, createTime: -1 }))
+        .skip((page - 1) * limit)
+        .limit(limit)
     }
     getManageList (page, limit) {
       const cond = {

@@ -43,7 +43,7 @@ module.exports = app => {
         }
       }
       const resources = yield this.service.api.getRichList(condition, page, limit, order)
-      const count = yield app.model.api.find(condition).count().exec()
+      const count = yield app.model.Api.find(condition).count().exec()
       this.ctx.body = { resources, pages: { limit, page, count } }
       this.ctx.status = 200
     }
@@ -114,7 +114,7 @@ module.exports = app => {
       assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalid groupId')
       assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
 
-      const resources = (yield app.model.api.findOne({ _id: apiId, isDeleted: false })).toObject()
+      const resources = (yield app.model.Api.findOne({ _id: apiId, isDeleted: false })).toObject()
       resources.history = yield this.service.apiHistory.get(resources)
 
       this.ctx.body = { resources }
@@ -194,7 +194,7 @@ module.exports = app => {
           msg: '无权删除'
         })
       }
-      yield app.model.group.update({ _id: groupId }, { modifiedTime: Date.now() }, { new: true }).exec()
+      yield app.model.Group.update({ _id: groupId }, { modifiedTime: Date.now() }, { new: true }).exec()
       this.ctx.logger.info('deleteApi')
       this.ctx.status = 204
     }

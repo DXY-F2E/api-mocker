@@ -19,7 +19,7 @@ module.exports = app => {
     }
     * getApi () {
       const { apiId } = this.ctx.params
-      const authority = (yield this.service.apiAuthority.get(apiId)) || app.model.apiAuthority()
+      const authority = (yield this.service.apiAuthority.get(apiId)) || app.model.ApiAuthority()
       authority.apiId = apiId
       this.success(authority)
     }

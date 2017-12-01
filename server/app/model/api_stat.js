@@ -1,5 +1,6 @@
 const moment = require('moment')
-module.exports = mongoose => {
+module.exports = app => {
+  const mongoose = app.mongoose
   const { ObjectId } = mongoose.Schema.Types
   const ApiStatSchema = mongoose.Schema({
     apiId: {
