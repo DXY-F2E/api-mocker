@@ -1,8 +1,8 @@
 const { authority } = require('../../constants')
 const {
-    OPERATION_ALL,
-    OPERATION_MEMBER,
-    OPERATION_DESIGNEE
+  OPERATION_ALL,
+  OPERATION_MEMBER,
+  OPERATION_DESIGNEE
 } = authority
 
 module.exports = app => {
@@ -10,7 +10,7 @@ module.exports = app => {
     update (apiId, authority) {
       authority = (typeof authority === 'object') ? authority : {}
       authority.modifiedTime = Date.now()
-      return app.model.apiAuthority.findOneAndUpdate({
+      return app.model.ApiAuthority.findOneAndUpdate({
         apiId
       }, authority, {
         setDefaultsOnInsert: true,
@@ -19,7 +19,7 @@ module.exports = app => {
       })
     }
     get (apiId) {
-      return app.model.apiAuthority.findOne({
+      return app.model.ApiAuthority.findOne({
         apiId
       })
     }

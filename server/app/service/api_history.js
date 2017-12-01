@@ -1,12 +1,12 @@
 module.exports = app => {
   class ApiHistory extends app.Service {
     get (apiId) {
-      return app.model.apiHistory.findOne({
+      return app.model.ApiHistory.findOne({
         apiId
       })
     }
     create (api) {
-      return app.model.apiHistory({
+      return app.model.ApiHistory({
         apiId: api._id,
         data: api
       }).save()
@@ -18,7 +18,7 @@ module.exports = app => {
         operator: _id,
         operatorName: name
       }
-      return app.model.apiHistory.findOneAndUpdate({
+      return app.model.ApiHistory.findOneAndUpdate({
         apiId: api._id
       }, {
         updateTime: Date.now(),

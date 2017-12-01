@@ -1,4 +1,5 @@
-module.exports = mongoose => {
+module.exports = app => {
+  const mongoose = app.mongoose
   const { ObjectId } = mongoose.Schema.Types
   const ApiAuthoritySchema = mongoose.Schema({
     apiId: {
@@ -9,7 +10,7 @@ module.exports = mongoose => {
     operation: { // 编辑权限
       mode: {
         type: Number,
-        default: 0  // 0 - 所有人, 1 - 组内人员 2 - 指定人员
+        default: 0 // 0 - 所有人, 1 - 组内人员 2 - 指定人员
       },
       operator: {
         type: [ ObjectId ],
