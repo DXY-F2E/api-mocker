@@ -1,15 +1,15 @@
-module.exports = (options, app) => {
-  return function * auth (next) {
-    if (this.request.url.indexOf('server') >= 0) {
-      const user = this.service.cookie.getUser()
+module.exports = options => {
+  return async function auth (ctx, next) {
+    if (ctx.url.indexOf('server') >= 0) {
+      const user = ctx.service.cookie.getUser()
       if (user) {
-        this.authUser = user
-        yield next
+        ctx.authUser = user
+        await next()
       } else {
-        this.status = 401
+        ctx.status = 401
       }
     } else {
-      yield next
+      await next()
     }
   }
 }
