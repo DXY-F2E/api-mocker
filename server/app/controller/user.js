@@ -2,17 +2,17 @@ const md5 = require('blueimp-md5')
 const AbstractController = require('./abstract')
 
 class UserController extends AbstractController {
-  * search () {
+  async search () {
     const { query = '' } = this.ctx.query
-    const users = yield this.service.user.find(query).lean()
+    const users = await this.service.user.find(query).lean()
     this.success(users.map(u => {
       delete u.password
       return u
     }))
   }
-  * sentResetPassCode () {
+  async sentResetPassCode () {
     const { email } = this.ctx.request.body
-    const user = yield this.service.user.getByEmail(email)
+    const user = await this.service.user.getByEmail(email)
     if (!user) {
       this.error('此邮箱未注册')
     }
@@ -22,30 +22,30 @@ class UserController extends AbstractController {
       this.error('请勿重复发送')
     }
     const code = this.service.cache.verifyCodeCache(key, 6)
-    const rs = yield this.service.email.resetPassword(code, user)
+    const rs = await this.service.email.resetPassword(code, user)
     if (rs && rs.messageId) {
       this.success(true)
     } else {
       this.error('发送验证码失败，请重试')
     }
   }
-  * sentResetPassTicket () {
+  async sentResetPassTicket () {
     const { email } = this.ctx.request.body
-    const user = yield this.service.user.getByEmail(email)
+    const user = await this.service.user.getByEmail(email)
     if (!user) {
       this.error('此邮箱未注册')
     }
     const ticket = this.service.ticket.create(user._id, 'password')
-    const rs = yield this.service.email.passwordTicket(ticket, user)
+    const rs = await this.service.email.passwordTicket(ticket, user)
     if (rs && rs.messageId) {
       this.success(true)
     } else {
       this.error('发送邮件失败，请重试')
     }
   }
-  * resetPasswordByTicket () {
+  async resetPasswordByTicket () {
     const { email, password, ticket } = this.ctx.request.body
-    const user = yield this.service.user.getByEmail(email)
+    const user = await this.service.user.getByEmail(email)
     if (!user) {
       this.error('此邮箱未注册')
     }
@@ -53,15 +53,15 @@ class UserController extends AbstractController {
     if (!encode.success) {
       this.error(encode.msg)
     }
-    const rs = yield this.service.user.updatePassword(email, password)
+    const rs = await this.service.user.updatePassword(email, password)
     if (!rs) {
       this.error('修改失败', 500)
     }
     this.success(true)
   }
-  * resetPassword () {
+  async resetPassword () {
     const { email, password, verifyCode } = this.ctx.request.body
-    const user = yield this.service.user.getByEmail(email)
+    const user = await this.service.user.getByEmail(email)
     if (!user) {
       this.error('此邮箱未注册')
     }
@@ -71,14 +71,14 @@ class UserController extends AbstractController {
       this.ctx.logger.info('verifyCode error', `correctCode: ${correctCode}，verifyCode: ${verifyCode}`)
       this.error('验证码错误')
     }
-    const rs = yield this.service.user.updatePassword(email, password)
+    const rs = await this.service.user.updatePassword(email, password)
     if (!rs) {
       this.error('修改失败', 500)
     }
     this.service.cache.del(key)
     this.success(true)
   }
-  * get () {
+  async get () {
     const rs = this.service.cookie.getUser()
     if (!rs || !rs._id) {
       this.error({
@@ -86,7 +86,7 @@ class UserController extends AbstractController {
         msg: '未登录'
       })
     }
-    const user = yield this.service.user.getById(rs._id)
+    const user = await this.service.user.getById(rs._id)
     if (!user || user.modifiedTime > new Date(rs.modifiedTime)) {
       this.error({
         code: 401,
@@ -95,20 +95,20 @@ class UserController extends AbstractController {
     }
     this.success(rs)
   }
-  * create () {
+  async create () {
     const info = this.ctx.request.body
-    const user = yield this.service.user.getByEmail(info.email)
+    const user = await this.service.user.getByEmail(info.email)
     if (user) {
       this.error('此邮箱已被注册')
     }
-    const rs = yield this.service.user.create(info)
+    const rs = await this.service.user.create(info)
     delete rs.password
     this.service.cookie.setUser(rs)
     this.success(rs)
   }
-  * login () {
+  async login () {
     const info = this.ctx.request.body
-    const user = yield this.service.user.getByEmail(info.email)
+    const user = await this.service.user.getByEmail(info.email)
     if (!user) {
       this.error('账号不存在')
     }
@@ -119,9 +119,9 @@ class UserController extends AbstractController {
     this.service.cookie.setUser(user)
     this.success(user)
   }
-  * update () {
+  async update () {
     const user = this.ctx.request.body
-    const rs = yield this.service.user.update(user)
+    const rs = await this.service.user.update(user)
     if (!rs) {
       this.error({
         code: 500,
@@ -132,7 +132,7 @@ class UserController extends AbstractController {
     this.service.cookie.setUser(rs)
     this.success(rs)
   }
-  * updatePassword () {
+  async updatePassword () {
     const { originPassword, password, verifyPassword } = this.ctx.request.body
     if (originPassword.trim() === '' || password.trim() === '' || verifyPassword.trim() === '') {
       this.error('信息不能为空')
@@ -141,7 +141,7 @@ class UserController extends AbstractController {
       this.error('确认密码不一致')
     }
     console.log(this.ctx.request.body)
-    const rs = yield this.service.user.updatePasswordByOldPassword(originPassword, password)
+    const rs = await this.service.user.updatePasswordByOldPassword(originPassword, password)
     if (!rs) {
       this.error('密码错误')
     }

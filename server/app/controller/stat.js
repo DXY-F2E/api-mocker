@@ -1,9 +1,9 @@
 const AbstractController = require('./abstract')
 
 class StatController extends AbstractController {
-  * mock () {
+  async mock () {
     const { start, end } = this.ctx.query
-    this.ctx.body = yield this.service.stat.getMockStat(start, end)
+    this.ctx.body = await this.service.stat.getMockStat(start, end)
   }
 }
 

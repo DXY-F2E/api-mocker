@@ -6,16 +6,16 @@ const sleep = ms => cb => setTimeout(cb, ms)
 const BASE_TYPES = [ 'string', 'number', 'boolean', 'object', 'array' ]
 
 class ClientController extends AbstractController {
-  * findApi (method) {
+  async findApi (method) {
     const id = this.ctx.params[0]
     if (id.length < 5) {
       // hack方法，兼容老的存下url信息的api
       const url = `/client/${id}`
-      return yield this.ctx.model.Api.findOne({ url, 'options.method': method }).exec()
+      return this.ctx.model.Api.findOne({ url, 'options.method': method }).exec()
     }
-    return yield this.ctx.model.Api.findOne({ _id: id, 'options.method': method }).exec()
+    return this.ctx.model.Api.findOne({ _id: id, 'options.method': method }).exec()
   }
-  * real () {
+  async real () {
     const { _apiRealUrl, _apiMethod } = this.ctx.request.body
     if (!_apiRealUrl || !_apiMethod) {
       this.ctx.body = {
@@ -26,9 +26,9 @@ class ClientController extends AbstractController {
     // 删除这两个参数，代理其他参数
     delete this.ctx.request.body._apiRealUrl
     delete this.ctx.request.body._apiMethod
-    yield this.proxy(_apiRealUrl, _apiMethod)
+    await this.proxy(_apiRealUrl, _apiMethod)
   }
-  * proxy (url, method) {
+  async proxy (url, method) {
     const query = this.ctx.request.url.split('?')[1]
     if (query) {
       url += `?${query}`
@@ -45,7 +45,7 @@ class ClientController extends AbstractController {
       method,
       data: this.ctx.request.body
     }
-    const result = yield this.ctx.curl(url, opts)
+    const result = await this.ctx.curl(url, opts)
     this.ctx.status = result.status
     delete result.headers['content-encoding'] // 设置了gzip encoding的话，转发请求将会出错，先取消此请求头的返回
     delete result.headers['access-control-allow-origin'] // 开发环境不一定在api服务端这个允许头内，故将其删除，防止代理失败
@@ -67,27 +67,27 @@ class ClientController extends AbstractController {
     }
     return baseUrl
   }
-  * handleProxy (api) { // 如果url中带有_mockProxyStatus此参数，也开启代理转发
+  async handleProxy (api) { // 如果url中带有_mockProxyStatus此参数，也开启代理转发
     const { _mockProxyStatus } = this.ctx.request.query
     if (api.options.proxy.mode === 1 || _mockProxyStatus === '1') { // 代理转发线上
-      yield this.proxy(this.buildRestUrl(api.prodUrl, api), api.options.method)
+      await this.proxy(this.buildRestUrl(api.prodUrl, api), api.options.method)
       return true
     }
     if (api.options.proxy.mode === 2 || _mockProxyStatus === '2') { // 代理转发测试
-      yield this.proxy(this.buildRestUrl(api.devUrl, api), api.options.method)
+      await this.proxy(this.buildRestUrl(api.devUrl, api), api.options.method)
       return true
     }
     return false
   }
-  * handleRequest (api) {
+  async handleRequest (api) {
     if (!api) {
       return
     }
-    if (yield this.handleProxy(api)) {
+    if (await this.handleProxy(api)) {
       return
     }
     const delay = api.options.delay || 0
-    yield sleep(delay)
+    await sleep(delay)
     this.validateParams(api)
     this.ctx.body = this.getResponse(api) || {}
   }
@@ -102,29 +102,29 @@ class ClientController extends AbstractController {
     }
   }
   // get/:id
-  * show () {
-    const document = yield this.findApi('get')
-    yield this.handleRequest(document)
+  async show () {
+    const document = await this.findApi('get')
+    await this.handleRequest(document)
   }
   // post /
-  * create () {
-    const document = yield this.findApi('post')
-    yield this.handleRequest(document)
+  async create () {
+    const document = await this.findApi('post')
+    await this.handleRequest(document)
   }
   // put
-  * put () {
-    const document = yield this.findApi('put')
-    yield this.handleRequest(document)
+  async put () {
+    const document = await this.findApi('put')
+    await this.handleRequest(document)
   }
   // patch
-  * patch () {
-    const document = yield this.findApi('patch')
-    yield this.handleRequest(document)
+  async patch () {
+    const document = await this.findApi('patch')
+    await this.handleRequest(document)
   }
   // delete
-  * delete () {
-    const document = yield this.findApi('delete')
-    yield this.handleRequest(document)
+  async delete () {
+    const document = await this.findApi('delete')
+    await this.handleRequest(document)
   }
   getPathParams (api) { // 获取RESTful风格Url参数
     const pathParams = {}

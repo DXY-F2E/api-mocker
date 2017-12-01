@@ -72,8 +72,8 @@ class Group extends Service {
       _id: groupId
     })
   }
-  * delete (groupId) {
-    const group = yield this.getById(groupId)
+  async delete (groupId) {
+    const group = await this.getById(groupId)
     return this.ctx.model.Group.findOneAndUpdate({
       _id: groupId,
       manager: this.ctx.authUser._id

@@ -1,9 +1,9 @@
 const AbstractController = require('./abstract')
 
 class HistoryController extends AbstractController {
-  * getApi () {
+  async getApi () {
     const { apiId } = this.ctx.params
-    const histories = yield this.service.apiHistory.get(apiId)
+    const histories = await this.service.apiHistory.get(apiId)
     this.ctx.body = { histories }
     this.ctx.status = 200
   }

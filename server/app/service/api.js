@@ -30,8 +30,8 @@ class Api extends Service {
       _id: apiId
     }, api, { new: true })
   }
-  * isManager (apiId) {
-    return !!(yield this.ctx.model.Api.findOne({
+  async isManager (apiId) {
+    return !!(await this.ctx.model.Api.findOne({
       _id: apiId,
       manager: this.ctx.authUser._id
     }))
@@ -67,10 +67,10 @@ class Api extends Service {
     }
     return this.getList(cond)
   }
-  * getRichList (cond, page, limit, order) {
-    const apis = (yield this.getList(cond, page, limit, order)).map(a => a.toObject())
+  async getRichList (cond, page, limit, order) {
+    const apis = (await this.getList(cond, page, limit, order)).map(a => a.toObject())
     const userIds = apis.filter(a => a.manager).map(a => a.manager)
-    const users = yield this.service.user.getByIds(userIds)
+    const users = await this.service.user.getByIds(userIds)
     const usersMap = {}
     users.forEach(u => (usersMap[u._id] = u))
     return apis.map(api => {

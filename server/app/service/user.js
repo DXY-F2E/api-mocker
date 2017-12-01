@@ -2,8 +2,8 @@ const Service = require('egg').Service
 const md5 = require('blueimp-md5')
 
 class UserService extends Service {
-  * create (user) {
-    return (yield this.ctx.model.User({
+  async create (user) {
+    return (await this.ctx.model.User({
       email: user.email,
       password: md5(user.password, this.config.md5Key),
       name: user.name

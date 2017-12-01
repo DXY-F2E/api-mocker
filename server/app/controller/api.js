@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const AbstractController = require('./abstract')
 
 class ApiController extends AbstractController {
-  * getAll () {
+  async getAll () {
     const { groupId } = this.ctx.params
     let { limit = 30, page = 1, q = '', order = '{}' } = this.ctx.query
     order = JSON.parse(order)
@@ -25,7 +25,7 @@ class ApiController extends AbstractController {
         condition.$or.unshift({_id: q})
       }
     }
-    const users = q ? yield this.service.user.find(q) : []
+    const users = q ? await this.service.user.find(q) : []
     if (users.length) {
       condition.$or.push({
         manager: {
@@ -37,13 +37,13 @@ class ApiController extends AbstractController {
     if (groupId) {
       condition.group = groupId
     } else {
-      const groups = yield this.service.group.getReadableGroups()
+      const groups = await this.service.group.getReadableGroups()
       condition.group = {
         $in: groups.map(g => g._id)
       }
     }
-    const resources = yield this.service.api.getRichList(condition, page, limit, order)
-    const count = yield this.ctx.model.Api.find(condition).count().exec()
+    const resources = await this.service.api.getRichList(condition, page, limit, order)
+    const count = await this.ctx.model.Api.find(condition).count().exec()
     this.ctx.body = { resources, pages: { limit, page, count } }
     this.ctx.status = 200
   }
@@ -61,14 +61,14 @@ class ApiController extends AbstractController {
     }
     this.error(msg)
   }
-  * judgeModifyRight (apiId, groupId, authId) {
-    const authority = yield this.service.apiAuthority.get(apiId)
-    const group = yield this.service.group.getById(groupId)
+  async judgeModifyRight (apiId, groupId, authId) {
+    const authority = await this.service.apiAuthority.get(apiId)
+    const group = await this.service.group.getById(groupId)
 
     this.judgeGroupRight(group, authId)
     this.judgeApiRight(authority, group, authId)
   }
-  * modifyApi () {
+  async modifyApi () {
     const { groupId, apiId } = this.ctx.params
     const { body } = this.ctx.request
     const authId = this.ctx.authUser._id
@@ -77,25 +77,25 @@ class ApiController extends AbstractController {
     assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalid groupId')
     assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
 
-    yield this.judgeModifyRight(apiId, groupId, authId)
+    await this.judgeModifyRight(apiId, groupId, authId)
 
     delete body._id
     delete body.manager
     // 使用lean()方法会导致无法设定schema的默认值,minimize: false 为了防止清掉空对象
-    const resources = (yield this.service.api.update(apiId, body)).toObject({ minimize: false })
+    const resources = (await this.service.api.update(apiId, body)).toObject({ minimize: false })
     if (!resources) {
       this.error({
         code: '500',
         msg: '系统错误，保存失败'
       })
     }
-    yield this.notifyApiChange(resources, lastModifiedTime)
+    await this.notifyApiChange(resources, lastModifiedTime)
     this.service.group.updateTime(groupId)
     // 存下历史记录，并将所有记录返回
-    resources.history = yield this.service.apiHistory.push(resources)
+    resources.history = await this.service.apiHistory.push(resources)
     this.ctx.body = { resources }
   }
-  * notifyApiChange (api, lastModifiedTime) {
+  async notifyApiChange (api, lastModifiedTime) {
     const interval = api.modifiedTime - lastModifiedTime
     if (interval < this.config.pushInterval.api) {
       return
@@ -105,66 +105,66 @@ class ApiController extends AbstractController {
     if (selfIdx >= 0) {
       api.follower.splice(selfIdx, 1)
     }
-    const users = yield this.service.user.getByIds(api.follower)
+    const users = await this.service.user.getByIds(api.follower)
     this.service.email.notifyApiChange(api, users)
   }
-  * getApi () {
+  async getApi () {
     const { groupId, apiId } = this.ctx.params
 
     assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalid groupId')
     assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
 
-    const resources = (yield this.ctx.model.Api.findOne({ _id: apiId, isDeleted: false })).toObject()
-    resources.history = yield this.service.apiHistory.get(resources)
+    const resources = (await this.ctx.model.Api.findOne({ _id: apiId, isDeleted: false })).toObject()
+    resources.history = await this.service.apiHistory.get(resources)
 
     this.ctx.body = { resources }
     this.ctx.status = 200
   }
-  * follow () {
+  async follow () {
     const apiId = this.ctx.params.apiId
     const authId = this.ctx.authUser._id
-    const api = (yield this.service.api.getById(apiId)).toObject()
+    const api = (await this.service.api.getById(apiId)).toObject()
     api.follower = api.follower || []
     const isExist = api.follower.find(f => f.toString() === authId)
     if (isExist) {
       this.ctx.body = api
     } else {
       api.follower.push(authId)
-      this.ctx.body = yield this.service.api.update(apiId, {
+      this.ctx.body = await this.service.api.update(apiId, {
         follower: api.follower
       })
     }
   }
-  * unfollow () {
+  async unfollow () {
     const apiId = this.ctx.params.apiId
     const authId = this.ctx.authUser._id
-    const api = (yield this.service.api.getById(apiId)).toObject()
+    const api = (await this.service.api.getById(apiId)).toObject()
     const index = api.follower.findIndex(f => f.toString() === authId)
     if (index < 0) {
       this.ctx.body = api
     } else {
       api.follower.splice(index, 1)
-      this.ctx.body = yield this.service.api.update(apiId, {
+      this.ctx.body = await this.service.api.update(apiId, {
         follower: api.follower
       })
     }
   }
-  * getManageApi () {
+  async getManageApi () {
     const { limit = 100, page = 1 } = this.ctx.query
-    this.ctx.body = yield this.service.api.getManageList(page, limit)
+    this.ctx.body = await this.service.api.getManageList(page, limit)
   }
-  * createApi () {
+  async createApi () {
     const { groupId } = this.ctx.params
     const { body } = this.ctx.request
 
     assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalie groupId')
     assert(body.name, 403, 'required name')
 
-    const group = yield this.service.group.getById(groupId)
+    const group = await this.service.group.getById(groupId)
 
     this.judgeGroupRight(group, this.ctx.authUser._id)
 
-    const resources = yield this.service.api.create(R.merge(body, {
+    const resources = await this.service.api.create(R.merge(body, {
       group: groupId
     }))
 
@@ -173,28 +173,28 @@ class ApiController extends AbstractController {
     this.ctx.body = { resources }
     this.ctx.status = 200
   }
-  * createGroupApis () {
+  async createGroupApis () {
     const { groupId } = this.ctx.params
     const apis = this.ctx.request.body
-    const rs = yield this.service.api.createApis(apis)
+    const rs = await this.service.api.createApis(apis)
     this.service.group.updateTime(groupId)
     this.ctx.body = { apis: rs }
     this.ctx.status = 200
   }
-  * delete () {
+  async delete () {
     const { groupId, apiId } = this.ctx.params
 
     assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalie groupId')
     assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
 
-    const rs = yield this.service.api.delete(apiId)
+    const rs = await this.service.api.delete(apiId)
     if (!rs) {
       this.error({
         code: 403,
         msg: '无权删除'
       })
     }
-    yield this.ctx.model.Group.update({ _id: groupId }, { modifiedTime: Date.now() }, { new: true }).exec()
+    await this.ctx.model.Group.update({ _id: groupId }, { modifiedTime: Date.now() }, { new: true }).exec()
     this.ctx.logger.info('deleteApi')
     this.ctx.status = 204
   }
