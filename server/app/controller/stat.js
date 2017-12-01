@@ -1,9 +1,10 @@
-module.exports = app => {
-  class StatController extends app.Controller {
-    * mock () {
-      const { start, end } = this.ctx.query
-      this.ctx.body = yield this.service.stat.getMockStat(start, end)
-    }
+const AbstractController = require('./abstract')
+
+class StatController extends AbstractController {
+  * mock () {
+    const { start, end } = this.ctx.query
+    this.ctx.body = yield this.service.stat.getMockStat(start, end)
   }
-  return StatController
 }
+
+module.exports = StatController
