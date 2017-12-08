@@ -89,10 +89,10 @@ class ApiController extends AbstractController {
         msg: '系统错误，保存失败'
       })
     }
-    await this.notifyApiChange(resources, lastModifiedTime)
     this.service.group.updateTime(groupId)
     // 存下历史记录，并将所有记录返回
     resources.history = await this.service.apiHistory.push(resources)
+    this.notifyApiChange(resources, lastModifiedTime)
     this.ctx.body = { resources }
   }
   async notifyApiChange (api, lastModifiedTime) {
