@@ -89,23 +89,25 @@ class ApiController extends AbstractController {
         msg: '系统错误，保存失败'
       })
     }
-    this.service.group.updateTime(groupId)
+    const group = await this.service.group.updateTime(groupId)
     // 存下历史记录，并将所有记录返回
     resources.history = await this.service.apiHistory.push(resources)
-    this.notifyApiChange(resources, lastModifiedTime)
+    this.notifyApiChange(group, resources, lastModifiedTime)
     this.ctx.body = { resources }
   }
-  async notifyApiChange (api, lastModifiedTime) {
+  async notifyApiChange (group, api, lastModifiedTime) {
     const interval = api.modifiedTime - lastModifiedTime
     if (interval < this.config.pushInterval.api) {
       return
     }
-    const selfIdx = api.follower.findIndex(f => f.toString() === this.ctx.authUser._id)
+    let follower = api.follower.concat(group.follower).map(f => f.toString())
+    follower = Array.from(new Set(follower))
+    const selfIdx = follower.findIndex(f => f === this.ctx.authUser._id)
     // 如果修改者也在关注列表中，不推送自己
     if (selfIdx >= 0) {
-      api.follower.splice(selfIdx, 1)
+      follower.splice(selfIdx, 1)
     }
-    const users = await this.service.user.getByIds(api.follower)
+    const users = await this.service.user.getByIds(follower)
     this.service.email.notifyApiChange(api, users)
   }
   async getApi () {

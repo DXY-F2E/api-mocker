@@ -46,9 +46,23 @@ class Group extends Service {
       manager: this.ctx.authUser._id
     }, Object.assign(group, { modifiedTime: Date.now() }), { new: true })
   }
+  updateFollower (groupId, follower) {
+    return this.ctx.model.Group.findOneAndUpdate(
+      { _id: groupId },
+      {
+        follower,
+        modifiedTime: Date.now()
+      },
+      { new: true }
+    )
+  }
   updateTime (groupId) {
     // 此方法允许异步执行
-    return this.ctx.model.Group.update({ _id: groupId }, { modifiedTime: Date.now() }, { new: true }).exec()
+    return this.ctx.model.Group.findOneAndUpdate(
+      { _id: groupId },
+      { modifiedTime: Date.now() },
+      { new: true }
+    ).exec()
   }
   create (group) {
     const authId = this.ctx.authUser._id

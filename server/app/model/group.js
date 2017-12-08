@@ -14,6 +14,10 @@ module.exports = app => {
       type: ObjectId,
       required: true
     },
+    follower: [{ // 订阅者
+      type: ObjectId,
+      ref: 'user'
+    }],
     member: [ ObjectId ],
     operation: {
       type: Number,

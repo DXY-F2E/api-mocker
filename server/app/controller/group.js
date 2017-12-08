@@ -64,6 +64,32 @@ class GroupController extends AbstractController {
     await this.service.api.deleteGroupApis(id)
     this.ctx.status = 204
   }
+
+  async follow () {
+    const groupId = this.ctx.params.groupId
+    const authId = this.ctx.authUser._id
+    const group = (await this.service.group.getById(groupId)).toObject()
+    group.follower = group.follower || []
+    const isExist = group.follower.find(f => f.toString() === authId)
+    if (isExist) {
+      this.ctx.body = group
+    } else {
+      group.follower.push(authId)
+      this.ctx.body = await this.service.group.updateFollower(groupId, group.follower)
+    }
+  }
+  async unfollow () {
+    const groupId = this.ctx.params.groupId
+    const authId = this.ctx.authUser._id
+    const group = (await this.service.group.getById(groupId)).toObject()
+    const index = group.follower.findIndex(f => f.toString() === authId)
+    if (index < 0) {
+      this.ctx.body = group
+    } else {
+      group.follower.splice(index, 1)
+      this.ctx.body = await this.service.group.updateFollower(groupId, group.follower)
+    }
+  }
 }
 
 module.exports = GroupController
