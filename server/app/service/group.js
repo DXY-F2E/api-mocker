@@ -69,7 +69,8 @@ class Group extends Service {
     const _group = {
       name: group.name,
       creator: authId,
-      manager: authId
+      manager: authId,
+      follower: [ authId ]
     }
     return this.ctx.model.Group(_group).save()
   }
