@@ -1,4 +1,5 @@
-module.exports = mongoose => {
+module.exports = app => {
+  const mongoose = app.mongoose
   const { ObjectId } = mongoose.Schema.Types
   const ApiSchema = mongoose.Schema({
     group: {

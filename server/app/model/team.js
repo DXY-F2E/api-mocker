@@ -1,7 +1,8 @@
 /**
  * 团队；目前无用，可设计为分组的外层
  */
-module.exports = mongoose => {
+module.exports = app => {
+  const mongoose = app.mongoose
   const { ObjectId } = mongoose.Schema.Types
   const TeamSchema = new mongoose.Schema({
     name: {

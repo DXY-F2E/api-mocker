@@ -1,9 +1,16 @@
 
-// had enabled by egg
-// exports.static = true;
-exports['egg-cors'] = true
-exports['egg-mongoose'] = true
 exports.security = false
+
+exports.cors = {
+  enable: true,
+  package: 'egg-cors'
+}
+
+exports.mongoose = {
+  enable: true,
+  package: 'egg-mongoose'
+}
+
 exports.validate = {
   package: 'egg-validate'
 }

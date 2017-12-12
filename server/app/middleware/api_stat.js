@@ -1,13 +1,13 @@
 module.exports = () => {
-  return function * apiStat (next) {
-    const { id } = this.params
+  return async function apiStat (ctx, next) {
+    const { id } = ctx.params
     try {
-      yield next
-      this.service.stat.requestApi(id, true)
+      await next()
+      ctx.service.stat.requestApi(id, true)
     } catch (err) {
-      this.status = err.status >= 100 ? err.status : 500
-      this.body = err
-      this.service.stat.requestApi(id, false, err.message)
+      ctx.status = err.status >= 100 ? err.status : 500
+      ctx.body = err
+      ctx.service.stat.requestApi(id, false, err.message)
     }
   }
 }

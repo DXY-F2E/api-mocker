@@ -10,6 +10,8 @@ module.exports = app => {
   app.put('/server/group/:id/claim', 'group.claim') // 认领分组，这是历史原因导致的接口，可以不关心
   app.delete('/server/group/:id', 'group.delete')
   app.put('/server/group/:id', 'group.update')
+  app.put('/server/group/follower/:groupId', 'group.follow')
+  app.delete('/server/group/follower/:groupId', 'group.unfollow')
 
   app.get('/server/api/', 'api.getAll')
   app.get('/server/api/manage', 'api.getManageApi')
