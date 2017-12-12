@@ -1,5 +1,5 @@
 /**
- * 缓存service,目前无用，可作为验证码服务
+ * 缓存service，可作为验证码服务，因为多进程非共同内存空间，故目前无用。
  */
 const LRU = require('lru-cache')
 const DEFAULT_MAX_AGE = 1 * 1000 * 60
@@ -11,24 +11,25 @@ const options = {
 }
 const Cache = LRU(options)
 
-module.exports = app => {
-  class CacheService extends app.Service {
-    create (key, value, maxAge = DEFAULT_MAX_AGE) {
-      return Cache.set(key, value, maxAge)
-    }
-    verifyCodeCache (key, length, maxAge = DEFAULT_MAX_AGE) {
-      const code = Array.from({ length }, () => Math.ceil(Math.random() * 9)).join('')
-      return this.create(key, code, maxAge) && code
-    }
-    get (key) {
-      return Cache.get(key)
-    }
-    del (key) {
-      return Cache.del(key)
-    }
-    has (key) {
-      return Cache.has(key)
-    }
+const Service = require('egg').Service
+
+class CacheService extends Service {
+  create (key, value, maxAge = DEFAULT_MAX_AGE) {
+    return Cache.set(key, value, maxAge)
   }
-  return CacheService
+  verifyCodeCache (key, length, maxAge = DEFAULT_MAX_AGE) {
+    const code = Array.from({ length }, () => Math.ceil(Math.random() * 9)).join('')
+    return this.create(key, code, maxAge) && code
+  }
+  get (key) {
+    return Cache.get(key)
+  }
+  del (key) {
+    return Cache.del(key)
+  }
+  has (key) {
+    return Cache.has(key)
+  }
 }
+
+module.exports = CacheService

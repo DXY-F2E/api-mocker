@@ -257,6 +257,18 @@ const actions = {
   unfollow ({ state }, apiId) {
     return axios.delete(API.API_FOLLOWER.replace(':apiId', apiId))
   },
+  followGroup ({ state, commit }, groupId) {
+    return axios.put(API.GROUP_FOLLOWER.replace(':groupId', groupId)).then(res => {
+      commit('UPDATE_GROUP', res.data)
+      return res
+    })
+  },
+  unfollowGroup ({ state, commit }, groupId) {
+    return axios.delete(API.GROUP_FOLLOWER.replace(':groupId', groupId)).then(res => {
+      commit('UPDATE_GROUP', res.data)
+      return res
+    })
+  },
   sendResetPassCode ({ state }, email) {
     return axios.post(`${API.USER}/recovery/password/code`, {email})
   },

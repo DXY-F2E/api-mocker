@@ -1,4 +1,5 @@
-module.exports = mongoose => {
+module.exports = app => {
+  const mongoose = app.mongoose
   const { ObjectId } = mongoose.Schema.Types
   const GroupSchema = new mongoose.Schema({
     teamId: {
@@ -13,6 +14,10 @@ module.exports = mongoose => {
       type: ObjectId,
       required: true
     },
+    follower: [{ // 订阅者
+      type: ObjectId,
+      ref: 'user'
+    }],
     member: [ ObjectId ],
     operation: {
       type: Number,
