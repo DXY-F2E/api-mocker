@@ -2,7 +2,7 @@ const Service = require('egg').Service
 const crypto = require('crypto')
 
 class Dxy extends Service {
-  * login (ticket) {
+  async login (ticket) {
     const { url, system, appId, appSignKey } = this.config.dxyLogin
     const postData = {
       appId,
@@ -18,7 +18,7 @@ class Dxy extends Service {
     const sha1 = crypto.createHash('sha1')
     postData.sign = sha1.update(params).digest('hex')
     delete postData.appSignKey
-    const rs = yield this.ctx.curl(url, {
+    const rs = await this.ctx.curl(url, {
       method: 'POST',
       dataType: 'json',
       contentType: 'json',
