@@ -35,15 +35,34 @@ class Email extends Service {
     `
     return this.sent(user.email, 'Api Mocker 找回密码', html)
   }
+  getApiDocUrl (api) {
+    return `${this.config.clientRoot}/#/doc/${api.group}/${api._id}`
+  }
+  notifyApiCreate (group, api, users) {
+    const html = `
+      <strong>API：${api.name}</strong>
+      <p>分组：${group.name} </p>
+      <p>创建者：${this.ctx.authUser.name}</p>
+      <p>链接地址：${this.getApiDocUrl(api)}</p>
+    `
+    users.forEach(user => this.sent(user.email, 'Api Mocker 接口新增提醒', html))
+  }
+  notifyApiDelete (group, api, users) {
+    const html = `
+      <strong>API：${api.name}</strong>
+      <p>分组：${group.name} </p>
+      <p>删除者：${this.ctx.authUser.name}</p>
+      <p>链接地址：${this.getApiDocUrl(api)}</p>
+    `
+    users.forEach(user => this.sent(user.email, 'Api Mocker 接口删除提醒', html))
+  }
   notifyApiChange (api, users) {
     const html = `
       <strong>API：${api.name}</strong>
       <p>修改者：${this.ctx.authUser.name}</p>
-      <p>链接地址：${this.config.clientRoot}/#/doc/${api.group}/${api._id}</p>
+      <p>链接地址：${this.getApiDocUrl(api)}</p>
     `
-    users.map(user => {
-      this.sent(user.email, 'Api Mocker 接口变动提醒', html)
-    })
+    users.forEach(user => this.sent(user.email, 'Api Mocker 接口变动提醒', html))
   }
 }
 

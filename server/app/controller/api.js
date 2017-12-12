@@ -110,6 +110,15 @@ class ApiController extends AbstractController {
     const users = await this.service.user.getByIds(follower)
     this.service.email.notifyApiChange(api, users)
   }
+  async notifyApi (act, group, api) {
+    const selfIdx = group.follower.findIndex(f => f.toString() === this.ctx.authUser._id)
+    // 如果修改者也在关注列表中，不推送自己
+    if (selfIdx >= 0) {
+      group.follower.splice(selfIdx, 1)
+    }
+    const users = await this.service.user.getByIds(group.follower)
+    this.service.email[`notifyApi${act}`](group, api, users)
+  }
   async getApi () {
     const { groupId, apiId } = this.ctx.params
 
@@ -171,7 +180,7 @@ class ApiController extends AbstractController {
     }))
 
     this.service.group.updateTime(groupId)
-
+    this.notifyApi('Create', group, resources)
     this.ctx.body = { resources }
     this.ctx.status = 200
   }
@@ -196,7 +205,8 @@ class ApiController extends AbstractController {
         msg: '无权删除'
       })
     }
-    await this.ctx.model.Group.update({ _id: groupId }, { modifiedTime: Date.now() }, { new: true }).exec()
+    const group = await this.service.group.updateTime(groupId)
+    this.notifyApi('Delete', group, rs)
     this.ctx.logger.info('deleteApi')
     this.ctx.status = 204
   }
