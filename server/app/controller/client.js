@@ -1,7 +1,7 @@
 const buildExampleFromSchema = require('mocker-dsl-core/lib/buildExampleFromSchema')
 const AbstractController = require('./abstract')
 
-const sleep = ms => cb => setTimeout(cb, ms)
+const sleep = ms => new Promise(resolve => setTimeout(() => resolve(true), ms))
 
 const BASE_TYPES = [ 'string', 'number', 'boolean', 'object', 'array' ]
 
