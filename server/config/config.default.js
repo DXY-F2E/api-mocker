@@ -22,14 +22,12 @@ module.exports = appInfo => {
     // 发送邮件配置
     transporter: {
       appName: 'Api Mocker',
-      host: 'smtp.qq.com',
+      host: 'smtp.exmail.qq.com',
       secure: true,
       port: 465,
       auth: {
-        // user: 'apimocker@126.com',
-        // pass: 'mocker2017'
-        user: '1329114717@qq.com',
-        pass: 'rpmikdcidlipbagd'
+        user: 'dxyf2e@dxy.cn',
+        pass: 'Dxyf2e222'
       }
     }
   }
