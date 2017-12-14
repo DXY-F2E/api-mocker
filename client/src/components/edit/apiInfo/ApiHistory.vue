@@ -1,7 +1,7 @@
 <template>
   <ul class="history">
     <li class="record" v-for="record in records" :key="record._id" @click="recover(record)">
-      <span class="time">{{record.createTime | dateFormat}}</span>
+      <span class="time">{{record.data.modifiedTime | dateFormat}}</span>
       <span class="name">{{record.operatorName}}</span>
       <span class="recover">加载</span>
     </li>
