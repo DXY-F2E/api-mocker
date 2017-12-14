@@ -4,6 +4,7 @@
       <div class="field name">
         <h2>{{api.name}}<span class="method" :class="method">{{method}}</span></h2>
         <div class="control" v-if="!isPreview">
+          <el-button class="follow" @click="diff()">历史对比</el-button>
           <el-button class="follow"
                      icon="star-on"
                      v-if="followed"
@@ -86,6 +87,9 @@ export default {
       'follow',
       'unfollow'
     ]),
+    diff () {
+      this.$router.push(`/diff/${this.api.group}/${this.api._id}`)
+    },
     edit () {
       this.$store.commit('UPDATE_API', this.api)
       this.$store.commit('CHANGE_MODE', 'edit')
