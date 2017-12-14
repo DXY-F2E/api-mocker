@@ -81,6 +81,7 @@ class ApiController extends AbstractController {
 
     delete body._id
     delete body.manager
+    const currentApi = await this.service.api.getById(apiId)
     // 使用lean()方法会导致无法设定schema的默认值,minimize: false 为了防止清掉空对象
     const resources = (await this.service.api.update(apiId, body)).toObject({ minimize: false })
     if (!resources) {
@@ -91,7 +92,7 @@ class ApiController extends AbstractController {
     }
     const group = await this.service.group.updateTime(groupId)
     // 存下历史记录，并将所有记录返回
-    resources.history = await this.service.apiHistory.push(resources)
+    resources.history = await this.service.apiHistory.push(currentApi)
     this.notifyApiChange(group, resources, lastModifiedTime)
     this.ctx.body = { resources }
   }
