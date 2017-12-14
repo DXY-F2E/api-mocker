@@ -1,19 +1,19 @@
 const buildExampleFromSchema = require('mocker-dsl-core/lib/buildExampleFromSchema')
 const AbstractController = require('./abstract')
 
-const sleep = ms => cb => setTimeout(cb, ms)
+const sleep = ms => new Promise(resolve => setTimeout(() => resolve(true), ms))
 
 const BASE_TYPES = [ 'string', 'number', 'boolean', 'object', 'array' ]
 
 class ClientController extends AbstractController {
-  async findApi (method) {
+  async findApi () {
     const id = this.ctx.params[0]
     if (id.length < 5) {
       // hack方法，兼容老的存下url信息的api
       const url = `/client/${id}`
-      return this.ctx.model.Api.findOne({ url, 'options.method': method }).exec()
+      return this.ctx.model.Api.findOne({ url }).exec()
     }
-    return this.ctx.model.Api.findOne({ _id: id, 'options.method': method }).exec()
+    return this.ctx.model.Api.findOne({ _id: id }).exec()
   }
   async real () {
     const { _apiRealUrl, _apiMethod } = this.ctx.request.body
@@ -79,8 +79,12 @@ class ClientController extends AbstractController {
     }
     return false
   }
-  async handleRequest (api) {
+  async handleRequest (method, api) {
     if (!api) {
+      return
+    }
+    if (api.options.method !== method) {
+      this.ctx.status = 405
       return
     }
     if (await this.handleProxy(api)) {
@@ -103,28 +107,28 @@ class ClientController extends AbstractController {
   }
   // get/:id
   async show () {
-    const document = await this.findApi('get')
-    await this.handleRequest(document)
+    const document = await this.findApi()
+    await this.handleRequest('get', document)
   }
   // post /
   async create () {
-    const document = await this.findApi('post')
-    await this.handleRequest(document)
+    const document = await this.findApi()
+    await this.handleRequest('post', document)
   }
   // put
   async put () {
-    const document = await this.findApi('put')
-    await this.handleRequest(document)
+    const document = await this.findApi()
+    await this.handleRequest('put', document)
   }
   // patch
   async patch () {
-    const document = await this.findApi('patch')
-    await this.handleRequest(document)
+    const document = await this.findApi()
+    await this.handleRequest('patch', document)
   }
   // delete
   async delete () {
-    const document = await this.findApi('delete')
-    await this.handleRequest(document)
+    const document = await this.findApi()
+    await this.handleRequest('delete', document)
   }
   getPathParams (api) { // 获取RESTful风格Url参数
     const pathParams = {}

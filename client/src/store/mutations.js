@@ -1,6 +1,7 @@
 import { apiInitData } from '@/util'
 import Schema from '@/model/schema'
 import R from 'ramda'
+import Vue from 'vue'
 
 const mutations = {
   FETCH_GROUPS_SUCCESS (state, groups) {
@@ -27,7 +28,7 @@ const mutations = {
   },
   UPDATE_GROUP (state, group) {
     const index = R.findIndex(g => g._id === group._id)(state.groups)
-    state.groups[index] = group
+    Vue.set(state.groups, index, group)
   },
   CREATE_GROUP_SUCCESS (state, data) {
     state.groups.unshift(data)

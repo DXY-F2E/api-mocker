@@ -81,6 +81,7 @@ class ApiController extends AbstractController {
 
     delete body._id
     delete body.manager
+    const currentApi = await this.service.api.getById(apiId)
     // 使用lean()方法会导致无法设定schema的默认值,minimize: false 为了防止清掉空对象
     const resources = (await this.service.api.update(apiId, body)).toObject({ minimize: false })
     if (!resources) {
@@ -89,24 +90,35 @@ class ApiController extends AbstractController {
         msg: '系统错误，保存失败'
       })
     }
-    await this.notifyApiChange(resources, lastModifiedTime)
-    this.service.group.updateTime(groupId)
+    const group = await this.service.group.updateTime(groupId)
     // 存下历史记录，并将所有记录返回
-    resources.history = await this.service.apiHistory.push(resources)
+    resources.history = await this.service.apiHistory.push(currentApi)
+    this.notifyApiChange(group, resources, lastModifiedTime)
     this.ctx.body = { resources }
   }
-  async notifyApiChange (api, lastModifiedTime) {
+  async notifyApiChange (group, api, lastModifiedTime) {
     const interval = api.modifiedTime - lastModifiedTime
     if (interval < this.config.pushInterval.api) {
       return
     }
-    const selfIdx = api.follower.findIndex(f => f.toString() === this.ctx.authUser._id)
+    let follower = api.follower.concat(group.follower).map(f => f.toString())
+    follower = Array.from(new Set(follower))
+    const selfIdx = follower.findIndex(f => f === this.ctx.authUser._id)
     // 如果修改者也在关注列表中，不推送自己
     if (selfIdx >= 0) {
-      api.follower.splice(selfIdx, 1)
+      follower.splice(selfIdx, 1)
     }
-    const users = await this.service.user.getByIds(api.follower)
+    const users = await this.service.user.getByIds(follower)
     this.service.email.notifyApiChange(api, users)
+  }
+  async notifyApi (act, group, api) {
+    const selfIdx = group.follower.findIndex(f => f.toString() === this.ctx.authUser._id)
+    // 如果修改者也在关注列表中，不推送自己
+    if (selfIdx >= 0) {
+      group.follower.splice(selfIdx, 1)
+    }
+    const users = await this.service.user.getByIds(group.follower)
+    this.service.email[`notifyApi${act}`](group, api, users)
   }
   async getApi () {
     const { groupId, apiId } = this.ctx.params
@@ -169,7 +181,7 @@ class ApiController extends AbstractController {
     }))
 
     this.service.group.updateTime(groupId)
-
+    this.notifyApi('Create', group, resources)
     this.ctx.body = { resources }
     this.ctx.status = 200
   }
@@ -194,7 +206,8 @@ class ApiController extends AbstractController {
         msg: '无权删除'
       })
     }
-    await this.ctx.model.Group.update({ _id: groupId }, { modifiedTime: Date.now() }, { new: true }).exec()
+    const group = await this.service.group.updateTime(groupId)
+    this.notifyApi('Delete', group, rs)
     this.ctx.logger.info('deleteApi')
     this.ctx.status = 204
   }
