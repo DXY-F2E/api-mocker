@@ -103,6 +103,13 @@ const mutations = {
   },
   SET_ALL_USERS (state, users) {
     state.allUsers = users
+  },
+  // diff相关
+  UPDATE_DIFF_MODE (state, status) {
+    state.diffMode = status
+  },
+  UPDATE_DIFF_STACK (state, stack) {
+    state.diffStack = stack
   }
 }
 export default mutations

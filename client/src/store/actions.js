@@ -284,6 +284,14 @@ const actions = {
   },
   updateApiAuthority ({ state }, authoriry) {
     return axios.put(API.API_AUTHORITY.replace(':apiId', authoriry.apiId), authoriry)
+  },
+  // diff相关
+  updateDiffMode ({ commit }, status) {
+    return commit('UPDATE_DIFF_MODE', status)
+  },
+  // diff相关
+  updateDiffStack ({ commit }, stack) {
+    return commit('UPDATE_DIFF_STACK', stack)
   }
 }
 

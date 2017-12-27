@@ -12,7 +12,11 @@
       </el-row>
     </div>
     <div class="bd">
-      <params :params="params" :level="0"></params>
+      <params :params="params"
+              :level="0"
+              :diff-mode="diffMode"
+              :diff-stack="diffStack"
+              :diff-path="diffPath"></params>
     </div>
   </div>
 </template>
@@ -23,7 +27,25 @@ export default {
   components: {
     Params
   },
-  props: ['params']
+  computed: {
+    diffMode () {
+      return this.$store.diffMode
+    }
+  },
+  props: {
+    params: {
+      type: Array,
+      required: true
+    },
+    diffStack: {
+      type: Object,
+      required: false
+    },
+    diffPath: {
+      type: String,
+      required: false
+    }
+  }
 }
 </script>
 <style lang="less">
@@ -31,7 +53,7 @@ export default {
   width: 100%;
   border: 1px solid #e6e6e6;
   border-radius: 3px;
-  overflow: hidden;
+  // overflow: hidden;
 
   .hd {
     background-color: #f8f8f8;
