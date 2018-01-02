@@ -15,6 +15,8 @@ const Document = r => require.ensure([], () => r(require('@/components/document/
 const GroupContent = r => require.ensure([], () => r(require('@/components/document/GroupContent')), 'document')
 const DocOverview = r => require.ensure([], () => r(require('@/components/document/Overview')), 'document')
 const ApiContent = r => require.ensure([], () => r(require('@/components/document/ApiContent')), 'document')
+// 由于 diff 页面与 文档页依赖基本一致，故放到同一chunk
+const Diff = r => require.ensure([], () => r(require('@/components/diff/Index')), 'document')
 
 const Auth = r => require.ensure([], () => r(require('@/components/auth/Index')), 'auth')
 const Login = r => require.ensure([], () => r(require('@/components/auth/Login')), 'auth')
@@ -101,6 +103,11 @@ const router = new Router({
             name: 'ApiDoc',
             component: ApiContent
           }]
+        },
+        {
+          path: 'diff/:groupId/:apiId',
+          component: Diff,
+          name: 'Diff'
         }
       ]
     },
