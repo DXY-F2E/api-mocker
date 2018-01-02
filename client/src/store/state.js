@@ -32,7 +32,9 @@ const state = {
     msg: ''
   },
   windowWidth: 0,
-  allUsers: []
+  allUsers: [],
+  diffMode: false,
+  diffStack: null
 }
 
 export default state
