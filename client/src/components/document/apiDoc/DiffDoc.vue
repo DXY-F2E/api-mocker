@@ -172,9 +172,6 @@ export default {
   &-delete {
     *, & {
       background-color: #ffeef0 !important;
-    }
-
-    * {
       text-decoration: line-through;
     }
   }

@@ -93,6 +93,10 @@ d.diffObject = pair => {
   // 差集，存在不一样的prop，说明肯定是添加或者删除
   const difference = R.symmetricDifference(...propPair)
   difference.forEach(prop => {
+    // 如果添加的属性值依旧为空值，或者删除的属性值原本也为空值，则不认为发生了改变
+    if (isEmpty(newValue[prop]) && isEmpty(oldValue[prop])) {
+      return
+    }
     diff.stack[prop] = {
       __diffType: newValue[prop] ? 'add' : 'delete',
       __newValue: R.clone(newValue[prop]),
