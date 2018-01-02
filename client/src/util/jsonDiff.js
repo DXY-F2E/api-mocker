@@ -4,9 +4,7 @@ const Diff = function (value = null, stack = {}) {
   return { stack, value }
 }
 
-const d = {}
-const typeEq = pair => R.equals(...pair.map(R.type))
-const isBaseType = type => 'Boolean,String,Null,Number,Undefined'.indexOf(type) > -1
+const isComplexType = type => type === 'Object' || type === 'Array'
 const isEmpty = val => val === '' || val === undefined || val === null
 
 const buildUpdateDiff = pair => new Diff(R.clone(pair[0]), {
@@ -27,6 +25,10 @@ const buildDeleteDiff = value => new Diff(value, {
   __oldValue: value
 })
 
+// 将各类diff方法绑在一个对象上，好处是声明函数时不用关心顺序，调用时更方便；
+// 坏处是，这个对象将一直存活在内存中
+const d = {}
+
 d.diffBase = pair => {
   const [ newValue, oldValue ] = pair
   const [ isEmptyNew, isEmptyOld ] = pair.map(isEmpty)
@@ -38,7 +40,10 @@ d.diffBase = pair => {
     return isEmptyNew ? buildDeleteDiff(oldValue) : buildAddDiff(newValue)
   }
 }
-
+/**
+ *
+ * @param {Array[newValue, oldValue]} pair: 对比的数据
+ */
 d.diffArray = pair => {
   const [ newArr, oldArr ] = pair
   // 都是空数组，返回无变化diff
@@ -76,6 +81,11 @@ d.diffArray = pair => {
   }
   return diffStack.length ? new Diff(diffValue, diffStack) : new Diff()
 }
+
+/**
+ *
+ * @param {Array[newValue, oldValue]} pair: 对比的数据
+ */
 d.diffObject = pair => {
   const [ newValue, oldValue ] = pair
   const diff = new Diff({ ...newValue })
@@ -107,13 +117,16 @@ d.diffObject = pair => {
   return diff
 }
 
+/**
+ *
+ * @param {Array[newValue, oldValue]} pair: 对比的数据
+ */
 d.diffValue = pair => {
-  if (typeEq(pair)) {
-    const type = R.type(pair[0])
-    return isBaseType(type) ? d.diffBase(pair) : d[`diff${type}`] && d[`diff${type}`](pair)
-    // return R.type(pair[0]) === 'Object' ? d.diffObject(pair) : d.diffBase(pair)
+  const [ newType, oldType ] = pair.map(R.type)
+  if (newType === oldType && isComplexType(newType)) {
+    return d[`diff${newType}`](pair)
   } else {
-    return buildUpdateDiff(pair)
+    return d.diffBase(pair)
   }
 }
 
@@ -137,4 +150,5 @@ export const getDiffStyle = (stack, path) => {
   if (diff && diff.__diffType) style[`diff-${diff.__diffType}`] = true
   return style
 }
+
 export default d.diffObject

@@ -2,7 +2,7 @@
   <div class="doc-param" v-if="param.key" :class="diffStyle">
     <el-row type="flex">
       <!-- <em class="split-line" :style="splitStyle"></em> -->
-      <el-col class="key" :style="keyStyle">{{param.key}}</el-col>
+      <el-col class="key" :style="keyStyle" :class="getDiffStyle('key')">{{param.key}}</el-col>
       <div class="row-and-col">
         <el-col class="type" :class="getDiffStyle('type')">{{param.type}}<code class="array-type" v-if="param.type === 'array'">[{{param.items.type}}]</code></el-col>
         <el-col class="required" :class="getDiffStyle('required')">{{param.required ? '是' : '否'}}</el-col>
