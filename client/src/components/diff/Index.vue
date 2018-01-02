@@ -58,7 +58,7 @@ export default {
       this.updateDiffStack(stack)
     },
     handleSelectApi (api) {
-      this.buildDiff(this.rightApi, api)
+      this.buildDiff(this.api, api)
     }
   },
   computed: {
