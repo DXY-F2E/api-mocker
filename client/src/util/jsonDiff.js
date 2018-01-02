@@ -7,10 +7,10 @@ const Diff = function (value = null, stack = {}) {
 const isComplexType = type => type === 'Object' || type === 'Array'
 const isEmpty = val => val === '' || val === undefined || val === null
 
-const buildUpdateDiff = pair => new Diff(R.clone(pair[0]), {
+const buildUpdateDiff = pair => new Diff(pair[0], {
   __diffType: 'update',
-  __newValue: R.clone(pair[0]),
-  __oldValue: R.clone(pair[1])
+  __newValue: pair[0],
+  __oldValue: pair[1]
 })
 
 const buildAddDiff = value => new Diff(value, {
@@ -55,28 +55,17 @@ d.diffArray = pair => {
   for (let i = 0; i < newArr.length || i < oldArr.length; i++) {
     const newVal = newArr[i]
     const oldVal = oldArr[i]
+    let diff = {}
     if (newVal !== undefined && oldVal !== undefined) { // 当两个值存在时
-      const { stack, value } = d.diffValue([newVal, oldVal])
-      if (!R.isEmpty(stack)) {
-        diffStack[i] = stack
-        diffValue[i] = value
-      } else {
-        diffValue[i] = R.clone(newVal)
-      }
+      diff = d.diffValue([newVal, oldVal])
     } else if (newVal !== undefined) {
-      diffValue[i] = R.clone(newVal)
-      diffStack[i] = {
-        __diffType: 'add',
-        __newValue: diffValue[i],
-        __oldValue: null
-      }
+      diff = buildAddDiff(newVal)
     } else {
-      diffValue[i] = R.clone(oldVal)
-      diffStack[i] = {
-        __diffType: 'delete',
-        __newValue: null,
-        __oldValue: diffValue[i]
-      }
+      diff = buildDeleteDiff(oldVal)
+    }
+    diffValue[i] = diff.value
+    if (!R.isEmpty(diff.stack)) {
+      diffStack[i] = diff.stack
     }
   }
   return diffStack.length ? new Diff(diffValue, diffStack) : new Diff()
@@ -99,8 +88,8 @@ d.diffObject = pair => {
     }
     diff.stack[prop] = {
       __diffType: newValue[prop] ? 'add' : 'delete',
-      __newValue: R.clone(newValue[prop]),
-      __oldValue: R.clone(oldValue[prop])
+      __newValue: newValue[prop],
+      __oldValue: oldValue[prop]
     }
     // 把被删除的key 合并到新值上
     if (!newValue[prop]) {
