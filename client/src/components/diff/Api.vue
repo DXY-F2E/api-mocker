@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import ApiDoc from '@/components/document/apiDoc/DiffDoc'
+import ApiDoc from '@/components/document/apiDoc/Index'
 import monent from 'moment'
 export default {
   components: {
