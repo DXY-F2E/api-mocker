@@ -3,7 +3,8 @@
     <div class="fields">
       <div class="field name">
         <h2>{{api.name}}<span class="method" :class="method">{{method}}</span></h2>
-        <div class="control" v-if="!isPreview">
+        <div class="control" v-if="!isPreview && !diffMode">
+          <el-button class="follow" @click="diff()">历史对比</el-button>
           <el-button class="follow"
                      icon="star-on"
                      v-if="followed"
@@ -21,11 +22,11 @@
           <label><code>Mock</code>地址：</label>
           <p class="prod code">{{url}}</p>
         </div>
-        <div v-if="api.devUrl">
+        <div v-if="api.devUrl" :class="diffStyle('devUrl')">
           <label>测试地址：</label>
           <p class="prod code">{{api.devUrl}}</p>
         </div>
-        <div v-if="api.prodUrl">
+        <div v-if="api.prodUrl" :class="diffStyle('prodUrl')">
           <label>线上地址：</label>
           <p class="prod code">{{api.prodUrl}}</p>
         </div>
@@ -34,6 +35,9 @@
         <label>提交参数</label>
         <schema v-for="(schema, key) in schemaParams"
                 v-if="hasParams(schema.params)"
+                :diff-mode="diffMode"
+                :diff-stack="diffStack"
+                :diff-path="'options.params.' + key"
                 :name="key"
                 :schema="schema"
                 :key="key"></schema>
@@ -44,7 +48,11 @@
       </div>
       <div class="field" v-if="api.options.response && api.options.response.length">
         <label>返回结果</label>
-        <schemas :schemas="api.options.response" name="response"></schemas>
+        <schemas :schemas="api.options.response"
+                 name="response"
+                 :diff-mode="diffMode"
+                 :diff-stack="diffStack"
+                 :diff-path="'options.response'"></schemas>
       </div>
       <div class="field mock-data" v-else>
         <label>Mock数据</label>
@@ -52,7 +60,7 @@
       </div>
       <div class="field desc" v-show="api.desc">
         <label>其他备注</label>
-        <div class="editor-style" v-html="api.desc"></div>
+        <div class="editor-style" v-html="api.desc" :class="diffStyle('desc')"></div>
       </div>
     </div>
   </div>
@@ -64,9 +72,10 @@ import Schemas from './Schemas'
 import Schema from './Schema'
 import MockData from './MockData'
 import CopyButton from '@/components/common/CopyButton'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 // 为了接口描述在文档中显示的跟编辑时样式一致而引入
 import 'simditor/styles/simditor.css'
+import { getDiffStyle } from '@/util/jsonDiff'
 export default {
   components: {
     CopyButton,
@@ -76,6 +85,10 @@ export default {
     MockData
   },
   props: {
+    diffStack: {
+      type: Object,
+      required: false
+    },
     api: {
       type: Object,
       required: true
@@ -86,6 +99,12 @@ export default {
       'follow',
       'unfollow'
     ]),
+    diffStyle (path) {
+      return getDiffStyle(this.diffStack, path)
+    },
+    diff () {
+      this.$router.push(`/diff/${this.api.group}/${this.api._id}`)
+    },
     edit () {
       this.$store.commit('UPDATE_API', this.api)
       this.$store.commit('CHANGE_MODE', 'edit')
@@ -106,9 +125,7 @@ export default {
     }
   },
   computed: {
-    user () {
-      return this.$store.state.user
-    },
+    ...mapState(['user', 'diffMode']),
     followed () {
       return !!this.api.follower.find(f => f === this.user._id)
     },
@@ -149,6 +166,27 @@ export default {
 }
 </script>
 <style lang="less">
+.diff {
+  position: relative;
+
+  &-delete {
+    *, & {
+      background-color: #ffeef0 !important;
+      text-decoration: line-through;
+    }
+  }
+  &-add {
+    *, & {
+      background-color: #e6ffed !important;
+    }
+  }
+  &-update {
+    *, & {
+      background-color: #aefbc4 !important;
+    }
+  }
+}
+
 .apis-doc {
   width: 100%;
   height: 100%;

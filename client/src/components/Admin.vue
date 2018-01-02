@@ -48,6 +48,8 @@ export default {
 .content {
   position: absolute;
   width: 100%;
+  right: 0;
+  left: 0;
   top: 60px;
   bottom: 0;
   text-align: left;
