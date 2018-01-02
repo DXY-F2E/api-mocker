@@ -2,7 +2,10 @@
   <div class="api-doc" :id="api._id">
     <div class="fields">
       <div class="field name">
-        <h2>{{api.name}}<span class="method" :class="method">{{method}}</span></h2>
+        <h2>
+          <label :class="diffStyle('name')">{{api.name}}</label>
+          <span class="method" :class="methodStyle">{{method}}</span>
+        </h2>
         <div class="control" v-if="!isPreview && !diffMode">
           <el-button class="follow" @click="diff()">历史对比</el-button>
           <el-button class="follow"
@@ -144,6 +147,12 @@ export default {
     },
     method () {
       return this.api.options.method.toUpperCase()
+    },
+    methodStyle () {
+      return {
+        ...this.diffStyle('options.method'),
+        [this.method]: true
+      }
     },
     schemaParams () {
       const schemas = {}
