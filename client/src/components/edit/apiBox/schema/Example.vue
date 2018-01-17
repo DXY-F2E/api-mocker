@@ -85,7 +85,8 @@ export default {
         this.$message.error(this.status.msg)
         return
       }
-      const schema = buildSchemaFromExample(this.example, this.schema.params)
+      const { params, statusText, status } = this.schema
+      const schema = buildSchemaFromExample(this.example, params, statusText, status)
       this.$emit('buildSchema', schema)
       this.showTooltip('schema')
     }
