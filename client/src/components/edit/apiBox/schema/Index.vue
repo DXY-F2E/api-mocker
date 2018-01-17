@@ -37,12 +37,11 @@ export default {
     Example,
     JsonEditor
   },
+  data: () => ({
+    activeTab: 'structure'
+  }),
   props: {
     name: String,
-    active: {
-      type: String,
-      default: 'structure'
-    },
     exampleName: {
       type: String,
       default: 'Example'
@@ -59,9 +58,6 @@ export default {
   computed: {
     localSchema () {
       return R.clone(this.schema)
-    },
-    activeTab () {
-      return this.active
     }
   },
   methods: {
