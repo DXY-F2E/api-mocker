@@ -140,7 +140,13 @@ class ClientController extends AbstractController {
   }
   getValidatorType (method, paramType) {
     // 若参数是以query 或者 restful 或者 x-www-form-urlencoded 方式提交的，则允许字符串格式的数字与布尔值
-    const isUnstrict = method === 'query' || method === 'path' || this.ctx.header['content-type'].indexOf('x-www-form-urlencoded')
+    const isUnstrict =
+      method === 'query' ||
+      method === 'path' ||
+      (
+        this.ctx.header['content-type'] &&
+        this.ctx.header['content-type'].indexOf('x-www-form-urlencoded')
+      )
     if (isUnstrict && ['number', 'boolean'].indexOf(paramType) > -1) {
       return `unstrict_${paramType}`
     }
