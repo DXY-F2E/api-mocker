@@ -35,6 +35,7 @@ class ClientController extends AbstractController {
     }
     const headers = this.ctx.headers
     delete headers.host // 提交的header.host是mocker的host，需要删除
+    delete headers['content-length'] // mocker在线测试代理时，'content-length'客户端与代理端会不一致，故删除它
     if (headers['api-cookie']) { // 如果请求头带有此字段，则设置cookie
       headers.cookie = headers['api-cookie']
       delete headers['api-cookie']
