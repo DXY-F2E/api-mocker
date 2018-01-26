@@ -35,6 +35,7 @@ class ClientController extends AbstractController {
     }
     const headers = this.ctx.headers
     delete headers.host // 提交的header.host是mocker的host，需要删除
+    delete headers['content-length'] // mocker在线测试代理时，'content-length'客户端与代理端会不一致，故删除它
     if (headers['api-cookie']) { // 如果请求头带有此字段，则设置cookie
       headers.cookie = headers['api-cookie']
       delete headers['api-cookie']
@@ -140,7 +141,13 @@ class ClientController extends AbstractController {
   }
   getValidatorType (method, paramType) {
     // 若参数是以query 或者 restful 或者 x-www-form-urlencoded 方式提交的，则允许字符串格式的数字与布尔值
-    const isUnstrict = method === 'query' || method === 'path' || this.ctx.header['content-type'].indexOf('x-www-form-urlencoded')
+    const isUnstrict =
+      method === 'query' ||
+      method === 'path' ||
+      (
+        this.ctx.header['content-type'] &&
+        this.ctx.header['content-type'].indexOf('x-www-form-urlencoded')
+      )
     if (isUnstrict && ['number', 'boolean'].indexOf(paramType) > -1) {
       return `unstrict_${paramType}`
     }
