@@ -1,0 +1,21 @@
+{
+    "name": "api-mocker",
+    "version": "1.0.0",
+    "description": "> API Mocker，不仅仅是Mocker，它致力于解决前后端开发协作过程中出现的各类问题，提高开发效率，对接口做统一管理，同时也能为后续的迭代维护提供更便捷的方式。",
+    "main": "index.js",
+    "directories": {
+        "doc": "docs"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "docker:build": "docker-compose -f build-docker/api-compose.yml build",
+        "docker:start": "docker-compose -f build-docker/api-compose.yml up"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:DXY-F2E/api-mocker.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}

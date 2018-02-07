@@ -2,18 +2,24 @@ version: "3"
 
 services:
   mongo:
-    build: ./mongo
+    build:
+      context: '../'
+      dockerfile: 'build-docker/mongo/Dockerfile'
     ports:
       - 7001:7001
 
   server:
-    build: ./server
+    build:
+      context: '../'
+      dockerfile: 'build-docker/server/Dockerfile'
     network_mode: "service:mongo"
     depends_on:
       - mongo
 
   client:
-    build: ./client
+    build:
+      context: '../'
+      dockerfile: build-docker/client/Dockerfile
     entrypoint: nginx -g "daemon off;"
     ports:
       - "8888:80"

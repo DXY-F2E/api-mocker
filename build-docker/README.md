@@ -5,9 +5,9 @@
 ## 使用docker-compose启动
 
 ```
-> cd build-docker
-> docker-compose -f ./api-compose.yml build
-> docker-compose -f ./api-compose.yml up
+> cd ../
+> npm run docker:build
+> npm run docker:start
 # client: 8888  # server: 7001
 ```
 
@@ -16,7 +16,7 @@
 ### client
 
 ```
-> cd build-docker/client
+> cd ./client
 > docker build -t api-client .
 > docker run --rm api-client
 ```
@@ -25,15 +25,15 @@
 
 ```
 # 启动mongo
-> cd build-docker/mongo
+> cd ./mongo
 > docker build -t api-mongo .
 > docker create --name api-mongo-container api-mongo
-> docker start api-mongo-container
+> docker start -p 8080:80 api-mongo-container
 
 > cd ..
 
 # 启动server
-> cd build-docker/server
+> cd ./server
 > docker build -t api-server .
-> docker run --rm --net="container:api-mongo-container" -p 8080:80 api-server
+> docker run --rm --net="container:api-mongo-container" api-server
 ```
