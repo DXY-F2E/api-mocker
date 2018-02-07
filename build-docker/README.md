@@ -1,11 +1,14 @@
 # 生成Docker镜像
 
+使用Docker运行有下面两种方式, 推荐使用第一种
+
 ## 使用docker-compose启动
 
 ```
 > cd build-docker
 > docker-compose -f ./api-compose.yml build
 > docker-compose -f ./api-compose.yml up
+# client: 8888  # server: 7001
 ```
 
 ## 单独Build启动
