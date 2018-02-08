@@ -3,7 +3,7 @@ from node:alpine
 COPY ./server /server
 
 RUN cd /server && \
-    npm install
+  npm install
 
 WORKDIR /server
 
