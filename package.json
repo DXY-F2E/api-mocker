@@ -8,7 +8,7 @@
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "docker:build": "cd client && npm build && cd .. && docker-compose -f build-docker/compose.yml build",
+        "docker:build": "cd client && npm run build && cd .. && docker-compose -f build-docker/compose.yml build",
         "docker:start": "docker-compose -f build-docker/compose.yml up"
     },
     "repository": {
