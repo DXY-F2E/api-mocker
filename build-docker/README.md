@@ -16,8 +16,8 @@
 ### client
 
 ```
-> cd ./client
-> docker build -t api-client .
+> cd ..
+> docker build -t api-client -f build-docker/client.dockerfile .
 > docker run --rm api-client
 ```
 
@@ -25,15 +25,15 @@
 
 ```
 # 启动mongo
-> cd ./mongo
-> docker build -t api-mongo .
+> cd ..
+> docker build -t api-mongo -f build-docker/mongo.dockerfile .
 > docker create --name api-mongo-container api-mongo
 > docker start -p 8080:80 api-mongo-container
 
 > cd ..
 
 # 启动server
-> cd ./server
-> docker build -t api-server .
+> cd ..
+> docker build -t api-server -f build-docker/server.dockerfile .
 > docker run --rm --net="container:api-mongo-container" api-server
 ```
