@@ -35,6 +35,7 @@ class ClientController extends AbstractController {
     }
     const headers = this.ctx.headers
     delete headers.host // 提交的header.host是mocker的host，需要删除
+    delete headers['content-length'] // mocker在线测试代理时，'content-length'客户端与代理端会不一致，故删除它
     if (headers['api-cookie']) { // 如果请求头带有此字段，则设置cookie
       headers.cookie = headers['api-cookie']
       delete headers['api-cookie']
@@ -106,29 +107,14 @@ class ClientController extends AbstractController {
     }
   }
   // get/:id
-  async show () {
+  async mock () {
     const document = await this.findApi()
-    await this.handleRequest('get', document)
+    await this.handleRequest(this.ctx.method.toLowerCase(), document)
   }
-  // post /
-  async create () {
-    const document = await this.findApi()
-    await this.handleRequest('post', document)
-  }
-  // put
-  async put () {
-    const document = await this.findApi()
-    await this.handleRequest('put', document)
-  }
-  // patch
-  async patch () {
-    const document = await this.findApi()
-    await this.handleRequest('patch', document)
-  }
-  // delete
-  async delete () {
-    const document = await this.findApi()
-    await this.handleRequest('delete', document)
+  // 使用prodUrl或devUrl请求假数据
+  async mockByUrl () {
+    const document = await this.service.api.getByUrl(this.ctx.params[0], this.ctx.query._mockGroupId)
+    await this.handleRequest(this.ctx.method.toLowerCase(), document)
   }
   getPathParams (api) { // 获取RESTful风格Url参数
     const pathParams = {}
