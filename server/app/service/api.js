@@ -1,6 +1,20 @@
 const Service = require('egg').Service
 
 class Api extends Service {
+  getByUrl (url, groupId) {
+    const reg = new RegExp(`.*${url}.*`, 'i')
+    const condition = {
+      $or: [
+        { prodUrl: reg },
+        { devUrl: reg }
+      ],
+      isDeleted: false
+    }
+    if (groupId) {
+      condition.group = groupId
+    }
+    return this.ctx.model.Api.findOne(condition).sort({ modifiedTime: -1 })
+  }
   getById (apiId) {
     return this.ctx.model.Api.findOne({
       _id: apiId,

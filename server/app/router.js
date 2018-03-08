@@ -1,4 +1,5 @@
 const pathToRegexp = require('path-to-regexp')
+const allMethods = ['get', 'post', 'put', 'patch', 'delete']
 module.exports = app => {
   const apiStat = app.middlewares.apiStat()
   const credentials = app.middlewares.credentials()
@@ -32,7 +33,13 @@ module.exports = app => {
   app.get('/server/stat/mock', 'stat.mock')
 
   app.post('/client/real', 'client.real')
+
   // mock data
+  const urlRegexp = pathToRegexp('/mock-by-url/:url*', [])
+  allMethods.forEach(method => {
+    app[method](urlRegexp, credentials, apiStat, 'client.mockByUrl')
+  })
+
   const mockUrl = pathToRegexp('/client/:id/:url*', [])
   // const mockUrl = '/client/:id'
   app.get(mockUrl, credentials, apiStat, 'client.show')

@@ -130,6 +130,11 @@ class ClientController extends AbstractController {
     const document = await this.findApi()
     await this.handleRequest('delete', document)
   }
+  // 使用prodUrl或devUrl请求假数据
+  async mockByUrl () {
+    const document = await this.service.api.getByUrl(this.ctx.params[0], this.ctx.query._mockGroupId)
+    await this.handleRequest(this.ctx.method.toLowerCase(), document)
+  }
   getPathParams (api) { // 获取RESTful风格Url参数
     const pathParams = {}
     const params = (this.ctx.params[1] || '').split('/')
