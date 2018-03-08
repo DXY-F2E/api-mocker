@@ -42,11 +42,9 @@ module.exports = app => {
 
   const mockUrl = pathToRegexp('/client/:id/:url*', [])
   // const mockUrl = '/client/:id'
-  app.get(mockUrl, credentials, apiStat, 'client.show')
-  app.post(mockUrl, credentials, apiStat, 'client.create')
-  app.put(mockUrl, credentials, apiStat, 'client.put')
-  app.patch(mockUrl, credentials, apiStat, 'client.patch')
-  app.delete(mockUrl, credentials, apiStat, 'client.delete')
+  allMethods.forEach(method => {
+    app[method](mockUrl, credentials, apiStat, 'client.mock')
+  })
 
   // user
   app.get('/auth/user', 'user.get')

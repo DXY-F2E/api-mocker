@@ -106,29 +106,9 @@ class ClientController extends AbstractController {
     }
   }
   // get/:id
-  async show () {
+  async mock () {
     const document = await this.findApi()
-    await this.handleRequest('get', document)
-  }
-  // post /
-  async create () {
-    const document = await this.findApi()
-    await this.handleRequest('post', document)
-  }
-  // put
-  async put () {
-    const document = await this.findApi()
-    await this.handleRequest('put', document)
-  }
-  // patch
-  async patch () {
-    const document = await this.findApi()
-    await this.handleRequest('patch', document)
-  }
-  // delete
-  async delete () {
-    const document = await this.findApi()
-    await this.handleRequest('delete', document)
+    await this.handleRequest(this.ctx.method.toLowerCase(), document)
   }
   // 使用prodUrl或devUrl请求假数据
   async mockByUrl () {
