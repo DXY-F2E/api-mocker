@@ -9,6 +9,7 @@ import directive from './directive'
 import router from './router'
 import ElementUI from 'element-ui'
 import axios from 'axios'
+import '@/style/material-icons/index.css'
 import 'element-ui/lib/theme-default/index.css'
 import 'element-ui/lib/theme-default/reset.css'
 
@@ -33,5 +34,7 @@ new Vue({
   store,
   router,
   template: '<App/>',
-  components: { App }
+  components: {
+    App
+  }
 })
