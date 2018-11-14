@@ -97,8 +97,9 @@ class ClientController extends AbstractController {
     this.ctx.body = this.getResponse(api) || {}
   }
   getResponse (api) {
+    const queryStatus = this.ctx.query.status
     if (api.options.response && api.options.response.length > 0) {
-      const index = api.options.responseIndex
+      const index = queryStatus ? parseInt(queryStatus) : api.options.responseIndex
       const idx = index === -1 ? parseInt(Math.random() * api.options.response.length) : index
       const schema = api.options.response[idx]
       return buildExampleFromSchema(schema)
