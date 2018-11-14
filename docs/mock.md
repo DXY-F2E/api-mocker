@@ -62,3 +62,8 @@
 
 ### 建议
 * 如果对于假数据随机性要求不高，不建议写mock语法，也不需要填写`Schema`的`Example`，系统会自动生成假数据。
+
+
+### 设置返回
+* api-mocker 可以为一个 mock 接口配置多种 response。可以在系统中切换，也可以在请求时带上 query 参数 __api_mock_status__ 来指定返回配置 response 中的哪个（__api_mock_status__ 为索引值）。   
+当两者都配置时以 __api_mock_status__ 参数为准。
