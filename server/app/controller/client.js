@@ -99,7 +99,7 @@ class ClientController extends AbstractController {
   getResponse (api) {
     const queryStatus = parseInt(this.ctx.query.__api_mock_status__)
     if (api.options.response && api.options.response.length > 0) {
-      const index = queryStatus || api.options.responseIndex
+      const index = queryStatus >= 0 ? queryStatus : api.options.responseIndex
       const idx = index === -1 ? parseInt(Math.random() * api.options.response.length) : index
       const schema = api.options.response[idx]
       return buildExampleFromSchema(schema)
