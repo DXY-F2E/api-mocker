@@ -61,7 +61,6 @@ export default {
     height: 100%;
     position: relative;
     overflow-y: auto;
-    overflow-x: hidden;
   }
   .list-content {
     min-height: 100%;
