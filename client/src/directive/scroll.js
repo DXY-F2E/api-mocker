@@ -1,6 +1,6 @@
 function scrollIntoView (el, isScroll) {
   if (!isScroll) return
-  el.scrollIntoView()
+  el.scrollIntoViewIfNeeded()
 }
 
 export default {
