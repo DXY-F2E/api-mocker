@@ -1,20 +1,26 @@
 <template>
-  <el-card class="card-box" @click.native="editApi(data)">
-   <div slot="header" class="clearfix">
-    <span class="name">{{data.name}}</span>
-    <el-button-group>
-     <el-button size="mini" icon="document" @click.native.stop="showDoc(data)"></el-button>
-     <el-button size="mini" @click.native.stop="confirmCopy(data.name)">
-      <i class="material-icons">content_copy</i>
-     </el-button>
-    </el-button-group>
-   </div>
-   <div class="text item">
-     <label class="manager"><code>Manager:</code></label><input v-model="manager" readonly :id="data._id" />
-   </div>
-   <div class="text item">
-     <label><code>Method :</code></label>{{data.options.method}}
-   </div>
+  <el-card class="card-box" @click.native="showDoc(data)">
+    <div slot="header" class="clearfix">
+      <span class="name">{{data.name}}</span>
+      <el-button-group>
+        <el-button size="mini" icon="edit" title="编辑" @click.native.stop="editApi(data)"></el-button>
+        <el-button size="mini" title="复制" @click.native.stop="confirmCopy(data.name)">
+          <i class="material-icons">content_copy</i>
+        </el-button>
+      </el-button-group>
+    </div>
+    <div class="text item">
+      <label class="manager">
+        <code>Manager:</code>
+      </label>
+      <input v-model="manager" readonly :id="data._id">
+    </div>
+    <div class="text item">
+      <label>
+        <code>Method :</code>
+      </label>
+      {{data.options.method}}
+    </div>
   </el-card>
 </template>
 <script>
@@ -87,7 +93,7 @@ export default {
   overflow: hidden;
 
   &:hover {
-    background-color: #F9FAFC;
+    background-color: #f9fafc;
   }
   .el-card__body {
     padding: 15px 20px;
@@ -103,7 +109,7 @@ export default {
 }
 
 .item {
-  color: #8492A6;
+  color: #8492a6;
 
   label {
     color: #475669;
@@ -163,14 +169,14 @@ export default {
   .el-button-group {
     .el-button:focus,
     button {
-      background-color: #F9FAFC;
-      color: #8492A6;
+      background-color: #f9fafc;
+      color: #8492a6;
       border-color: #bfcbd9;
       width: 22px;
       height: 22px;
     }
     .el-button:hover {
-      background-color: #E5E9F2;
+      background-color: #e5e9f2;
       color: #475669;
     }
   }
