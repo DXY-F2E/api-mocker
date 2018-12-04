@@ -10,6 +10,7 @@
         <template slot="title">{{group.name}}</template>
         <el-menu-item
           v-for="api in apis"
+          v-scroll="api._id === $route.params.apiId"
           :index="api._id"
           :route="{ name: 'ApiDoc', params: { groupId: group._id, apiId: api._id}}"
           :key="api._id"
