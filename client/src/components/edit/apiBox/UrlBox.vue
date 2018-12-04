@@ -37,11 +37,16 @@
         </template>
       </el-col>
       <el-col class="mode" v-if="api._id">
-        <el-select v-model="mode" placeholder="请选择">
+        <!-- <el-select v-model="mode" placeholder="请选择">
           <el-option label="编辑模式" value="edit"></el-option>
           <el-option label="测试模式" value="test"></el-option>
           <el-option label="文档模式" value="doc" class="doc" @click.native="showDoc" :disabled="true"></el-option>
-        </el-select>
+        </el-select>-->
+        <el-button-group>
+          <el-button type="primary" title="文档模式" @click="showDoc">文档</el-button>
+          <el-button v-if="mode === 'edit'" type="primary" title="测试模式" @click="mode = 'test'">测试</el-button>
+          <el-button v-else type="primary" title="编辑模式" @click="mode = 'edit'">编辑</el-button>
+        </el-button-group>
       </el-col>
     </el-row>
   </div>
