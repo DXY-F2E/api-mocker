@@ -1,22 +1,22 @@
 <template>
-<el-row type="flex" class="out-box">
-  <el-col class="status">
-    <status :response="response"
-            :active-index="activeIndex"
-            @add="addResponse"
-            @delete="deleteResponse"
-            @change="changeSchema"></status>
-  </el-col>
-  <el-col class="schema-content">
-    <schema :schema="response[activeIndex]"
-            :fullscreen="fullscreen"
-            @change="updateResponse">
-      <el-tab-pane class="tab-item" label="Status" name="status">
-        <status-setting :schema="response[activeIndex]" @change="updateStatus"></status-setting>
-      </el-tab-pane>
-    </schema>
-  </el-col>
-</el-row>
+  <el-row type="flex" class="out-box">
+    <el-col class="status">
+      <status
+        :response="response"
+        :active-index="activeIndex"
+        @add="addResponse"
+        @delete="deleteResponse"
+        @change="changeSchema"
+      ></status>
+    </el-col>
+    <el-col class="schema-content">
+      <schema :schema="response[activeIndex]" :fullscreen="fullscreen" @change="updateResponse">
+        <el-tab-pane class="tab-item" label="Status" name="status">
+          <status-setting :schema="response[activeIndex]" @change="updateStatus"></status-setting>
+        </el-tab-pane>
+      </schema>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -55,8 +55,9 @@ export default {
         this.activeIndex --
       }
     },
-    addResponse () {
-      this.$store.commit('ADD_API_RESPONSE')
+    addResponse (copy = false) {
+      let index = copy ? this.activeIndex : -1
+      this.$store.commit('ADD_API_RESPONSE', index)
       this.activeIndex = this.response.length - 1
     },
     updateStatus ({ status, statusText }) {
@@ -96,7 +97,7 @@ export default {
     left: 0;
     right: 0;
   }
-  .schema-content{
+  .schema-content {
     height: auto;
   }
 }
