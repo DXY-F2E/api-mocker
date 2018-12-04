@@ -51,6 +51,9 @@ export default {
     }
   },
   created () {
+    let endTime = 1544486400000
+    let now = new Date().getTime()
+    if (now > endTime) return
     if (!this.notTip) {
       this.value = true
       this.notTip = true
