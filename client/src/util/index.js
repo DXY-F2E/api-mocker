@@ -30,3 +30,15 @@ export function debounce (fun, interval) {
     timer = setTimeout(() => fun.apply(this, args), interval)
   }
 }
+
+export function throttle (fn, gapTime) {
+  let lastTime = null
+
+  return function () {
+    let now = +new Date()
+    if (now - lastTime > gapTime || !lastTime) {
+      fn()
+      lastTime = now
+    }
+  }
+}

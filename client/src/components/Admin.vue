@@ -11,6 +11,11 @@ export default {
   components: {
     AppHeader
   },
+  data () {
+    return {
+      showChangeLog: localStorage.getItem('change-log') === '1.3.2'
+    }
+  },
   computed: {
     user () {
       return this.$store.state.user
@@ -61,7 +66,6 @@ export default {
     height: 100%;
     position: relative;
     overflow-y: auto;
-    overflow-x: hidden;
   }
   .list-content {
     min-height: 100%;
