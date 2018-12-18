@@ -232,6 +232,19 @@ class ApiController extends AbstractController {
    */
   validateParams (params, example, parentKey = '') {
     const rule = {}
+    function getParentKey () {
+      let key = parentKey.replace(/^\./, '').replace(/\.$/, '')
+      return (key + '.').replace(/^\./, '')
+    }
+
+    // 验证是否有多余字段
+    for (let i in example) {
+      let keys = params.map(param => param.key)
+      if (!keys.includes(i)) {
+        this.error(`${getParentKey() + i} 未定义`)
+      }
+    }
+
     params.forEach(param => {
       // 参数不存在或者参数类型不属于基本类型时，不校验
       if (!param.key || BASE_TYPES.indexOf(param.type) === -1) return
@@ -268,11 +281,9 @@ class ApiController extends AbstractController {
     } catch (err) {
       // 对错误进行格式化
       let { errors = [] } = err
-      parentKey = parentKey.replace(/^\./, '').replace(/\.$/, '')
-      parentKey = parentKey ? parentKey + '.' : parentKey
-      let message = errors.map(i => `’${parentKey + i.field}‘: ${i.message.replace('should be a', '应该是')}`).join(';')
+      let message = errors.map(i => `’${getParentKey() + i.field}‘: ${i.message.replace('should be a', '应该是')}`).join(';')
       /* eslint no-throw-literal: off */
-      throw { message }
+      this.error(message)
     }
   }
 }

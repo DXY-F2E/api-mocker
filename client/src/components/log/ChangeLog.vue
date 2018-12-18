@@ -25,7 +25,7 @@ export default {
       current: localStorage.getItem('change-log-version'),
       changeLogs: [
         { label: 'feat: 添加了 example 的验证，在创建/更新接口时，example 必须按照 schema 规则书写！！！' },
-        { label: '注意: 如果 example 中的数据类型/格式与 schema 中不符，将报错误信息：保存失败:Validation Failed' }
+        { label: '注意: example 中的多余字段也不允许！' }
       ]
     }
   },
