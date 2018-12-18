@@ -259,6 +259,11 @@ class ApiController extends AbstractController {
 
         // 如果是 Array<any> 类型，则需要对数组每一项进行验证
         if (itemType === 'object') {
+          let emptyValidate = params.map(item => item.required).includes(true) && !data.length
+          if (emptyValidate) {
+            this.error(`${getParentKey() + param.key} 无数据`)
+          }
+
           for (let item of data) {
             this.validateParams(params, item, `${parentKey}.${param.key}`)
           }
