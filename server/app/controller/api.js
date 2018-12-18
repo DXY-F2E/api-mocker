@@ -230,7 +230,8 @@ class ApiController extends AbstractController {
    * @param {Object} example - 要验证的数据
    * @param {String} parentKey - 上一级的 key
    */
-  validateParams (params, example, parentKey = '') {
+  validateParams (params, example = {}, parentKey = '') {
+    example = example || {}
     const rule = {}
     function getParentKey () {
       let key = parentKey.replace(/^\./, '').replace(/\.$/, '')
