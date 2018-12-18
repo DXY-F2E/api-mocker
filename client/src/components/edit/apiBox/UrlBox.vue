@@ -42,7 +42,7 @@
           <el-option label="测试模式" value="test"></el-option>
           <el-option label="文档模式" value="doc" class="doc" @click.native="showDoc" :disabled="true"></el-option>
         </el-select>-->
-        <el-button-group>
+        <el-button-group class="mode-btn-group">
           <el-button v-if="mode === 'edit'" type="primary" title="测试模式" @click="mode = 'test'">测试</el-button>
           <el-button v-else type="primary" title="编辑模式" @click="mode = 'edit'">编辑</el-button>
           <el-button type="primary" title="文档模式" @click="showDoc">文档</el-button>
@@ -186,6 +186,10 @@ export default {
   .el-col.mode {
     width: 150px;
     text-align: right;
+  }
+
+  .mode-btn-group {
+    min-width: 120px;
   }
 
   .el-select .el-input__inner {

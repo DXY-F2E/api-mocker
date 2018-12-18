@@ -3,6 +3,8 @@ const assert = require('http-assert')
 const mongoose = require('mongoose')
 const AbstractController = require('./abstract')
 
+const BASE_TYPES = [ 'string', 'number', 'boolean', 'object', 'array' ]
+
 class ApiController extends AbstractController {
   async getAll () {
     const { groupId } = this.ctx.params
@@ -73,6 +75,8 @@ class ApiController extends AbstractController {
     const { body } = this.ctx.request
     const authId = this.ctx.authUser._id
     const lastModifiedTime = body.modifiedTime
+    // 验证 example 是否与 schema 一致
+    this.validateExample(body.options.response)
 
     assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalid groupId')
     assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
@@ -169,6 +173,9 @@ class ApiController extends AbstractController {
     const { groupId } = this.ctx.params
     const { body } = this.ctx.request
 
+    // 验证 example 是否与 schema 一致
+    this.validateExample(body.options.response)
+
     assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalie groupId')
     assert(body.name, 403, 'required name')
 
@@ -210,6 +217,79 @@ class ApiController extends AbstractController {
     this.notifyApi('Delete', group, rs)
     this.ctx.logger.info('deleteApi')
     this.ctx.status = 204
+  }
+  validateExample (response = []) {
+    for (let item of response) {
+      let { example, params } = item
+      this.validateParams(params, example)
+    }
+  }
+  /**
+   *
+   * @param {Array} params - 验证规则数据
+   * @param {Object} example - 要验证的数据
+   * @param {String} parentKey - 上一级的 key
+   */
+  validateParams (params, example, parentKey = '') {
+    const rule = {}
+    function getParentKey () {
+      let key = parentKey.replace(/^\./, '').replace(/\.$/, '')
+      return (key + '.').replace(/^\./, '')
+    }
+
+    // 验证是否有多余字段
+    for (let i in example) {
+      let keys = params.map(param => param.key)
+      if (!keys.includes(i)) {
+        this.error(`${getParentKey() + i} 未定义`)
+      }
+    }
+
+    params.forEach(param => {
+      // 参数不存在或者参数类型不属于基本类型时，不校验
+      if (!param.key || BASE_TYPES.indexOf(param.type) === -1) return
+
+      let data = example[param.key]
+      let itemType = ''
+
+      // 如果是 array 类型
+      if (param.type === 'array') {
+        let { type, params } = param.items
+        itemType = type
+
+        // 如果是 Array<any> 类型，则需要对数组每一项进行验证
+        if (itemType === 'object') {
+          let emptyValidate = params.map(item => item.required).includes(true) && !data.length
+          if (emptyValidate) {
+            this.error(`${getParentKey() + param.key} 无数据`)
+          }
+
+          for (let item of data) {
+            this.validateParams(params, item, `${parentKey}.${param.key}`)
+          }
+        }
+      } else if (param.type === 'object') {
+        // 如果是 object 类型，递归验证
+        this.validateParams(param.params, data, `${parentKey}.${param.key}`)
+      }
+
+      rule[param.key] = {
+        type: param.type,
+        required: param.required,
+        allowEmpty: param.type === 'string',
+        itemType // 如果是数组，则需要此参数验证数组每一项
+      }
+    })
+
+    try {
+      this.ctx.validate(rule, example)
+    } catch (err) {
+      // 对错误进行格式化
+      let { errors = [] } = err
+      let message = errors.map(i => `’${getParentKey() + i.field}‘: ${i.message.replace('should be a', '应该是')}`).join(';')
+      /* eslint no-throw-literal: off */
+      this.error(message)
+    }
   }
 }
 module.exports = ApiController

@@ -20,15 +20,12 @@ export default {
   },
   data () {
     return {
-      version: '1.3.2',
+      version: '1.3.3',
+      endTime: '2018-12-31',
       current: localStorage.getItem('change-log-version'),
       changeLogs: [
-        { label: 'feat: 接口列表跳转默认跳转到文档模式，小图标改为编辑模式' },
-        { label: 'fix: 接口列表名称太长显示不下' },
-        { label: 'fix: 文档模式，左侧菜单滚动到当前项' },
-        { label: 'fix: 接口添加返回状态时，添加复制操作' },
-        { label: 'fix: 编辑模式保存后 3s 内不能重复保存' },
-        { label: 'fix: 编辑模式下更便捷的切换到文档模式' }
+        { label: 'feat: 添加了 example 的验证，在创建/更新接口时，example 必须按照 schema 规则书写！！！' },
+        { label: '注意: example 中的多余字段也不允许！' }
       ]
     }
   },
@@ -51,7 +48,7 @@ export default {
     }
   },
   created () {
-    let endTime = 1544486400000
+    let endTime = new Date(this.endTime).getTime()
     let now = new Date().getTime()
     if (now > endTime) return
     if (!this.notTip) {
