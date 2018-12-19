@@ -3,7 +3,7 @@ const assert = require('http-assert')
 const mongoose = require('mongoose')
 const AbstractController = require('./abstract')
 
-const BASE_TYPES = [ 'string', 'number', 'boolean', 'object', 'array' ]
+const BASE_TYPES = ['string', 'number', 'boolean', 'object', 'array']
 
 class ApiController extends AbstractController {
   async getAll () {
@@ -24,7 +24,7 @@ class ApiController extends AbstractController {
       ]
       // 符合objectId的话，添加id的查询
       if (q.match(/^[0-9a-fA-F]{24}$/)) {
-        condition.$or.unshift({_id: q})
+        condition.$or.unshift({ _id: q })
       }
     }
     const users = q ? await this.service.user.find(q) : []
@@ -256,10 +256,12 @@ class ApiController extends AbstractController {
       // 如果是 array 类型
       if (param.type === 'array') {
         let { type, params } = param.items
-        itemType = type
+        itemType = type === 'undefined' ? '' : type
 
-        // 如果是 Array<any> 类型，则需要对数组每一项进行验证
-        if (itemType === 'object') {
+        if (!itemType) {
+          // 如果无类型，则不验证
+        } else if (itemType === 'object') {
+          // 如果是 Array<any> 类型，则需要对数组每一项进行验证
           let emptyValidate = params.map(item => item.required).includes(true) && !data.length
           if (emptyValidate) {
             this.error(`${getParentKey() + param.key} 无数据`)
