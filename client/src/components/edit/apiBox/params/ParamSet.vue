@@ -18,7 +18,7 @@
         <el-input placeholder="备注" v-model="param.comment" @change="lazyUpdate"></el-input>
       </el-col>
       <el-col class="example">
-        <el-input placeholder="example" v-model="example" @change="lazyUpdate"></el-input>
+        <el-input placeholder="example" v-model="exampleInput" @change="lazyUpdate"></el-input>
       </el-col>
     </el-row>
   </div>
@@ -38,22 +38,6 @@ export default {
     }
   },
   computed: {
-    example: {
-      get () {
-        return typeof this.param.example === 'string' ? this.param.example : JSON.stringify(this.param.example)
-      },
-      set (value) {
-        if (this.param.type === 'string') {
-          this.param.example = value
-        } else {
-          try {
-            this.param.example = JSON.parse(value)
-          } catch (err) {
-            this.param.example = value
-          }
-        }
-      }
-    },
     apiType () {
       const type = [this.param.type]
       if (this.param.type === 'array') {
@@ -67,9 +51,21 @@ export default {
   },
   data () {
     return {
+      exampleInput: '',
       selectedOptions: [],
-      lazyUpdate: debounce(this.update, 300)
+      lazyUpdate: debounce(this.update, 300),
+      exampleUpdate: false
     }
+  },
+  created () {
+    this.setExampleInput()
+  },
+  watch: {
+    'param.example': {
+      handler () { this.setExampleInput() },
+      deep: true
+    },
+    'exampleInput': 'setExample'
   },
   methods: {
     lazy (fn) {
@@ -137,6 +133,30 @@ export default {
         }
         return type
       })
+    },
+    setExampleInput () {
+      if (this.exampleUpdate) {
+        this.exampleUpdate = false
+        return
+      }
+      this.exampleInput = typeof this.param.example === 'string'
+        ? this.param.example
+        : JSON.stringify(this.param.example)
+    },
+    setExample () {
+      this.exampleUpdate = true
+      let value = this.exampleInput
+      if (this.param.type === 'string') {
+        this.param.example = value
+      } else if (this.param.type === 'number') {
+        this.param.example = parseFloat(value)
+      } else {
+        try {
+          this.param.example = JSON.parse(value)
+        } catch (err) {
+          this.param.example = value
+        }
+      }
     }
   }
 }
@@ -174,7 +194,7 @@ export default {
   .el-input__inner {
     border: none;
     border-radius: 0;
-    border-bottom: 1px solid #EFF2F7;
+    border-bottom: 1px solid #eff2f7;
     font-family: monospace;
   }
   .el-input-number {
@@ -184,5 +204,4 @@ export default {
     margin-right: 20px;
   }
 }
-
 </style>
