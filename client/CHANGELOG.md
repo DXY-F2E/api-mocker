@@ -17,3 +17,4 @@
 ## 1.3.3
 
 * feat: 添加了 example 的验证，在创建/更新接口时，example 必须按照 schema 规则书写！！！
+* fix: 修改 example 中输入小数问题。
