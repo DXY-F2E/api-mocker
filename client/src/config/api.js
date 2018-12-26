@@ -14,6 +14,7 @@ export default R.map((url) => `${domain}${url}`)({
   API_AUTHORITY: '/server/authority/api/:apiId',
   API_FOLLOWER: '/server/api/follower/:apiId',
   USER: '/auth/user',
+  USER_SEARCH: '/server/user/search',
   PROFILE: '/server/user',
   STAT: '/server/stat'
 })

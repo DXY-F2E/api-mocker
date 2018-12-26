@@ -27,6 +27,9 @@
         @itemClick="itemClick">
       </user-selector>
     </el-form-item>
+    <el-form-item label="管理员：">
+      <search-user v-model="manageName" placeholder="搜索用户" @select="manageChange"></search-user>
+    </el-form-item>
   </el-form>
   <div slot="footer" class="dialog-footer">
     <el-button @click="cancel">取 消</el-button>
@@ -37,10 +40,12 @@
 
 <script>
 import UserSelector from '@/components/common/UserSelector'
+import SearchUser from '@/components/common/SearchUser'
 import R from 'ramda'
 export default {
   components: {
-    UserSelector
+    UserSelector,
+    SearchUser
   },
   props: {
     group: Object,
@@ -49,10 +54,12 @@ export default {
   data () {
     return {
       localGroup: R.clone(this.group),
-      users: []
+      users: [],
+      manageName: ''
     }
   },
   mounted () {
+    this.initManageName()
     this.initUsers()
   },
   computed: {
@@ -63,7 +70,13 @@ export default {
       return `${this.localGroup.name}`
     }
   },
+  watch: {
+    'localGroup': 'initManageName'
+  },
   methods: {
+    initManageName () {
+      this.manageName = (this.allUsers.find(i => i._id === this.localGroup.manager) || { name: '' }).name
+    },
     initUsers () {
       this.users = this.localGroup.member.map(id =>
         this.allUsers.find(u => u._id === id)
@@ -93,6 +106,9 @@ export default {
         this.$emit('update', rs.data)
         this.$emit('hide')
       }).catch(err => this.$message.error(err.msg))
+    },
+    manageChange (item) {
+      this.localGroup.manager = item.id
     }
   }
 }
