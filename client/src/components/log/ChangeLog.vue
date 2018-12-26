@@ -25,7 +25,8 @@ export default {
       current: localStorage.getItem('change-log-version'),
       changeLogs: [
         { label: 'feat: 添加了 example 的验证，在创建/更新接口时，example 必须按照 schema 规则书写！！！' },
-        { label: '注意: example 中的多余字段也不允许！' }
+        { label: '注意: example 中的多余字段也不允许！' },
+        { label: 'feat: 添加组管理移交到其他人下。' }
       ]
     }
   },
