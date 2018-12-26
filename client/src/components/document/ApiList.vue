@@ -66,6 +66,7 @@ export default {
 </script>
 <style lang="less">
 .apis {
+  position: relative;
   transition: width 0.4s ease;
   width: 288px;
   min-width: 288px;

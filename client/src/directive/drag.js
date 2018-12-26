@@ -34,6 +34,9 @@ function setDragLine (el, onChange) {
   })
 
   el.appendChild(line)
+  el.addEventListener('scroll', e => {
+    line.style.top = el.scrollTop + 'px'
+  })
 }
 
 export default {

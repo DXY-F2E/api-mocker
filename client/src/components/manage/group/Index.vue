@@ -75,9 +75,10 @@ export default {
       this.showGroupEdit = true
     },
     updateGroup (group) {
-      window.console.log(group)
-      const index = R.findIndex(R.propEq('_id', group._id))(this.groups)
-      this.$set(this.groups, index, group)
+      // window.console.log(group)
+      // const index = R.findIndex(R.propEq('_id', group._id))(this.groups)
+      // this.$set(this.groups, index, group)
+      this.getGroups()
     }
   },
   mounted () {
