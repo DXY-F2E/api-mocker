@@ -38,7 +38,7 @@ class ApiAuthority extends Service {
         }
       case OPERATION_DESIGNEE:
         return {
-          status: !!operator.find(o => o.toString() === authId),
+          status: !!(operator.find(o => o.toString() === authId) || (group.manager.toString() === authId)),
           msg: '仅指定人员可操作'
         }
       default:
