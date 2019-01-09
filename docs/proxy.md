@@ -19,7 +19,7 @@ $.ajax({
   url: mockUrl,
   method: 'get',
   headers: {
-    'api-coookie': 'your cookie of authentication'
+    'api-cookie': 'your cookie of authentication'
   }
 })
 ```
