@@ -85,6 +85,7 @@ export default {
       } else if (val[0] === 'array') {
         this.setArrayType(val[1])
       }
+      this.setExample()
       this.update()
     },
     setArrayType (type) {
