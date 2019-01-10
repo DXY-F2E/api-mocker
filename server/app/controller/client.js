@@ -3,7 +3,7 @@ const AbstractController = require('./abstract')
 
 const sleep = ms => new Promise(resolve => setTimeout(() => resolve(true), ms))
 
-const BASE_TYPES = [ 'string', 'number', 'boolean', 'object', 'array' ]
+const BASE_TYPES = ['string', 'number', 'boolean', 'object', 'array']
 
 class ClientController extends AbstractController {
   async findApi () {
@@ -151,8 +151,8 @@ class ClientController extends AbstractController {
       // get请求不校验body
       if (method === 'get' && name === 'body') continue
       params[name].forEach(param => {
-        // 参数不存在或者参数类型不属于基本类型时，不校验
-        if (!param.key || BASE_TYPES.indexOf(param.type) === -1) return
+        // 参数不存在 || 参数类型不属于基本类型 || 参数不必填，不校验
+        if (!param.key || BASE_TYPES.indexOf(param.type) === -1 || !param.required) return
         rule[param.key] = {
           type: this.getValidatorType(name, param.type),
           required: param.required,
