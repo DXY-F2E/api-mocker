@@ -20,3 +20,5 @@
 * fix: 修改 example 中输入小数问题。
 * feat: 添加组管理移交到其他人下。
 * fix: 修改 api 权限，选择为指定人员时包含组管理员。
+* fix: schema 生成 example 时，切换数据格式生成数据格式不切换的问题。
+* fix: get 请求 query 中参数为 number 类型，但非必填，发送空字符串错误问题。
