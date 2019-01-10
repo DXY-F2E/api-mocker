@@ -151,8 +151,13 @@ class ClientController extends AbstractController {
       // get请求不校验body
       if (method === 'get' && name === 'body') continue
       params[name].forEach(param => {
-        // 参数不存在 || 参数类型不属于基本类型 || 参数不必填，不校验
-        if (!param.key || BASE_TYPES.indexOf(param.type) === -1 || !param.required) return
+        // 参数不必填 && 发送的值为空字符串, 不校验
+        if (!param.required) {
+          let value = data[name] ? data[name][param.key] : ''
+          if (!value) return
+        }
+        // 参数不存在 || 参数类型不属于基本类型，不校验
+        if (!param.key || BASE_TYPES.indexOf(param.type) === -1) return
         rule[param.key] = {
           type: this.getValidatorType(name, param.type),
           required: param.required,
