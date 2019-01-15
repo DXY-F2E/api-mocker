@@ -49,8 +49,11 @@ class Api extends Service {
       _id: apiId
     }, { manager: 1, group: 1 })
     if (!api) return false
-    let { manager, group } = api
-    let isManager = this.ctx.authUser._id === manager.toString()
+    let { group } = api
+    let isManager = !!(await this.ctx.model.Api.findOne({
+      _id: apiId,
+      manager: this.ctx.authUser._id
+    }))
     let isGroupManager = this.isGroupManager(group)
     return isManager || isGroupManager
   }
