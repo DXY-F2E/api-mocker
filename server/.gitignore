@@ -6,3 +6,5 @@ coverage/
 run/
 .DS_Store
 *.swp
+config/core.js
+config/manager.js
