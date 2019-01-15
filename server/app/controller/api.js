@@ -169,6 +169,10 @@ class ApiController extends AbstractController {
     const { limit = 100, page = 1 } = this.ctx.query
     this.ctx.body = await this.service.api.getManageList(page, limit)
   }
+  async getApisByGroupManager () {
+    const { groupId } = this.ctx.params
+    this.ctx.body = await this.service.api.getApisByGroupManager(groupId)
+  }
   async createApi () {
     const { groupId } = this.ctx.params
     const { body } = this.ctx.request
