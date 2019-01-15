@@ -255,23 +255,29 @@ class ApiController extends AbstractController {
 
       // 如果是 array 类型
       if (param.type === 'array') {
+        // 不是数组
+        if (!Array.isArray(data)) {
+          this.error(`${getParentKey() + param.key} 不是一个数组`)
+        }
+
+        // 空数组不验证
+        if (!data.length) return
+
         let { type, params } = param.items
         itemType = type === 'undefined' ? '' : type
 
         if (!itemType) {
           // 如果无类型，则不验证
         } else if (itemType === 'object') {
-          // 如果是 Array<any> 类型，则需要对数组每一项进行验证
-          let emptyValidate = params.map(item => item.required).includes(true) && !data.length
-          if (emptyValidate) {
-            this.error(`${getParentKey() + param.key} 无数据`)
-          }
-
           for (let item of data) {
             this.validateParams(params, item, `${parentKey}.${param.key}`)
           }
         }
       } else if (param.type === 'object') {
+        // 数据不是 object
+        if (typeof data !== 'object') {
+          this.error(`${getParentKey() + param.key} 不是一个对象`)
+        }
         // 如果是 object 类型，递归验证
         this.validateParams(param.params, data, `${parentKey}.${param.key}`)
       }
