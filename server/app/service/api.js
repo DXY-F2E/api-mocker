@@ -45,10 +45,13 @@ class Api extends Service {
     }, api, { new: true })
   }
   async isManager (apiId) {
+    if (this.ctx.isManager) return true
+
     let api = await this.ctx.model.Api.findOne({
       _id: apiId
     }, { manager: 1, group: 1 })
     if (!api) return false
+
     let { group } = api
     let isManager = !!(await this.ctx.model.Api.findOne({
       _id: apiId,
@@ -58,6 +61,8 @@ class Api extends Service {
     return isManager || isGroupManager
   }
   async isGroupManager (groupId) {
+    if (this.ctx.isManager) return true
+
     return !!(await this.ctx.model.Group.findOne({
       _id: groupId,
       manager: this.ctx.authUser._id
@@ -93,6 +98,7 @@ class Api extends Service {
       manager: this.ctx.authUser._id,
       isDeleted: false
     }
+
     return this.getList(cond)
   }
   getApisByGroupManager (groupId) {

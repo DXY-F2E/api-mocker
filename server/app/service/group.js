@@ -41,10 +41,16 @@ class Group extends Service {
     return this.ctx.model.Group.find(cond).sort({ modifiedTime: -1, createTime: -1 })
   }
   update (groupId, group) {
-    return this.ctx.model.Group.findOneAndUpdate({
+    let config = {
       _id: groupId,
       manager: this.ctx.authUser._id
-    }, Object.assign(group, { modifiedTime: Date.now() }), { new: true })
+    }
+
+    if (this.ctx.isManager) {
+      delete config.manager
+    }
+
+    return this.ctx.model.Group.findOneAndUpdate(config, Object.assign(group, { modifiedTime: Date.now() }), { new: true })
   }
   updateFollower (groupId, follower) {
     return this.ctx.model.Group.findOneAndUpdate(
@@ -70,15 +76,19 @@ class Group extends Service {
       name: group.name,
       creator: authId,
       manager: authId,
-      follower: [ authId ]
+      follower: [authId]
     }
     return this.ctx.model.Group(_group).save()
   }
   getUserGroups (user, rights) {
-    return this.ctx.model.Group.find({
+    let config = {
       [rights]: user,
       isDeleted: false
-    }).sort({
+    }
+    if (this.ctx.isManager) {
+      delete config[rights]
+    }
+    return this.ctx.model.Group.find(config).sort({
       createTime: -1
     })
   }
