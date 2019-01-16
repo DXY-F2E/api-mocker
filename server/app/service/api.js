@@ -26,7 +26,7 @@ class Api extends Service {
     apis = apis.map(api => {
       api.creator = authId
       api.manager = authId
-      api.follower = [ authId ]
+      api.follower = [authId]
       return api
     })
     return this.ctx.model.Api.insertMany(apis)
@@ -35,7 +35,7 @@ class Api extends Service {
     const authId = this.ctx.authUser._id
     api.creator = authId
     api.manager = authId
-    api.follower = [ authId ]
+    api.follower = [authId]
     return this.ctx.model.Api(api).save()
   }
   update (apiId, api) {
@@ -45,15 +45,34 @@ class Api extends Service {
     }, api, { new: true })
   }
   async isManager (apiId) {
-    return !!(await this.ctx.model.Api.findOne({
+    if (this.ctx.isManager) return true
+
+    let api = await this.ctx.model.Api.findOne({
+      _id: apiId
+    }, { manager: 1, group: 1 })
+    if (!api) return false
+
+    let { group } = api
+    let isManager = !!(await this.ctx.model.Api.findOne({
       _id: apiId,
+      manager: this.ctx.authUser._id
+    }))
+    let isGroupManager = this.isGroupManager(group)
+    return isManager || isGroupManager
+  }
+  async isGroupManager (groupId) {
+    if (this.ctx.isManager) return true
+
+    return !!(await this.ctx.model.Group.findOne({
+      _id: groupId,
       manager: this.ctx.authUser._id
     }))
   }
   delete (apiId) {
+    const isManager = this.isManager(apiId)
+    if (!isManager) return false
     return this.ctx.model.Api.findOneAndUpdate({
-      _id: apiId,
-      manager: this.ctx.authUser._id
+      _id: apiId
     }, {
       modifiedTime: Date.now(),
       isDeleted: true
@@ -77,6 +96,14 @@ class Api extends Service {
   getManageList (page, limit) {
     const cond = {
       manager: this.ctx.authUser._id,
+      isDeleted: false
+    }
+
+    return this.getList(cond)
+  }
+  getApisByGroupManager (groupId) {
+    const cond = {
+      group: groupId,
       isDeleted: false
     }
     return this.getList(cond)

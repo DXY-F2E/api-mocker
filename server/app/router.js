@@ -16,6 +16,7 @@ module.exports = app => {
 
   app.get('/server/api/', 'api.getAll')
   app.get('/server/api/manage', 'api.getManageApi')
+  app.get('/server/api/:groupId/manage', 'api.getApisByGroupManager')
   app.get('/server/api/:groupId', 'api.getAll')
   app.get('/server/api/:groupId/:apiId', 'api.getApi')
   app.post('/server/api/:groupId', 'api.createApi')

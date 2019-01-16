@@ -15,7 +15,7 @@ module.exports = app => {
       type: String,
       required: true
     },
-    teamId: [ ObjectId ],
+    teamId: [ObjectId],
     createTime: {
       type: Date,
       default: Date.now
@@ -25,6 +25,10 @@ module.exports = app => {
       default: Date.now
     },
     isDeleted: {
+      type: Boolean,
+      default: false
+    },
+    isManager: {
       type: Boolean,
       default: false
     }

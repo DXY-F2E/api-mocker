@@ -4,6 +4,12 @@ module.exports = options => {
       const user = ctx.service.cookie.getUser()
       if (user) {
         ctx.authUser = user
+
+        // 超级管理员
+        if (user.isManager) {
+          ctx.isManager = true
+        }
+
         await next()
       } else {
         ctx.status = 401

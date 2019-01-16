@@ -1,12 +1,12 @@
 import axios from 'axios'
 import API from '@/config/api'
 import {
-    validateApi,
-    buildApiResponse,
-    buildExampleFromSchema,
-    getDomain,
-    catchError,
-    buildRestUrl
+  validateApi,
+  buildApiResponse,
+  buildExampleFromSchema,
+  getDomain,
+  catchError,
+  buildRestUrl
 } from '@/util'
 
 // 允许跨域请求带上cookie
@@ -42,7 +42,7 @@ const actions = {
       throw err
     })
   },
-  createGroup ({commit}, payload) {
+  createGroup ({ commit }, payload) {
     return axios.post(API.GROUPS, payload).then(response => {
       commit('CREATE_GROUP_SUCCESS', response.data.resources)
     })
@@ -78,7 +78,7 @@ const actions = {
     })
   },
   getApi ({ commit }, payload) {
-    const {groupId, apiId} = payload
+    const { groupId, apiId } = payload
     return axios.get(API.API.replace(':groupId', groupId).replace(':apiId', apiId)).then(res => {
       const api = buildApiResponse(res.data.resources)
       window.console.log(api)
@@ -89,13 +89,16 @@ const actions = {
   getManageApi () {
     return axios.get(`${API.APIS}/manage`)
   },
+  getApisByGroupManager ({ state }, groupId) {
+    return axios.get(`${API.APIS}/:groupId/manage`.replace(':groupId', groupId))
+  },
   getManageGroup () {
     return axios.get(`${API.GROUPS}/manage`)
   },
   getUnmanagedGroup () {
     return axios.get(`${API.GROUPS}/unmanaged`)
   },
-  claimGroup ({state}, groupId) {
+  claimGroup ({ state }, groupId) {
     return axios.put(`${API.GROUP.replace(':groupId', groupId)}/claim`)
   },
   getApiHistory ({ commit }, apiId) {
@@ -206,7 +209,7 @@ const actions = {
   },
   searchUsers (_, query) {
     return axios.get(`${API.PROFILE}/search`, {
-      params: {query}
+      params: { query }
     })
   },
   getAllUsers ({ commit }) {
@@ -264,10 +267,10 @@ const actions = {
     })
   },
   sendResetPassCode ({ state }, email) {
-    return axios.post(`${API.USER}/recovery/password/code`, {email})
+    return axios.post(`${API.USER}/recovery/password/code`, { email })
   },
   sendResetPassTicket ({ state }, email) {
-    return axios.post(`${API.USER}/recovery/password/ticket`, {email})
+    return axios.post(`${API.USER}/recovery/password/ticket`, { email })
   },
   resetPass ({ state }, resetForm) {
     return axios.put(`${API.USER}/recovery/password`, resetForm)
