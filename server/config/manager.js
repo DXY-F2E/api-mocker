@@ -1,6 +1,0 @@
-module.exports = {
-  email: 'xxx@dxy.cn',
-  password: 'xxx',
-  name: '超级管理员',
-  isManager: true
-}
