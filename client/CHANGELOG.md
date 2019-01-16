@@ -23,8 +23,8 @@
 
 ## 1.3.4
 
-* fix: #24
-* fix: #44
+* fix: [#24](https://gitlab.dxy.net/f2e/api-mocker/issues/24)
+* fix: [#44](https://gitlab.dxy.net/f2e/api-mocker/issues/44)
 * feat: 组管理员可以修改组下所有 api 的设置
 * fix: example 的校验去掉了对空数组的校验
 * feat: 添加超级管理员
