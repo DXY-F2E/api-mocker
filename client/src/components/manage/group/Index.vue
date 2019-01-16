@@ -10,13 +10,14 @@
       </el-table-column>
       <el-table-column prop="createTime" :formatter="timeFormat" width="200" label="创建时间">
       </el-table-column>
-      <el-table-column width="160" label="操作">
+      <el-table-column width="200" label="操作">
         <template scope="scope">
-          <control :group="scope.row" :mode="mode" @delete="groupDelete" @manage="manageGroup"></control>
+          <control :group="scope.row" :mode="mode" @delete="groupDelete" @manage="manageGroup" @api-manage="manageGroupApi"></control>
         </template>
       </el-table-column>
     </el-table>
   </div>
+  <api-manage v-if="manageApi.title" :apis="manageApi.apis" :title="manageApi.title" class="api-manage"></api-manage>
   <group-edit v-if="group"
               :visible="showGroupEdit"
               :group="group"
@@ -31,24 +32,31 @@ import { mapActions } from 'vuex'
 import moment from 'moment'
 import Control from './GroupControl'
 import GroupEdit from './GroupEdit'
+import ApiManage from '../api/ApiManage'
 import R from 'ramda'
 export default {
   components: {
     Control,
-    GroupEdit
+    GroupEdit,
+    ApiManage
   },
   data () {
     return {
       showGroupEdit: false,
       mode: 'managed',
       group: null,
-      groups: []
+      groups: [],
+      manageApi: {
+        title: '',
+        apis: []
+      }
     }
   },
   methods: {
     ...mapActions([
       'getManageGroup',
-      'getUnmanagedGroup'
+      'getUnmanagedGroup',
+      'getApisByGroupManager'
     ]),
     timeFormat (row, col) {
       return moment(new Date(Number(row[col.property]))).format('YYYY-MM-DD HH:mm:ss')
@@ -74,6 +82,11 @@ export default {
       this.group = group
       this.showGroupEdit = true
     },
+    async manageGroupApi (group) {
+      let { _id: groupId, name: groupName } = group
+      this.manageApi.title = `${groupName}`
+      this.manageApi.apis = (await this.getApisByGroupManager(groupId)).data
+    },
     updateGroup (group) {
       // window.console.log(group)
       // const index = R.findIndex(R.propEq('_id', group._id))(this.groups)
@@ -86,7 +99,7 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="less" scoped>
 .mode-switch {
   margin-bottom: 20px;
 }
@@ -94,5 +107,19 @@ export default {
 .unmanaged .unmanaged {
   color: #20a0ff;
   border-color: #20a0ff;
+}
+.api-manage {
+  position: relative;
+  margin-top: 40px;
+  border-top: 1px solid #ddd;
+  &:before {
+    content: "API 管理";
+    position: absolute;
+    left: 40px;
+    top: -12px;
+    font-size: 16px;
+    color: #ccc;
+    background-color: #f9fafc;
+  }
 }
 </style>
