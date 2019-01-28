@@ -24,7 +24,7 @@ function buildParams (json, oldParams) {
       param.type = 'array'
       param.items = { type: typeof jsonValue[0] }
       if (param.items.type === 'object') {
-        param.items.params = buildParams(jsonValue[0], oldParam && oldParam.items && oldParam.items.params)
+        param.items.params = buildArrayParams(jsonValue, oldParam && oldParam.items && oldParam.items.params)
       } else {
         param.example = jsonValue
       }
@@ -40,6 +40,33 @@ function buildParams (json, oldParams) {
     params.push(new Param())
   }
   return params
+}
+function buildArrayParams (data = [], params) {
+  let resultParams = data.filter(item => !R.isEmpty(item)).map(item => buildParams(item, params))
+  return resultParams.reduce((sum, param, index) => {
+    // 第一次
+    if (index === 0) {
+      sum = param
+    } else {
+      sum.forEach((item, i) => {
+        let key = item.key
+        let isPresence = findParam(param, key)
+        // 如果新的中没有旧的，需要把旧的中的 required 变成 false
+        if (!isPresence) item.required = false
+        else sum[i] = isPresence
+      })
+      param.forEach((item) => {
+        let key = item.key
+        let isPresence = findParam(sum, key)
+        // 如果旧的中没有新的，把新的 push 到 sum ，并设置为 required false
+        if (!isPresence) {
+          item.required = false
+          sum.push(item)
+        }
+      })
+    }
+    return sum
+  }, [])
 }
 export default (json, oldParams = null, statusText = 'status1', status = 200) => {
   const schema = {
