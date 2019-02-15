@@ -1,5 +1,7 @@
 import Param from '@/model/param'
 import R from 'ramda'
+import * as deepmerge from 'deepmerge'
+
 function findParam (params, key) {
   if (!params || !params.length) {
     return null
@@ -12,13 +14,13 @@ function buildParams (json, oldParams) {
     const jsonValue = json[key]
     const type = typeof jsonValue
     // null, {}, [] 都属于空，属性则为选填
-    const required = !(R.isEmpty(jsonValue) || jsonValue === null)
+    // const required = !(R.isEmpty(jsonValue) || jsonValue === null)
     const oldParam = findParam(oldParams, key)
     const param = new Param({
       ...(oldParam || {}),
       key,
       type,
-      required
+      required: false
     })
     if (type === 'object' && jsonValue instanceof Array) {
       param.type = 'array'
@@ -41,33 +43,12 @@ function buildParams (json, oldParams) {
   }
   return params
 }
+
 function buildArrayParams (data = [], params) {
-  let resultParams = data.filter(item => !R.isEmpty(item)).map(item => buildParams(item, params))
-  return resultParams.reduce((sum, param, index) => {
-    // 第一次
-    if (index === 0) {
-      sum = param
-    } else {
-      sum.forEach((item, i) => {
-        let key = item.key
-        let isPresence = findParam(param, key)
-        // 如果新的中没有旧的，需要把旧的中的 required 变成 false
-        if (!isPresence) item.required = false
-        else sum[i] = isPresence
-      })
-      param.forEach((item) => {
-        let key = item.key
-        let isPresence = findParam(sum, key)
-        // 如果旧的中没有新的，把新的 push 到 sum ，并设置为 required false
-        if (!isPresence) {
-          item.required = false
-          sum.push(item)
-        }
-      })
-    }
-    return sum
-  }, [])
+  let allObject = data.filter(item => !R.isEmpty(item)).reduce((result, currentObject) => deepmerge(result, currentObject))
+  return buildParams(allObject, params)
 }
+
 export default (json, oldParams = null, statusText = 'status1', status = 200) => {
   const schema = {
     status,
