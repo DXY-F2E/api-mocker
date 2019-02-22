@@ -237,6 +237,7 @@ class ApiController extends AbstractController {
   validateParams (params, example = {}, parentKey = '') {
     example = example || {}
     const rule = {}
+
     function getParentKey () {
       let key = parentKey.replace(/^\./, '').replace(/\.$/, '')
       return (key + '.').replace(/^\./, '')
@@ -257,6 +258,11 @@ class ApiController extends AbstractController {
       let data = example[param.key]
       let itemType = ''
 
+      // 当数据不存在且该参数非必填，不用校验
+      if (!data && param.required === false) {
+        return
+      }
+
       // 如果是 array 类型
       if (param.type === 'array') {
         // 不是数组
@@ -270,9 +276,7 @@ class ApiController extends AbstractController {
         let { type, params } = param.items
         itemType = type === 'undefined' ? '' : type
 
-        if (!itemType) {
-          // 如果无类型，则不验证
-        } else if (itemType === 'object') {
+        if (itemType === 'object') {
           for (let item of data) {
             this.validateParams(params, item, `${parentKey}.${param.key}`)
           }

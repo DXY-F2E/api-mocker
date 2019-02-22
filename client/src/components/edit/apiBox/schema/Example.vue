@@ -7,7 +7,7 @@
                   placement="top"
                   v-model="tooltip.example"
                   :manual="true">
-        <el-button size="small" @click.natvie="buildExample">Schema => Example</el-button>
+        <el-button size="small" @click="buildExample">Schema => Example</el-button>
       </el-tooltip>
       <el-tooltip class="item"
                   effect="dark"
@@ -15,7 +15,7 @@
                   placement="top"
                   v-model="tooltip.schema"
                   :manual="true">
-        <el-button size="small" @click.natvie="buildSchema">Example => Schema</el-button>
+        <el-button size="small" @click="buildSchema">Example => Schema</el-button>
       </el-tooltip>
     </div>
     <div class="editor">

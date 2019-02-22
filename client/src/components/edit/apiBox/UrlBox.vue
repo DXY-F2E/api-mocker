@@ -25,12 +25,14 @@
             v-if="prodUrl || devUrl"
           >测试
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item
-                :command="m"
-                v-for="(m, idx) in testModes"
-                :key="idx"
-                v-if="m !== testMode && getTestUrl(m)"
-              >测试{{m}}</el-dropdown-item>
+              <template v-for="(m, idx) in testModes">
+                <el-dropdown-item
+                  :command="m"
+                  :key="idx"
+                  v-if="m !== testMode && getTestUrl(m)">
+                  测试{{m}}
+                </el-dropdown-item>
+              </template>
             </el-dropdown-menu>
           </el-dropdown>
           <el-button id="editAct" type="success" @click="send()" v-else>测试</el-button>
