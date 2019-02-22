@@ -2,8 +2,8 @@
     <div class="setting-field" :class="{ fullscreen: fullscreen, expland: expland }">
         <div class="hd">{{title}}
             <slot name="header"></slot>
-            <el-button size="small" @click.natvie="switchFullscreen">{{fullscreen ? 'Esc' : '全屏'}}</el-button>
-            <el-button size="small" @click.natvie="switchExpland">
+            <el-button size="small" @click="switchFullscreen">{{fullscreen ? 'Esc' : '全屏'}}</el-button>
+            <el-button size="small" @click="switchExpland">
                 <i v-if="expland" class="el-icon-minus" />
                 <i v-else class="el-icon-plus" />
             </el-button>
