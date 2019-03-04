@@ -2,9 +2,10 @@
     <el-input
         class="search"
         :placeholder="placeholder"
-        icon="search"
+        prefix-icon="el-icon-search"
         :size="size"
         @change="handleChange"
+        :clearable="true"
         @keydown.enter.native="handleQuery"
         v-model="inputValue">
     </el-input>

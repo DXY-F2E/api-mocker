@@ -3,7 +3,7 @@
     <div class="api-list">
       <h1>{{ title }}</h1>
       <el-table :data="apiList" style="width: 100%">
-        <el-table-column prop="options.method" label="方法" width="70">
+        <el-table-column prop="options.method" label="方法" width="80">
         </el-table-column>
         <el-table-column prop="name" label="接口名">
         </el-table-column>
@@ -12,7 +12,7 @@
         <el-table-column prop="createTime" :formatter="timeFormat" width="200" label="创建时间">
         </el-table-column>
         <el-table-column width="180" label="操作">
-          <template scope="scope">
+          <template slot-scope="scope">
             <control :api="scope.row" @delete="apiDelete" @manage="manageApi"></control>
           </template>
         </el-table-column>
