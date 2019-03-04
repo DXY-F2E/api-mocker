@@ -1,8 +1,8 @@
 <template>
   <div class="header">
     <el-row type="flex">
-      <el-col class="logo">{{appName}}</el-col>
-      <el-col :span="24">
+      <el-col :span="3" class="logo">{{appName}}</el-col>
+      <el-col :span="17">
         <el-menu
           :default-active="activeIndex"
           background-color="#545c64"
@@ -21,7 +21,7 @@
           <el-menu-item @click="showChangeLog = true">更新说明</el-menu-item>
         </el-menu>
       </el-col>
-      <el-col :span="0">
+      <el-col :span="2">
         <profile-menu></profile-menu>
       </el-col>
     </el-row>
@@ -73,8 +73,6 @@ export default {
   margin-right: 20px;
 }
 .logo {
-  width: 200px;
-  min-width: 200px;
   line-height: 60px;
   color: #fff;
   font-size: 22px;
