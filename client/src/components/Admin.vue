@@ -42,7 +42,7 @@ export default {
     // 暂时无用
     // window.addEventListener('resize', this.windowResize);
     this.$store.dispatch('getUser').then(() => {
-      this.$store.dispatch('getGroups')
+      this.$store.dispatch('getAllGroups')
     }).catch(() => {
       window.location.href = '#/login'
     })

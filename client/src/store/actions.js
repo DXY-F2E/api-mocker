@@ -26,12 +26,14 @@ const actions = {
       return res
     })
   },
-  getGroups ({ commit }) {
-    return axios.get(API.GROUPS).then(res => {
+  // 获取全部分组
+  getAllGroups ({ commit }) {
+    return axios.get(API.GROUPS_ALL).then(res => {
       commit('FETCH_GROUPS_SUCCESS', res.data.resources)
       return res
     })
   },
+  // 查询分组
   getGroupList ({ commit }, query) {
     return axios.get(API.GROUPS, {
       params: query

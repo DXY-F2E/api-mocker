@@ -4,6 +4,7 @@ import { getDomain } from '../util'
 const domain = getDomain()
 
 export default R.map((url) => `${domain}${url}`)({
+  GROUPS_ALL: '/server/group/all',
   GROUPS: '/server/group',
   GROUP: '/server/group/:groupId',
   APIS: '/server/api',
