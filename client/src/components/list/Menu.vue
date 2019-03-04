@@ -1,30 +1,30 @@
 <template>
   <div class="menu-nav">
-    <el-menu :default-active="$route.params.groupId" class="el-menu-vertical" background-color="#eef1f6">
-      <el-menu-item-group>
-        <template slot="title">
-          <div @click="handleClickGroup" class="title-text">组列表</div>
-          <div class="title-actions">
-            <search @query="onQuery"
-                    v-model="query"
-                    placeholder="请输入分组名称"
-                    size="small">
-            </search>
-            <el-button size="small"
-                       icon="el-icon-plus"
-                       @click="handleClickShowDialog">
-            </el-button>
-          </div>
-        </template>
-        <el-menu-item v-for="group in groupList"
-                      :index="group._id"
-                      class="group-item"
-                      @click="handleClickGroup(group)"
-                      :key="group._id">
-          <i class="el-icon-document" @click.stop="showGroupDoc(group)"></i>
-          <span>{{group.name}}</span>
-        </el-menu-item>
-      </el-menu-item-group>
+    <div class="title">
+      <div @click="handleClickGroup" class="title-text">组列表</div>
+      <div class="title-actions">
+        <search @query="onQuery"
+                v-model="query"
+                placeholder="请输入分组名称"
+                size="small">
+        </search>
+        <el-button size="small"
+                    icon="el-icon-plus"
+                    @click="handleClickShowDialog">
+        </el-button>
+      </div>
+    </div>
+    <el-menu :default-active="$route.params.groupId"
+              class="el-menu-vertical"
+              background-color="#eef1f6">
+      <el-menu-item v-for="group in groupList"
+                    :index="group._id"
+                    class="group-item"
+                    @click="handleClickGroup(group)"
+                    :key="group._id">
+        <i class="el-icon-document" @click.stop="showGroupDoc(group)"></i>
+        <span>{{group.name}}</span>
+      </el-menu-item>
     </el-menu>
     <create-group-dialog
       v-if="showCreateDialog"
@@ -86,30 +86,8 @@ export default {
 }
 </script>
 <style lang="less">
-.menu-nav {
-  width: 288px;
-  min-width: 288px;
-  background-color: #eef1f6;
-
-  .el-menu-item-group__title {
-    padding: 15px 20px 0 20px;
-    line-height: 30px;
-    position: relative;
-
-    & > i {
-      position: relative;
-      right: 0;
-      margin: 0 3px;
-      transform: rotate(0deg);
-      transform-origin: 50% 50%;
-      transition: transform .3s;
-      cursor: pointer;
-    }
-  }
-
-  .el-icon-plus:hover {
-    transform: rotate(90deg);
-  }
+.title {
+  padding: 15px;
 
   .title-text {
     display: block;
@@ -130,6 +108,28 @@ export default {
   .search {
     .el-input__inner {
       background-color: #F9FAFC;
+    }
+  }
+}
+
+.menu-nav {
+  width: 288px;
+  min-width: 288px;
+  background-color: #eef1f6;
+
+  .el-menu-item-group__title {
+    padding: 15px 20px 0 20px;
+    line-height: 30px;
+    position: relative;
+
+    & > i {
+      position: relative;
+      right: 0;
+      margin: 0 3px;
+      transform: rotate(0deg);
+      transform-origin: 50% 50%;
+      transition: transform .3s;
+      cursor: pointer;
     }
   }
 }

@@ -2,12 +2,14 @@
   <el-card class="card-box" @click.native="showDoc(data)">
     <div slot="header" class="clearfix">
       <span class="name">{{data.name}}</span>
-      <el-button-group>
-        <el-button size="mini" icon="edit" title="编辑" @click.native.stop="editApi(data)"></el-button>
-        <el-button size="mini" title="复制" @click.native.stop="confirmCopy(data.name)">
+      <div class="button-group">
+        <a class="icon-btn" title="编辑" @click.stop="editApi(data)">
+          <i class="el-icon-edit"></i>
+        </a>
+        <a class="icon-btn" title="复制" @click.stop="confirmCopy(data.name)">
           <i class="material-icons">content_copy</i>
-        </el-button>
-      </el-button-group>
+        </a>
+      </div>
     </div>
     <div class="text item">
       <label class="manager">
@@ -85,6 +87,7 @@ export default {
   }
 }
 </script>
+
 <style lang="less">
 .el-card {
   cursor: pointer;
@@ -102,6 +105,7 @@ export default {
     padding: 8px 20px;
   }
 }
+
 .edit-api {
   float: right;
   position: relative;
@@ -130,6 +134,7 @@ export default {
     text-overflow: ellipsis;
   }
 }
+
 .card-box {
   .clearfix {
     height: 22px;
@@ -143,41 +148,37 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .el-button-group {
+
+  &:hover {
+    .name {
+      width: 130px;
+    }
+
+    .button-group {
+      visibility: visible;
+    }
+  }
+
+  .button-group {
     position: absolute;
     right: -10px;
     top: 0;
     visibility: hidden;
     cursor: pointer;
 
-    .material-icons {
-      font-size: 14px;
-      position: relative;
-      top: -1px;
-    }
-  }
-
-  &:hover {
-    .name {
-      width: 130px;
-    }
-    .el-button-group {
-      visibility: visible;
-    }
-  }
-
-  .el-button-group {
-    .el-button:focus,
-    button {
-      background-color: #f9fafc;
-      color: #8492a6;
-      border-color: #bfcbd9;
-      width: 22px;
+    .icon-btn {
+      display: inline-block;
+      width: 25px;
       height: 22px;
-    }
-    .el-button:hover {
-      background-color: #e5e9f2;
-      color: #475669;
+      text-align: center;
+      i {
+        font-size: 14px;
+        line-height: 22px;
+        vertical-align: middle;
+      }
+      &:hover {
+        color: #409EFF;
+      }
     }
   }
 }

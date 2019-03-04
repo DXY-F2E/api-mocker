@@ -1,10 +1,10 @@
 <template>
-  <div class="api-list-box">
+  <div class="api-list-box" v-if="groupId">
     <ul class="api-list" v-loading="apiListLoading">
       <li v-for="api in apiList" :key="api.id">
         <api :data="api"></api>
       </li>
-      <template v-if="groupId">
+      <template>
         <li class="add-api" @click="createApi">
           <el-card><i class="el-icon-plus"></i>创建接口</el-card>
         </li>

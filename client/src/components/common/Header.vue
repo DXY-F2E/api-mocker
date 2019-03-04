@@ -2,7 +2,7 @@
   <div class="header">
     <el-row type="flex">
       <el-col :span="3" class="logo">{{appName}}</el-col>
-      <el-col :span="17">
+      <el-col :span="19">
         <el-menu
           :default-active="activeIndex"
           background-color="#545c64"
@@ -12,6 +12,7 @@
           mode="horizontal"
           :router="true"
         >
+          <!-- <el-menu-item index="Search" :route="{name: 'Search'}">统一搜索</el-menu-item> -->
           <el-menu-item index="List" :route="{name: 'AllList'}">接口列表</el-menu-item>
           <el-menu-item index="Create" :route="{name: 'Create'}">创建接口</el-menu-item>
           <!-- <el-menu-item index="Document" :route="{name: 'Document'}">接口文档</el-menu-item> -->
