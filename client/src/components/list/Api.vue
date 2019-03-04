@@ -89,7 +89,7 @@ export default {
 .el-card {
   cursor: pointer;
   transition: all 0.2s ease;
-  width: 219px;
+  min-width: 220px;
   overflow: hidden;
 
   &:hover {

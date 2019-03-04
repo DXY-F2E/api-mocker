@@ -46,7 +46,7 @@
       </el-form-item>
     </el-form>
     <create-group
-      :visited="showCreateGroup"
+      :visible="showCreateGroup"
       @action="handleClickCreateGroup"
       @close="handleClickClose"/>
   </div>

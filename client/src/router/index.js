@@ -78,13 +78,16 @@ const router = new Router({
           component: List,
           redirect: '/list/all',
           name: 'List',
-          children: [{
-            path: 'all',
-            name: 'AllList'
-          }, {
-            path: ':groupId',
-            name: 'GruopList'
-          }]
+          children: [
+            {
+              path: 'all',
+              name: 'AllList'
+            },
+            {
+              path: ':groupId',
+              name: 'GruopList'
+            }
+          ]
         },
         {
           path: 'doc',

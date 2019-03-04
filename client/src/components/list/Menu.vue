@@ -1,12 +1,20 @@
 <template>
-  <el-col :span="0" class="menu-nav">
-    <el-menu :default-active="$route.params.groupId" class="el-menu-vertical">
-      <el-menu-item-group :class="{showSearch: isShowSearch}">
+  <div class="menu-nav">
+    <el-menu :default-active="$route.params.groupId" class="el-menu-vertical" background-color="#eef1f6">
+      <el-menu-item-group>
         <template slot="title">
-          <span @click="handleClickGroup">组列表</span>
-          <search @query="onQuery" v-model="query" placeholder="请输入分组名称" size="small" id="search-group"></search>
-          <i class="el-icon-plus title-icon" @click="handleClickShowDialog"></i>
-          <i class="el-icon-search title-icon" @click="showSearch()"></i>
+          <div @click="handleClickGroup" class="title-text">组列表</div>
+          <div class="title-actions">
+            <search @query="onQuery"
+                    v-model="query"
+                    placeholder="请输入分组名称"
+                    size="small">
+            </search>
+            <el-button size="small"
+                       icon="el-icon-plus"
+                       @click="handleClickShowDialog">
+            </el-button>
+          </div>
         </template>
         <el-menu-item v-for="group in groupList"
                       :index="group._id"
@@ -19,10 +27,11 @@
       </el-menu-item-group>
     </el-menu>
     <create-group-dialog
-      :visited="showCreateDialog"
+      v-if="showCreateDialog"
+      :visible.sync="showCreateDialog"
       @action="handleClickCreateGroup"
       @close="handleClickClose"/>
-  </el-col>
+  </div>
 </template>
 <script>
 import CreateGroupDialog from '@/components/common/CreateGroup'
@@ -40,17 +49,10 @@ export default {
   data () {
     return {
       showCreateDialog: false,
-      isShowSearch: false,
       query: ''
     }
   },
   methods: {
-    showSearch () {
-      this.isShowSearch = true
-      window.setTimeout(() => {
-        document.querySelector('#search-group input').focus()
-      })
-    },
     onQuery (val) {
       this.query = val
     },
@@ -103,38 +105,36 @@ export default {
       transition: transform .3s;
       cursor: pointer;
     }
-    .title-icon:hover {
-      color: #20a0ff;
-    }
   }
 
   .el-icon-plus:hover {
     transform: rotate(90deg);
   }
-  .el-icon-search.title-icon {
-    top: 1px;
-    font-size: 15px;
-  }
-  .search {
-    display: none;
-    position: absolute;
-    width: auto;
-    top: 15px;
-    left: 91px;
-    right: 20px;
-    z-index: 1;
 
+  .title-text {
+    display: block;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .title-actions {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .el-button {
+      margin-left: 10px;
+    }
+  }
+
+  .search {
     .el-input__inner {
       background-color: #F9FAFC;
     }
   }
-  .showSearch .search {
-    display: block;
-  }
 }
 
 .group-item {
-
   [class^=el-icon-].el-icon-document {
     display: inline-block;
     font-size: 18px;
