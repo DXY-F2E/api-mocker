@@ -80,8 +80,8 @@ export default {
   display: none;
   position: absolute;
   z-index: 2;
-  border-top: 1px solid #324157;
-  background-color: #324157;
+  border-top: 1px solid #545c64;
+  background-color: #545c64;
   top: 100%;
   left: 0;
   right: 0;
