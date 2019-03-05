@@ -26,6 +26,11 @@ export default {
       inputValue: ''
     }
   },
+  watch: {
+    inputValue: function (val, old) {
+      this.$emit('input', val)
+    }
+  },
   methods: {
     handleQuery () {
       this.$emit('query', this.inputValue)

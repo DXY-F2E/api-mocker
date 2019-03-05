@@ -190,26 +190,30 @@ class UserController extends AbstractController {
   async addFavorite () {
     const user = this.ctx.authUser
     const { groupId } = this.ctx.params
+
     try {
-      const newUser = await this.ctx.model.User.findByIdAndUpdate(
-        user._id,
-        { favorites: [...user.favorites, groupId] },
-        { new: true }
-      )
-      this.success(newUser)
+      if (user.favorites.some((f) => f && f.toString() === groupId)) {
+        this.success(user)
+      } else {
+        const newUser = await this.ctx.model.User.findByIdAndUpdate(
+          user._id,
+          { favorites: [...user.favorites, groupId] },
+          { new: true }
+        )
+        this.success(newUser)
+      }
     } catch (err) {
       this.error('添加收藏失败')
-      console.log(err)
     }
   }
   // 从用户收藏夹中剔除
   async removeFavorite () {
     const user = this.ctx.authUser
-    const { groupId } = this.ctx.request.body
+    const { groupId } = this.ctx.params
     try {
       const newUser = await this.ctx.model.User.findByIdAndUpdate(
         user._id,
-        { favorites: user.favorites.filter(item => item === groupId) },
+        { favorites: user.favorites.filter(f => f.toString() !== groupId) },
         { new: true }
       )
       this.success(newUser)

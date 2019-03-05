@@ -2,7 +2,7 @@
   <el-col :span="24">
     <div class="content-wrap">
       <div id="content">
-        <search @query="onQuery" placeholder="回车搜索：api名称、线上地址、测试地址、接口ID、管理员"></search>
+        <!-- <search @query="onQuery" placeholder="回车搜索：api名称、线上地址、测试地址、接口ID、管理员"></search> -->
         <api-list></api-list>
         <page-nav :query="query" :total="count" :on-page-nav="onPageNav"></page-nav>
       </div>

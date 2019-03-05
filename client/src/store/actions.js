@@ -203,6 +203,7 @@ const actions = {
       }
     }).catch(err => commit('UPDATE_RESPONSE', err))
   },
+  /* 用户相关 */
   getUser ({ state, commit }) {
     return state.user || axios.get(API.USER).then(res => {
       commit('SET_USER', res.data)
@@ -250,12 +251,7 @@ const actions = {
       return res
     })
   },
-  follow ({ state }, apiId) {
-    return axios.put(API.API_FOLLOWER.replace(':apiId', apiId))
-  },
-  unfollow ({ state }, apiId) {
-    return axios.delete(API.API_FOLLOWER.replace(':apiId', apiId))
-  },
+  // 订阅分组
   followGroup ({ state, commit }, groupId) {
     return axios.put(API.GROUP_FOLLOWER.replace(':groupId', groupId)).then(res => {
       commit('UPDATE_GROUP', res.data)
@@ -267,6 +263,26 @@ const actions = {
       commit('UPDATE_GROUP', res.data)
       return res
     })
+  },
+  // 订阅接口
+  follow ({ state }, apiId) {
+    return axios.put(API.API_FOLLOWER.replace(':apiId', apiId))
+  },
+  unfollow ({ state }, apiId) {
+    return axios.delete(API.API_FOLLOWER.replace(':apiId', apiId))
+  },
+  // 收藏分组
+  addFavorite: async ({state, commit}, groupId) => {
+    const { data } = await axios.post(API.USER_FAVORITE.replace(':groupId', groupId))
+    // 更新用户信息，favorites
+    commit('SET_USER', data)
+    return data
+  },
+  removeFavorite: async ({state, commit}, groupId) => {
+    const { data } = await axios.delete(API.USER_FAVORITE.replace(':groupId', groupId))
+    // 更新用户信息，favorites
+    commit('SET_USER', data)
+    return data
   },
   sendResetPassCode ({ state }, email) {
     return axios.post(`${API.USER}/recovery/password/code`, { email })

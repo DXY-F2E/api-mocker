@@ -1,8 +1,8 @@
 <template>
-  <div class="menu-nav">
-    <div class="title">
-      <div @click="handleClickGroup" class="title-text">组列表</div>
-      <div class="title-actions">
+  <div class="group-nav">
+    <div class="group-top">
+      <div @click="handleClickGroup" class="block-title">组列表</div>
+      <div class="actions">
         <search @query="onQuery"
                 v-model="query"
                 placeholder="请输入分组名称"
@@ -14,18 +14,28 @@
         </el-button>
       </div>
     </div>
-    <el-menu :default-active="$route.params.groupId"
-              class="el-menu-vertical"
-              background-color="#eef1f6">
-      <el-menu-item v-for="group in groupList"
-                    :index="group._id"
-                    class="group-item"
-                    @click="handleClickGroup(group)"
-                    :key="group._id">
-        <i class="el-icon-document" @click.stop="showGroupDoc(group)"></i>
-        <span>{{group.name}}</span>
-      </el-menu-item>
-    </el-menu>
+    <div class="group-list">
+      <div @click="handleClickGroup" class="block-title">我的收藏</div>
+      <div v-for="group in myGroupList"
+        class="group-item"
+        @click="handleClickGroup(group)"
+        :key="group._id">
+        <div class="group-item-wrap">
+          <div>{{group.name}}</div>
+          <el-rate :value="1" @click.native.stop="handleRemoveFavorite(group._id)" :max="1"></el-rate>
+        </div>
+      </div>
+      <div @click="handleClickGroup" class="block-title">更多分组</div>
+      <div v-for="group in moreGroupList"
+        class="group-item"
+        @click="handleClickGroup(group)"
+        :key="group._id">
+        <div class="group-item-wrap">
+          <div>{{group.name}}</div>
+          <el-rate @click.native.stop="handleAddFavorite(group._id)" :max="1"></el-rate>
+        </div>
+      </div>
+    </div>
     <create-group-dialog
       v-if="showCreateDialog"
       :visible.sync="showCreateDialog"
@@ -36,14 +46,29 @@
 <script>
 import CreateGroupDialog from '@/components/common/CreateGroup'
 import Search from './Search'
+import { mapActions, mapState } from 'vuex'
 export default {
   components: {
     Search,
     CreateGroupDialog
   },
   computed: {
+    ...mapState(['user', 'groups']),
+    // 收藏
+    favorites () {
+      return this.user.favorites
+    },
+    // 全部分组
     groupList () {
-      return this.$store.state.groups.filter(g => g.name.toLowerCase().indexOf(this.query.toLowerCase()) >= 0)
+      return this.groups.filter(g => g.name.toLowerCase().indexOf(this.query.toLowerCase()) >= 0)
+    },
+    // 收藏的分组
+    myGroupList () {
+      return this.groupList.filter(item => this.favorites.includes(item._id))
+    },
+    // 更多分组
+    moreGroupList () {
+      return this.groupList.filter(item => !this.favorites.includes(item._id))
     }
   },
   data () {
@@ -53,6 +78,28 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'addFavorite',
+      'removeFavorite'
+    ]),
+    async handleAddFavorite (groupId) {
+      // 添加到收藏夹
+      try {
+        await this.addFavorite(groupId)
+        this.$message.success('收藏成功')
+      } catch (err) {
+        this.$message.error('收藏失败')
+      }
+    },
+    async handleRemoveFavorite (groupId) {
+      // 添加到收藏夹
+      try {
+        await this.removeFavorite(groupId)
+        this.$message.success('取消收藏成功')
+      } catch (err) {
+        this.$message.error('取消收藏失败')
+      }
+    },
     onQuery (val) {
       this.query = val
     },
@@ -74,6 +121,7 @@ export default {
     handleClickShowDialog () {
       this.showCreateDialog = true
     },
+    // 展示分组
     showGroupDoc (group) {
       this.$router.push({
         name: 'GroupDoc',
@@ -86,70 +134,44 @@ export default {
 }
 </script>
 <style lang="less">
-.title {
-  padding: 15px;
-
-  .title-text {
-    display: block;
-    font-size: 16px;
-    color: #333;
-  }
-
-  .title-actions {
-    margin-top: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .el-button {
-      margin-left: 10px;
-    }
-  }
-
-  .search {
-    .el-input__inner {
-      background-color: #F9FAFC;
-    }
-  }
-}
-
-.menu-nav {
+.group-nav {
+  padding: 0 15px;
   width: 288px;
   min-width: 288px;
   background-color: #eef1f6;
+}
 
-  .el-menu-item-group__title {
-    padding: 15px 20px 0 20px;
-    line-height: 30px;
-    position: relative;
-
-    & > i {
-      position: relative;
-      right: 0;
-      margin: 0 3px;
-      transform: rotate(0deg);
-      transform-origin: 50% 50%;
-      transition: transform .3s;
-      cursor: pointer;
+.group-list {
+  .group-item {
+    margin: 0 -15px;
+    padding: 10px 20px;
+    padding-left: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    &:hover {
+      background: #ddd;
     }
+  }
+  .group-item-wrap {
+    display: flex;
+    justify-content: space-between;
   }
 }
 
-.group-item {
-  [class^=el-icon-].el-icon-document {
-    display: inline-block;
-    font-size: 18px;
-    position: relative;
-    top: 2px;
-    visibility: hidden;
-    margin-right: 4px;
-  }
+.block-title {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin: 10px 0;
+}
 
-  &:hover .el-icon-document {
-    visibility: visible;
-  }
-  & > * {
-    display: inline-block;
-    vertical-align: middle;
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .el-button {
+    margin-left: 10px;
   }
 }
 </style>

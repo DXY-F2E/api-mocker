@@ -16,6 +16,7 @@ export default R.map((url) => `${domain}${url}`)({
   API_FOLLOWER: '/server/api/follower/:apiId',
   USER: '/auth/user',
   USER_SEARCH: '/server/user/search',
+  USER_FAVORITE: '/server/user/favorites/:groupId',
   PROFILE: '/server/user',
   STAT: '/server/stat'
 })
