@@ -182,6 +182,41 @@ class UserController extends AbstractController {
     this.service.cookie.clearUser()
     this.success('注销成功')
   }
+  /**
+   * 用户添加收藏
+   * 找到当前用户
+   * 将收藏信息存于用户模型中
+  */
+  async addFavorite () {
+    const user = this.ctx.authUser
+    const { groupId } = this.ctx.params
+    try {
+      const newUser = await this.ctx.model.User.findByIdAndUpdate(
+        user._id,
+        { favorites: [...user.favorites, groupId] },
+        { new: true }
+      )
+      this.success(newUser)
+    } catch (err) {
+      this.error('添加收藏失败')
+      console.log(err)
+    }
+  }
+  // 从用户收藏夹中剔除
+  async removeFavorite () {
+    const user = this.ctx.authUser
+    const { groupId } = this.ctx.request.body
+    try {
+      const newUser = await this.ctx.model.User.findByIdAndUpdate(
+        user._id,
+        { favorites: user.favorites.filter(item => item === groupId) },
+        { new: true }
+      )
+      this.success(newUser)
+    } catch (err) {
+      this.error('取消收藏失败')
+    }
+  }
 }
 
 module.exports = UserController

@@ -48,7 +48,7 @@ module.exports = app => {
     app[method](mockUrl, credentials, apiStat, 'client.mock')
   })
 
-  // user
+  /* 用户相关 */
   app.post('/auth/user/dxy-login', 'user.dxyLogin')
   app.get('/auth/user', 'user.get')
   app.post('/auth/user/register', 'user.create')
@@ -60,4 +60,8 @@ module.exports = app => {
   app.put('/server/user/password', 'user.updatePassword')
   app.put('/server/user', 'user.update')
   app.get('/server/user/search', 'user.search')
+  // 收藏相关
+  app.post('/server/user/favorites/:groupId', 'user.addFavorite')
+  app.delete('/server/user/favorites/:groupId', 'user.removeFavorite')
+  // app.get('/server/user/favorites', 'user.getAllFavorite')
 }
