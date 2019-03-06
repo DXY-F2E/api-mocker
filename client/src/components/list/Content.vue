@@ -11,11 +11,17 @@
                 :placeholder="`在 ${group.name} 中查找接口`"></search>
       </el-col>
     </el-row>
-    <div class="group-actions">
-      <el-button type="primary" @click="createApi">创建接口</el-button>
-      <el-button><import-rap-json :group="group"></import-rap-json></el-button>
-      <el-button><import-swagger-json :group="group"></import-swagger-json></el-button>
-    </div>
+    <el-row class="group-actions" type="flex" justify="space-between">
+      <el-col :span="12">
+        <el-button type="primary" @click="createApi">创建接口</el-button>
+        <el-button @click="handleFavorite">{{ isFavorite ? '已收藏' : '收藏' }}</el-button>
+        <el-button>订阅</el-button>
+      </el-col>
+      <el-col :span="12" style="text-align: right;">
+        <el-button><import-rap-json :group="group"></import-rap-json></el-button>
+        <el-button><import-swagger-json :group="group"></import-swagger-json></el-button>
+      </el-col>
+    </el-row>
     <div class="api-list">
       <api-list></api-list>
     </div>
@@ -24,7 +30,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import Search from './Search'
 import ApiList from './ApiList'
 import PageNav from './PageNav'
@@ -57,6 +63,17 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'addFavorite',
+      'removeFavorite'
+    ]),
+    handleFavorite () {
+      if (this.isFavorite) {
+        this.removeFavorite(this.groupId)
+      } else {
+        this.addFavorite(this.groupId)
+      }
+    },
     initQuery () {
       this.query = {
         q: '',
@@ -111,13 +128,16 @@ export default {
     }
   },
   computed: {
-    ...mapState(['apiList', 'apiListLoading', 'groups']),
+    ...mapState(['apiList', 'apiListLoading', 'groups', 'user']),
     groupId () {
       return this.$route.params.groupId
     },
     // 当前组
     group () {
       return this.groups.find(g => g._id === this.groupId) || {}
+    },
+    isFavorite () {
+      return this.user.favorites.includes(this.groupId) || false
     }
   }
 }

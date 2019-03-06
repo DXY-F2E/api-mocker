@@ -1,12 +1,12 @@
 <template>
- <div class="content">
-  <el-row type="flex">
-    <nav-menu></nav-menu>
-    <el-col class="content-wrap">
-      <list-content></list-content>
-    </el-col>
-  </el-row>
- </div>
+ <layout>
+   <template slot="nav">
+     <nav-menu></nav-menu>
+   </template>
+   <template slot="view">
+     <list-content></list-content>
+   </template>
+ </layout>
 </template>
 <script>
 /**
@@ -22,12 +22,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.content-wrap {
-  padding: 20px;
-  background-color: #F9FAFC;
-  min-height: 100%;
-  position: relative;
-}
-</style>

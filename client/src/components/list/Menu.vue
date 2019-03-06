@@ -135,9 +135,6 @@ export default {
 
 .group-nav {
   padding: 0 15px;
-  width: 288px;
-  min-width: 288px;
-  background-color: #eef1f6;
 }
 
 .group-list {

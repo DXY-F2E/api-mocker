@@ -1,14 +1,12 @@
 <template>
-  <div class="content" id="manage">
-    <el-row type="flex">
-      <el-col :span="0" class="manage-nav">
-        <manage-nav></manage-nav>
-      </el-col>
-      <el-col :span="24" class="manage-content">
-        <router-view></router-view>
-      </el-col>
-    </el-row>
-  </div>
+  <layout>
+    <template slot="nav">
+      <manage-nav></manage-nav>
+    </template>
+    <template slot="view">
+      <router-view></router-view>
+    </template>
+  </layout>
 </template>
 
 <script>
@@ -22,9 +20,3 @@ export default {
   }
 }
 </script>
-<style>
-.manage-content {
-  background-color: #F9FAFC;
-  padding: 20px;
-}
-</style>

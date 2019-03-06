@@ -41,7 +41,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .page-nav {
     position: absolute;
     bottom: 30px;
