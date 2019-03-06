@@ -1,13 +1,21 @@
 <template>
-  <el-col :span="24">
-    <div class="content-wrap">
-      <div id="content">
-        <!-- <search @query="onQuery" placeholder="回车搜索：api名称、线上地址、测试地址、接口ID、管理员"></search> -->
-        <api-list></api-list>
-        <page-nav :query="query" :total="count" :on-page-nav="onPageNav"></page-nav>
-      </div>
+  <div>
+    <el-row type="flex" justify="space-between" v-if="group" class="group-title">
+      <el-col :span="8">
+        {{ `${group.name} 接口列表` }}&nbsp;&nbsp;
+        <el-button type="text" @click="goGroupDoc">进入文档模式</el-button>
+      </el-col>
+      <el-col :span="8">
+        <search size="small"
+                @query="onQuery"
+                :placeholder="`在 ${group.name} 中查找接口`"></search>
+      </el-col>
+    </el-row>
+    <div class="api-list">
+      <api-list></api-list>
     </div>
-  </el-col>
+    <page-nav :query="query" :total="count" :on-page-nav="onPageNav"></page-nav>
+  </div>
 </template>
 <script>
 import Search from './Search'
@@ -76,24 +84,34 @@ export default {
         this.getData()
         this.inputShakeTime = null
       }, 500)
+    },
+    // 进入分组文档
+    goGroupDoc () {
+      this.$router.push({
+        name: 'GroupDoc',
+        params: {
+          groupId: this.group._id
+        }
+      })
     }
   },
-  computed: mapState(['apiList', 'apiListLoading'])
+  computed: {
+    ...mapState(['apiList', 'apiListLoading', 'groups']),
+    // 当前组
+    group () {
+      return this.groups.find(g => g._id === this.$route.params.groupId)
+    }
+  }
 }
 </script>
-<style>
-.content-wrap {
-  padding: 20px;
-  background-color: #F9FAFC;
-  min-height: 100%;
-  position: relative;
+
+<style lang="less" scoped>
+.group-title {
+  font-size: 20px;
+  color: #606266;
 }
-.api-list-box {
-  position: absolute;
-  top: 65px;
-  bottom: 90px;
-  overflow-y: auto;
-  left: 10px;
-  right: 10px;
+
+.api-list {
+  margin-top: 20px;
 }
 </style>

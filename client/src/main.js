@@ -16,7 +16,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.config.productionTip = false
 Vue.use(filter)
 Vue.use(directive)
-Vue.use(ElementUI)
+Vue.use(ElementUI, { size: 'medium' })
 Vue.use(Vuex)
 Vue.prototype.$http = axios
 

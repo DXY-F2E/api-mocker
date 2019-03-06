@@ -1,13 +1,13 @@
 <template>
-    <div class="page-nav" v-show="showNav">
-        <el-pagination
-          @current-change="handleCurrentChange"
-          :current-page="query.page"
-          :page-size="query.limit"
-          layout="prev, pager, next, jumper"
-          :total="total">
-        </el-pagination>
-    </div>
+  <div class="page-nav">
+    <el-pagination
+      @current-change="handleCurrentChange"
+      :current-page="query.page"
+      :page-size="query.limit"
+      layout="prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
+  </div>
 </template>
 
 <script>
@@ -29,11 +29,6 @@ export default {
     onPageNav: {
       type: Function,
       required: true
-    }
-  },
-  computed: {
-    showNav () {
-      return this.total > this.query.limit
     }
   },
   methods: {

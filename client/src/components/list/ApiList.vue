@@ -1,40 +1,60 @@
 <template>
-  <div class="api-list-box" v-if="groupId">
-    <ul class="api-list" v-loading="apiListLoading">
-      <li v-for="api in apiList" :key="api.id">
-        <api :data="api"></api>
+  <div>
+    <el-table style="width: 100%" :data="apiList" border size="medium">
+      <el-table-column label="接口名称" prop="name"></el-table-column>
+      <el-table-column label="方法 Method" prop="options.method"></el-table-column>
+      <el-table-column label="线上路径"></el-table-column>
+      <el-table-column label="Mock 路径"></el-table-column>
+      <el-table-column label="创建者">
+        <template slot-scope="{row}">
+          {{ row.manager ? row.manager.name : '未知' }}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="{row}">
+          <el-button type="text" @click="showDoc(row)">查看文档</el-button>
+          <el-button type="text" @click="editDoc(row)">编辑</el-button>
+          <el-button type="text" @click="confirmCopy(row)">复制</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!-- <template>
+      <li class="add-api" @click="createApi">
+        <el-card><i class="el-icon-plus"></i>创建接口</el-card>
       </li>
-      <template>
-        <li class="add-api" @click="createApi">
-          <el-card><i class="el-icon-plus"></i>创建接口</el-card>
-        </li>
-        <li class="add-api">
-          <el-card>
-            <import-rap-json :group="group"></import-rap-json>
-          </el-card>
-        </li>
-        <li class="add-api">
-          <el-card>
-            <import-swagger-json :group="group"></import-swagger-json>
-          </el-card>
-        </li>
-      </template>
-      <li class="empty">暂无接口</li>
-    </ul>
+      <li class="add-api">
+        <el-card>
+          <import-rap-json :group="group"></import-rap-json>
+        </el-card>
+      </li>
+      <li class="add-api">
+        <el-card>
+          <import-swagger-json :group="group"></import-swagger-json>
+        </el-card>
+      </li>
+    </template> -->
   </div>
 </template>
 
 <script>
-import Api from './Api'
+/** 分组-接口列表
+ * 创建接口、导入Rap JSON, 导入Swagger JSON
+ * 列表字段：接口名称、manager、method、path
+ */
 import { mapState } from 'vuex'
 import ImportRapJson from '../common/importJson/FromRap'
 import ImportSwaggerJson from '../common/importJson/FromSwagger'
+import R from 'ramda'
 
 export default {
   components: {
-    Api,
     ImportRapJson,
     ImportSwaggerJson
+  },
+  data () {
+    return {
+      rootDomain: window.location.href.split('#')[0]
+    }
   },
   computed: {
     ...mapState(['apiList', 'apiListLoading', 'groups']),
@@ -49,32 +69,49 @@ export default {
     createApi () {
       const query = this.groupId ? `?groupId=${this.groupId}` : ''
       this.$router.push(`/create${query}`)
+    },
+    showDoc (api) {
+      const url = `${this.rootDomain}#/doc/${api.group}/${api._id}`
+      window.open(url, '_blank')
+    },
+    editDoc (api) {
+      this.$store.commit('UPDATE_API', api)
+      this.$store.commit('CHANGE_MODE', 'edit')
+      const url = `${this.rootDomain}#/edit/${api.group}/${api._id}`
+      window.open(url, '_blank')
+    },
+    getApiCopyData (data) {
+      const api = R.clone(data)
+      delete api._id
+      delete api.createTime
+      delete api.modifiedTime
+      api.name = `${api.name}-副本`
+      return api
+    },
+    confirmCopy (api) {
+      this.$confirm(`确定复制接口：${api.name}?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.copyApi(api)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消复制'
+        })
+      })
+    },
+    copyApi (api) {
+      const copyApi = this.getApiCopyData(api)
+      this.$store.dispatch('copyApi', copyApi).then(() => {
+        this.$message.success('复制成功')
+      }).catch(err => this.$message.error(err.msg))
     }
   }
 }
 </script>
 <style lang='less'>
-.api-list {
-  min-height: 100%;
-  overflow: hidden;
-}
-.api-list > li {
-  float: left;
-  display: inline-block;
-  margin: 10px;
-
-  &.empty {
-    color: #D3DCE6;
-    text-align: center;
-    display: block;
-    margin: 0;
-    padding-top: 100px;
-    width: 100%;
-  }
-}
-.api-list > li ~li.empty {
-  display: none;
-}
 .add-api {
   .el-card {
     .el-card__body {
@@ -98,5 +135,8 @@ export default {
     width: 100%;
   }
 }
-
+.material-icons {
+  font-size: 12px;
+  line-height: 1;
+}
 </style>

@@ -1,7 +1,6 @@
 <template>
   <div class="group-nav">
     <div class="group-top">
-      <div @click="handleClickGroup" class="block-title">组列表</div>
       <div class="actions">
         <search @query="onQuery"
                 v-model="query"
@@ -15,13 +14,15 @@
       </div>
     </div>
     <div class="group-list">
-      <div @click="handleClickGroup" class="block-title">我的收藏</div>
+      <div @click="handleClickGroup" class="block-title">
+        我的收藏&nbsp;&nbsp;<small>{{ myGroupList.length }}</small>
+      </div>
       <div v-for="group in myGroupList"
         class="group-item"
         @click="handleClickGroup(group)"
         :key="group._id">
         <div class="group-item-wrap">
-          <div>{{group.name}}</div>
+          <div :class="[group._id === groupId ? 'active': '']">{{group.name}}</div>
           <el-rate :value="1" @click.native.stop="handleRemoveFavorite(group._id)" :max="1"></el-rate>
         </div>
       </div>
@@ -31,7 +32,7 @@
         @click="handleClickGroup(group)"
         :key="group._id">
         <div class="group-item-wrap">
-          <div>{{group.name}}</div>
+          <div :class="[group._id === groupId ? 'active': '']">{{group.name}}</div>
           <el-rate @click.native.stop="handleAddFavorite(group._id)" :max="1"></el-rate>
         </div>
       </div>
@@ -69,6 +70,9 @@ export default {
     // 更多分组
     moreGroupList () {
       return this.groupList.filter(item => !this.favorites.includes(item._id))
+    },
+    groupId () {
+      return this.$route.params.groupId
     }
   },
   data () {
@@ -120,20 +124,15 @@ export default {
     },
     handleClickShowDialog () {
       this.showCreateDialog = true
-    },
-    // 展示分组
-    showGroupDoc (group) {
-      this.$router.push({
-        name: 'GroupDoc',
-        params: {
-          groupId: group._id
-        }
-      })
     }
   }
 }
 </script>
 <style lang="less">
+.group-top {
+  margin-top: 15px;
+}
+
 .group-nav {
   padding: 0 15px;
   width: 288px;
@@ -146,13 +145,17 @@ export default {
     margin: 0 -15px;
     padding: 10px 20px;
     padding-left: 20px;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
+    color: #303133;
     &:hover {
       background: #ddd;
     }
   }
   .group-item-wrap {
+    .active {
+      color: #409EFF;
+    }
     display: flex;
     justify-content: space-between;
   }
@@ -162,8 +165,11 @@ export default {
   display: block;
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  color: #606266;
   margin: 10px 0;
+  small {
+    color: #909399;
+  }
 }
 
 .actions {
