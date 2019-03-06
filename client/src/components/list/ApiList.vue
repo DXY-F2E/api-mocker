@@ -18,21 +18,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- <template>
-      <li class="add-api" @click="createApi">
-        <el-card><i class="el-icon-plus"></i>创建接口</el-card>
-      </li>
-      <li class="add-api">
-        <el-card>
-          <import-rap-json :group="group"></import-rap-json>
-        </el-card>
-      </li>
-      <li class="add-api">
-        <el-card>
-          <import-swagger-json :group="group"></import-swagger-json>
-        </el-card>
-      </li>
-    </template> -->
   </div>
 </template>
 
@@ -42,34 +27,18 @@
  * 列表字段：接口名称、manager、method、path
  */
 import { mapState } from 'vuex'
-import ImportRapJson from '../common/importJson/FromRap'
-import ImportSwaggerJson from '../common/importJson/FromSwagger'
 import R from 'ramda'
 
 export default {
-  components: {
-    ImportRapJson,
-    ImportSwaggerJson
-  },
   data () {
     return {
       rootDomain: window.location.href.split('#')[0]
     }
   },
   computed: {
-    ...mapState(['apiList', 'apiListLoading', 'groups']),
-    groupId () {
-      return this.$route.params.groupId
-    },
-    group () {
-      return this.groups.find(g => g._id === this.groupId) || {}
-    }
+    ...mapState(['apiList', 'apiListLoading'])
   },
   methods: {
-    createApi () {
-      const query = this.groupId ? `?groupId=${this.groupId}` : ''
-      this.$router.push(`/create${query}`)
-    },
     showDoc (api) {
       const url = `${this.rootDomain}#/doc/${api.group}/${api._id}`
       window.open(url, '_blank')

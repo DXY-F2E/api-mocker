@@ -11,22 +11,33 @@
                 :placeholder="`在 ${group.name} 中查找接口`"></search>
       </el-col>
     </el-row>
+    <div class="group-actions">
+      <el-button type="primary" @click="createApi">创建接口</el-button>
+      <el-button><import-rap-json :group="group"></import-rap-json></el-button>
+      <el-button><import-swagger-json :group="group"></import-swagger-json></el-button>
+    </div>
     <div class="api-list">
       <api-list></api-list>
     </div>
     <page-nav :query="query" :total="count" :on-page-nav="onPageNav"></page-nav>
   </div>
 </template>
+
 <script>
+import { mapState } from 'vuex'
 import Search from './Search'
 import ApiList from './ApiList'
 import PageNav from './PageNav'
-import { mapState } from 'vuex'
+import ImportRapJson from '../common/importJson/FromRap'
+import ImportSwaggerJson from '../common/importJson/FromSwagger'
+
 export default {
   components: {
     Search,
     PageNav,
-    ApiList
+    ApiList,
+    ImportRapJson,
+    ImportSwaggerJson
   },
   data () {
     return {
@@ -93,13 +104,20 @@ export default {
           groupId: this.group._id
         }
       })
+    },
+    createApi () {
+      const query = this.groupId ? `?groupId=${this.groupId}` : ''
+      this.$router.push(`/create${query}`)
     }
   },
   computed: {
     ...mapState(['apiList', 'apiListLoading', 'groups']),
+    groupId () {
+      return this.$route.params.groupId
+    },
     // 当前组
     group () {
-      return this.groups.find(g => g._id === this.$route.params.groupId)
+      return this.groups.find(g => g._id === this.groupId) || {}
     }
   }
 }
@@ -109,6 +127,10 @@ export default {
 .group-title {
   font-size: 20px;
   color: #606266;
+}
+
+.group-actions {
+  margin-top: 10px;
 }
 
 .api-list {
