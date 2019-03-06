@@ -78,6 +78,7 @@ class UserController extends AbstractController {
     this.service.cache.del(key)
     this.success(true)
   }
+  /* 获取用户信息 */
   async get () {
     const rs = this.service.cookie.getUser()
     if (!rs || !rs._id) {
@@ -93,7 +94,7 @@ class UserController extends AbstractController {
         msg: '信息已发生变更，请重新登录'
       })
     }
-    this.success(rs)
+    this.success(user)
   }
   async create () {
     const info = this.ctx.request.body
