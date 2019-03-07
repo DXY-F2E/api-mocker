@@ -18,7 +18,7 @@ export default {
 <style lang="less" scoped>
 .page-layout {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 
   .page-nav {
     width: 280px;

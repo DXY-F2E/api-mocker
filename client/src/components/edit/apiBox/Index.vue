@@ -1,5 +1,5 @@
 <template>
-  <div class="api-box el-col">
+  <div class="api-box">
     <url-box></url-box>
     <setting-field title="Request" class="request-field">
       <template slot-scope="props">
@@ -66,9 +66,7 @@ export default {
 </script>
 <style>
 .api-box {
-  padding: 20px;
   width: 100%;
-  min-width: 688px;
 }
 .result-tabs.el-tabs {
   display: inline-block;

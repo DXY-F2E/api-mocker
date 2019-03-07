@@ -138,9 +138,6 @@ export default {
 }
 .api-info {
   padding: 20px;
-  width: 288px;
-  min-width: 288px;
-  background-color: #eef1f6;
 
   .el-textarea__inner,
   .el-input__inner {
