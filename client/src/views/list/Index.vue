@@ -4,7 +4,7 @@
      <nav-menu></nav-menu>
    </template>
    <template slot="view">
-     <list-content></list-content>
+     <router-view></router-view>
    </template>
  </layout>
 </template>
@@ -13,12 +13,11 @@
  * 页面：组列表
  * 功能：组列表，添加组，组内接口——添加，导入
  */
-import NavMenu from './Menu'
-import ListContent from './Content'
+import NavMenu from './components/Menu'
+
 export default {
   components: {
-    NavMenu,
-    ListContent
+    NavMenu
   }
 }
 </script>

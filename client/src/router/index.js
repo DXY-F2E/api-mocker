@@ -7,7 +7,9 @@ const Profile = r => require.ensure([], () => r(require('@/components/profile/In
 const ManageGroup = r => require.ensure([], () => r(require('@/components/manage/group/Index')), 'manage')
 const ManageApi = r => require.ensure([], () => r(require('@/components/manage/api/Index')), 'manage')
 
-const List = r => require.ensure([], () => r(require('@/components/list/Index')), 'list')
+const List = r => require.ensure([], () => r(require('@/views/list/Index')), 'list')
+const GlobalSearch = r => require.ensure([], () => r(require('@/views/list/Search')), 'list')
+const GroupList = r => require.ensure([], () => r(require('@/views/list/Content')), 'list')
 
 const Edit = r => require.ensure([], () => r(require('@/components/edit/Index')), 'edit')
 
@@ -76,16 +78,18 @@ const router = new Router({
         {
           path: 'list',
           component: List,
-          redirect: '/list/all',
+          redirect: '/list/search',
           name: 'List',
           children: [
             {
-              path: 'all',
-              name: 'AllList'
+              path: 'search',
+              name: 'GlobalSearch',
+              component: GlobalSearch
             },
             {
               path: ':groupId',
-              name: 'GruopList'
+              name: 'GruopList',
+              component: GroupList
             }
           ]
         },

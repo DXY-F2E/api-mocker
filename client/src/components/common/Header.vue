@@ -13,13 +13,13 @@
           :router="true"
         >
           <!-- <el-menu-item index="Search" :route="{name: 'Search'}">统一搜索</el-menu-item> -->
-          <el-menu-item index="List" :route="{name: 'AllList'}">接口列表</el-menu-item>
-          <el-menu-item index="Create" :route="{name: 'Create'}">创建接口</el-menu-item>
+          <el-menu-item index="List" :route="{ name: 'GlobalSearch' }">接口列表</el-menu-item>
+          <el-menu-item index="Create" :route="{ name: 'Create' }">创建接口</el-menu-item>
           <!-- <el-menu-item index="Document" :route="{name: 'Document'}">接口文档</el-menu-item> -->
           <!-- <el-menu-item index="Stat" :route="{name: 'Stat'}">数据统计</el-menu-item> -->
           <!-- 文档是外链，不用触发系统自身路由 -->
-          <el-menu-item @click="showDocs">使用教程</el-menu-item>
-          <el-menu-item @click="showChangeLog = true">更新说明</el-menu-item>
+          <el-menu-item index="Study" @click="showDocs">使用教程</el-menu-item>
+          <el-menu-item index="Update" @click="showChangeLog = true">更新说明</el-menu-item>
         </el-menu>
       </div>
       <div class="nav-profile" style="text-align: right;">

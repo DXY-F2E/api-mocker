@@ -46,8 +46,9 @@
 </template>
 <script>
 import CreateGroupDialog from '@/components/common/CreateGroup'
-import Search from './Search'
+import Search from '@/components/common/SearchInput'
 import { mapActions, mapState } from 'vuex'
+
 export default {
   components: {
     Search,

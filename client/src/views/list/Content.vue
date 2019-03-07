@@ -31,11 +31,11 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import Search from './Search'
-import ApiList from './ApiList'
-import PageNav from './PageNav'
-import ImportRapJson from '../common/importJson/FromRap'
-import ImportSwaggerJson from '../common/importJson/FromSwagger'
+import Search from '@/components/common/SearchInput'
+import ImportRapJson from '@/components/common/importJson/FromRap'
+import ImportSwaggerJson from '@/components/common/importJson/FromSwagger'
+import ApiList from './components/ApiList'
+import PageNav from './components/PageNav'
 
 export default {
   components: {

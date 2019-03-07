@@ -34,7 +34,7 @@ const actions = {
     })
   },
   // 查询分组
-  getGroupList ({ commit }, query) {
+  queryGroupList ({ commit }, query) {
     return axios.get(API.GROUPS, {
       params: query
     }).then(res => {
@@ -48,6 +48,14 @@ const actions = {
     return axios.post(API.GROUPS, payload).then(response => {
       commit('CREATE_GROUP_SUCCESS', response.data.resources)
     })
+  },
+  // 查询接口列表
+  queryApiList ({ commit }, query) {
+    return axios.get(API.APIS, {
+      params: query
+    })
+    .then(res => res)
+    .catch(err => { throw err })
   },
   getApiList: (() => {
     let searchLastTime = null

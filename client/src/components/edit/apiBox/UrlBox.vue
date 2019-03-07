@@ -39,11 +39,12 @@
           <el-button id="editAct" type="success" @click="send()" v-else>测试</el-button>
         </template>
         <template v-if="api._id">
-          <el-select v-model="mode" placeholder="请选择" style="margin-left: 20px;">
+          <!-- <el-select v-model="mode" placeholder="请选择" style="margin-left: 20px;">
             <el-option label="编辑模式" value="edit"></el-option>
             <el-option label="测试模式" value="test"></el-option>
             <el-option label="文档模式" value="doc" class="doc" @click.native="showDoc" :disabled="true"></el-option>
-          </el-select>
+          </el-select> -->
+          <el-button @click="showDoc" v-if="mode === 'edit'">文档模式</el-button>
         </template>
       </el-col>
     </el-row>
