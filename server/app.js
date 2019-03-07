@@ -13,7 +13,7 @@ module.exports = app => {
         console.log('super manager has existed')
       } else {
         await ctx.model.User.create(managerConfig)
-        console.warn(`super manager user create success!`)
+        console.log(`super manager user create success!`)
       }
     } catch (err) {
       console.warn(`super manager user create fail! \n`, err)
