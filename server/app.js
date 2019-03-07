@@ -7,12 +7,17 @@ const managerConfig = { ...manager, password: md5(manager.password, md5Key) }
 module.exports = app => {
   app.beforeStart(async () => {
     const ctx = app.createAnonymousContext()
-    let initManager = await ctx.model.User.findOne(managerConfig)
-    if (initManager) {
-      await ctx.model.User.findOneAndRemove(managerConfig)
+    try {
+      let initManager = await ctx.model.User.findOne(managerConfig)
+      if (initManager) {
+        console.log('super manager has existed')
+      } else {
+        await ctx.model.User.create(managerConfig)
+        console.warn(`super manager user create success!`)
+      }
+    } catch (err) {
+      console.warn(`super manager user create fail! \n`, err)
     }
-    await ctx.model.User(managerConfig).save()
-    console.warn(`super manager user create success!`)
   })
   // 数字校验-允许提交字符串格式的数字
   app.validator.addRule('unstrict_number', (rule, value) => {
