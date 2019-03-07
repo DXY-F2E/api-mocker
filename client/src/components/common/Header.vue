@@ -1,8 +1,8 @@
 <template>
   <div class="header">
-    <el-row type="flex">
-      <el-col :span="3" class="logo">{{appName}}</el-col>
-      <el-col :span="19">
+    <div class="logo">{{appName}}</div>
+    <div class="nav">
+      <div class="nav-menu">
         <el-menu
           :default-active="activeIndex"
           background-color="#545c64"
@@ -21,11 +21,11 @@
           <el-menu-item @click="showDocs">使用教程</el-menu-item>
           <el-menu-item @click="showChangeLog = true">更新说明</el-menu-item>
         </el-menu>
-      </el-col>
-      <el-col :span="2">
+      </div>
+      <div class="nav-profile" style="text-align: right;">
         <profile-menu></profile-menu>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
     <change-log :visible.sync="showChangeLog"></change-log>
   </div>
 </template>
@@ -57,25 +57,29 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 .header {
   padding: 0 20px;
   background-color: #545c64;
-  text-align: left;
+  display: flex;
 }
-.el-menu {
-  border-radius: 0;
-  /*float: right;*/
-}
-.el-menu-item.is-active {
-  border-bottom: 5px solid #20a0ff;
-}
-.el-menu--horizontal .el-menu-item {
-  margin-right: 20px;
-}
+
 .logo {
+  width: 260px;
   line-height: 60px;
   color: #fff;
   font-size: 22px;
 }
+
+.nav {
+  flex: 1;
+  display: flex;
+  .nav-menu {
+    flex: 0.8
+  }
+  .nav-profile {
+    flex: 0.2;
+  }
+}
+
 </style>

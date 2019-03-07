@@ -39,6 +39,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .profile-menu {
+  display: inline-block;
   width: 120px;
   text-align: right;
   position: relative;

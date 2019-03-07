@@ -1,6 +1,6 @@
 <template>
 <div>
-  <el-menu :default-active="$route.name" :router="true" class="el-menu-vertical">
+  <el-menu background-color="transparent" :default-active="$route.name" :router="true" class="el-menu-vertical">
     <el-menu-item index="Profile" :route="{name: 'Profile'}">
       <i class="el-icon-minus"></i>个人信息
     </el-menu-item>
@@ -20,10 +20,6 @@ export default {
 </script>
 <style lang="less">
 .manage-nav {
-  width: 288px;
-  min-width: 288px;
-  background-color: #eef1f6;
-
   .el-menu-item-group__title {
     padding: 15px 20px 0 20px;
     line-height: 30px;

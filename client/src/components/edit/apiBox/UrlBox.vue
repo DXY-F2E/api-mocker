@@ -1,7 +1,7 @@
 <template>
   <div class="url-box">
-    <el-row type="flex">
-      <el-col :span="24">
+    <el-row type="flex" :gutter="20">
+      <el-col :span="18">
         <el-input placeholder="Url保存后自动生成" readonly v-model="url">
           <el-select v-model="method" slot="prepend" placeholder="请选择">
             <el-option label="GET" value="get"></el-option>
@@ -13,8 +13,9 @@
           <copy-button slot="append" :copy-data="url" :disabled="creating">复制</copy-button>
         </el-input>
       </el-col>
-      <el-col class="control">
-        <el-button id="saveAct" type="info" @click="save()" v-if="mode === 'edit'"></el-button>
+      <el-col :span="6">
+        <!-- 保存 -->
+        <el-button id="saveAct" type="primary" @click="save()" v-if="mode === 'edit'"></el-button>
         <template v-if="mode === 'test'">
           <el-dropdown
             split-button
@@ -37,18 +38,13 @@
           </el-dropdown>
           <el-button id="editAct" type="success" @click="send()" v-else>测试</el-button>
         </template>
-      </el-col>
-      <el-col class="mode" v-if="api._id">
-        <!-- <el-select v-model="mode" placeholder="请选择">
-          <el-option label="编辑模式" value="edit"></el-option>
-          <el-option label="测试模式" value="test"></el-option>
-          <el-option label="文档模式" value="doc" class="doc" @click.native="showDoc" :disabled="true"></el-option>
-        </el-select>-->
-        <el-button-group class="mode-btn-group">
-          <el-button v-if="mode === 'edit'" type="primary" title="测试模式" @click="mode = 'test'">测试</el-button>
-          <el-button v-else type="primary" title="编辑模式" @click="mode = 'edit'">编辑</el-button>
-          <el-button type="primary" title="文档模式" @click="showDoc">文档</el-button>
-        </el-button-group>
+        <template v-if="api._id">
+          <el-select v-model="mode" placeholder="请选择" style="margin-left: 20px;">
+            <el-option label="编辑模式" value="edit"></el-option>
+            <el-option label="测试模式" value="test"></el-option>
+            <el-option label="文档模式" value="doc" class="doc" @click.native="showDoc" :disabled="true"></el-option>
+          </el-select>
+        </template>
       </el-col>
     </el-row>
   </div>
@@ -185,11 +181,6 @@ export default {
 </script>
 <style lang="less">
 .url-box {
-  .el-col.mode {
-    width: 150px;
-    text-align: right;
-  }
-
   .mode-btn-group {
     min-width: 120px;
   }
@@ -203,11 +194,6 @@ export default {
     &:focus {
       border-color: #bfcbd9;
     }
-  }
-
-  .control {
-    width: 134px;
-    text-align: right;
   }
 
   .el-input-group__append {

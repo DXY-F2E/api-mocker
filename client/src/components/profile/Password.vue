@@ -2,8 +2,7 @@
   <el-form-item label="密码" class="profile-item profile-password">
     <el-button type="text" @click="dialogVisible = true">修改密码</el-button>
     <el-dialog title="修改密码"
-               v-model="dialogVisible"
-               size="tiny"
+               :visible.sync="dialogVisible"
                :show-close="false"
                class="update-password"
                @close="handleDialogClose">
