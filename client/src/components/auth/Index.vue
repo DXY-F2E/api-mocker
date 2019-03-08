@@ -12,7 +12,7 @@ export default {
   /* 灰白色 */
   /*background-color: #eef1f6;*/
   /* 深紫色，跟admin header颜色一致 */
-  /*background-color: #545c64;*/
+  /*background-color: #393e46;*/
   /* 蓝色 */
   /*background-color: rgb(43, 94, 125);*/
   /* 黛蓝 */

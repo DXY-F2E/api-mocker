@@ -5,7 +5,7 @@
       <div class="nav-menu">
         <el-menu
           :default-active="activeIndex"
-          background-color="#545c64"
+          background-color="#393e46"
           text-color="#fff"
           active-text-color="#ffd04b"
           class="el-menu-demo grid-content"
@@ -60,7 +60,7 @@ export default {
 <style lang="less" scoped>
 .header {
   padding: 0 20px;
-  background-color: #545c64;
+  background-color: #393e46;
   display: flex;
 }
 
@@ -80,6 +80,9 @@ export default {
   .nav-profile {
     flex: 0.2;
   }
+}
+.el-menu.el-menu--horizontal {
+  border-bottom: none;
 }
 
 </style>
