@@ -25,7 +25,9 @@
     <div class="api-list">
       <api-list :data="apiList"></api-list>
     </div>
-    <page-nav :query="query" :total="count" :on-page-nav="onPageNav"></page-nav>
+    <div class="pagination">
+      <page-nav :query="query" :total="count" :on-page-nav="onPageNav"></page-nav>
+    </div>
   </div>
 </template>
 
@@ -155,5 +157,9 @@ export default {
 
 .api-list {
   margin-top: 20px;
+}
+.pagination {
+  margin-top: 10px;
+  text-align: right;
 }
 </style>

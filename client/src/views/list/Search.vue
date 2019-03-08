@@ -6,26 +6,28 @@
         <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
       </el-input>
     </div>
-    <div class="result-title">分组</div>
-    <template>
-      <div v-if="groupList.resources.length">
-        <group-list :data="groupList.resources"></group-list>
-        <div class="result-pagenav">
-          <el-pagination layout="prev, pager, next" :total="50"></el-pagination>
+    <div v-if="searched">
+      <div class="result-title">分组</div>
+      <template>
+        <div v-if="groupList.resources.length">
+          <group-list :data="groupList.resources"></group-list>
+          <div class="result-pagenav">
+            <page-nav @change="searchGroup" :query="groupList.pages" :total="groupList.pages.count"></page-nav>
+          </div>
         </div>
-      </div>
-      <div class="empty-tip" v-else>未找到满足条件的分组</div>
-    </template>
-    <div class="result-title">接口</div>
-    <template>
-      <div v-if="apiList.resources.length">
-        <api-list :data="apiList.resources"></api-list>
-        <div class="result-pagenav">
-          <el-pagination layout="prev, pager, next" :total="50"></el-pagination>
+        <div class="empty-tip" v-else>未找到满足条件的分组</div>
+      </template>
+      <div class="result-title">接口</div>
+      <template>
+        <div v-if="apiList.resources.length">
+          <api-list :data="apiList.resources"></api-list>
+          <div class="result-pagenav">
+            <page-nav @change="searchApi" :query="groupList.pages" :total="groupList.pages.count"></page-nav>
+          </div>
         </div>
-      </div>
-      <div class="empty-tip" v-else>未找到满足条件的接口</div>
-    </template>
+        <div class="empty-tip" v-else>未找到满足条件的接口</div>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -33,20 +35,23 @@
 import { mapActions, mapState } from 'vuex'
 import ApiList from './components/ApiList'
 import GroupList from './components/GroupList'
-
+import PageNav from './components/PageNav'
 export default {
   components: {
     ApiList,
-    GroupList
+    GroupList,
+    PageNav
   },
   data () {
     return {
-      keyword: ''
+      keyword: '',
+      searched: false
     }
   },
   methods: {
     ...mapActions(['searchGroup', 'searchApi']),
     async handleSearch () {
+      this.searched = true
       await this.searchGroup({ q: this.keyword })
       await this.searchApi({ q: this.keyword })
     }
