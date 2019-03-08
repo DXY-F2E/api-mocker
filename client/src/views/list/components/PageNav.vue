@@ -4,7 +4,7 @@
       @current-change="handleCurrentChange"
       :current-page="query.page"
       :page-size="query.limit"
-      layout="prev, pager, next, jumper"
+      layout="prev, pager, next"
       :total="total">
     </el-pagination>
   </div>
@@ -41,12 +41,10 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 .page-nav {
-    position: absolute;
-    bottom: 30px;
-    left: 0;
-    right: 0;
-    text-align: center;
+  margin-top: 20px;
+  text-align: right;
 }
 </style>

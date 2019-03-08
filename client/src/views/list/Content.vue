@@ -23,7 +23,7 @@
       </el-col>
     </el-row>
     <div class="api-list">
-      <api-list></api-list>
+      <api-list :data="apiList"></api-list>
     </div>
     <page-nav :query="query" :total="count" :on-page-nav="onPageNav"></page-nav>
   </div>

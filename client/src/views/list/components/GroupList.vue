@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table style="width: 100%" :data="apiList" border size="medium">
+    <el-table style="width: 100%" :data="data" border size="medium">
       <el-table-column label="分组名称" prop="name"></el-table-column>
       <el-table-column label="创建者">
         <template slot-scope="{row}">
@@ -22,17 +22,19 @@
  * 创建接口、导入Rap JSON, 导入Swagger JSON
  * 列表字段：接口名称、manager、method、path
  */
-import { mapState } from 'vuex'
 import R from 'ramda'
 
 export default {
+  props: {
+    data: {
+      type: Array,
+      default: () => []
+    }
+  },
   data () {
     return {
       rootDomain: window.location.href.split('#')[0]
     }
-  },
-  computed: {
-    ...mapState(['apiList', 'apiListLoading'])
   },
   methods: {
     showDoc (api) {

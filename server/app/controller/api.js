@@ -6,7 +6,7 @@ const AbstractController = require('./abstract')
 const BASE_TYPES = ['string', 'number', 'boolean', 'object', 'array']
 
 class ApiController extends AbstractController {
-  async getAll () {
+  async query () {
     const { groupId } = this.ctx.params
     let { limit = 30, page = 1, q = '', order = '{}' } = this.ctx.query
     order = JSON.parse(order)

@@ -5,7 +5,7 @@ module.exports = app => {
   const credentials = app.middlewares.credentials()
   /* 分组 */
   app.get('/server/group/all', 'group.getAll') // 获取全部接口组
-  app.get('/server/group', 'group.get') // 查询接口
+  app.get('/server/group', 'group.query') // 查询接口
   app.post('/server/group', 'group.create')
   app.get('/server/group/manage', 'group.getManageGroup')
   app.get('/server/group/unmanaged', 'group.getUnmanaged')
@@ -15,10 +15,10 @@ module.exports = app => {
   app.put('/server/group/follower/:groupId', 'group.follow')
   app.delete('/server/group/follower/:groupId', 'group.unfollow')
   /* 接口 */
-  app.get('/server/api/', 'api.getAll')
+  app.get('/server/api/', 'api.query')
   app.get('/server/api/manage', 'api.getManageApi')
   app.get('/server/api/:groupId/manage', 'api.getApisByGroupManager')
-  app.get('/server/api/:groupId', 'api.getAll')
+  app.get('/server/api/:groupId', 'api.query')
   app.get('/server/api/:groupId/:apiId', 'api.getApi')
   app.post('/server/api/:groupId', 'api.createApi')
   app.post('/server/api/:groupId/batch', 'api.createGroupApis')

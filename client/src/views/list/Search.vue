@@ -2,21 +2,35 @@
   <div>
     <div class="search-wrap">
       <div class="search-title">统一搜索<small>（分组、接口）</small></div>
-      <el-input placeholder="可搜索名称、接口路径、管理员" v-model="keyword" class="input-with-select">
+      <el-input @keyup.native.enter="handleSearch" placeholder="可搜索名称、接口路径、管理员" v-model="keyword" class="input-with-select">
         <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
       </el-input>
     </div>
     <div class="result-title">分组</div>
-      <group-list></group-list>
+    <template>
+      <div v-if="groupList.resources.length">
+        <group-list :data="groupList.resources"></group-list>
+        <div class="result-pagenav">
+          <el-pagination layout="prev, pager, next" :total="50"></el-pagination>
+        </div>
+      </div>
+      <div class="empty-tip" v-else>未找到满足条件的分组</div>
+    </template>
     <div class="result-title">接口</div>
-    <div class="api-list-wrap">
-      <api-list></api-list>
-    </div>
+    <template>
+      <div v-if="apiList.resources.length">
+        <api-list :data="apiList.resources"></api-list>
+        <div class="result-pagenav">
+          <el-pagination layout="prev, pager, next" :total="50"></el-pagination>
+        </div>
+      </div>
+      <div class="empty-tip" v-else>未找到满足条件的接口</div>
+    </template>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import ApiList from './components/ApiList'
 import GroupList from './components/GroupList'
 
@@ -31,12 +45,28 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['queryGroupList', 'queryApiList']),
+    ...mapActions(['searchGroup', 'searchApi']),
     async handleSearch () {
-      const groupData = await this.queryGroupList({ keyword: this.keyword })
-      const apiData = await this.queryApiList({ keyword: this.keyword })
-      console.log(groupData, apiData)
+      await this.searchGroup({ q: this.keyword })
+      await this.searchApi({ q: this.keyword })
     }
+  },
+  computed: {
+    ...mapState(['search']),
+    groupList () {
+      return this.search.groupList
+    },
+    apiList () {
+      return this.search.apiList
+    }
+  },
+  watch: {
+    'search.keyword': (val, old) => {
+      this.keyword = val
+    }
+  },
+  mounted () {
+    this.keyword = this.search.keyword
   }
 }
 </script>
@@ -60,5 +90,12 @@ export default {
   margin: 20px 0;
   font-size: 16px;
   color: #606266;
+}
+.result-pagenav {
+  text-align: right;
+  margin: 10px 0;
+}
+.empty-tip {
+  color: #909399;
 }
 </style>

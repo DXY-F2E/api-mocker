@@ -34,11 +34,24 @@ const actions = {
     })
   },
   // 查询分组
-  queryGroupList ({ commit }, query) {
+  searchGroup ({ commit }, query) {
+    commit('SEARCH_KEYWORD', query)
     return axios.get(API.GROUPS, {
       params: query
     }).then(res => {
-      commit('FETCH_GROUPS_SUCCESS', res.data.resources)
+      commit('SEARCH_GROUPS_SUCCESS', res.data)
+      return res
+    }).catch(err => {
+      throw err
+    })
+  },
+  // 查询接口列表
+  searchApi ({ commit }, query) {
+    commit('SEARCH_KEYWORD', query)
+    return axios.get(API.APIS, {
+      params: query
+    }).then(res => {
+      commit('SEARCH_APIS_SUCCESS', res.data)
       return res
     }).catch(err => {
       throw err
@@ -48,14 +61,6 @@ const actions = {
     return axios.post(API.GROUPS, payload).then(response => {
       commit('CREATE_GROUP_SUCCESS', response.data.resources)
     })
-  },
-  // 查询接口列表
-  queryApiList ({ commit }, query) {
-    return axios.get(API.APIS, {
-      params: query
-    })
-    .then(res => res)
-    .catch(err => { throw err })
   },
   getApiList: (() => {
     let searchLastTime = null

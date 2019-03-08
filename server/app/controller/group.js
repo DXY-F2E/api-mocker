@@ -19,7 +19,7 @@ class GroupController extends AbstractController {
     this.ctx.status = 200
   }
 
-  async get () {
+  async query () {
     let { limit = 20, page = 1, q = '.*' } = this.ctx.query
     page = Number(page)
     limit = Number(limit)
