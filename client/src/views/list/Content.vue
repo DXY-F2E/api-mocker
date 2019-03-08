@@ -25,7 +25,7 @@
     <div class="api-list">
       <api-list :data="apiList"></api-list>
     </div>
-    <div class="pagination">
+    <div class="pagination" v-if="apiList.length">
       <page-nav :query="query" :total="count" :on-page-nav="onPageNav"></page-nav>
     </div>
   </div>

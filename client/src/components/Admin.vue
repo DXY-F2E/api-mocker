@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import AppHeader from './common/Header'
+import AppHeader from './common/Header/index'
 export default {
   components: {
     AppHeader

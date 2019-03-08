@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import ApiList from './components/ApiList'
 import GroupList from './components/GroupList'
 import PageNav from './components/PageNav'
@@ -44,12 +44,12 @@ export default {
   },
   data () {
     return {
-      keyword: '',
       searched: false
     }
   },
   methods: {
     ...mapActions(['searchGroup', 'searchApi']),
+    ...mapMutations(['SEARCH_KEYWORD']),
     async handleSearch () {
       this.searched = true
       await this.searchGroup({ q: this.keyword })
@@ -63,15 +63,25 @@ export default {
     },
     apiList () {
       return this.search.apiList
+    },
+    keyword: {
+      get () {
+        return this.search.keyword
+      },
+      set (val) {
+        this.SEARCH_KEYWORD({q: val})
+      }
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    this.SEARCH_KEYWORD({q: ''})
+    next()
   },
   watch: {
-    'search.keyword': (val, old) => {
-      this.keyword = val
+    'keyword': {
+      handler: function () { this.handleSearch() },
+      immediate: true
     }
-  },
-  mounted () {
-    this.keyword = this.search.keyword
   }
 }
 </script>

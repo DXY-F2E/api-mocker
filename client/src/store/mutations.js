@@ -7,8 +7,8 @@ const mutations = {
   FETCH_GROUPS_SUCCESS (state, groups) {
     state.groups = groups
   },
-  SEARCH_KEYWORD (state, { keyword }) {
-    state.search.keyword = keyword
+  SEARCH_KEYWORD (state, { q }) {
+    state.search.keyword = q
   },
   SEARCH_GROUPS_SUCCESS (state, listData) {
     state.search.groupList = listData

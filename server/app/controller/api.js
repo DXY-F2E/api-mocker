@@ -26,15 +26,17 @@ class ApiController extends AbstractController {
       if (q.match(/^[0-9a-fA-F]{24}$/)) {
         condition.$or.unshift({ _id: q })
       }
+
+      const users = q ? await this.service.user.find(q) : []
+      if (users.length) {
+        condition.$or.push({
+          manager: {
+            $in: users.map(u => u._id)
+          }
+        })
+      }
     }
-    const users = q ? await this.service.user.find(q) : []
-    if (users.length) {
-      condition.$or.push({
-        manager: {
-          $in: users.map(u => u._id)
-        }
-      })
-    }
+
     // 传了groupId 则选择分组下的api,没有的话，先获取可见的分组，再去读取api
     if (groupId) {
       condition.group = groupId

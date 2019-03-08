@@ -12,7 +12,6 @@
           mode="horizontal"
           :router="true"
         >
-          <!-- <el-menu-item index="Search" :route="{name: 'Search'}">统一搜索</el-menu-item> -->
           <el-menu-item index="List" :route="{ name: 'GlobalSearch' }">接口列表</el-menu-item>
           <el-menu-item index="Create" :route="{ name: 'Create' }">创建接口</el-menu-item>
           <!-- <el-menu-item index="Document" :route="{name: 'Document'}">接口文档</el-menu-item> -->
@@ -21,6 +20,9 @@
           <el-menu-item index="Study" @click="showDocs">使用教程</el-menu-item>
           <el-menu-item index="Update" @click="showChangeLog = true">更新说明</el-menu-item>
         </el-menu>
+      </div>
+      <div class="nav-search">
+        <header-search></header-search>
       </div>
       <div class="nav-profile" style="text-align: right;">
         <profile-menu></profile-menu>
@@ -31,13 +33,16 @@
 </template>
 
 <script>
-import ProfileMenu from '../profile/Menu'
-import config from '../../../config'
+import ProfileMenu from '../../profile/Menu'
+import config from '../../../../config'
 import ChangeLog from '@/components/log/ChangeLog'
+import HeaderSearch from './Search'
+
 export default {
   components: {
     ProfileMenu,
-    ChangeLog
+    ChangeLog,
+    HeaderSearch
   },
   data () {
     return {
@@ -75,7 +80,11 @@ export default {
   flex: 1;
   display: flex;
   .nav-menu {
-    flex: 0.8
+    flex: 0.6
+  }
+  .nav-search {
+    flex: 0.2;
+    padding-top: 12px;
   }
   .nav-profile {
     flex: 0.2;
