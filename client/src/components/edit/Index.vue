@@ -1,11 +1,21 @@
 <template>
  <div class="content" :class="mode">
-  <el-row type="flex" class="list-content" v-if="!loading && !loadingFail">
-    <api-info></api-info>
-    <api-box></api-box>
-  </el-row>
+  <layout v-if="!loading && !loadingFail">
+    <template slot="nav">
+      <api-info></api-info>
+    </template>
+    <template slot="view">
+      <api-box></api-box>
+    </template>
+  </layout>
   <div class="loading" v-show="loading">
-    <div class="el-loading-mask"><div class="el-loading-spinner"><svg viewBox="25 25 50 50" class="circular"><circle cx="50" cy="50" r="20" fill="none" class="path"></circle></svg><!----></div></div>
+    <div class="el-loading-mask">
+      <div class="el-loading-spinner">
+        <svg viewBox="25 25 50 50" class="circular">
+          <circle cx="50" cy="50" r="20" fill="none" class="path"></circle>
+        </svg>
+      </div>
+    </div>
   </div>
  </div>
 </template>

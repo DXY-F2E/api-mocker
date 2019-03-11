@@ -39,6 +39,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .profile-menu {
+  display: inline-block;
   width: 120px;
   text-align: right;
   position: relative;
@@ -80,8 +81,8 @@ export default {
   display: none;
   position: absolute;
   z-index: 2;
-  border-top: 1px solid #324157;
-  background-color: #324157;
+  border-top: 1px solid #393e46;
+  background-color: #393e46;
   top: 100%;
   left: 0;
   right: 0;

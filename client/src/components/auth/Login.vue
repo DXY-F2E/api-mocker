@@ -51,7 +51,7 @@ export default {
         this.$message.success('登录成功, 即将跳转')
         window.setTimeout(() => {
           this.$router.push({
-            name: 'AllList'
+            name: 'GlobalSearch'
           })
         }, 1000)
       }).catch(err => this.$message.error(`登录失败：${err.msg}`))
