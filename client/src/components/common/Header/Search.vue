@@ -11,13 +11,17 @@
           <div class="result-block">
             <div class="block-title">分组</div>
             <ul class="block-list">
-              <li class="list-item" v-for="item in groupList.resources" :key="item._id">{{item.name}}</li>
+              <li class="list-item" v-for="item in groupList.resources" :key="item._id">
+                {{item.name}}
+              </li>
             </ul>
           </div>
           <div class="result-block">
             <div class="block-title">接口</div>
             <ul class="block-list">
-              <li class="list-item" v-for="item in apiList.resources" :key="item._id">{{item.name}}</li>
+              <li class="list-item" v-for="item in apiList.resources" :key="item._id">
+                {{item.name}}
+              </li>
             </ul>
           </div>
           <div class="result-more">
@@ -27,7 +31,7 @@
         <div v-else class="result-tip">在当前页面查看搜索结果</div>
       </div>
       <el-input slot="reference"
-        @keyup.native.enter="handleSearch"
+        @keyup.native.enter="searchActions"
         placeholder="统一搜索（分组、接口）"
         v-model="keyword">
         <i slot="prefix" class="el-input__icon el-icon-search"></i>
@@ -38,15 +42,18 @@
 
 <script>
 import { mapActions, mapState, mapMutations } from 'vuex'
+import { debounce } from '@/util'
+
 export default {
   data () {
     return {
       keyword: '',
-      visible: false
+      visible: false,
+      searchActions: debounce(this.handleSearch, 300)
     }
   },
   watch: {
-    'keyword': 'handleSearch',
+    'keyword': 'searchActions',
     '$route.name': function () {
       this.visible = false
       this.keyword = ''
@@ -63,8 +70,8 @@ export default {
           this.SEARCH_KEYWORD({q: this.keyword})
           return
         }
-        await this.searchGroup({ q: this.keyword })
-        await this.searchApi({ q: this.keyword })
+        await this.searchGroup({ q: this.keyword, limit: 10 })
+        await this.searchApi({ q: this.keyword, limit: 10 })
       }
     },
     goMoreSearch () {
@@ -94,6 +101,9 @@ export default {
 .list-item {
   padding: 10px;
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   &:hover {
     background-color: #f5f7fa;
   }

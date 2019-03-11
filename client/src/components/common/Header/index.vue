@@ -10,10 +10,13 @@
           active-text-color="#ffd04b"
           class="el-menu-demo grid-content"
           mode="horizontal"
-          :router="true"
         >
-          <el-menu-item index="List" :route="{ name: 'GlobalSearch' }">接口列表</el-menu-item>
-          <el-menu-item index="Create" :route="{ name: 'Create' }">创建接口</el-menu-item>
+          <el-menu-item index="List">
+            <router-link :to="{ name: 'GlobalSearch' }">接口列表</router-link>
+          </el-menu-item>
+          <el-menu-item index="Create">
+            <router-link :to="{ name: 'Create' }">创建接口</router-link>
+          </el-menu-item>
           <!-- <el-menu-item index="Document" :route="{name: 'Document'}">接口文档</el-menu-item> -->
           <!-- <el-menu-item index="Stat" :route="{name: 'Stat'}">数据统计</el-menu-item> -->
           <!-- 文档是外链，不用触发系统自身路由 -->
@@ -94,4 +97,9 @@ export default {
   border-bottom: none;
 }
 
+.el-menu-item {
+  a {
+    display: block;
+  }
+}
 </style>

@@ -30,10 +30,12 @@ class GroupController extends AbstractController {
     }
     const resources = await this.ctx.model.Group
       .find(cond)
+      .populate('creator', ['_id', 'name'])
       .sort({ modifiedTime: -1, createTime: -1 })
       .skip((page - 1) * limit)
       .limit(limit)
       .exec()
+
     const count = await this.ctx.model.Group.find(cond).count().exec()
     this.ctx.body = { resources, pages: { limit, page, count } }
     this.ctx.status = 200

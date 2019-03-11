@@ -2,11 +2,11 @@
   <div>
     <div class="search-wrap">
       <div class="search-title">统一搜索<small>（分组、接口）</small></div>
-      <el-input @keyup.native.enter="handleSearch" placeholder="可搜索名称、接口路径、管理员" v-model="keyword" class="input-with-select">
-        <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
+      <el-input @keyup.native.enter="searchActions" placeholder="可搜索名称、接口路径、管理员" v-model="keyword" class="input-with-select">
+        <el-button slot="append" icon="el-icon-search" @click="searchActions"></el-button>
       </el-input>
     </div>
-    <div v-if="searched">
+    <div v-if="searched && keyword">
       <div class="result-title">分组</div>
       <template>
         <div v-if="groupList.resources.length">
@@ -20,7 +20,7 @@
       <div class="result-title">接口</div>
       <template>
         <div v-if="apiList.resources.length">
-          <api-list :data="apiList.resources"></api-list>
+          <api-list :data="apiList.resources" :actions="['doc', 'edit']"></api-list>
           <div class="result-pagenav">
             <page-nav @change="searchApi" :query="groupList.pages" :total="groupList.pages.count"></page-nav>
           </div>
@@ -36,6 +36,7 @@ import { mapActions, mapState, mapMutations } from 'vuex'
 import ApiList from './components/ApiList'
 import GroupList from './components/GroupList'
 import PageNav from './components/PageNav'
+import { debounce } from '@/util'
 export default {
   components: {
     ApiList,
@@ -44,7 +45,8 @@ export default {
   },
   data () {
     return {
-      searched: false
+      searched: false,
+      searchActions: debounce(this.handleSearch, 300)
     }
   },
   methods: {
@@ -79,7 +81,11 @@ export default {
   },
   watch: {
     'keyword': {
-      handler: function () { this.handleSearch() },
+      handler: function (val) {
+        if (val) {
+          this.searchActions()
+        }
+      },
       immediate: true
     }
   }

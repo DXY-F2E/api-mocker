@@ -26,7 +26,7 @@
       <api-list :data="apiList"></api-list>
     </div>
     <div class="pagination" v-if="apiList.length">
-      <page-nav :query="query" :total="count" :on-page-nav="onPageNav"></page-nav>
+      <page-nav :query="query" :total="count" @change="onPageNav"></page-nav>
     </div>
   </div>
 </template>
