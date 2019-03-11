@@ -2,7 +2,7 @@
   <div class="api-box">
     <url-box></url-box>
     <setting-field title="Request" class="request-field">
-      <template slot-scope="props">
+      <template scope="props">
         <request-box :fullscreen="props.fullscreen" :method="method"></request-box>
       </template>
     </setting-field>
@@ -12,13 +12,13 @@
         <el-tab-pane label="Headers" name="header"></el-tab-pane>
         <el-tab-pane label="All-Data" name="all"></el-tab-pane>
       </el-tabs>
-      <template slot-scope="props">
+      <template scope="props">
         <result-box :fullscreen="props.fullscreen" :res-active="resActive"></result-box>
       </template>
     </setting-field>
     <setting-field title="Response" v-if="response" >
       <response-config slot="header"></response-config>
-      <template slot-scope="props">
+      <template scope="props">
         <response :response="response" :fullscreen="props.fullscreen"></response>
       </template>
     </setting-field>

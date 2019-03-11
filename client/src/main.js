@@ -13,7 +13,7 @@ import './components/common'
 import axios from 'axios'
 import '@/style/reset.css'
 import '@/style/material-icons/index.css'
-import 'element-ui/lib/theme-chalk/index.css'
+import 'element-ui/lib/theme-default/index.css'
 
 Vue.config.productionTip = false
 Vue.use(filter)

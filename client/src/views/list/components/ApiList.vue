@@ -1,17 +1,17 @@
 <template>
   <div>
-    <el-table style="width: 100%" :data="data" border size="medium">
+    <el-table :data="data" size="medium">
       <el-table-column label="接口名称" prop="name"></el-table-column>
       <el-table-column label="方法 Method" prop="options.method"></el-table-column>
       <el-table-column label="线上路径" prop="prodUrl"></el-table-column>
       <el-table-column label="Mock Hash" prop="_id"></el-table-column>
       <el-table-column label="创建者">
-        <template slot-scope="{row}">
+        <template scope="{row}">
           {{ row.manager ? row.manager.name : '未知' }}
         </template>
       </el-table-column>
       <el-table-column label="操作">
-        <template slot-scope="{row}">
+        <template scope="{row}">
           <el-button v-if="actions.includes('doc')" type="text" @click="showDoc(row)">查看文档</el-button>
           <el-button v-if="actions.includes('edit')" type="text" @click="editDoc(row)">编辑</el-button>
           <el-button v-if="actions.includes('copy')" type="text" @click="confirmCopy(row)">复制</el-button>
