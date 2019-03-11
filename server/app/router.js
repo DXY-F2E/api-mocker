@@ -3,8 +3,9 @@ const allMethods = ['get', 'post', 'put', 'patch', 'delete']
 module.exports = app => {
   const apiStat = app.middlewares.apiStat()
   const credentials = app.middlewares.credentials()
-
-  app.get('/server/group', 'group.getAll')
+  /* 分组 */
+  app.get('/server/group/all', 'group.getAll') // 获取全部接口组
+  app.get('/server/group', 'group.query') // 查询接口
   app.post('/server/group', 'group.create')
   app.get('/server/group/manage', 'group.getManageGroup')
   app.get('/server/group/unmanaged', 'group.getUnmanaged')
@@ -13,11 +14,11 @@ module.exports = app => {
   app.put('/server/group/:id', 'group.update')
   app.put('/server/group/follower/:groupId', 'group.follow')
   app.delete('/server/group/follower/:groupId', 'group.unfollow')
-
-  app.get('/server/api/', 'api.getAll')
+  /* 接口 */
+  app.get('/server/api/', 'api.query')
   app.get('/server/api/manage', 'api.getManageApi')
   app.get('/server/api/:groupId/manage', 'api.getApisByGroupManager')
-  app.get('/server/api/:groupId', 'api.getAll')
+  app.get('/server/api/:groupId', 'api.query')
   app.get('/server/api/:groupId/:apiId', 'api.getApi')
   app.post('/server/api/:groupId', 'api.createApi')
   app.post('/server/api/:groupId/batch', 'api.createGroupApis')
@@ -47,7 +48,7 @@ module.exports = app => {
     app[method](mockUrl, credentials, apiStat, 'client.mock')
   })
 
-  // user
+  /* 用户相关 */
   app.post('/auth/user/dxy-login', 'user.dxyLogin')
   app.get('/auth/user', 'user.get')
   app.post('/auth/user/register', 'user.create')
@@ -59,4 +60,8 @@ module.exports = app => {
   app.put('/server/user/password', 'user.updatePassword')
   app.put('/server/user', 'user.update')
   app.get('/server/user/search', 'user.search')
+  // 收藏相关
+  app.post('/server/user/favorites/:groupId', 'user.addFavorite')
+  app.delete('/server/user/favorites/:groupId', 'user.removeFavorite')
+  // app.get('/server/user/favorites', 'user.getAllFavorite')
 }

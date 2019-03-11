@@ -10,4 +10,3 @@ module.exports = appInfo => {
     clientRoot: 'http://f2e.dxy.net/mock'
   }
 }
-

@@ -53,6 +53,7 @@ class UserService extends Service {
       modifiedTime: new Date()
     }, { new: true }).lean()
   }
+  // 修改用户信息
   update (user) {
     const authId = this.ctx.authUser._id
     return this.ctx.model.User.findOneAndUpdate({

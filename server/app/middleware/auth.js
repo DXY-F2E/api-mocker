@@ -3,7 +3,7 @@ module.exports = options => {
     if (ctx.url.indexOf('server') >= 0) {
       const user = ctx.service.cookie.getUser()
       if (user) {
-        ctx.authUser = user
+        ctx.authUser = await ctx.model.User.findById(user._id)
 
         // 超级管理员
         if (user.isManager) {

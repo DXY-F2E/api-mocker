@@ -1,7 +1,7 @@
 <template>
 <div class="manage-group">
   <div class="mode-switch" :class="mode">
-    <el-button size="small" class="managed" @click.native="getGroups">我的分组</el-button>
+    <el-button size="small" class="managed" @click.native="getMyGroups">我的分组</el-button>
     <el-button size="small" class="unmanaged" @click.native="getUnmanaged">未认领分组</el-button>
   </div>
   <div class="group-table">
@@ -11,7 +11,7 @@
       <el-table-column prop="createTime" :formatter="timeFormat" width="200" label="创建时间">
       </el-table-column>
       <el-table-column width="200" label="操作">
-        <template scope="scope">
+        <template slot-scope="scope">
           <control :group="scope.row" :mode="mode" @delete="groupDelete" @manage="manageGroup" @api-manage="manageGroupApi"></control>
         </template>
       </el-table-column>
@@ -67,7 +67,7 @@ export default {
         this.mode = 'unmanaged'
       })
     },
-    getGroups () {
+    getMyGroups () {
       this.getManageGroup().then(rs => {
         this.groups = rs.data
         this.mode = 'managed'
@@ -91,11 +91,11 @@ export default {
       // window.console.log(group)
       // const index = R.findIndex(R.propEq('_id', group._id))(this.groups)
       // this.$set(this.groups, index, group)
-      this.getGroups()
+      this.getMyGroups()
     }
   },
   mounted () {
-    this.getGroups()
+    this.getMyGroups()
   }
 }
 </script>

@@ -7,6 +7,15 @@ const mutations = {
   FETCH_GROUPS_SUCCESS (state, groups) {
     state.groups = groups
   },
+  SEARCH_KEYWORD (state, { q }) {
+    state.search.keyword = q
+  },
+  SEARCH_GROUPS_SUCCESS (state, listData) {
+    state.search.groupList = listData
+  },
+  SEARCH_APIS_SUCCESS (state, listData) {
+    state.search.apiList = listData
+  },
   INSERT_APIS (state, apis) {
     state.apiList = apis.concat(state.apiList)
   },
