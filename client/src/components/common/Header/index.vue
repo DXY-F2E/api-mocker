@@ -4,8 +4,9 @@
     <div class="nav">
       <div class="nav-menu">
         <el-menu
+          theme="dark"
           :default-active="activeIndex"
-          background-color="#393e46"
+          background-color="#324157"
           text-color="#fff"
           active-text-color="#ffd04b"
           class="el-menu-demo grid-content"
@@ -68,7 +69,7 @@ export default {
 <style lang="less" scoped>
 .header {
   padding: 0 20px;
-  background-color: #393e46;
+  background-color: #324157;
   display: flex;
 }
 
