@@ -76,6 +76,11 @@ export default [
         redirect: '/list/search',
         name: 'List',
         children: [
+          // 老的页面，跳转到新的统一搜索页
+          {
+            path: 'all',
+            redirect: '/list/search'
+          },
           {
             path: 'search',
             name: 'GlobalSearch',
