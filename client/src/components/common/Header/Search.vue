@@ -11,7 +11,7 @@
           <div class="result-block">
             <div class="block-title">分组</div>
             <ul class="block-list">
-              <li class="list-item" v-for="item in groupList.resources" :key="item._id">
+              <li class="list-item" v-for="item in groupList.resources" :key="item._id" @click="goApiList(item)">
                 {{item.name}}
               </li>
             </ul>
@@ -19,7 +19,7 @@
           <div class="result-block">
             <div class="block-title">接口</div>
             <ul class="block-list">
-              <li class="list-item" v-for="item in apiList.resources" :key="item._id">
+              <li class="list-item" v-for="item in apiList.resources" :key="item._id" @click="goApiDoc(item)">
                 {{item.name}}
               </li>
             </ul>
@@ -49,7 +49,8 @@ export default {
     return {
       keyword: '',
       visible: false,
-      searchActions: debounce(this.handleSearch, 300)
+      searchActions: debounce(this.handleSearch, 300),
+      rootDomain: window.location.href.split('#')[0]
     }
   },
   watch: {
@@ -62,6 +63,14 @@ export default {
   methods: {
     ...mapActions(['searchGroup', 'searchApi']),
     ...mapMutations(['SEARCH_KEYWORD']),
+    goApiList (group) {
+      const url = `${this.rootDomain}#/doc/${group._id}`
+      window.open(url, '_blank')
+    },
+    goApiDoc (api) {
+      const url = `${this.rootDomain}#/doc/${api.group}/${api._id}`
+      window.open(url, '_blank')
+    },
     async handleSearch () {
       this.visible = !!this.keyword
       if (this.keyword) {
