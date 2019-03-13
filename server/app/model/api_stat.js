@@ -2,6 +2,7 @@ const moment = require('moment')
 module.exports = app => {
   const mongoose = app.mongoose
   const { ObjectId } = mongoose.Schema.Types
+  // Api 数据统计表
   const ApiStatSchema = mongoose.Schema({
     apiId: {
       type: ObjectId,
