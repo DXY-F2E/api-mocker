@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="创建Group" v-model="visited" :show-close="false" class="create-group-dialog">
+  <el-dialog title="创建Group" :visible="visible" :show-close="false" class="create-group-dialog">
     <el-form v-stop-default-enter>
       <el-input v-model="input" placeholder="输入分组名称"></el-input>
     </el-form>
@@ -13,10 +13,10 @@
 <script>
 
 // emit: close,action
-// props: visited
+// props: visible
 export default {
   props: {
-    visited: {
+    visible: {
       default: false,
       required: true
     }
@@ -36,7 +36,7 @@ export default {
     }
   },
   watch: {
-    visited (val) {
+    visible (val) {
       if (!val) {
         this.$emit('close', this)
       }

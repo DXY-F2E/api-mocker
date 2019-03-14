@@ -3,8 +3,10 @@ const assert = require('http-assert')
 const mongoose = require('mongoose')
 const AbstractController = require('./abstract')
 
+const BASE_TYPES = ['string', 'number', 'boolean', 'object', 'array']
+
 class ApiController extends AbstractController {
-  async getAll () {
+  async query () {
     const { groupId } = this.ctx.params
     let { limit = 30, page = 1, q = '', order = '{}' } = this.ctx.query
     order = JSON.parse(order)
@@ -22,17 +24,19 @@ class ApiController extends AbstractController {
       ]
       // 符合objectId的话，添加id的查询
       if (q.match(/^[0-9a-fA-F]{24}$/)) {
-        condition.$or.unshift({_id: q})
+        condition.$or.unshift({ _id: q })
+      }
+
+      const users = q ? await this.service.user.find(q) : []
+      if (users.length) {
+        condition.$or.push({
+          manager: {
+            $in: users.map(u => u._id)
+          }
+        })
       }
     }
-    const users = q ? await this.service.user.find(q) : []
-    if (users.length) {
-      condition.$or.push({
-        manager: {
-          $in: users.map(u => u._id)
-        }
-      })
-    }
+
     // 传了groupId 则选择分组下的api,没有的话，先获取可见的分组，再去读取api
     if (groupId) {
       condition.group = groupId
@@ -73,6 +77,8 @@ class ApiController extends AbstractController {
     const { body } = this.ctx.request
     const authId = this.ctx.authUser._id
     const lastModifiedTime = body.modifiedTime
+    // 验证 example 是否与 schema 一致
+    this.validateExample(body.options.response)
 
     assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalid groupId')
     assert(mongoose.Types.ObjectId.isValid(apiId), 403, 'invalid apiId')
@@ -165,9 +171,16 @@ class ApiController extends AbstractController {
     const { limit = 100, page = 1 } = this.ctx.query
     this.ctx.body = await this.service.api.getManageList(page, limit)
   }
+  async getApisByGroupManager () {
+    const { groupId } = this.ctx.params
+    this.ctx.body = await this.service.api.getApisByGroupManager(groupId)
+  }
   async createApi () {
     const { groupId } = this.ctx.params
     const { body } = this.ctx.request
+
+    // 验证 example 是否与 schema 一致
+    this.validateExample(body.options.response)
 
     assert(mongoose.Types.ObjectId.isValid(groupId), 403, 'invalie groupId')
     assert(body.name, 403, 'required name')
@@ -210,6 +223,92 @@ class ApiController extends AbstractController {
     this.notifyApi('Delete', group, rs)
     this.ctx.logger.info('deleteApi')
     this.ctx.status = 204
+  }
+  validateExample (response = []) {
+    for (let item of response) {
+      let { example, params } = item
+      this.validateParams(params, example)
+    }
+  }
+  /**
+   *
+   * @param {Array} params - 验证规则数据
+   * @param {Object} example - 要验证的数据
+   * @param {String} parentKey - 上一级的 key
+   */
+  validateParams (params, example = {}, parentKey = '') {
+    example = example || {}
+    const rule = {}
+
+    function getParentKey () {
+      let key = parentKey.replace(/^\./, '').replace(/\.$/, '')
+      return (key + '.').replace(/^\./, '')
+    }
+
+    // 验证是否有多余字段
+    for (let i in example) {
+      let keys = params.map(param => param.key)
+      if (!keys.includes(i)) {
+        this.error(`${getParentKey() + i} 未定义`)
+      }
+    }
+
+    params.forEach(param => {
+      // 参数不存在或者参数类型不属于基本类型时，不校验
+      if (!param.key || BASE_TYPES.indexOf(param.type) === -1) return
+
+      let data = example[param.key]
+      let itemType = ''
+
+      // 当数据不存在且该参数非必填，不用校验
+      if (!data && param.required === false) {
+        return
+      }
+
+      // 如果是 array 类型
+      if (param.type === 'array') {
+        // 不是数组
+        if (!Array.isArray(data)) {
+          this.error(`${getParentKey() + param.key} 不是一个数组`)
+        }
+
+        // 空数组不验证
+        if (!data.length) return
+
+        let { type, params } = param.items
+        itemType = type === 'undefined' ? '' : type
+
+        if (itemType === 'object') {
+          for (let item of data) {
+            this.validateParams(params, item, `${parentKey}.${param.key}`)
+          }
+        }
+      } else if (param.type === 'object') {
+        // 数据不是 object
+        if (typeof data !== 'object') {
+          this.error(`${getParentKey() + param.key} 不是一个对象`)
+        }
+        // 如果是 object 类型，递归验证
+        this.validateParams(param.params, data, `${parentKey}.${param.key}`)
+      }
+
+      rule[param.key] = {
+        type: param.type,
+        required: param.required,
+        allowEmpty: param.type === 'string',
+        itemType // 如果是数组，则需要此参数验证数组每一项
+      }
+    })
+
+    try {
+      this.ctx.validate(rule, example)
+    } catch (err) {
+      // 对错误进行格式化
+      let { errors = [] } = err
+      let message = errors.map(i => `’${getParentKey() + i.field}‘: ${i.message.replace('should be a', '应该是')}`).join(';')
+      /* eslint no-throw-literal: off */
+      this.error(message)
+    }
   }
 }
 module.exports = ApiController

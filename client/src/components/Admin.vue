@@ -6,10 +6,15 @@
 </template>
 
 <script>
-import AppHeader from './common/Header'
+import AppHeader from './common/Header/index'
 export default {
   components: {
     AppHeader
+  },
+  data () {
+    return {
+      showChangeLog: localStorage.getItem('change-log') === '1.3.2'
+    }
   },
   computed: {
     user () {
@@ -37,7 +42,7 @@ export default {
     // 暂时无用
     // window.addEventListener('resize', this.windowResize);
     this.$store.dispatch('getUser').then(() => {
-      this.$store.dispatch('getGroups')
+      this.$store.dispatch('getAllGroups')
     }).catch(() => {
       window.location.href = '#/login'
     })
@@ -61,7 +66,6 @@ export default {
     height: 100%;
     position: relative;
     overflow-y: auto;
-    overflow-x: hidden;
   }
   .list-content {
     min-height: 100%;

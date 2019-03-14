@@ -90,6 +90,14 @@ API Mocker提供简单易用的权限控制。
 同时该命令也会确保`mongod`的启动，如果未启动会在本地建立`db`目录，并启动`mongod`.
 如果服务器新开机可重新执行`make install`确保数据库启动.
 
+## 服务端配置
+
+初次启动项目，需要手动添加配置文件 `./server/config/core.js` 和 `./server/config/manager.js`
+
+分别通过复制 `./server/config/default.core.js` 和 `./server/config/default.manager.js` 进行添加
+
+注意：core.js 为配置 mongo 数据库，md5 key，邮件服务；manager.js 为初始化新建超级管理员账户。
+
 ## 开发启动(dev)
 
 ### Client

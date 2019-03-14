@@ -4,6 +4,16 @@ const domain = getDomain()
 
 const state = {
   user: null,
+  // 搜索结果
+  search: {
+    keyword: '',
+    groupList: {
+      resources: []
+    },
+    apiList: {
+      resources: []
+    }
+  },
   groups: [],
   apiList: [],
   apiListLoading: false,

@@ -2,19 +2,26 @@
   <div class="status response-status">
     <div class="control">Status</div>
     <ul>
-      <li class="item"
-          :class="[(r ? r.status : 0).toString(), {active: activeIndex === key}]"
-          v-for="(r, key) in response"
-          :key="key"
-          @click="changeSchema(key)">
+      <li
+        class="item"
+        :class="[(r ? r.status : 0).toString(), {active: activeIndex === key}]"
+        v-for="(r, key) in response"
+        :key="key"
+        @click="changeSchema(key)"
+      >
         <span v-if="r">
           <em class="code">{{r.status}}</em>
           <em class="text">[{{r.statusText}}]</em>
         </span>
         <i class="el-icon-close" v-if="response.length > 1" @click.stop="deleteSchema(key)"></i>
       </li>
-      <li class="item add" @click="addSchema">
-        <i class="el-icon-plus"></i>
+      <li class="item add">
+        <div class="item-btn" title="新增" @click="addSchema(false)">
+          <i class="el-icon-plus"></i>
+        </div>
+        <div class="item-btn" title="复制" @click="addSchema(true)">
+          <i class="material-icons">content_copy</i>
+        </div>
       </li>
     </ul>
   </div>
@@ -24,8 +31,8 @@
 export default {
   props: ['response', 'activeIndex'],
   methods: {
-    addSchema () {
-      this.$emit('add')
+    addSchema (copy = false) {
+      this.$emit('add', copy)
     },
     changeSchema (index) {
       this.$emit('change', index)
@@ -69,7 +76,7 @@ export default {
 
     &:not(.add) {
       &:before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 8px;
         height: 8px;
@@ -113,23 +120,32 @@ export default {
       display: inline-block;
     }
     &.add {
-      text-align: center;
-      &:hover {
-        background-color: #f8f8f8;
+      display: flex;
+      padding: 0;
+      .item-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        width: 50%;
+        text-align: center;
+        &:hover {
+          background-color: #f8f8f8;
+        }
       }
     }
   }
-  [class^='item 5']:before,
-  [class^='item 4']:before{
+  [class^="item 5"]:before,
+  [class^="item 4"]:before {
     background-color: red;
   }
-  [class^='item 3']:before{
+  [class^="item 3"]:before {
     background-color: #f5a623;
   }
-  [class^='item 2']:before{
+  [class^="item 2"]:before {
     background-color: #3eb63e;
   }
-  [class^='item 1']:before{
+  [class^="item 1"]:before {
     background-color: #aaa;
   }
 }

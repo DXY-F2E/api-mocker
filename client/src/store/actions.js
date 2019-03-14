@@ -1,12 +1,12 @@
 import axios from 'axios'
 import API from '@/config/api'
 import {
-    validateApi,
-    buildApiResponse,
-    buildExampleFromSchema,
-    getDomain,
-    catchError,
-    buildRestUrl
+  validateApi,
+  buildApiResponse,
+  buildExampleFromSchema,
+  getDomain,
+  catchError,
+  buildRestUrl
 } from '@/util'
 
 // 允许跨域请求带上cookie
@@ -26,23 +26,38 @@ const actions = {
       return res
     })
   },
-  getGroups ({ commit }) {
-    return axios.get(API.GROUPS).then(res => {
+  // 获取全部分组
+  getAllGroups ({ commit }) {
+    return axios.get(API.GROUPS_ALL).then(res => {
       commit('FETCH_GROUPS_SUCCESS', res.data.resources)
       return res
     })
   },
-  getGroupList ({ commit }, query) {
+  // 查询分组
+  searchGroup ({ commit }, query) {
+    commit('SEARCH_KEYWORD', query)
     return axios.get(API.GROUPS, {
       params: query
     }).then(res => {
-      commit('FETCH_GROUPS_SUCCESS', res.data.resources)
+      commit('SEARCH_GROUPS_SUCCESS', res.data)
       return res
     }).catch(err => {
       throw err
     })
   },
-  createGroup ({commit}, payload) {
+  // 查询接口列表
+  searchApi ({ commit }, query) {
+    commit('SEARCH_KEYWORD', query)
+    return axios.get(API.APIS, {
+      params: query
+    }).then(res => {
+      commit('SEARCH_APIS_SUCCESS', res.data)
+      return res
+    }).catch(err => {
+      throw err
+    })
+  },
+  createGroup ({ commit }, payload) {
     return axios.post(API.GROUPS, payload).then(response => {
       commit('CREATE_GROUP_SUCCESS', response.data.resources)
     })
@@ -78,7 +93,7 @@ const actions = {
     })
   },
   getApi ({ commit }, payload) {
-    const {groupId, apiId} = payload
+    const { groupId, apiId } = payload
     return axios.get(API.API.replace(':groupId', groupId).replace(':apiId', apiId)).then(res => {
       const api = buildApiResponse(res.data.resources)
       window.console.log(api)
@@ -89,13 +104,16 @@ const actions = {
   getManageApi () {
     return axios.get(`${API.APIS}/manage`)
   },
+  getApisByGroupManager ({ state }, groupId) {
+    return axios.get(`${API.APIS}/:groupId/manage`.replace(':groupId', groupId))
+  },
   getManageGroup () {
     return axios.get(`${API.GROUPS}/manage`)
   },
   getUnmanagedGroup () {
     return axios.get(`${API.GROUPS}/unmanaged`)
   },
-  claimGroup ({state}, groupId) {
+  claimGroup ({ state }, groupId) {
     return axios.put(`${API.GROUP.replace(':groupId', groupId)}/claim`)
   },
   getApiHistory ({ commit }, apiId) {
@@ -198,6 +216,7 @@ const actions = {
       }
     }).catch(err => commit('UPDATE_RESPONSE', err))
   },
+  /* 用户相关 */
   getUser ({ state, commit }) {
     return state.user || axios.get(API.USER).then(res => {
       commit('SET_USER', res.data)
@@ -206,7 +225,7 @@ const actions = {
   },
   searchUsers (_, query) {
     return axios.get(`${API.PROFILE}/search`, {
-      params: {query}
+      params: { query }
     })
   },
   getAllUsers ({ commit }) {
@@ -217,6 +236,12 @@ const actions = {
   },
   register ({ commit }, user) {
     return axios.post(`${API.USER}/register`, user).then(res => {
+      commit('SET_USER', res.data)
+      return res
+    })
+  },
+  dxyLogin ({ commit }, ticket) {
+    return axios.post(`${API.USER}/dxy-login`, { ticket }).then(res => {
       commit('SET_USER', res.data)
       return res
     })
@@ -239,12 +264,7 @@ const actions = {
       return res
     })
   },
-  follow ({ state }, apiId) {
-    return axios.put(API.API_FOLLOWER.replace(':apiId', apiId))
-  },
-  unfollow ({ state }, apiId) {
-    return axios.delete(API.API_FOLLOWER.replace(':apiId', apiId))
-  },
+  // 订阅分组
   followGroup ({ state, commit }, groupId) {
     return axios.put(API.GROUP_FOLLOWER.replace(':groupId', groupId)).then(res => {
       commit('UPDATE_GROUP', res.data)
@@ -257,11 +277,31 @@ const actions = {
       return res
     })
   },
+  // 订阅接口
+  follow ({ state }, apiId) {
+    return axios.put(API.API_FOLLOWER.replace(':apiId', apiId))
+  },
+  unfollow ({ state }, apiId) {
+    return axios.delete(API.API_FOLLOWER.replace(':apiId', apiId))
+  },
+  // 收藏分组
+  addFavorite: async ({state, commit}, groupId) => {
+    const { data } = await axios.post(API.USER_FAVORITE.replace(':groupId', groupId))
+    // 更新用户信息，favorites
+    commit('SET_USER', data)
+    return data
+  },
+  removeFavorite: async ({state, commit}, groupId) => {
+    const { data } = await axios.delete(API.USER_FAVORITE.replace(':groupId', groupId))
+    // 更新用户信息，favorites
+    commit('SET_USER', data)
+    return data
+  },
   sendResetPassCode ({ state }, email) {
-    return axios.post(`${API.USER}/recovery/password/code`, {email})
+    return axios.post(`${API.USER}/recovery/password/code`, { email })
   },
   sendResetPassTicket ({ state }, email) {
-    return axios.post(`${API.USER}/recovery/password/ticket`, {email})
+    return axios.post(`${API.USER}/recovery/password/ticket`, { email })
   },
   resetPass ({ state }, resetForm) {
     return axios.put(`${API.USER}/recovery/password`, resetForm)

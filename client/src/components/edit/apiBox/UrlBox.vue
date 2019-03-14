@@ -1,7 +1,7 @@
 <template>
   <div class="url-box">
-    <el-row type="flex">
-      <el-col :span="24">
+    <el-row type="flex" :gutter="20">
+      <el-col :span="18">
         <el-input placeholder="Url保存后自动生成" readonly v-model="url">
           <el-select v-model="method" slot="prepend" placeholder="请选择">
             <el-option label="GET" value="get"></el-option>
@@ -13,45 +13,46 @@
           <copy-button slot="append" :copy-data="url" :disabled="creating">复制</copy-button>
         </el-input>
       </el-col>
-      <el-col class="control">
-        <el-button id="saveAct" type="info" @click="save()" v-if="mode === 'edit'"></el-button>
+      <el-col :span="6">
+        <!-- 保存 -->
+        <el-button id="saveAct" type="primary" @click="save()" v-if="mode === 'edit'"></el-button>
         <template v-if="mode === 'test'">
-          <el-dropdown split-button
+          <el-dropdown
+            split-button
             type="success"
             id="editAct"
             @click="send()"
             @command="updateTestMode"
-            v-if="prodUrl || devUrl">
-            测试
+            v-if="prodUrl || devUrl"
+          >测试
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item
-                :command="m"
-                v-for="(m, idx) in testModes"
-                :key="idx"
-                v-if="m !== testMode && getTestUrl(m)">
-                测试{{m}}
-              </el-dropdown-item>
+              <template v-for="(m, idx) in testModes">
+                <el-dropdown-item
+                  :command="m"
+                  :key="idx"
+                  v-if="m !== testMode && getTestUrl(m)">
+                  测试{{m}}
+                </el-dropdown-item>
+              </template>
             </el-dropdown-menu>
           </el-dropdown>
           <el-button id="editAct" type="success" @click="send()" v-else>测试</el-button>
         </template>
-      </el-col>
-      <el-col class="mode" v-if="api._id">
-        <el-select v-model="mode" placeholder="请选择" >
-          <el-option label="编辑模式" value="edit"></el-option>
-          <el-option label="测试模式" value="test"></el-option>
-          <el-option label="文档模式"
-                     value="doc"
-                     class="doc"
-                     @click.native="showDoc"
-                     :disabled="true"></el-option>
-        </el-select>
+        <template v-if="api._id">
+          <!-- <el-select v-model="mode" placeholder="请选择" style="margin-left: 20px;">
+            <el-option label="编辑模式" value="edit"></el-option>
+            <el-option label="测试模式" value="test"></el-option>
+            <el-option label="文档模式" value="doc" class="doc" @click.native="showDoc" :disabled="true"></el-option>
+          </el-select> -->
+          <el-button @click="showDoc" v-if="mode === 'edit'">文档模式</el-button>
+        </template>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
+import { throttle } from '@/util'
 import { mapActions } from 'vuex'
 import CopyButton from '@/components/common/CopyButton'
 export default {
@@ -63,7 +64,29 @@ export default {
       saveToken: false,
       isShowDialog: false,
       testMode: 'mock',
-      testModes: ['mock', 'prod', 'dev']
+      testModes: ['mock', 'prod', 'dev'],
+      save: throttle(() => {
+        if (this.saveToken) {
+          return
+        }
+        this.saveToken = true
+        this.saveApi().then(() => {
+          this.saveToken = false
+          if (this.$route.name === 'Create' && this.api._id) {
+            this.$router.push({
+              name: 'Edit',
+              params: {
+                groupId: this.api.group,
+                apiId: this.api._id
+              }
+            })
+          }
+          this.$message.success('保存成功')
+        }).catch(err => {
+          this.saveToken = false
+          this.$message.error(`保存失败:${err.msg}`)
+        })
+      }, 3000)
     }
   },
   methods: {
@@ -73,28 +96,6 @@ export default {
     ]),
     updateTestMode (val) {
       this.testMode = val
-    },
-    save () {
-      if (this.saveToken) {
-        return
-      }
-      this.saveToken = true
-      this.saveApi().then(() => {
-        this.saveToken = false
-        if (this.$route.name === 'Create' && this.api._id) {
-          this.$router.push({
-            name: 'Edit',
-            params: {
-              groupId: this.api.group,
-              apiId: this.api._id
-            }
-          })
-        }
-        this.$message.success('保存成功')
-      }).catch(err => {
-        this.saveToken = false
-        this.$message.error(`保存失败:${err.msg}`)
-      })
     },
     send () {
       this.testApi(this.testMode)
@@ -181,9 +182,8 @@ export default {
 </script>
 <style lang="less">
 .url-box {
-  .el-col.mode{
-    width: 150px;
-    text-align: right;
+  .mode-btn-group {
+    min-width: 120px;
   }
 
   .el-select .el-input__inner {
@@ -195,11 +195,6 @@ export default {
     &:focus {
       border-color: #bfcbd9;
     }
-  }
-
-  .control{
-    width: 134px;
-    text-align: right;
   }
 
   .el-input-group__append {
@@ -230,7 +225,6 @@ export default {
     & .el-button:not(.is-disabled):hover {
       color: #324057;
     }
-
   }
 }
 
@@ -239,10 +233,10 @@ export default {
   width: 91px;
 }
 #saveAct:after {
-  content: '保存';
+  content: "保存";
 }
 #saveAct:hover:after {
-  content: '⌘ + S'
+  content: "⌘ + S";
 }
 .el-select-dropdown__item.is-disabled.doc {
   cursor: pointer;
@@ -250,6 +244,6 @@ export default {
 }
 .el-select-dropdown__item.is-disabled.doc:hover {
   /*background-color: #58B7FF;*/
-  color: #58B7FF;
+  color: #58b7ff;
 }
 </style>

@@ -1,26 +1,32 @@
 <template>
-  <div class="apis el-col" v-if="groups" :class="$route.name">
-    <el-menu :default-active="$route.params.apiId"
-             :default-openeds="defaultOpeneds"
-             class="el-menu-vertical"
-             :router="true">
+  <div class="apis el-col" v-if="groups" v-drag="dragOption" :class="$route.name">
+    <el-menu
+      :default-active="$route.params.apiId"
+      :default-openeds="defaultOpeneds"
+      class="el-menu-vertical"
+      :router="true"
+    >
       <el-submenu v-if="group" :index="group._id" class="group active-group">
-        <template slot="title" >{{group.name}}</template>
-        <el-menu-item v-for="api in apis"
-                      :index="api._id"
-                      :route="{ name: 'ApiDoc', params: { groupId: group._id, apiId: api._id}}"
-                      :key="api._id"
-                      class="api">
+        <template slot="title">{{group.name}}</template>
+        <el-menu-item
+          v-for="api in apis"
+          v-scroll="api._id === $route.params.apiId"
+          :index="api._id"
+          :route="{ name: 'ApiDoc', params: { groupId: group._id, apiId: api._id}}"
+          :key="api._id"
+          class="api"
+        >
           <label class="method" :class="api.options.method">{{api.options.method.toUpperCase()}}</label>
           <span class="api-name">{{api.name}}</span>
         </el-menu-item>
       </el-submenu>
-      <el-menu-item v-for="g in groups"
-                    :key="g._id"
-                    v-if="g._id !== $route.params.groupId"
-                    class="group"
-                    :index="'/doc/'+g._id">{{g.name}}
-      </el-menu-item>
+      <el-menu-item
+        v-for="g in groups"
+        :key="g._id"
+        v-if="g._id !== $route.params.groupId"
+        class="group"
+        :index="'/doc/'+g._id"
+      >{{g.name}}</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -28,6 +34,14 @@
 <script>
 export default {
   props: ['apis'],
+  data () {
+    return {
+      dragOption: {
+        value: +localStorage.getItem('menu-width'),
+        onChange (val) { localStorage.setItem('menu-width', val) }
+      }
+    }
+  },
   computed: {
     defaultOpeneds () {
       return this.group ? [this.group._id] : []
@@ -52,10 +66,12 @@ export default {
 </script>
 <style lang="less">
 .apis {
+  position: relative;
   transition: width 0.4s ease;
   width: 288px;
   min-width: 288px;
   background-color: #f8f8f8;
+  flex-shrink: 0;
 
   &.AllDoc {
     width: 100%;
@@ -76,6 +92,8 @@ export default {
       height: 36px;
       line-height: 36px;
       padding: 0 20px !important;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .el-menu-item.api:hover {
       background-color: #eee;
@@ -98,9 +116,6 @@ export default {
   .api-name {
     vertical-align: middle;
     display: inline-block;
-    width: 196px;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 }
 </style>

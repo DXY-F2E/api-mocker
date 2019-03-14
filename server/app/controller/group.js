@@ -18,7 +18,8 @@ class GroupController extends AbstractController {
     this.ctx.body = { resources }
     this.ctx.status = 200
   }
-  async get () {
+
+  async query () {
     let { limit = 20, page = 1, q = '.*' } = this.ctx.query
     page = Number(page)
     limit = Number(limit)
@@ -29,14 +30,17 @@ class GroupController extends AbstractController {
     }
     const resources = await this.ctx.model.Group
       .find(cond)
+      .populate('creator', ['_id', 'name'])
       .sort({ modifiedTime: -1, createTime: -1 })
       .skip((page - 1) * limit)
       .limit(limit)
       .exec()
+
     const count = await this.ctx.model.Group.find(cond).count().exec()
     this.ctx.body = { resources, pages: { limit, page, count } }
     this.ctx.status = 200
   }
+
   async getManageGroup () {
     this.ctx.body = await this.service.group.getManageGroup()
   }

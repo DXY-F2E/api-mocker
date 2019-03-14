@@ -1,6 +1,7 @@
 <template>
 <div class="api-control">
   <template v-if="mode === 'managed'">
+    <el-button type="text" size="small" @click="groupApiManage">api 管理</el-button>
     <el-button type="text" size="small" @click="groupManage">编辑</el-button>
     <el-button type="text" size="small" @click="groupDelete">删除</el-button>
   </template>
@@ -38,6 +39,9 @@ export default {
         this.$message.success('删除成功')
         this.$emit('delete', this.group)
       }).catch(err => this.$message.error(err.msg))
+    },
+    groupApiManage () {
+      this.$emit('api-manage', this.group)
     },
     groupManage () {
       this.$emit('manage', this.group)

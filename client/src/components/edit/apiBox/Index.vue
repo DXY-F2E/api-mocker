@@ -1,5 +1,5 @@
 <template>
-  <div class="api-box el-col">
+  <div class="api-box">
     <url-box></url-box>
     <setting-field title="Request" class="request-field">
       <template scope="props">
@@ -7,7 +7,7 @@
       </template>
     </setting-field>
     <setting-field title="Result" v-if="mode === 'test'">
-      <el-tabs v-model="resActive" slot="header" class="result-tabs">
+      <el-tabs v-model="resActive" slot-slot="header" class="result-tabs">
         <el-tab-pane label="Body" name="body"></el-tab-pane>
         <el-tab-pane label="Headers" name="header"></el-tab-pane>
         <el-tab-pane label="All-Data" name="all"></el-tab-pane>
@@ -66,9 +66,7 @@ export default {
 </script>
 <style>
 .api-box {
-  padding: 20px;
   width: 100%;
-  min-width: 688px;
 }
 .result-tabs.el-tabs {
   display: inline-block;

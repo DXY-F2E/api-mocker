@@ -75,7 +75,7 @@ export default {
         this.$message.success('注册成功, 即将跳转')
         window.setTimeout(() => {
           this.$router.push({
-            name: 'AllList'
+            name: 'GlobalSearch'
           })
         }, 1000)
       }).catch(err => this.$message.error(`注册失败：${err.msg}`))

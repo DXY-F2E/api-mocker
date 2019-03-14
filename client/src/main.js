@@ -8,14 +8,17 @@ import filter from './filter'
 import directive from './directive'
 import router from './router'
 import ElementUI from 'element-ui'
+// 引入全局通用组件
+import './components/common'
 import axios from 'axios'
+import '@/style/reset.css'
+import '@/style/material-icons/index.css'
 import 'element-ui/lib/theme-default/index.css'
-import 'element-ui/lib/theme-default/reset.css'
 
 Vue.config.productionTip = false
 Vue.use(filter)
 Vue.use(directive)
-Vue.use(ElementUI)
+Vue.use(ElementUI, { size: 'medium' })
 Vue.use(Vuex)
 Vue.prototype.$http = axios
 
@@ -33,5 +36,7 @@ new Vue({
   store,
   router,
   template: '<App/>',
-  components: { App }
+  components: {
+    App
+  }
 })
