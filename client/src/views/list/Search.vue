@@ -3,7 +3,7 @@
     <div class="search-wrap">
       <div class="search-title">统一搜索<small>（分组、接口）</small></div>
       <el-input @keyup.native.enter="searchActions" placeholder="可搜索名称、接口路径、管理员" v-model="keyword" class="input-with-select">
-        <el-button slot="append" icon="search" @click="searchActions"></el-button>
+        <el-button slot="append" icon="el-icon-search" @click="searchActions"></el-button>
       </el-input>
     </div>
     <div v-if="searched && keyword">

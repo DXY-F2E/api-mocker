@@ -1,9 +1,8 @@
 <template>
   <div class="param-wrap" :class="[expanded ? 'unfold' : 'fold']">
-    <div class="expand"
-         v-show="isShowExpand"
-         @click="expandParam">
-      <span class="el-tree-node__expand-icon" :class="{expanded: expanded}"></span>
+    <div class="expand" v-show="isShowExpand" @click="expandParam">
+      <i class="el-icon-caret-bottom" v-if="expanded"></i>
+      <i class="el-icon-caret-right" v-else></i>
     </div>
     <div class="control" :style="styleObject" >
       <i class="el-icon-close"

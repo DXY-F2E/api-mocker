@@ -16,7 +16,7 @@
     "brace": "0.10.0",
     "deepmerge": "^3.1.0",
     "echarts": "3.6.1",
-    "element-ui": "^1.4.13",
+    "element-ui": "2.0.0",
     "mocker-dsl-core": "^0.1.6",
     "mockjs": "1.0.1-beta3",
     "moment": "2.21.0",

@@ -9,15 +9,15 @@
         <div class="control" v-if="!isPreview && !diffMode">
           <el-button class="follow" @click="diff()">历史对比</el-button>
           <el-button class="follow"
-                     icon="star-on"
+                     icon="el-icon-star-on"
                      v-if="followed"
                      type="primary"
                      @click="cancelfollow()">取消订阅</el-button>
           <el-button class="follow"
-                     icon="star-off"
+                     icon="el-icon-star-off"
                      v-else
                      @click="doFollow()">订阅</el-button>
-          <el-button type="primary" class="edit" icon="edit" @click="edit()">编辑</el-button>
+          <el-button type="primary" class="edit" icon="el-icon-edit" @click="edit()">编辑</el-button>
         </div>
       </div>
       <div class="field url">

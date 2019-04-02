@@ -2,7 +2,7 @@
   <el-form-item :label="item.label" class="profile-item">
     <template v-if="mode === 'read'">
       <span class="value">{{user[item.key]}}</span>
-      <el-button type="text" class="edit" icon="edit" @click="mode = 'edit'">修改</el-button>
+      <el-button type="text" class="edit" icon="el-icon-edit" @click="mode = 'edit'">修改</el-button>
     </template>
     <template v-else>
       <el-input :value="user[item.key]"
