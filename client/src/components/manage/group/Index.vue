@@ -11,7 +11,7 @@
       <el-table-column prop="createTime" :formatter="timeFormat" width="200" label="创建时间">
       </el-table-column>
       <el-table-column width="200" label="操作">
-        <template scope="scope">
+        <template slot-scope="scope">
           <control :group="scope.row" :mode="mode" @delete="groupDelete" @manage="manageGroup" @api-manage="manageGroupApi"></control>
         </template>
       </el-table-column>
