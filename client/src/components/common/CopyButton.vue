@@ -1,10 +1,12 @@
 <template>
-  <el-button :size="size" :icon="icon" :disabled="disabled" @click.native.stop="copy()">
+  <el-button :size="size" :icon="icon" :disabled="disabled" @click.native.stop="handleCopy()">
     <slot></slot>
   </el-button>
 </template>
 
 <script>
+import { copy } from '@/util'
+
 export default {
   props: {
     size: {
@@ -27,14 +29,8 @@ export default {
     }
   },
   methods: {
-    copy () {
-      const input = document.createElement('input')
-      input.value = this.copyData
-      input.className = 'copyInput'
-      this.$el.appendChild(input)
-      input.select()
-      document.execCommand('copy')
-      input.remove()
+    handleCopy () {
+      copy(this.copyData)
       this.$message.success(this.message)
     }
   }
