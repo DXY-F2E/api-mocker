@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import ApiDoc from './apiDoc/Index'
+import ApiDoc from '@/components/ApiDoc/Index'
 import { mapActions } from 'vuex'
 export default {
   components: {

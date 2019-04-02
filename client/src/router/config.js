@@ -9,14 +9,15 @@ const List = r => require.ensure([], () => r(require('@/views/list/Index')), 'li
 const GlobalSearch = r => require.ensure([], () => r(require('@/views/list/Search')), 'list')
 const GroupList = r => require.ensure([], () => r(require('@/views/list/Content')), 'list')
 
-const Edit = r => require.ensure([], () => r(require('@/components/edit/Index')), 'edit')
-
-const Document = r => require.ensure([], () => r(require('@/components/document/Index')), 'document')
-const GroupContent = r => require.ensure([], () => r(require('@/components/document/GroupContent')), 'document')
-const DocOverview = r => require.ensure([], () => r(require('@/components/document/Overview')), 'document')
-const ApiContent = r => require.ensure([], () => r(require('@/components/document/ApiContent')), 'document')
+// API 文档 编辑
+const Edit = r => require.ensure([], () => r(require('@/views/edit/Index')), 'edit')
+// API 文档 展示
+const Document = r => require.ensure([], () => r(require('@/views/document/Index')), 'document')
+const GroupContent = r => require.ensure([], () => r(require('@/views/document/GroupContent')), 'document')
+const DocOverview = r => require.ensure([], () => r(require('@/views/document/Overview')), 'document')
+const ApiContent = r => require.ensure([], () => r(require('@/views/document/ApiContent')), 'document')
 // 由于 diff 页面与 文档页依赖基本一致，故放到同一chunk
-const Diff = r => require.ensure([], () => r(require('@/components/diff/Index')), 'document')
+const Diff = r => require.ensure([], () => r(require('@/views/diff/Index')), 'document')
 
 const Auth = r => require.ensure([], () => r(require('@/components/auth/Index')), 'auth')
 const Login = r => require.ensure([], () => r(require('@/components/auth/Login')), 'auth')
