@@ -10,7 +10,7 @@
           popper-class="type-cascader"
           @change="changeParamType"
           :options="tpyeList"
-          v-model="apiType">
+          :value="apiType">
         </el-cascader>
         <el-checkbox v-model="param.required" @change="update">必填</el-checkbox>
       </el-col>
