@@ -170,7 +170,6 @@ class UserController extends AbstractController {
     if (password !== verifyPassword) {
       this.error('确认密码不一致')
     }
-    console.log(this.ctx.request.body)
     const rs = await this.service.user.updatePasswordByOldPassword(originPassword, password)
     if (!rs) {
       this.error('密码错误')

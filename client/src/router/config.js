@@ -17,7 +17,7 @@ const GroupContent = r => require.ensure([], () => r(require('@/views/document/G
 const DocOverview = r => require.ensure([], () => r(require('@/views/document/Overview')), 'document')
 const ApiContent = r => require.ensure([], () => r(require('@/views/document/ApiContent')), 'document')
 // 由于 diff 页面与 文档页依赖基本一致，故放到同一chunk
-const Diff = r => require.ensure([], () => r(require('@/components/diff/Index')), 'document')
+const Diff = r => require.ensure([], () => r(require('@/views/diff/Index')), 'document')
 
 const Auth = r => require.ensure([], () => r(require('@/components/auth/Index')), 'auth')
 const Login = r => require.ensure([], () => r(require('@/components/auth/Login')), 'auth')
