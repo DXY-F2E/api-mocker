@@ -42,13 +42,3 @@ export function throttle (fn, gapTime) {
     }
   }
 }
-
-export function copy (value) {
-  const input = document.createElement('input')
-  input.value = value
-  input.className = 'copyInput'
-  document.body.appendChild(input)
-  input.select()
-  document.execCommand('copy')
-  input.remove()
-}

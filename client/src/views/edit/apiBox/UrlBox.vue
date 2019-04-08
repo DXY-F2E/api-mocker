@@ -2,7 +2,7 @@
   <div class="url-box">
     <el-row type="flex" :gutter="20">
       <el-col :span="18">
-        <el-input placeholder="Url保存后自动生成" readonly v-model="url">
+        <copy-field :value="url" placeholder="Url保存后自动生成">
           <el-select v-model="method" slot="prepend" placeholder="请选择">
             <el-option label="GET" value="get"></el-option>
             <el-option label="POST" value="post"></el-option>
@@ -10,40 +10,12 @@
             <el-option label="PATCH" value="patch"></el-option>
             <el-option label="DELETE" value="delete"></el-option>
           </el-select>
-          <copy-button slot="append" :copy-data="url" :disabled="creating">复制</copy-button>
-        </el-input>
+        </copy-field>
       </el-col>
       <el-col :span="6">
         <!-- 保存 -->
         <el-button id="saveAct" type="primary" @click="save()" v-if="mode === 'edit'"></el-button>
-        <template v-if="mode === 'test'">
-          <el-dropdown
-            split-button
-            type="success"
-            id="editAct"
-            @click="send()"
-            @command="updateTestMode"
-            v-if="prodUrl || devUrl"
-          >测试
-            <el-dropdown-menu slot="dropdown">
-              <template v-for="(m, idx) in testModes">
-                <el-dropdown-item
-                  :command="m"
-                  :key="idx"
-                  v-if="m !== testMode && getTestUrl(m)">
-                  测试{{m}}
-                </el-dropdown-item>
-              </template>
-            </el-dropdown-menu>
-          </el-dropdown>
-          <el-button id="editAct" type="success" @click="send()" v-else>测试</el-button>
-        </template>
         <template v-if="api._id">
-          <!-- <el-select v-model="mode" placeholder="请选择" style="margin-left: 20px;">
-            <el-option label="编辑模式" value="edit"></el-option>
-            <el-option label="测试模式" value="test"></el-option>
-            <el-option label="文档模式" value="doc" class="doc" @click.native="showDoc" :disabled="true"></el-option>
-          </el-select> -->
           <el-button @click="showDoc" v-if="mode === 'edit'">文档模式</el-button>
         </template>
       </el-col>
@@ -54,10 +26,11 @@
 <script>
 import { throttle } from '@/util'
 import { mapActions } from 'vuex'
-import CopyButton from '@/components/common/CopyButton'
+import CopyField from '@/components/common/CopyField'
+
 export default {
   components: {
-    CopyButton
+    CopyField
   },
   data () {
     return {
@@ -194,36 +167,6 @@ export default {
     &:hover,
     &:focus {
       border-color: #bfcbd9;
-    }
-  }
-
-  .el-input-group__append {
-    padding: 0;
-    overflow: hidden;
-
-    & .el-button:last-child {
-      border-right: 0;
-    }
-
-    & .el-button {
-      display: inline-block;
-      vertical-align: middle;
-      border-right: 1px solid #bfcbd9;
-      margin: 0px;
-      border-radius: 0;
-      width: 70px;
-      text-align: center;
-    }
-
-    & .el-button.is-disabled {
-      border-color: #bfcbd9;
-      border-left: none;
-      background-color: #eef1f6;
-      color: #bfcbd9;
-    }
-
-    & .el-button:not(.is-disabled):hover {
-      color: #324057;
     }
   }
 }
