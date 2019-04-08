@@ -23,21 +23,20 @@
       <div class="field url">
         <div>
           <label><code>Mock</code>地址：</label>
-          <p class="prod code">{{url}}</p>
+          <copy-field :value="url"></copy-field>
         </div>
         <div v-if="api.devUrl" :class="diffStyle('devUrl')">
           <label>测试地址：</label>
-          <p class="prod code">{{api.devUrl}}</p>
+          <copy-field :value="api.devUrl"></copy-field>
         </div>
         <div v-if="api.prodUrl" :class="diffStyle('prodUrl')">
           <label>线上地址：</label>
-          <p class="prod code">{{api.prodUrl}}</p>
+          <copy-field :value="api.prodUrl"></copy-field>
         </div>
       </div>
       <div class="field">
         <label>提交参数</label>
         <schema v-for="(schema, key) in schemaParams"
-                v-if="hasParams(schema.params)"
                 :diff-mode="diffMode"
                 :diff-stack="diffStack"
                 :diff-path="'options.params.' + key"
@@ -70,18 +69,19 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
+// 为了接口描述在文档中显示的跟编辑时样式一致而引入
+import 'simditor/styles/simditor.css'
+import CopyField from '@/components/common/CopyField'
+import { getDiffStyle } from '@/util/jsonDiff'
 import ParamsTable from './ParamsTable'
 import Schemas from './Schemas'
 import Schema from './Schema'
 import MockData from './MockData'
-import CopyButton from '@/components/common/CopyButton'
-import { mapActions, mapState } from 'vuex'
-// 为了接口描述在文档中显示的跟编辑时样式一致而引入
-import 'simditor/styles/simditor.css'
-import { getDiffStyle } from '@/util/jsonDiff'
+
 export default {
   components: {
-    CopyButton,
+    CopyField,
     Schemas,
     Schema,
     ParamsTable,
@@ -156,14 +156,17 @@ export default {
     },
     schemaParams () {
       const schemas = {}
-      for (const key in this.api.options.params) {
+      const _options = this.api.options
+      for (const key in _options.params) {
         // get方法没有body参数
         if (this.method === 'GET' && key === 'body') {
           continue
         }
-        schemas[key] = {
-          example: this.api.options.examples[key],
-          params: this.api.options.params[key]
+        if (this.hasParams(_options.params[key])) {
+          schemas[key] = {
+            example: _options.examples[key],
+            params: _options.params[key]
+          }
         }
       }
       return schemas
