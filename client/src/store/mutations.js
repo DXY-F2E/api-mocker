@@ -1,4 +1,4 @@
-import { apiInitData } from '@/util'
+import Api from '@/model/api'
 import Schema from '@/model/schema'
 import R from 'ramda'
 import Vue from 'vue'
@@ -46,7 +46,7 @@ const mutations = {
     state.apiList = data
   },
   INIT_API (state, groupId) {
-    state.api = apiInitData()
+    state.api = Api()
     state.api.group = groupId
   },
   UPDATE_API_PROPS (state, propValuePair) {
@@ -61,13 +61,6 @@ const mutations = {
       }
     })
     state.api = R.assocPath(route, value, api)
-    state.apiUnsaved = true
-  },
-  SAVE_API (state) {
-    state.apiUnsaved = false
-  },
-  UPDATE_API (state, data) {
-    state.api = data
     state.apiUnsaved = true
   },
   UPDATE_API_PAGE (state, data) {

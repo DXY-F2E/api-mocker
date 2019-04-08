@@ -38,6 +38,7 @@
 <script>
 import Schema from '../schema/Index'
 import R from 'ramda'
+import { mapState } from 'vuex'
 export default {
   components: {
     Schema
@@ -102,17 +103,18 @@ export default {
     }
   },
   computed: {
+    ...mapState('doc', ['api']),
     activeSchema () {
       return this.activeType === 'headers' ? this.headers : this.localParams[this.activeType]
     },
     headers () {
-      return this.$store.state.api.options.headers
+      return this.api.options.headers
     },
     params () {
-      return R.clone(this.$store.state.api.options.params)
+      return R.clone(this.api.options.params)
     },
     examples () {
-      return R.clone(this.$store.state.api.options.examples)
+      return R.clone(this.api.options.examples)
     },
     localParams () {
       const localParams = {}

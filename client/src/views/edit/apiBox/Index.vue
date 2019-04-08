@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import { throttle } from '@/util'
 import CopyField from '@/components/common/CopyField'
 import RequestBox from './request/Index'
@@ -91,9 +91,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'saveApi'
-    ]),
+    ...mapActions(['saveApi']),
     onKeydown (e) {
       if (e.keyCode === 83 && (e.ctrlKey || e.metaKey)) {
         e.preventDefault()
@@ -109,16 +107,6 @@ export default {
         }
       })
     },
-    buildMockUrl () {
-      const mockUrl = `${this.$store.state.serverRoot}/client/${this.api._id}`
-      const path = this.api.options.params.path
-      if (path.length) {
-        const pathUrl = path.filter(p => p.key).map(p => `/:${p.key}`).join('')
-        return pathUrl ? `${mockUrl}${pathUrl}` : mockUrl
-      } else {
-        return mockUrl
-      }
-    },
     getTestUrl (mode) {
       return this[`${mode}Url`]
     }
@@ -130,28 +118,26 @@ export default {
     document.addEventListener('keydown', this.onKeydown)
   },
   computed: {
+    ...mapState(['serverRoot']),
+    ...mapState('doc', ['api', 'mode']),
     response () {
-      return this.$store.state.api.options.response
-    },
-    mode: {
-      get () {
-        return this.$store.state.mode
-      },
-      set () {
-        this.$store.commit('CHANGE_MODE')
-      }
+      return this.api.options.response
     },
     modeName () {
-      return this.$store.state.mode === 'edit' ? '编辑' : '测试'
-    },
-    api () {
-      return this.$store.state.api
+      return this.mode === 'edit' ? '编辑' : '测试'
     },
     creating () {
-      return this.$store.state.api._id === undefined
+      return this.api._id === undefined
     },
     mockUrl () {
-      return this.buildMockUrl()
+      const mockUrl = `${this.serverRoot}/client/${this.api._id}`
+      const path = this.api.options.params.path
+      if (path.length) {
+        const pathUrl = path.filter(p => p.key).map(p => `/:${p.key}`).join('')
+        return pathUrl ? `${mockUrl}${pathUrl}` : mockUrl
+      } else {
+        return mockUrl
+      }
     },
     prodUrl () {
       return this.api.prodUrl
@@ -168,7 +154,7 @@ export default {
     },
     method: {
       get () {
-        return this.$store.state.api.options.method
+        return this.api.options.method
       },
       set (value) {
         this.$store.commit('UPDATE_API_PROPS', ['options.method', value])

@@ -4,6 +4,7 @@
 
 <script>
 import Simditor from '@/components/common/Simditor'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -15,8 +16,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('doc', ['api']),
     desc () {
-      return this.$store.state.api.desc
+      return this.api.desc
     }
   }
 }

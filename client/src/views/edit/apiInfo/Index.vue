@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import CreateGroup from '@/components/common/CreateGroup'
 import ApiHistory from './ApiHistory'
 export default {
@@ -82,16 +83,17 @@ export default {
     document.title = this.originTitle
   },
   computed: {
+    ...mapState('doc', ['api']),
     groups () {
       return this.$store.state.groups
     },
     history () {
-      return this.$store.state.api.history
+      return this.api.history
     },
     name: {
       get () {
-        document.title = this.$store.state.api.name || '未命名接口'
-        return this.$store.state.api.name
+        document.title = this.api.name || '未命名接口'
+        return this.api.name
       },
       set (value) {
         this.$store.commit('UPDATE_API_PROPS', ['name', value])
@@ -99,7 +101,7 @@ export default {
     },
     prodUrl: {
       get () {
-        return this.$store.state.api.prodUrl
+        return this.api.prodUrl
       },
       set (value) {
         this.$store.commit('UPDATE_API_PROPS', ['prodUrl', value])
@@ -107,7 +109,7 @@ export default {
     },
     devUrl: {
       get () {
-        return this.$store.state.api.devUrl
+        return this.api.devUrl
       },
       set (value) {
         this.$store.commit('UPDATE_API_PROPS', ['devUrl', value])
@@ -115,7 +117,7 @@ export default {
     },
     proxyMode: {
       get () {
-        return this.$store.state.api.options.proxy.mode
+        return this.api.options.proxy.mode
       },
       set (value) {
         this.$store.commit('UPDATE_API_PROPS', ['options.proxy.mode', value])
@@ -123,7 +125,7 @@ export default {
     },
     group: {
       get () {
-        return this.$store.state.api.group
+        return this.api.group
       },
       set (value) {
         this.$store.commit('UPDATE_API_PROPS', ['group', value])

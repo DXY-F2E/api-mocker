@@ -2,7 +2,6 @@ import axios from 'axios'
 import API from '@/config/api'
 import {
   validateApi,
-  buildApiResponse,
   buildExampleFromSchema,
   getDomain,
   catchError,
@@ -90,15 +89,6 @@ const actions = {
     }).catch(e => {
       commit('FETCH_FAILED')
       throw e
-    })
-  },
-  getApi ({ commit }, payload) {
-    const { groupId, apiId } = payload
-    return axios.get(API.API.replace(':groupId', groupId).replace(':apiId', apiId)).then(res => {
-      const api = buildApiResponse(res.data.resources)
-      window.console.log(api)
-      commit('UPDATE_API', api)
-      commit('SAVE_API')
     })
   },
   getManageApi () {

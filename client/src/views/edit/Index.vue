@@ -36,9 +36,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'getApi'
-    ]),
+    ...mapActions('doc', ['getApi']),
     beginLoading () {
       this.loading = true
     },
@@ -63,7 +61,9 @@ export default {
       }
     }
   },
-  computed: mapState(['api', 'mode', 'apiUnsaved']),
+  computed: {
+    ...mapState('doc', ['api', 'mode', 'apiUnsaved'])
+  },
   beforeRouteEnter (to, from, next) {
     next(vm => {
       vm.initApi()

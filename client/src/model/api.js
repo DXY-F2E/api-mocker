@@ -1,5 +1,6 @@
-import Request from './request'
-import Response from './response'
+// import Request from './request'
+// import Response from './response'
+import Schema from './schema'
 /** 接口文档 模型
  * 主要要素
  *  name 文档名称
@@ -19,15 +20,41 @@ import Response from './response'
  *    body 响应体 Schema
  *  )
  */
-class Api {
-  constructor (apiDoc) {
-    const { name, proxy, desc, request, response } = apiDoc
-    this.name = name
-    this.proxy = proxy
-    this.desc = desc
-    this.request = new Request(request)
-    this.response = new Response(response)
+
+function initData () {
+  return {
+    _id: '',
+    prodUrl: null,
+    devUrl: null,
+    name: '',
+    group: '',
+    desc: null,
+    creator: null,
+    manager: null,
+    follower: [],
+    options: {
+      proxy: {
+        mode: 0
+      },
+      response: [new Schema()],
+      responseIndex: 0,
+      headers: {
+        example: null,
+        params: []
+      },
+      method: 'get',
+      delay: 0,
+      examples: {
+        query: null,
+        body: null,
+        path: null
+      },
+      params: {
+        query: [],
+        body: [],
+        path: []
+      }
+    }
   }
 }
-
-export default Api
+export default initData
