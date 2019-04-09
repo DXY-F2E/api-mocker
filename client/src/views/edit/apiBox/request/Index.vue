@@ -36,9 +36,10 @@
 </template>
 
 <script>
-import Schema from '../schema/Index'
 import R from 'ramda'
 import { mapState } from 'vuex'
+import Schema from '../components/schema/Index'
+
 export default {
   components: {
     Schema

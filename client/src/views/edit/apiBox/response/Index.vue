@@ -20,10 +20,11 @@
 </template>
 
 <script>
-import Schema from '../schema/Index'
+import R from 'ramda'
+import Schema from '../components/schema/Index'
 import Status from './Status'
 import StatusSetting from './StatusSetting'
-import R from 'ramda'
+
 export default {
   props: {
     response: {
@@ -50,14 +51,14 @@ export default {
       this.activeIndex = index
     },
     deleteResponse (index) {
-      this.$store.commit('DELETE_API_RESPONSE', index)
+      this.$store.commit('doc/DELETE_API_RESPONSE', index)
       if (this.activeIndex !== 0) {
         this.activeIndex --
       }
     },
     addResponse (copy = false) {
       let index = copy ? this.activeIndex : -1
-      this.$store.commit('ADD_API_RESPONSE', index)
+      this.$store.commit('doc/ADD_API_RESPONSE', index)
       this.activeIndex = this.response.length - 1
     },
     updateStatus ({ status, statusText }) {

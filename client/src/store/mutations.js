@@ -1,4 +1,3 @@
-import Schema from '@/model/schema'
 import R from 'ramda'
 import Vue from 'vue'
 
@@ -57,21 +56,6 @@ const mutations = {
     state.reqParams[type] = {
       params,
       value
-    }
-  },
-  ADD_API_RESPONSE (state, index = -1) {
-    if (index !== -1) {
-      let copyData = JSON.parse(JSON.stringify(state.api.options.response[index]))
-      state.api.options.response.push(copyData)
-    } else {
-      state.api.options.response.push(new Schema(state.api.options.response.length + 1))
-    }
-  },
-  DELETE_API_RESPONSE (state, index) {
-    const options = state.api.options
-    options.response.splice(index, 1)
-    if (options.responseIndex >= index && index !== 0) {
-      options.responseIndex--
     }
   },
   SET_USER (state, user) {

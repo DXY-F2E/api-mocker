@@ -5,6 +5,7 @@
 import axios from 'axios'
 import R from 'ramda'
 import Api from '@/model/api'
+import Schema from '@/model/schema'
 import APIs from '@/config/api'
 import { buildApiResponse } from '@/util'
 
@@ -73,6 +74,21 @@ const mutations = {
     })
     state.api = R.assocPath(route, value, api)
     state.apiUnsaved = true
+  },
+  DELETE_API_RESPONSE (state, index) {
+    const options = state.api.options
+    options.response.splice(index, 1)
+    if (options.responseIndex >= index && index !== 0) {
+      options.responseIndex--
+    }
+  },
+  ADD_API_RESPONSE (state, index = -1) {
+    if (index !== -1) {
+      let copyData = JSON.parse(JSON.stringify(state.api.options.response[index]))
+      state.api.options.response.push(copyData)
+    } else {
+      state.api.options.response.push(new Schema(state.api.options.response.length + 1))
+    }
   }
 }
 

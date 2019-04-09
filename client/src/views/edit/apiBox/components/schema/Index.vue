@@ -27,10 +27,11 @@
 </template>
 
 <script>
-import Params from '../params/Index'
 import R from 'ramda'
 import JsonEditor from '@/components/common/jsonEditor/Index'
+import Params from '../params/Index'
 import Example from './Example'
+
 export default {
   components: {
     Params,
