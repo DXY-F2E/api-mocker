@@ -50,8 +50,8 @@ export default {
       window.open(url, '_blank')
     },
     editDoc (api) {
-      this.$store.commit('UPDATE_API', api)
-      this.$store.commit('CHANGE_MODE', 'edit')
+      this.$store.commit('doc/UPDATE_API', api)
+      this.$store.commit('doc/CHANGE_MODE', 'edit')
       const url = `${this.rootDomain}#/edit/${api.group}/${api._id}`
       window.open(url, '_blank')
     },

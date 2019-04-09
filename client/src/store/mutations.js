@@ -1,4 +1,3 @@
-import Api from '@/model/api'
 import Schema from '@/model/schema'
 import R from 'ramda'
 import Vue from 'vue'
@@ -45,24 +44,6 @@ const mutations = {
   GET_GROUP_API (state, data) {
     state.apiList = data
   },
-  INIT_API (state, groupId) {
-    state.api = Api()
-    state.api.group = groupId
-  },
-  UPDATE_API_PROPS (state, propValuePair) {
-    const api = state.api || {}
-    const prop = R.head(propValuePair)
-    const value = R.last(propValuePair)
-    const route = prop.split('.').map(p => {
-      if (Number(p).toString() === p) {
-        return Number(p)
-      } else {
-        return p
-      }
-    })
-    state.api = R.assocPath(route, value, api)
-    state.apiUnsaved = true
-  },
   UPDATE_API_PAGE (state, data) {
     state.apiPage = data
   },
@@ -72,17 +53,11 @@ const mutations = {
   UPDATE_DSL_STATUS (state, status) {
     state.dslStatus = status
   },
-  CHANGE_MODE (state, mode) {
-    state.mode = mode || (state.mode === 'edit' ? 'test' : 'edit')
-  },
   UPDATE_REQ_PARAMS (state, { type, params, value }) {
     state.reqParams[type] = {
       params,
       value
     }
-  },
-  UPDATE_RESPONSE (state, res) {
-    state.response = res
   },
   ADD_API_RESPONSE (state, index = -1) {
     if (index !== -1) {

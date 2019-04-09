@@ -10,9 +10,21 @@
 
 <script>
 import R from 'ramda'
+import { mapState } from 'vuex'
 export default {
-  props: {
-    history: Object
+  name: 'ApiHistory',
+  computed: {
+    ...mapState('doc', ['apiUnsaved', 'api']),
+    history () {
+      return this.api.history
+    },
+    records () {
+      if (this.history && this.history.records.length) {
+        return this.history.records.slice().reverse()
+      } else {
+        return []
+      }
+    }
   },
   methods: {
     recover (record) {
@@ -32,25 +44,18 @@ export default {
       // 数组 slice 方法是浅复制，所以这里需要深拷贝一份
       const data = R.clone(record.data)
       data.history = this.history
-      this.$store.commit('UPDATE_API', data)
+      this.$store.commit('doc/UPDATE_API', data)
       // apiUnsaved -> false
-      this.$store.commit('SAVE_API')
+      this.$store.commit('doc/SAVE_API')
       this.$message.info('加载成功，再保存将会覆盖最新值')
-    }
-  },
-  computed: {
-    apiUnsaved () {
-      return this.$store.state.apiUnsaved
-    },
-    records () {
-      return this.history.records.slice().reverse()
     }
   }
 }
 </script>
 <style lang="less">
 .history {
-  padding-left: 5px;
+  padding: 0 20px;
+
   .record {
     color: #8492A6;
     line-height: 2.2;

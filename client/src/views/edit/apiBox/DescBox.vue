@@ -12,7 +12,7 @@ export default {
   },
   methods: {
     updateDesc (val) {
-      this.$store.commit('UPDATE_API_PROPS', ['desc', val])
+      this.$store.commit('doc/UPDATE_API_PROPS', ['desc', val])
     }
   },
   computed: {

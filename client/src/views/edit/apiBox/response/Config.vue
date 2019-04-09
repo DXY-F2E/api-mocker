@@ -40,7 +40,7 @@ export default {
         return this.api.options.responseIndex
       },
       set (value) {
-        this.$store.commit('UPDATE_API_PROPS', ['options.responseIndex', value])
+        this.$store.commit('doc/UPDATE_API_PROPS', ['options.responseIndex', value])
       }
     }
   },
@@ -50,7 +50,7 @@ export default {
       if (isNaN(value)) {
         value = 0
       }
-      this.$store.commit('UPDATE_API_PROPS', ['options.delay', value])
+      this.$store.commit('doc/UPDATE_API_PROPS', ['options.delay', value])
     }
   }
 }

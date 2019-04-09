@@ -21,7 +21,7 @@ export default {
   methods: {
     changeParams (data) {
       const key = `options.params.${this.name}`
-      this.$store.commit('UPDATE_API_PROPS', [key, R.clone(data)])
+      this.$store.commit('doc/UPDATE_API_PROPS', [key, R.clone(data)])
     },
     changeReqParams (data, value) {
       this.$store.commit('UPDATE_REQ_PARAMS', {

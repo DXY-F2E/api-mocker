@@ -197,14 +197,14 @@ const actions = {
       delete config.headers.Cookie
     }
     return axios(config).then(res => {
-      commit('UPDATE_RESPONSE', res)
+      commit('doc/UPDATE_RESPONSE', res)
     }, err => {
       window.console.log('testApi: error')
       window.console.log(err)
       if (err.response) {
-        commit('UPDATE_RESPONSE', err.response)
+        commit('doc/UPDATE_RESPONSE', err.response)
       }
-    }).catch(err => commit('UPDATE_RESPONSE', err))
+    }).catch(err => commit('doc/UPDATE_RESPONSE', err))
   },
   /* 用户相关 */
   getUser ({ state, commit }) {

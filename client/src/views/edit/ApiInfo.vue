@@ -41,9 +41,6 @@
           <el-radio :label="2">转发测试</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="历史记录" class="history-item" v-if="history && history.records.length">
-        <api-history :history="history"></api-history>
-      </el-form-item>
     </el-form>
     <create-group
       :visible="showCreateGroup"
@@ -55,15 +52,60 @@
 <script>
 import { mapState } from 'vuex'
 import CreateGroup from '@/components/common/CreateGroup'
-import ApiHistory from './ApiHistory'
+
 export default {
+  name: 'ApiInfo',
   components: {
-    CreateGroup,
-    ApiHistory
+    CreateGroup
   },
   data () {
     return {
       showCreateGroup: false
+    }
+  },
+  computed: {
+    ...mapState(['groups']),
+    ...mapState('doc', ['api']),
+    name: {
+      get () {
+        document.title = this.api.name || '未命名接口'
+        return this.api.name
+      },
+      set (value) {
+        this.$store.commit('doc/UPDATE_API_PROPS', ['name', value])
+      }
+    },
+    prodUrl: {
+      get () {
+        return this.api.prodUrl
+      },
+      set (value) {
+        this.$store.commit('doc/UPDATE_API_PROPS', ['prodUrl', value])
+      }
+    },
+    devUrl: {
+      get () {
+        return this.api.devUrl
+      },
+      set (value) {
+        this.$store.commit('doc/UPDATE_API_PROPS', ['devUrl', value])
+      }
+    },
+    proxyMode: {
+      get () {
+        return this.api.options.proxy.mode
+      },
+      set (value) {
+        this.$store.commit('doc/UPDATE_API_PROPS', ['options.proxy.mode', value])
+      }
+    },
+    group: {
+      get () {
+        return this.api.group
+      },
+      set (value) {
+        this.$store.commit('doc/UPDATE_API_PROPS', ['group', value])
+      }
     }
   },
   methods: {
@@ -81,56 +123,6 @@ export default {
   },
   beforeDestroy () {
     document.title = this.originTitle
-  },
-  computed: {
-    ...mapState('doc', ['api']),
-    groups () {
-      return this.$store.state.groups
-    },
-    history () {
-      return this.api.history
-    },
-    name: {
-      get () {
-        document.title = this.api.name || '未命名接口'
-        return this.api.name
-      },
-      set (value) {
-        this.$store.commit('UPDATE_API_PROPS', ['name', value])
-      }
-    },
-    prodUrl: {
-      get () {
-        return this.api.prodUrl
-      },
-      set (value) {
-        this.$store.commit('UPDATE_API_PROPS', ['prodUrl', value])
-      }
-    },
-    devUrl: {
-      get () {
-        return this.api.devUrl
-      },
-      set (value) {
-        this.$store.commit('UPDATE_API_PROPS', ['devUrl', value])
-      }
-    },
-    proxyMode: {
-      get () {
-        return this.api.options.proxy.mode
-      },
-      set (value) {
-        this.$store.commit('UPDATE_API_PROPS', ['options.proxy.mode', value])
-      }
-    },
-    group: {
-      get () {
-        return this.api.group
-      },
-      set (value) {
-        this.$store.commit('UPDATE_API_PROPS', ['group', value])
-      }
-    }
   }
 }
 </script>
@@ -139,7 +131,7 @@ export default {
   width: 450px;
 }
 .api-info {
-  padding: 20px;
+  padding: 0 20px;
 
   .el-textarea__inner,
   .el-input__inner {
@@ -151,17 +143,11 @@ export default {
   }
   .el-form {
     min-height: 100%;
-    padding-bottom: 50px;
   }
 
   .create-group {
     color: #97a8be;
     cursor: pointer;
-  }
-
-  .history {
-    display: inline-block;
-    width: 100%;
   }
 
   .el-radio-group {

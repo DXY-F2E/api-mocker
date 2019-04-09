@@ -72,13 +72,13 @@ export default {
     },
     updateParams (data) {
       if (this.activeType === 'headers') {
-        this.$store.commit('UPDATE_API_PROPS', ['options.headers', data])
+        this.$store.commit('doc/UPDATE_API_PROPS', ['options.headers', data])
         return
       }
       const key = `options.params.${this.activeType}`
-      this.$store.commit('UPDATE_API_PROPS', [key, data.params])
+      this.$store.commit('doc/UPDATE_API_PROPS', [key, data.params])
       const exampleKey = `options.examples.${this.activeType}`
-      this.$store.commit('UPDATE_API_PROPS', [exampleKey, data.example])
+      this.$store.commit('doc/UPDATE_API_PROPS', [exampleKey, data.example])
     },
     changeSchema (type) {
       this.activeType = type
