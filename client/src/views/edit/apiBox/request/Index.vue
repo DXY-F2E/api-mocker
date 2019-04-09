@@ -107,14 +107,17 @@ export default {
     activeSchema () {
       return this.activeType === 'headers' ? this.headers : this.localParams[this.activeType]
     },
+    apiOptions () {
+      return this.api.options
+    },
     headers () {
-      return this.api.options.headers
+      return this.apiOptions.headers
     },
     params () {
-      return R.clone(this.api.options.params)
+      return R.clone(this.apiOptions.params)
     },
     examples () {
-      return R.clone(this.api.options.examples)
+      return R.clone(this.apiOptions.examples)
     },
     localParams () {
       const localParams = {}
