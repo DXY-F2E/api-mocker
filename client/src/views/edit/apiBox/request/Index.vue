@@ -38,7 +38,7 @@
 <script>
 import R from 'ramda'
 import { mapState } from 'vuex'
-import Schema from '../components/schema/Index'
+import Schema from '../schema/Index'
 
 export default {
   components: {

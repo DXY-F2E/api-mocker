@@ -21,7 +21,7 @@
 
 <script>
 import R from 'ramda'
-import Schema from '../components/schema/Index'
+import Schema from '../schema/Index'
 import Status from './Status'
 import StatusSetting from './StatusSetting'
 
