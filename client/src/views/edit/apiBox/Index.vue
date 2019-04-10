@@ -4,7 +4,7 @@
     <div class="url-box">
       <el-row type="flex" :gutter="20">
         <el-col :span="18">
-          <copy-field :value="url" placeholder="Url保存后自动生成">
+          <copy-field :value="url" placeholder="Url保存后自动生成" :prepend="true">
             <el-select v-model="method" slot="prepend" placeholder="请选择">
               <el-option label="GET" value="get"></el-option>
               <el-option label="POST" value="post"></el-option>
