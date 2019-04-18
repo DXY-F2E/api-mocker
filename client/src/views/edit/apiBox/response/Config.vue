@@ -25,20 +25,22 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   computed: {
+    ...mapState('doc', ['api']),
     response () {
-      return this.$store.state.api.options.response
+      return this.api.options.response
     },
     delay () {
-      return this.$store.state.api.options.delay
+      return this.api.options.delay
     },
     responseIndex: {
       get () {
-        return this.$store.state.api.options.responseIndex
+        return this.api.options.responseIndex
       },
       set (value) {
-        this.$store.commit('UPDATE_API_PROPS', ['options.responseIndex', value])
+        this.$store.commit('doc/UPDATE_API_PROPS', ['options.responseIndex', value])
       }
     }
   },
@@ -48,7 +50,7 @@ export default {
       if (isNaN(value)) {
         value = 0
       }
-      this.$store.commit('UPDATE_API_PROPS', ['options.delay', value])
+      this.$store.commit('doc/UPDATE_API_PROPS', ['options.delay', value])
     }
   }
 }

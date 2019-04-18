@@ -109,8 +109,8 @@ export default {
       this.$router.push(`/diff/${this.api.group}/${this.api._id}`)
     },
     edit () {
-      this.$store.commit('UPDATE_API', this.api)
-      this.$store.commit('CHANGE_MODE', 'edit')
+      this.$store.commit('doc/UPDATE_API', this.api)
+      this.$store.commit('doc/CHANGE_MODE', 'edit')
       this.$router.push(`/edit/${this.api.group}/${this.api._id}`)
     },
     hasParams (params) {

@@ -4,7 +4,6 @@ export { default as buildSchemaFromExample } from './buildSchemaFromExample'
 export { default as buildApiResponse } from './buildApiResponse'
 export { default as validateApi } from './validateApi'
 export { default as catchError } from './catchError'
-export { default as apiInitData } from './apiInitData'
 
 export function getDomain () {
   const protocol = window.location.href.indexOf('https') === 0 ? 'https://' : 'http://'
@@ -41,14 +40,4 @@ export function throttle (fn, gapTime) {
       lastTime = now
     }
   }
-}
-
-export function copy (value) {
-  const input = document.createElement('input')
-  input.value = value
-  input.className = 'copyInput'
-  document.body.appendChild(input)
-  input.select()
-  document.execCommand('copy')
-  input.remove()
 }

@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ApiInit from '@/util/apiInitData'
+import Api from '@/model/api'
 import Success from './Success'
 export default {
   components: {
@@ -114,7 +114,7 @@ export default {
           page.actionList.forEach(action => {
             window.console.log(action)
             const apiName = `${module.name}-${page.name}-${action.name}`
-            const api = new ApiInit()
+            const api = Api()
             api.name = apiName
             api.desc = action.description
             api.prodUrl = action.requestUrl
