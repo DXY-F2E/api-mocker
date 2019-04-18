@@ -74,7 +74,7 @@ export default {
         this.saveApi().then(() => {
           this.saveToken = false
           if (this.$route.name === 'Create' && this.api._id) {
-            this.$router.push({
+            this.$router.replace({
               name: 'Edit',
               params: {
                 groupId: this.api.group,
@@ -91,7 +91,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['saveApi']),
+    ...mapActions('doc', ['saveApi']),
     onKeydown (e) {
       if (e.keyCode === 83 && (e.ctrlKey || e.metaKey)) {
         e.preventDefault()

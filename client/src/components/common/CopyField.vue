@@ -25,6 +25,7 @@ export default {
   },
   methods: {
     handleCopy () {
+      if (!this.value) return
       this.$refs.copyInput.select()
       document.execCommand('copy')
       this.$message({

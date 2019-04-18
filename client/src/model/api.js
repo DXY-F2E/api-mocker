@@ -23,7 +23,6 @@ import Schema from './schema'
 
 function initData () {
   return {
-    _id: '',
     prodUrl: null,
     devUrl: null,
     name: '',

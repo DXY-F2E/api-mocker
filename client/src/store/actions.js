@@ -1,7 +1,6 @@
 import axios from 'axios'
 import API from '@/config/api'
 import {
-  validateApi,
   buildExampleFromSchema,
   getDomain,
   catchError,
@@ -116,20 +115,6 @@ const actions = {
   deleteGroup ({ state, commit }, groupId) {
     return axios.delete(API.GROUP.replace(':groupId', groupId))
   },
-  validateApi ({ state }) {
-    return validateApi(state)
-  },
-  saveApi ({ dispatch, state }) {
-    return validateApi(state).then(() => {
-      if (state.api._id) {
-        return dispatch('updateApi')
-      } else {
-        return dispatch('createApi')
-      }
-    }).catch(err => {
-      throw err
-    })
-  },
   createApis ({ state, commit }, payload) {
     const { apis, groupId } = payload
     return axios.post(API.API.replace(':groupId', groupId).replace(':apiId', 'batch'), apis).then(res => {
@@ -140,22 +125,6 @@ const actions = {
         })
         commit('INSERT_APIS', res.data.apis)
       }
-      return res
-    })
-  },
-  updateApi ({ state, commit }) {
-    const api = state.api
-    const { group, _id } = api
-    return axios.put(API.API.replace(':groupId', group).replace(':apiId', _id), api).then(res => {
-      commit('UPDATE_API', res.data.resources)
-      commit('SAVE_API')
-      return res
-    })
-  },
-  createApi ({ state, commit }) {
-    return axios.post(API.GROUP_APIS.replace(':groupId', state.api.group), state.api).then(res => {
-      commit('UPDATE_API', res.data.resources)
-      commit('SAVE_API')
       return res
     })
   },

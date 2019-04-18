@@ -21,10 +21,6 @@ const state = {
   apiListLoading: false,
   apiListSuccess: true,
   serverRoot: domain,
-  dslStatus: {
-    success: true,
-    msg: ''
-  },
   windowWidth: 0,
   allUsers: []
 }

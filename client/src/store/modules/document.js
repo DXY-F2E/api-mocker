@@ -7,7 +7,7 @@ import R from 'ramda'
 import Api from '@/model/api'
 import Schema from '@/model/schema'
 import APIs from '@/config/api'
-import { buildApiResponse } from '@/util'
+import { buildApiResponse, validateApi } from '@/util'
 
 const state = {
   api: {...Api()},
@@ -28,6 +28,10 @@ const state = {
     }
   },
   response: {},
+  dslStatus: {
+    success: true,
+    msg: ''
+  },
   diffMode: false,
   diffStack: null
 }
@@ -39,6 +43,36 @@ const actions = {
       const api = buildApiResponse(res.data.resources)
       commit('UPDATE_API', api)
       commit('SAVE_API')
+    })
+  },
+  validateApi ({ state }) {
+    return validateApi(state)
+  },
+  saveApi ({ dispatch, state }) {
+    return validateApi(state).then(() => {
+      if (state.api._id) {
+        return dispatch('updateApi')
+      } else {
+        return dispatch('createApi')
+      }
+    }).catch(err => {
+      throw err
+    })
+  },
+  updateApi ({ state, commit }) {
+    const api = state.api
+    const { group, _id } = api
+    return axios.put(APIs.API.replace(':groupId', group).replace(':apiId', _id), api).then(res => {
+      commit('UPDATE_API', res.data.resources)
+      commit('SAVE_API')
+      return res
+    })
+  },
+  createApi ({ state, commit }) {
+    return axios.post(APIs.GROUP_APIS.replace(':groupId', state.api.group), state.api).then(res => {
+      commit('UPDATE_API', res.data.resources)
+      commit('SAVE_API')
+      return res
     })
   }
 }
@@ -89,6 +123,9 @@ const mutations = {
     } else {
       state.api.options.response.push(new Schema(state.api.options.response.length + 1))
     }
+  },
+  UPDATE_DSL_STATUS (state, status) {
+    state.dslStatus = status
   }
 }
 

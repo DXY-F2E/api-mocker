@@ -49,9 +49,6 @@ const mutations = {
   DELETE_API (state, apiIdx) {
     state.apiList.splice(apiIdx, 1)
   },
-  UPDATE_DSL_STATUS (state, status) {
-    state.dslStatus = status
-  },
   UPDATE_REQ_PARAMS (state, { type, params, value }) {
     state.reqParams[type] = {
       params,
