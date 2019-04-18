@@ -4,12 +4,12 @@
       {{group.name}}接口文档
       <div class="control">
         <el-button class="follow"
-                    icon="star-on"
+                    icon="el-icon-star-on"
                     v-if="followed"
                     type="primary"
                     @click="unfollowGroup(group._id)">取消订阅</el-button>
         <el-button class="follow"
-                    icon="star-off"
+                    icon="el-icon-star-off"
                     v-else
                     @click="followGroup(group._id)">订阅</el-button>
       </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import ApiDoc from './apiDoc/Index'
+import ApiDoc from '@/components/ApiDoc/Index'
 import { mapActions } from 'vuex'
 export default {
   components: {

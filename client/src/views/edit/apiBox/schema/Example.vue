@@ -71,7 +71,7 @@ export default {
         this.example = data.data
       }
       // 此处为了业务简单，与vuex耦合
-      this.$store.commit('UPDATE_DSL_STATUS', data)
+      this.$store.commit('doc/UPDATE_DSL_STATUS', data)
     },
     buildExample () {
       this.example = buildExampleFromSchema({

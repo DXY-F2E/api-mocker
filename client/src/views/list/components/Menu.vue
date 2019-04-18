@@ -7,7 +7,7 @@
                 placeholder="请输入分组名称"
                 size="small">
         </search>
-        <el-button size="small" icon="plus" @click="handleClickShowDialog"></el-button>
+        <el-button size="small" icon="el-icon-plus" @click="handleClickShowDialog"></el-button>
       </div>
     </div>
     <div class="group-list">

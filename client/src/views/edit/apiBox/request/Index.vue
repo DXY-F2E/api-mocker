@@ -36,8 +36,10 @@
 </template>
 
 <script>
-import Schema from '../schema/Index'
 import R from 'ramda'
+import { mapState } from 'vuex'
+import Schema from '../schema/Index'
+
 export default {
   components: {
     Schema
@@ -71,13 +73,13 @@ export default {
     },
     updateParams (data) {
       if (this.activeType === 'headers') {
-        this.$store.commit('UPDATE_API_PROPS', ['options.headers', data])
+        this.$store.commit('doc/UPDATE_API_PROPS', ['options.headers', data])
         return
       }
       const key = `options.params.${this.activeType}`
-      this.$store.commit('UPDATE_API_PROPS', [key, data.params])
+      this.$store.commit('doc/UPDATE_API_PROPS', [key, data.params])
       const exampleKey = `options.examples.${this.activeType}`
-      this.$store.commit('UPDATE_API_PROPS', [exampleKey, data.example])
+      this.$store.commit('doc/UPDATE_API_PROPS', [exampleKey, data.example])
     },
     changeSchema (type) {
       this.activeType = type
@@ -102,17 +104,21 @@ export default {
     }
   },
   computed: {
+    ...mapState('doc', ['api']),
     activeSchema () {
       return this.activeType === 'headers' ? this.headers : this.localParams[this.activeType]
     },
+    apiOptions () {
+      return this.api.options
+    },
     headers () {
-      return this.$store.state.api.options.headers
+      return this.apiOptions.headers
     },
     params () {
-      return R.clone(this.$store.state.api.options.params)
+      return R.clone(this.apiOptions.params)
     },
     examples () {
-      return R.clone(this.$store.state.api.options.examples)
+      return R.clone(this.apiOptions.examples)
     },
     localParams () {
       const localParams = {}

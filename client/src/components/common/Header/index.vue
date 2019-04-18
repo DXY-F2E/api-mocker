@@ -4,7 +4,6 @@
     <div class="nav">
       <div class="nav-menu">
         <el-menu
-          theme="dark"
           :default-active="activeIndex"
           background-color="#324157"
           text-color="#fff"

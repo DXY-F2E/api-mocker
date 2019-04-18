@@ -6,12 +6,12 @@
       <el-table-column label="线上路径" prop="prodUrl"></el-table-column>
       <el-table-column label="Mock Hash" prop="_id"></el-table-column>
       <el-table-column label="创建者">
-        <template scope="{row}">
+        <template slot-scope="{row}">
           {{ row.manager ? row.manager.name : '未知' }}
         </template>
       </el-table-column>
       <el-table-column label="操作">
-        <template scope="{row}">
+        <template slot-scope="{row}">
           <el-button v-if="actions.includes('doc')" type="text" @click="showDoc(row)">查看文档</el-button>
           <el-button v-if="actions.includes('edit')" type="text" @click="editDoc(row)">编辑</el-button>
           <el-button v-if="actions.includes('copy')" type="text" @click="confirmCopy(row)">复制</el-button>
@@ -50,8 +50,8 @@ export default {
       window.open(url, '_blank')
     },
     editDoc (api) {
-      this.$store.commit('UPDATE_API', api)
-      this.$store.commit('CHANGE_MODE', 'edit')
+      this.$store.commit('doc/UPDATE_API', api)
+      this.$store.commit('doc/CHANGE_MODE', 'edit')
       const url = `${this.rootDomain}#/edit/${api.group}/${api._id}`
       window.open(url, '_blank')
     },

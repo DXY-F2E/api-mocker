@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import ApiInit from '@/util/apiInitData'
+import Api from '@/model/api'
 import Success from './Success'
 
 let _definitions = {} // 组件全局 definations
@@ -314,7 +314,7 @@ export default {
           for (let method in value) {
             const methodValue = value[method]
             const { summary } = methodValue
-            const api = new ApiInit()
+            const api = Api()
 
             api.prodUrl = key
             api.name = `${title}-${summary}`

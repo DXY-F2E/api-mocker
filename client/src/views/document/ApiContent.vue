@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ApiDoc from './apiDoc/Index'
+import ApiDoc from '@/components/ApiDoc/Index'
 export default {
   components: {
     ApiDoc
