@@ -1,6 +1,7 @@
 <template>
   <div class="manage-api">
-    <api-manage :apis="apis" title="我创建的 API"></api-manage>
+    <div class="title">我创建的 API</div>
+    <api-manage :apis="apis"></api-manage>
   </div>
 </template>
 
@@ -18,9 +19,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'getManageApi'
-    ]),
+    ...mapActions(['getManageApi']),
     async getApis () {
       this.apis = (await this.getManageApi()).data
     }
@@ -31,9 +30,8 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.api-list {
-  h1 {
-    margin: 20px 0;
-  }
+.title {
+  font-size: 20px;
+  margin: 20px 0;
 }
 </style>

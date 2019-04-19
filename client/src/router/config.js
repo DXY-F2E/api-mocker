@@ -1,9 +1,9 @@
 import Admin from '@/components/Admin'
-
-const Manage = r => require.ensure([], () => r(require('@/components/manage/Index')), 'manage')
-const Profile = r => require.ensure([], () => r(require('@/components/profile/Index')), 'manage')
-const ManageGroup = r => require.ensure([], () => r(require('@/components/manage/group/Index')), 'manage')
-const ManageApi = r => require.ensure([], () => r(require('@/components/manage/api/Index')), 'manage')
+// 管理中心
+const Manage = r => require.ensure([], () => r(require('@/views/manage/Index')), 'manage')
+const Profile = r => require.ensure([], () => r(require('@/views/manage/profile/Index')), 'manage')
+const ManageGroup = r => require.ensure([], () => r(require('@/views/manage/group/Index')), 'manage')
+const ManageApi = r => require.ensure([], () => r(require('@/views/manage/api/Index')), 'manage')
 
 const List = r => require.ensure([], () => r(require('@/views/list/Index')), 'list')
 const GlobalSearch = r => require.ensure([], () => r(require('@/views/list/Search')), 'list')

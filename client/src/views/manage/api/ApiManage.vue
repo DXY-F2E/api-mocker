@@ -1,7 +1,6 @@
 <template>
   <div class="manage-api">
     <div class="api-list">
-      <h1>{{ title }}</h1>
       <el-table :data="apiList" style="width: 100%">
         <el-table-column prop="options.method" label="方法" width="80">
         </el-table-column>
@@ -81,10 +80,3 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-.api-list {
-  h1 {
-    margin: 20px 0;
-  }
-}
-</style>
