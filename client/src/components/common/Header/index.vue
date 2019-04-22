@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import ProfileMenu from '../../profile/Menu'
+import ProfileMenu from '@/views/manage/profile/Menu'
 import config from '../../../../config'
 import ChangeLog from '@/components/log/ChangeLog'
 import HeaderSearch from './Search'

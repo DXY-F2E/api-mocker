@@ -74,6 +74,14 @@ const actions = {
       commit('SAVE_API')
       return res
     })
+  },
+  // diff相关
+  updateDiffMode ({ commit }, status) {
+    return commit('UPDATE_DIFF_MODE', status)
+  },
+  // diff相关
+  updateDiffStack ({ commit }, stack) {
+    return commit('UPDATE_DIFF_STACK', stack)
   }
 }
 
@@ -126,6 +134,13 @@ const mutations = {
   },
   UPDATE_DSL_STATUS (state, status) {
     state.dslStatus = status
+  },
+  // diff相关
+  UPDATE_DIFF_MODE (state, status) {
+    state.diffMode = status
+  },
+  UPDATE_DIFF_STACK (state, stack) {
+    state.diffStack = stack
   }
 }
 
