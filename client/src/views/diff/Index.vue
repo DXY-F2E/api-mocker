@@ -32,7 +32,7 @@ export default {
     rightApi: null
   }),
   methods: {
-    ...mapActions(['getApi', 'updateDiffStack', 'updateDiffMode']),
+    ...mapActions('doc', ['getApi', 'updateDiffStack', 'updateDiffMode']),
     buildApis (api) {
       if (!api.history) {
         return this.buildDiff(api, null)
@@ -62,7 +62,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['api', 'diffStack'])
+    ...mapState('doc', ['api', 'diffStack'])
   },
   created () {
     this.getApi(this.$route.params).then(() => this.buildApis(this.api))
