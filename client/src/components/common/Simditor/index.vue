@@ -1,13 +1,12 @@
 <template>
-<div class="editor-box">
-  <textarea :id="id" :placeholder="placeholder" autofocus></textarea>
-</div>
+  <div class="editor-box">
+    <textarea :id="id" :placeholder="placeholder" autofocus></textarea>
+  </div>
 </template>
 
 <script>
-import Simditor from 'simditor'
-import $ from 'jquery'
 import 'simditor/styles/simditor.css'
+import Simditor from 'simditor'
 
 export default {
   props: {
@@ -40,9 +39,10 @@ export default {
   methods: {
     initEditor () {
       this.editor = new Simditor({
-        textarea: $(`#${this.id}`),
+        textarea: document.querySelector(`#${this.id}`),
         toolbar: this.toolbar
       })
+
       this.editor.setValue(this.value)
       window.setTimeout(() => this.editor.blur())
       this.editor.on('valuechanged', () => {
