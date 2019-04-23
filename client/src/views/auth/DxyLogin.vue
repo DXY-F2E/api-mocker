@@ -27,6 +27,11 @@ export default {
       })
     }
   },
+  mounted () {
+    this.$store.dispatch('getUser').then((res) => {
+      this.$router.push({name: 'List'})
+    }).catch((e) => {})
+  },
   created () {
     const { ticket } = this.$route.query
     if (ticket) {

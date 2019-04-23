@@ -177,7 +177,7 @@ const actions = {
   },
   /* 用户相关 */
   getUser ({ state, commit }) {
-    return state.user || axios.get(API.USER).then(res => {
+    return axios.get(API.USER).then(res => {
       commit('SET_USER', res.data)
       return res.data
     })
