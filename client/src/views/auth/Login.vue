@@ -38,6 +38,11 @@ export default {
       }
     }
   },
+  mounted () {
+    this.$store.dispatch('getUser').then((res) => {
+      this.$router.push({name: 'List'})
+    }).catch((e) => {})
+  },
   methods: {
     validate () {
       this.$refs.loginForm.validate(rs => {
