@@ -18,16 +18,18 @@ export default {
 <style lang="less" scoped>
 .page-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100%;
 
   .page-nav {
     width: 280px;
     background-color: #eef1f6;
+    overflow-y: auto;
   }
 
   .page-view {
     flex: 1;
     padding: 20px;
+    overflow-y: auto;
   }
 }
 </style>
