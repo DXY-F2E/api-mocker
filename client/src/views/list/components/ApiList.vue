@@ -1,13 +1,19 @@
 <template>
   <div>
-    <el-table :data="data" size="medium">
-      <el-table-column label="接口名称" prop="name"></el-table-column>
+    <el-table :data="data" size="medium" @sort-change="sortChange">
+      <el-table-column label="接口名称" prop="name" sortable="custom">
+      </el-table-column>
       <el-table-column label="方法 Method" prop="options.method"></el-table-column>
       <el-table-column label="线上路径" prop="prodUrl"></el-table-column>
       <el-table-column label="Mock Hash" prop="_id"></el-table-column>
       <el-table-column label="创建者">
         <template slot-scope="{row}">
           {{ row.manager ? row.manager.name : '未知' }}
+        </template>
+      </el-table-column>
+      <el-table-column label="创建时间" prop="createTime">
+        <template slot-scope="{row}">
+          {{ row.createTime | dateFormat }}
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -45,6 +51,14 @@ export default {
     }
   },
   methods: {
+    sortChange (column) {
+      let {prop, order} = column
+      let sortObject = {}
+      if (prop) {
+        sortObject[prop] = order === 'ascending' ? 1 : -1
+      }
+      this.$emit('sort', JSON.stringify(sortObject))
+    },
     showDoc (api) {
       const url = `${this.rootDomain}#/doc/${api.group}/${api._id}`
       window.open(url, '_blank')

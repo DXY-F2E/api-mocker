@@ -1,12 +1,14 @@
 <template>
-  <layout>
-    <template slot="nav">
-      <manage-nav></manage-nav>
-    </template>
-    <template slot="view">
-      <router-view></router-view>
-    </template>
-  </layout>
+  <div class="content">
+    <layout>
+      <template slot="nav">
+        <manage-nav></manage-nav>
+      </template>
+      <template slot="view">
+        <router-view></router-view>
+      </template>
+    </layout>
+  </div>
 </template>
 
 <script>

@@ -23,7 +23,7 @@
       </el-col>
     </el-row>
     <div class="api-list">
-      <api-list :data="apiList"></api-list>
+      <api-list :data="apiList" @sort="onSort"></api-list>
     </div>
     <div class="pagination" v-if="apiList.length">
       <page-nav :query="query" :total="count" @change="onPageNav"></page-nav>
@@ -96,6 +96,13 @@ export default {
         this.query.page = pages.page
         this.count = pages.count
       }).catch(err => this.$message.error(`加载数据失败:${err.msg}`))
+    },
+    onSort (sortStr) {
+      this.query.order = sortStr
+      if (this.apiListLoading) {
+        return
+      }
+      this.getData()
     },
     onPageNav (currentPage) {
       this.query.page = currentPage
