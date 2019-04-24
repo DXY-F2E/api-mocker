@@ -2,7 +2,7 @@
   <div class="param set" :class="name">
     <el-row type="flex" class="row-bg" >
       <el-col class="key">
-        <el-input placeholder="key" v-model="param.key" @change="lazyUpdate"></el-input>
+        <el-input placeholder="key" v-model="param.key" @input.native="lazyUpdate"></el-input>
       </el-col>
       <el-col class="config">
         <el-cascader
@@ -15,10 +15,10 @@
         <el-checkbox v-model="param.required" @change="update">必填</el-checkbox>
       </el-col>
       <el-col class="comment">
-        <el-input placeholder="备注" v-model="param.comment" @change="lazyUpdate"></el-input>
+        <el-input placeholder="备注" v-model="param.comment" @input.native="lazyUpdate"></el-input>
       </el-col>
       <el-col class="example">
-        <el-input placeholder="example" v-model="exampleInput" @change="lazyUpdate"></el-input>
+        <el-input placeholder="example" v-model="exampleInput" @input.native="lazyUpdate"></el-input>
       </el-col>
     </el-row>
   </div>
@@ -53,7 +53,7 @@ export default {
     return {
       exampleInput: '',
       selectedOptions: [],
-      lazyUpdate: debounce(this.update, 300),
+      lazyUpdate: debounce(this.update, 600),
       exampleUpdate: false
     }
   },

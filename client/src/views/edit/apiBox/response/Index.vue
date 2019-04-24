@@ -69,8 +69,7 @@ export default {
     },
     updateResponse (schema) {
       const key = `options.response.${this.activeIndex}`
-      this.$store.commit('doc/UPDATE_API_PROPS',
-               [key, R.clone(schema)])
+      this.$store.commit('doc/UPDATE_API_PROPS', [key, R.clone(schema)])
     }
   }
 }
