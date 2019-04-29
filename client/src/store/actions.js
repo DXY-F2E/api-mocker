@@ -1,8 +1,6 @@
 import axios from 'axios'
 import API from '@/config/api'
 import {
-  validateApi,
-  buildApiResponse,
   buildExampleFromSchema,
   getDomain,
   catchError,
@@ -92,15 +90,6 @@ const actions = {
       throw e
     })
   },
-  getApi ({ commit }, payload) {
-    const { groupId, apiId } = payload
-    return axios.get(API.API.replace(':groupId', groupId).replace(':apiId', apiId)).then(res => {
-      const api = buildApiResponse(res.data.resources)
-      window.console.log(api)
-      commit('UPDATE_API', api)
-      commit('SAVE_API')
-    })
-  },
   getManageApi () {
     return axios.get(`${API.APIS}/manage`)
   },
@@ -126,20 +115,6 @@ const actions = {
   deleteGroup ({ state, commit }, groupId) {
     return axios.delete(API.GROUP.replace(':groupId', groupId))
   },
-  validateApi ({ state }) {
-    return validateApi(state)
-  },
-  saveApi ({ dispatch, state }) {
-    return validateApi(state).then(() => {
-      if (state.api._id) {
-        return dispatch('updateApi')
-      } else {
-        return dispatch('createApi')
-      }
-    }).catch(err => {
-      throw err
-    })
-  },
   createApis ({ state, commit }, payload) {
     const { apis, groupId } = payload
     return axios.post(API.API.replace(':groupId', groupId).replace(':apiId', 'batch'), apis).then(res => {
@@ -150,22 +125,6 @@ const actions = {
         })
         commit('INSERT_APIS', res.data.apis)
       }
-      return res
-    })
-  },
-  updateApi ({ state, commit }) {
-    const api = state.api
-    const { group, _id } = api
-    return axios.put(API.API.replace(':groupId', group).replace(':apiId', _id), api).then(res => {
-      commit('UPDATE_API', res.data.resources)
-      commit('SAVE_API')
-      return res
-    })
-  },
-  createApi ({ state, commit }) {
-    return axios.post(API.GROUP_APIS.replace(':groupId', state.api.group), state.api).then(res => {
-      commit('UPDATE_API', res.data.resources)
-      commit('SAVE_API')
       return res
     })
   },
@@ -207,18 +166,18 @@ const actions = {
       delete config.headers.Cookie
     }
     return axios(config).then(res => {
-      commit('UPDATE_RESPONSE', res)
+      commit('doc/UPDATE_RESPONSE', res)
     }, err => {
       window.console.log('testApi: error')
       window.console.log(err)
       if (err.response) {
-        commit('UPDATE_RESPONSE', err.response)
+        commit('doc/UPDATE_RESPONSE', err.response)
       }
-    }).catch(err => commit('UPDATE_RESPONSE', err))
+    }).catch(err => commit('doc/UPDATE_RESPONSE', err))
   },
   /* 用户相关 */
   getUser ({ state, commit }) {
-    return state.user || axios.get(API.USER).then(res => {
+    return axios.get(API.USER).then(res => {
       commit('SET_USER', res.data)
       return res.data
     })
@@ -324,14 +283,6 @@ const actions = {
   },
   updateApiAuthority ({ state }, authoriry) {
     return axios.put(API.API_AUTHORITY.replace(':apiId', authoriry.apiId), authoriry)
-  },
-  // diff相关
-  updateDiffMode ({ commit }, status) {
-    return commit('UPDATE_DIFF_MODE', status)
-  },
-  // diff相关
-  updateDiffStack ({ commit }, stack) {
-    return commit('UPDATE_DIFF_STACK', stack)
   }
 }
 

@@ -1,29 +1,30 @@
 import Admin from '@/components/Admin'
-
-const Manage = r => require.ensure([], () => r(require('@/components/manage/Index')), 'manage')
-const Profile = r => require.ensure([], () => r(require('@/components/profile/Index')), 'manage')
-const ManageGroup = r => require.ensure([], () => r(require('@/components/manage/group/Index')), 'manage')
-const ManageApi = r => require.ensure([], () => r(require('@/components/manage/api/Index')), 'manage')
+// 管理中心
+const Manage = r => require.ensure([], () => r(require('@/views/manage/Index')), 'manage')
+const Profile = r => require.ensure([], () => r(require('@/views/manage/profile/Index')), 'manage')
+const ManageGroup = r => require.ensure([], () => r(require('@/views/manage/group/Index')), 'manage')
+const ManageApi = r => require.ensure([], () => r(require('@/views/manage/api/Index')), 'manage')
 
 const List = r => require.ensure([], () => r(require('@/views/list/Index')), 'list')
 const GlobalSearch = r => require.ensure([], () => r(require('@/views/list/Search')), 'list')
 const GroupList = r => require.ensure([], () => r(require('@/views/list/Content')), 'list')
 
-const Edit = r => require.ensure([], () => r(require('@/components/edit/Index')), 'edit')
-
-const Document = r => require.ensure([], () => r(require('@/components/document/Index')), 'document')
-const GroupContent = r => require.ensure([], () => r(require('@/components/document/GroupContent')), 'document')
-const DocOverview = r => require.ensure([], () => r(require('@/components/document/Overview')), 'document')
-const ApiContent = r => require.ensure([], () => r(require('@/components/document/ApiContent')), 'document')
+// API 文档 编辑
+const Edit = r => require.ensure([], () => r(require('@/views/edit/Index')), 'edit')
+// API 文档 展示
+const Document = r => require.ensure([], () => r(require('@/views/document/Index')), 'document')
+const GroupContent = r => require.ensure([], () => r(require('@/views/document/GroupContent')), 'document')
+const DocOverview = r => require.ensure([], () => r(require('@/views/document/Overview')), 'document')
+const ApiContent = r => require.ensure([], () => r(require('@/views/document/ApiContent')), 'document')
 // 由于 diff 页面与 文档页依赖基本一致，故放到同一chunk
-const Diff = r => require.ensure([], () => r(require('@/components/diff/Index')), 'document')
+const Diff = r => require.ensure([], () => r(require('@/views/diff/Index')), 'document')
 
-const Auth = r => require.ensure([], () => r(require('@/components/auth/Index')), 'auth')
-const Login = r => require.ensure([], () => r(require('@/components/auth/Login')), 'auth')
-const DxyLogin = r => require.ensure([], () => r(require('@/components/auth/DxyLogin')), 'auth')
-const Register = r => require.ensure([], () => r(require('@/components/auth/Register')), 'auth')
-const FindPass = r => require.ensure([], () => r(require('@/components/auth/FindPass')), 'auth')
-const ResetPass = r => require.ensure([], () => r(require('@/components/auth/ResetPass')), 'auth')
+const Auth = r => require.ensure([], () => r(require('@/views/auth/Index')), 'auth')
+const Login = r => require.ensure([], () => r(require('@/views/auth/Login')), 'auth')
+const DxyLogin = r => require.ensure([], () => r(require('@/views/auth/DxyLogin')), 'auth')
+const Register = r => require.ensure([], () => r(require('@/views/auth/Register')), 'auth')
+const FindPass = r => require.ensure([], () => r(require('@/views/auth/FindPass')), 'auth')
+const ResetPass = r => require.ensure([], () => r(require('@/views/auth/ResetPass')), 'auth')
 
 const Stat = r => require.ensure([], () => r(require('@/components/stat/Index')), 'stat')
 

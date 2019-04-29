@@ -1,5 +1,3 @@
-import { apiInitData } from '@/util'
-import Schema from '@/model/schema'
 import R from 'ramda'
 import Vue from 'vue'
 
@@ -45,65 +43,16 @@ const mutations = {
   GET_GROUP_API (state, data) {
     state.apiList = data
   },
-  INIT_API (state, groupId) {
-    state.api = apiInitData()
-    state.api.group = groupId
-  },
-  UPDATE_API_PROPS (state, propValuePair) {
-    const api = state.api || {}
-    const prop = R.head(propValuePair)
-    const value = R.last(propValuePair)
-    const route = prop.split('.').map(p => {
-      if (Number(p).toString() === p) {
-        return Number(p)
-      } else {
-        return p
-      }
-    })
-    state.api = R.assocPath(route, value, api)
-    state.apiUnsaved = true
-  },
-  SAVE_API (state) {
-    state.apiUnsaved = false
-  },
-  UPDATE_API (state, data) {
-    state.api = data
-    state.apiUnsaved = true
-  },
   UPDATE_API_PAGE (state, data) {
     state.apiPage = data
   },
   DELETE_API (state, apiIdx) {
     state.apiList.splice(apiIdx, 1)
   },
-  UPDATE_DSL_STATUS (state, status) {
-    state.dslStatus = status
-  },
-  CHANGE_MODE (state, mode) {
-    state.mode = mode || (state.mode === 'edit' ? 'test' : 'edit')
-  },
   UPDATE_REQ_PARAMS (state, { type, params, value }) {
     state.reqParams[type] = {
       params,
       value
-    }
-  },
-  UPDATE_RESPONSE (state, res) {
-    state.response = res
-  },
-  ADD_API_RESPONSE (state, index = -1) {
-    if (index !== -1) {
-      let copyData = JSON.parse(JSON.stringify(state.api.options.response[index]))
-      state.api.options.response.push(copyData)
-    } else {
-      state.api.options.response.push(new Schema(state.api.options.response.length + 1))
-    }
-  },
-  DELETE_API_RESPONSE (state, index) {
-    const options = state.api.options
-    options.response.splice(index, 1)
-    if (options.responseIndex >= index && index !== 0) {
-      options.responseIndex--
     }
   },
   SET_USER (state, user) {
@@ -117,13 +66,6 @@ const mutations = {
   },
   SET_ALL_USERS (state, users) {
     state.allUsers = users
-  },
-  // diff相关
-  UPDATE_DIFF_MODE (state, status) {
-    state.diffMode = status
-  },
-  UPDATE_DIFF_STACK (state, stack) {
-    state.diffStack = stack
   }
 }
 export default mutations

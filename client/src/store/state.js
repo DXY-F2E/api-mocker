@@ -1,7 +1,9 @@
-import { getDomain, apiInitData } from '@/util'
+import { getDomain } from '@/util'
 
 const domain = getDomain()
-
+/**
+ * 全局的状态维护
+ */
 const state = {
   user: null,
   // 搜索结果
@@ -18,33 +20,9 @@ const state = {
   apiList: [],
   apiListLoading: false,
   apiListSuccess: true,
-  api: apiInitData(),
-  apiUnsaved: false,
-  mode: 'edit',
-  reqParams: {
-    query: {
-      value: {},
-      params: []
-    },
-    body: {
-      value: {},
-      params: []
-    },
-    path: {
-      value: {},
-      params: []
-    }
-  },
-  response: {},
   serverRoot: domain,
-  dslStatus: {
-    success: true,
-    msg: ''
-  },
   windowWidth: 0,
-  allUsers: [],
-  diffMode: false,
-  diffStack: null
+  allUsers: []
 }
 
 export default state
