@@ -22,6 +22,7 @@ API Mocker提供操作简单但功能丰富的接口编辑，接口约定者能�
 
 - 结构化的接口参数输入与输出
   - 支持不同维度的请求参数约定（`query`，`body`，`path`, `header`）
+  - 对请求参数进行强校验
   - 支持参数的类型约定（`string`，`number`，`boolean`，`object`，`array`）
   - 参数备注、示例
 - 支持Json数据逆向生成参数结构
