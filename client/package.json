@@ -22,7 +22,7 @@
     "moment": "2.21.0",
     "prismjs": "1.6.0",
     "ramda": "0.23.0",
-    "simditor": "2.3.18",
+    "simditor": "2.3.28",
     "vue": "2.5.2",
     "vue-router": "2.5.3",
     "vuex": "2.2.1"
