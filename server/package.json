@@ -13,7 +13,7 @@
     "lru-cache": "^4.1.1",
     "mocker-dsl-core": "^0.1.2",
     "moment": "^2.21.0",
-    "mongoose": "^4.13.5",
+    "mongoose": "^5.7.7",
     "nodemailer": "^4.4.0",
     "path-to-regexp": "^2.1.0",
     "ramda": "^0.25.0"
