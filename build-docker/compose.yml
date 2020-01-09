@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  mongod:
+    build:
+      context: '../'
+      dockerfile: 'build-docker/mongo.dockerfile'
+    ports:
+      - "7001:7001"
+    entrypoint: mongod --bind_ip 127.0.0.1
+
+  server:
+    build:
+      context: '../'
+      dockerfile: 'build-docker/server.dockerfile'
+    network_mode: "service:mongod"
+    depends_on:
+      - mongod
+
+  client:
+    build:
+      context: '../'
+      dockerfile: build-docker/client.dockerfile
+    entrypoint: nginx -g "daemon off;"
+    ports:
+      - "8888:80"
+    depends_on:
+      - server
