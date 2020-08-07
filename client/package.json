@@ -20,7 +20,7 @@
     "mocker-dsl-core": "^0.1.6",
     "mockjs": "1.0.1-beta3",
     "moment": "2.21.0",
-    "prismjs": "1.6.0",
+    "prismjs": "1.21.0",
     "ramda": "0.23.0",
     "simditor": "2.3.28",
     "vue": "2.5.2",
