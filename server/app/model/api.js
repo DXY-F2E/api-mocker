@@ -11,6 +11,7 @@ module.exports = app => {
     desc: String,
     prodUrl: String,
     devUrl: String,
+    url: String,
     options: {
       method: String,
       proxy: {
@@ -42,7 +43,8 @@ module.exports = app => {
     // 以下为管理文档所需信息
     group: {
       type: ObjectId,
-      ref: 'group'
+      ref: 'group',
+      index: true
     },
     creator: { // 创建者
       type: ObjectId,
@@ -69,6 +71,10 @@ module.exports = app => {
     isDeleted: {
       type: Boolean,
       default: false
+    },
+    status: { // 接口状态，1：正常，2：不再维护，3：已下线
+      type: Number,
+      default: 1
     }
   })
 

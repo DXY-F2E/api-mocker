@@ -19,6 +19,9 @@ export default {
     },
     size: {
       type: String
+    },
+    value: {
+      type: String
     }
   },
   data () {
@@ -29,6 +32,9 @@ export default {
   watch: {
     inputValue: function (val, old) {
       this.$emit('input', val)
+    },
+    value: function (val, old) {
+      this.inputValue = this.value
     }
   },
   methods: {

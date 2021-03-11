@@ -27,6 +27,8 @@ const state = {
       params: []
     }
   },
+  customProxyResponse: {},
+  customProxyResponseData: {},
   response: {},
   dslStatus: {
     success: true,
@@ -42,7 +44,7 @@ const actions = {
     return axios.get(APIs.API.replace(':groupId', groupId).replace(':apiId', apiId)).then(res => {
       const api = buildApiResponse(res.data.resources)
       commit('UPDATE_API', api)
-      commit('SAVE_API')
+      // commit('SAVE_API')
     })
   },
   validateApi ({ state }) {
@@ -92,16 +94,25 @@ const mutations = {
   },
   UPDATE_API (state, data) {
     state.api = { ...data }
-    state.apiUnsaved = true
+    // state.apiUnsaved = true
+  },
+  SET_API_CHANGED (state, changed = true) {
+    state.apiUnsaved = changed
   },
   SAVE_API (state) {
     state.apiUnsaved = false
   },
   CHANGE_MODE (state, mode) {
-    state.mode = mode || (state.mode === 'edit' ? 'test' : 'edit')
+    state.mode = mode
   },
   UPDATE_RESPONSE (state, res) {
     state.response = res
+  },
+  SET_CUSTOM_PROXY_RESPONSE (state, res) {
+    state.customProxyResponse = res
+  },
+  SET_CUSTOM_PROXY_RESPONSE_DATA (state, res) {
+    state.customProxyResponseData = res
   },
   UPDATE_API_PROPS (state, propValuePair) {
     const api = state.api || {}
@@ -115,7 +126,7 @@ const mutations = {
       }
     })
     state.api = R.assocPath(route, value, api)
-    state.apiUnsaved = true
+    // state.apiUnsaved = true
   },
   DELETE_API_RESPONSE (state, index) {
     const options = state.api.options

@@ -11,8 +11,7 @@ import ElementUI from 'element-ui'
 // 引入全局通用组件
 import './components/common'
 import axios from 'axios'
-import '@/style/reset.css'
-import '@/style/material-icons/index.css'
+import '@/style/index.css'
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.config.productionTip = false
@@ -29,7 +28,16 @@ if (!window.localStorage.getItem('_sessionId')) {
   const randomString = Array.prototype.map.call(s, a2f(s)(randomChar(s.length))).join('')
   window.localStorage.setItem('_sessionId', randomString)
 }
-
+try {
+  if (module.hot) {
+    module.hot.accept(e => {
+      console.log('HMR ERR', e)
+      window.location.reload()
+    })
+  }
+} catch (e) {
+  console.log('error', e)
+}
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -28,10 +28,12 @@ class Email extends Service {
     return this.sent(user.email, 'Api Mocker 找回密码', html)
   }
   passwordTicket (ticket, user) {
+    const url = `${this.config.clientRoot}/#/reset-pass?ticket=${ticket}`
     const html = `
       <strong>找回密码</strong>
       <p>账户名：${user.name}</p>
-      <p>链接：${this.config.clientRoot}/#/reset-pass?ticket=${ticket}</p>
+      <p>链接：<a href=${url} target="_blank">${url}</a></p>
+      <p>提示：如果无法链接点击，请把链接直接复制到浏览器地址栏中访问</p>
     `
     return this.sent(user.email, 'Api Mocker 找回密码', html)
   }

@@ -17,7 +17,7 @@
       </el-select>
     </el-form-item>
     <el-form-item label="模拟延迟：" class="delay">
-      <el-input v-model="delay" @change="updateDelay"></el-input>
+      <el-input v-model="delay"></el-input>
       <em class="unit">ms</em>
     </el-form-item>
   </el-form>
@@ -32,8 +32,13 @@ export default {
     response () {
       return this.api.options.response
     },
-    delay () {
-      return this.api.options.delay
+    delay: {
+      get () {
+        return this.api.options.delay
+      },
+      set (val) {
+        this.updateDelay(val)
+      }
     },
     responseIndex: {
       get () {
@@ -41,6 +46,7 @@ export default {
       },
       set (value) {
         this.$store.commit('doc/UPDATE_API_PROPS', ['options.responseIndex', value])
+        this.$store.commit('doc/SET_API_CHANGED')
       }
     }
   },
@@ -51,6 +57,7 @@ export default {
         value = 0
       }
       this.$store.commit('doc/UPDATE_API_PROPS', ['options.delay', value])
+      this.$store.commit('doc/SET_API_CHANGED')
     }
   }
 }

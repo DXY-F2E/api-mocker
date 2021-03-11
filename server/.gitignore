@@ -3,8 +3,11 @@ npm-debug.log
 node_modules/
 coverage/
 .idea/
+.vscode/
 run/
+db/
 .DS_Store
 *.swp
-config/core.js
-config/manager.js
+package-lock.json
+appveyor.yml
+.travis.yml

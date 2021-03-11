@@ -6,6 +6,7 @@
         <div class="row-and-col">
           <el-col class="type">类型</el-col>
           <el-col class="required">是否必填</el-col>
+          <el-col class="max-length" v-if="name === 'query' || name === 'body'">最大长度</el-col>
           <el-col class="comment">备注</el-col>
           <el-col class="example">示例</el-col>
         </div>
@@ -13,6 +14,7 @@
     </div>
     <div class="bd">
       <params :params="params"
+              :name="name"
               :level="0"
               :diff-mode="diffMode"
               :diff-stack="diffStack"
@@ -36,6 +38,10 @@ export default {
     params: {
       type: Array,
       required: true
+    },
+    name: {
+      type: String,
+      default: ''
     },
     diffStack: {
       type: Object,
@@ -93,7 +99,11 @@ export default {
     min-width: 220px;
     max-width: 220px;
   }
-  &.example {
+  &.max-length {
+    min-width: 180px;
+    max-width: 180;
+  }
+  &.example, &.value {
     width: 100%;
   }
   &.type {

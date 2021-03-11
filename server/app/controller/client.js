@@ -7,25 +7,40 @@ const BASE_TYPES = ['string', 'number', 'boolean', 'object', 'array']
 
 class ClientController extends AbstractController {
   async findApi () {
+    const method = this.ctx.method.toLowerCase()
+    // 组id或组prefix
     const id = this.ctx.params[0]
-    if (id.length < 5) {
-      // hack方法，兼容老的存下url信息的api
-      const url = `/client/${id}`
-      return this.ctx.model.Api.findOne({ url }).exec()
+    let url = this.ctx.params[1]
+    if (await this.ctx.model.Group.findOne({ _id: id }).exec()) {
+      // 接口路径模式
+      // 首先进行全匹配，只允许前面多个/
+      const fullReg = new RegExp(`^/?${url}$`)
+      let res = await this.ctx.model.Api.findOne({ url: fullReg, group: id, 'options.method': method, isDeleted: false }).exec()
+      if (!res) {
+        // 全匹配未找到，则进行restful路径参数匹配，如/api/:id
+        // url中每个位置都全匹配或匹配路径参数，((api)|(:.*))
+        let regex = `/${url}`.replace(/(?<=\/).*?((?=(\/))|$)/g, (...args) => `((${args[0]})|(:[^\/]*))`)
+        regex = `^${regex}$`
+        res = await this.ctx.model.Api.findOne({ url: { $regex: regex }, group: id, 'options.method': method, isDeleted: false }).exec()
+      }
+      return res
+    } else {
+      // 纯hash模式api，全匹配
+      const res = this.ctx.model.Api.findOne({ _id: id, isDeleted: false }).exec()
+      return res
     }
-    return this.ctx.model.Api.findOne({ _id: id }).exec()
   }
   async real () {
     const { _apiRealUrl, _apiMethod } = this.ctx.request.body
     if (!_apiRealUrl || !_apiMethod) {
-      this.ctx.body = {
-        success: false,
-        message: '真实地址为空'
-      }
+      this.ctx.status = 500
+      this.ctx.body = { success: false, message: '真实地址或者请求方法为空' }
+      return
+    } else if (_apiRealUrl.indexOf('127.0.0.1') > -1 || _apiRealUrl.indexOf('localhost') > -1) {
+      this.ctx.status = 500
+      this.ctx.body = { success: false, message: '不支持回环地址' }
+      return
     }
-    // 删除这两个参数，代理其他参数
-    delete this.ctx.request.body._apiRealUrl
-    delete this.ctx.request.body._apiMethod
     await this.proxy(_apiRealUrl, _apiMethod)
   }
   async proxy (url, method) {
@@ -93,7 +108,7 @@ class ClientController extends AbstractController {
     }
     const delay = api.options.delay || 0
     await sleep(delay)
-    this.validateParams(api)
+    await this.validateParams(api)
     this.ctx.body = this.getResponse(api) || {}
   }
   getResponse (api) {
@@ -102,6 +117,16 @@ class ClientController extends AbstractController {
       const index = queryStatus >= 0 ? queryStatus : api.options.responseIndex
       const idx = index === -1 ? parseInt(Math.random() * api.options.response.length) : index
       const schema = api.options.response[idx]
+      // 模拟异常请求
+      let {status, statusText} = schema
+      status = parseInt(status || 200)
+      if (isNaN(status) || status < 100) {
+        this.ctx.status = 500
+        return {message: 'Status Code不正确'}
+      } else if (status !== 200) {
+        this.ctx.status = status
+        return {message: statusText || '请求异常'}
+      }
       return buildExampleFromSchema(schema)
     } else {
       return {}
@@ -139,17 +164,39 @@ class ClientController extends AbstractController {
     }
     return paramType
   }
-  validateParams (api) {
+  async validateParams (api) {
     const data = {
       query: this.ctx.request.query,
       body: this.ctx.request.body,
-      path: this.getPathParams(api)
+      // path: this.getPathParams(api),
+      headers: this.ctx.request.headers
     }
-    const { params, method } = api.options
+
+    const contentType = this.ctx.header['content-type'] || ''
+    if (contentType.indexOf('multipart') > -1) {
+      const sendToWormhole = require('stream-wormhole')
+      const stream = await this.ctx.getFileStream({ requireFile: false })
+      const fields = stream.fields || {}
+      data.body = fields
+      await sendToWormhole(stream)
+    }
+
+    const { params, method, headers = {} } = api.options
+    delete api.options.params.path
+    let headersParams = headers.params || []
+    params.headers = headersParams
+
+    let headersMap = {}
+    headersParams.forEach((item) => {
+      if (item && item.key) {
+        headersMap[item.key.toLowerCase()] = item.example
+      }
+    })
+
     for (const name in params) {
       const rule = {}
       // get请求不校验body
-      if (method === 'get' && name === 'body') continue
+      // if (method === 'get' && name === 'body') continue
       params[name].forEach(param => {
         // 参数不必填 && 发送的值为空字符串, 不校验
         if (!param.required) {
@@ -158,10 +205,29 @@ class ClientController extends AbstractController {
         }
         // 参数不存在 || 参数类型不属于基本类型，不校验
         if (!param.key || BASE_TYPES.indexOf(param.type) === -1) return
-        rule[param.key] = {
-          type: this.getValidatorType(name, param.type),
-          required: param.required,
-          allowEmpty: param.type === 'string'
+        if (name === 'headers') {
+          let newKey = param.key.toLowerCase()
+          let headerValue = headersMap[newKey]
+          if (headerValue) {
+            rule[newKey] = {
+              type: 'string',
+              required: true,
+              format: new RegExp(headerValue)
+            }
+          }
+        } else {
+          let validateObj = {}
+          validateObj = {
+            type: this.getValidatorType(name, param.type),
+            required: param.required,
+            allowEmpty: param.type === 'string'
+          }
+          // 最大值校验
+          let { maxLength } = param
+          if (param.type === 'string' && maxLength > 0) {
+            validateObj.max = maxLength
+          }
+          rule[param.key] = validateObj
         }
       })
       this.ctx.validate(rule, data[name])

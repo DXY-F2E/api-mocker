@@ -13,6 +13,7 @@ export default {
   methods: {
     updateDesc (val) {
       this.$store.commit('doc/UPDATE_API_PROPS', ['desc', val])
+      this.$store.commit('doc/SET_API_CHANGED')
     }
   },
   computed: {

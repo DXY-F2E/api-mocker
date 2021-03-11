@@ -6,6 +6,7 @@ import {
   catchError,
   buildRestUrl
 } from '@/util'
+let Message = require('../../node_modules/element-ui/lib/message').default
 
 // 允许跨域请求带上cookie
 axios.defaults.withCredentials = true
@@ -19,10 +20,15 @@ const buildTestParams = (api, type) => api.options.examples[type] || buildExampl
 
 const actions = {
   updateGroup ({ commit }, group) {
+    delete group.parents
+    delete group.children
     return axios.put(API.GROUP.replace(':groupId', group._id), group).then(res => {
       commit('UPDATE_GROUP', res.data)
       return res
     })
+  },
+  moveApis ({ commit }, data) {
+    return axios.post(API.MOVE_APIS, data)
   },
   // 获取全部分组
   getAllGroups ({ commit }) {
@@ -33,7 +39,7 @@ const actions = {
   },
   // 查询分组
   searchGroup ({ commit }, query) {
-    commit('SEARCH_KEYWORD', query)
+    // commit('SEARCH_KEYWORD', query)
     return axios.get(API.GROUPS, {
       params: query
     }).then(res => {
@@ -45,7 +51,7 @@ const actions = {
   },
   // 查询接口列表
   searchApi ({ commit }, query) {
-    commit('SEARCH_KEYWORD', query)
+    // commit('SEARCH_KEYWORD', query)
     return axios.get(API.APIS, {
       params: query
     }).then(res => {
@@ -58,6 +64,7 @@ const actions = {
   createGroup ({ commit }, payload) {
     return axios.post(API.GROUPS, payload).then(response => {
       commit('CREATE_GROUP_SUCCESS', response.data.resources)
+      return response
     })
   },
   getApiList: (() => {
@@ -90,17 +97,33 @@ const actions = {
       throw e
     })
   },
-  getManageApi () {
-    return axios.get(`${API.APIS}/manage`)
+  getManageApi ({commit}, payload) {
+    let page = (payload && payload.page) || 1
+    let limit = (payload && payload.limit) || 16
+    let q = (payload && payload.q) || ''
+    return axios.get(`${API.APIS}/manage`, {
+      params: {
+        page,
+        limit,
+        q
+      }
+    })
   },
-  getApisByGroupManager ({ state }, groupId) {
-    return axios.get(`${API.APIS}/:groupId/manage`.replace(':groupId', groupId))
+  getApisByGroupManager ({ state }, query) {
+    let { groupId } = query
+    return axios.get(`${API.APIS}/:groupId/manage`.replace(':groupId', groupId), {
+      params: query
+    })
   },
-  getManageGroup () {
-    return axios.get(`${API.GROUPS}/manage`)
+  getManageGroup ({state}, query) {
+    return axios.get(`${API.GROUPS}/manage`, {
+      params: query
+    })
   },
-  getUnmanagedGroup () {
-    return axios.get(`${API.GROUPS}/unmanaged`)
+  getUnmanagedGroup ({state}, query) {
+    return axios.get(`${API.GROUPS}/unmanaged`, {
+      params: query
+    })
   },
   claimGroup ({ state }, groupId) {
     return axios.put(`${API.GROUP.replace(':groupId', groupId)}/claim`)
@@ -116,27 +139,40 @@ const actions = {
     return axios.delete(API.GROUP.replace(':groupId', groupId))
   },
   createApis ({ state, commit }, payload) {
-    const { apis, groupId } = payload
-    return axios.post(API.API.replace(':groupId', groupId).replace(':apiId', 'batch'), apis).then(res => {
-      if (res.data.apis.length > 0) {
-        res.data.apis = res.data.apis.map(a => {
-          a.manager = state.user
-          return a
-        })
-        commit('INSERT_APIS', res.data.apis)
-      }
-      return res
-    })
+    const { apis, groupId, importType } = payload
+    return axios.post(API.API.replace(':groupId', groupId).replace(':apiId', 'batch'), {apis, importType}).then(res => res)
   },
   copyApi ({ state, commit }, api) {
-    return axios.post(API.GROUP_APIS.replace(':groupId', api.group), api).then(res => {
+    return axios.post(API.GROUP_APIS_COPY.replace(':groupId', api.group), api).then(res => {
       res.data.resources.manager = state.user
       commit('INSERT_API', res.data.resources)
       return res
     })
   },
+  importApi ({ state, commit }, param) {
+    return axios.post(API.GROUP_IMPORT_APIS.replace(':groupId', param.groupId), param).then(res => res)
+  },
+  localDebugApi ({ state, commit }, url) {
+    const api = state.doc.api
+    let config = {
+      method: api.options.method,
+      url,
+      params: {},
+      data: {}
+    }
+    config.params = buildTestParams(api, 'query')
+    config.data = Object.assign(config.data, buildTestParams(api, 'body'))
+    config.headers = buildExampleFromSchema(api.options.headers)
+    return axios.post(`${API.LOCAL_DEBUG}`, config).then(res => {
+      commit('doc/SET_CUSTOM_PROXY_RESPONSE', res)
+      commit('doc/SET_CUSTOM_PROXY_RESPONSE_DATA', res.data)
+    }).catch((err) => {
+      commit('doc/SET_CUSTOM_PROXY_RESPONSE', err.response)
+      commit('doc/SET_CUSTOM_PROXY_RESPONSE_DATA', err.response.data)
+    })
+  },
   testApi ({ state, commit }, testMode) {
-    const api = state.api
+    const api = state.doc.api
     let config = {
       method: api.options.method,
       url: `${domain}/client/${api._id}`,
@@ -168,18 +204,23 @@ const actions = {
     return axios(config).then(res => {
       commit('doc/UPDATE_RESPONSE', res)
     }, err => {
-      window.console.log('testApi: error')
-      window.console.log(err)
-      if (err.response) {
-        commit('doc/UPDATE_RESPONSE', err.response)
-      }
-    }).catch(err => commit('doc/UPDATE_RESPONSE', err))
+      Message.error({message: (err && err.msg) || '请求接口错误'})
+      commit('doc/UPDATE_RESPONSE', err)
+    }).catch(err => {
+      Message.error({message: (err && err.msg) || '请求接口错误'})
+      commit('doc/UPDATE_RESPONSE', err)
+    })
   },
   /* 用户相关 */
   getUser ({ state, commit }) {
     return axios.get(API.USER).then(res => {
       commit('SET_USER', res.data)
       return res.data
+    })
+  },
+  getGroup ({ commit }, groupId) {
+    return axios.get(API.QUERY_GROUP.replace(':groupId', groupId)).then(res => {
+      commit('SET_GROUP_DETAIL', res.data.group)
     })
   },
   searchUsers (_, query) {
@@ -256,6 +297,14 @@ const actions = {
     commit('SET_USER', data)
     return data
   },
+  exportGroup: async ({state}, groupId) => {
+    let {data = {}} = await axios.post(API.GROUP_EXPORT.replace(':groupId', groupId)) || {}
+    return data
+  },
+  exportApi: async ({ state }, apiList) => {
+    let {data = {}} = await axios.post(API.API_EXPORT, { apiList }) || {}
+    return data
+  },
   sendResetPassCode ({ state }, email) {
     return axios.post(`${API.USER}/recovery/password/code`, { email })
   },
@@ -283,6 +332,9 @@ const actions = {
   },
   updateApiAuthority ({ state }, authoriry) {
     return axios.put(API.API_AUTHORITY.replace(':apiId', authoriry.apiId), authoriry)
+  },
+  updateApiStatus ({ state }, { status, apiId }) {
+    return axios.put(API.API_STATUS.replace(':apiId', apiId), {status})
   }
 }
 

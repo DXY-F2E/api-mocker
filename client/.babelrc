@@ -6,7 +6,7 @@
   "plugins": ["transform-runtime"],
   "comments": false,
   "env": {
-    "test": {
+    "develop": {
       "presets": ["env", "stage-2"],
       "plugins": [ "istanbul" ]
     }

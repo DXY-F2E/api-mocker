@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="logo">{{appName}}</div>
+    <div class="logo" @click="goHome">{{appName}}</div>
     <div class="nav">
       <div class="nav-menu">
         <el-menu
@@ -54,6 +54,9 @@ export default {
     }
   },
   methods: {
+    goHome () {
+      this.$router.push('/')
+    },
     showDocs () {
       window.open(config.docsUrl)
     }
@@ -77,6 +80,7 @@ export default {
   line-height: 60px;
   color: #fff;
   font-size: 22px;
+  cursor: pointer;
 }
 
 .nav {

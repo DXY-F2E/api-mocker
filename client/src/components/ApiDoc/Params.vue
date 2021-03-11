@@ -3,12 +3,14 @@
     <doc-param v-for="(param, key) in params"
                :key="key"
                :param="param"
+               :name="name"
                :level="level"
                :diff-mode="diffMode"
                :diff-stack="diffStack"
                :diff-path="diffPath + '.' + key">
       <params v-if="param.type === 'object' && param.params"
               :params="param.params"
+              :name="name"
               :level="nextLevel"
               :class="diffStyle(key + '.params')"
               :diff-mode="diffMode"
@@ -18,6 +20,7 @@
       </params>
       <params v-if="param.type === 'array' && param.items.type === 'object'"
               :params="param.items.params"
+              :name="name"
               :class="diffStyle(key + '.items.params')"
               :diff-mode="diffMode"
               :diff-stack="diffStack"
@@ -53,6 +56,10 @@ export default {
     params: {
       type: Array,
       required: true
+    },
+    name: {
+      type: String,
+      default: ''
     },
     level: {
       type: Number,

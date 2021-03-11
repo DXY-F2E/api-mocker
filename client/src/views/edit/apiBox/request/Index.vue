@@ -4,7 +4,6 @@
       <div class="control">Types</div>
       <ul>
         <li class="item"
-            v-show="method !== 'get' || r.name !== 'body'"
             :class="[{active: activeType === r.name}]"
             v-for="(r, key) in types"
             :key="key"
@@ -51,15 +50,11 @@ export default {
       types: [{
         label: 'Body',
         name: 'body',
-        tip: 'POST、PUT请求时的参数，支持form、json'
+        tip: '请求体参数，支持form、json'
       }, {
         label: 'Query',
         name: 'query',
-        tip: 'Get请求时的url参数，以 ? 和 & 拼接到url中'
-      }, {
-        label: 'Path',
-        name: 'path',
-        tip: 'RESTful风格的url参数，例如 http://www.dxy.cn/:userId'
+        tip: 'url中的query参数，以 ? 和 & 拼接到url中'
       }]
     }
   },
@@ -74,6 +69,7 @@ export default {
     updateParams (data) {
       if (this.activeType === 'headers') {
         this.$store.commit('doc/UPDATE_API_PROPS', ['options.headers', data])
+        this.$store.commit('doc/SET_API_CHANGED')
         return
       }
       const key = `options.params.${this.activeType}`
@@ -89,17 +85,29 @@ export default {
         example: this.examples[key],
         params: this.params[key]
       }
+    },
+    setOptions (key, params, example) {
+      this.$store.commit('doc/UPDATE_API_PROPS', [`options.params.${key}`, params])
+      this.$store.commit('doc/UPDATE_API_PROPS', [`options.example.${key}`, example])
     }
   },
   watch: {
-    method (val) {
+    method (val, oldVal) {
       if (this.activeType === 'headers') {
         return
       }
       if (val === 'get') {
         this.activeType = 'query'
+        // if (oldVal) {
+        //   let {example, params} = this.localParams.body
+        //   this.setOptions('query', params, example)
+        // }
       } else {
         this.activeType = 'body'
+        // if (oldVal === 'get') {
+        //   let {example, params} = this.localParams.query
+        //   this.setOptions('body', params, example)
+        // }
       }
     }
   },
@@ -121,7 +129,7 @@ export default {
       return R.clone(this.apiOptions.examples)
     },
     localParams () {
-      const localParams = {}
+      const localParams = {query: {}, body: {}, path: {}}
       for (const key in this.params) {
         localParams[key] = this.getSchemaObject(key)
       }

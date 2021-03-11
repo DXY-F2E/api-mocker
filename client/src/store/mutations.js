@@ -5,6 +5,9 @@ const mutations = {
   FETCH_GROUPS_SUCCESS (state, groups) {
     state.groups = groups
   },
+  SET_CUR_GROUP (state, group) {
+    state.curGroup = group
+  },
   SEARCH_KEYWORD (state, { q }) {
     state.search.keyword = q
   },
@@ -13,6 +16,22 @@ const mutations = {
   },
   SEARCH_APIS_SUCCESS (state, listData) {
     state.search.apiList = listData
+  },
+  SEARCH_HISTORY_LIST_ADD (state, keyword) {
+    let {searchHistoryList} = state.search
+    if (searchHistoryList.length >= 20) {
+      searchHistoryList.pop(searchHistoryList.length - 1)
+    }
+    searchHistoryList.unshift(keyword)
+    state.search.searchHistoryList = searchHistoryList
+  },
+  SEARCH_HISTORY_LIST_DELETE (state, index) {
+    let {searchHistoryList} = state.search
+    searchHistoryList.splice(index, 1)
+    state.search.searchHistoryList = searchHistoryList
+  },
+  SET_SEARCH_HISTORY_LIST (state, searchHistoryList) {
+    state.search.searchHistoryList = searchHistoryList
   },
   INSERT_APIS (state, apis) {
     state.apiList = apis.concat(state.apiList)
@@ -39,6 +58,9 @@ const mutations = {
   },
   CREATE_GROUP_SUCCESS (state, data) {
     state.groups.unshift(data)
+  },
+  SET_GROUP_DETAIL (state, data) {
+    state.groupDetail = data || {}
   },
   GET_GROUP_API (state, data) {
     state.apiList = data

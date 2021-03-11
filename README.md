@@ -1,12 +1,8 @@
 # 接口管理系统 - API Mocker
 
+**Hi all，好久不见！API Mocker重新开始维护了，也许不会太快，但一直都在～**
+
 > API Mocker，不仅仅是Mocker，它致力于解决前后端开发协作过程中出现的各类问题，提高开发效率，对接口做统一管理，同时也能为后续的迭代维护提供更便捷的方式。
-
-点击查看现成示例 ==> [DEMO](http://api-mocker.com/)
-
-**特别注释：此站仅作为demo提供给大家体验，不保证数据安全性以及稳定性，甚至可能会定期删除数据，请勿将此站作为个人或企业的接口管理系统。**
-
-***
 
 ## 目录
 - [系统功能](#系统功能)
@@ -22,7 +18,6 @@ API Mocker提供操作简单但功能丰富的接口编辑，接口约定者能�
 
 - 结构化的接口参数输入与输出
   - 支持不同维度的请求参数约定（`query`，`body`，`path`, `header`）
-  - 对请求参数进行强校验
   - 支持参数的类型约定（`string`，`number`，`boolean`，`object`，`array`）
   - 参数备注、示例
 - 支持Json数据逆向生成参数结构
@@ -91,14 +86,6 @@ API Mocker提供简单易用的权限控制。
 同时该命令也会确保`mongod`的启动，如果未启动会在本地建立`db`目录，并启动`mongod`.
 如果服务器新开机可重新执行`make install`确保数据库启动.
 
-## 服务端配置
-
-初次启动项目，需要手动添加配置文件 `./server/config/core.js` 和 `./server/config/manager.js`
-
-分别通过复制 `./server/config/default.core.js` 和 `./server/config/default.manager.js` 进行添加
-
-注意：core.js 为配置 mongo 数据库，md5 key，邮件服务；manager.js 为初始化新建超级管理员账户。
-
 ## 开发启动(dev)
 
 ### Client
@@ -164,8 +151,6 @@ API Mocker提供简单易用的权限控制。
 
 假设api-mocker项目文件夹路径为 `__api_mocker_path`
 
-网络域名为 `your-mocker.com`
-
 1. 发布启动(prods)，请参考上述执行命令
 2. nginx添加配置项：
 ```bash
@@ -173,18 +158,16 @@ server {
 
         listen       80;
         server_name  localhost;
+        
+        location / {
+            root __api_mocker_path/client/dist/;
+            index index.html index.htm test-vue.html;
+            try_files $uri $uri/ /index.html =404;
+        }
 
         location /mock-api/ {
             proxy_pass http://127.0.0.1:7001/;
         }
-
-        location /mock {
-            autoindex on;
-            alias __api_mocker_path/client/dist;
-        }
 }
 ```
-2. 修改`client/config/index.js`文件下的`serverRoot`，改为 `your-mocker.com/mock-api`
-3. 访问`http://your-mocker.com/mock`
-
-> 注: 若是服务器带宽较低，可将客户端部署到cdn，配好路由，每次发布重新更新下dist目录下`index.html`文件缓存。或者只把`client/dist/static`目录同步到cdn，自己nginx再做转发配置
+3. 访问`http://localhost`

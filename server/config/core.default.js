@@ -13,7 +13,7 @@ module.exports = config => ({
     secure: true,
     port: 465,
     auth: {
-      user: 'xxx@dxy.cn',
+      user: 'xxx@xxx.cn',
       pass: 'xxx'
     }
   }

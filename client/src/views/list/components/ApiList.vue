@@ -1,11 +1,15 @@
 <template>
   <div>
-    <el-table :data="data" size="medium" @sort-change="sortChange">
-      <el-table-column label="接口名称" prop="name" sortable="custom">
+    <el-table :data="data" size="medium" @sort-change="sortChange" @selection-change="selectApi">
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column label="接口名称">
+        <template slot-scope="{row}">
+          <span :class="{'line-through': [2,3].includes(row.status)}">{{ row.name }}</span>
+        </template>
       </el-table-column>
       <el-table-column label="方法 Method" prop="options.method"></el-table-column>
-      <el-table-column label="线上路径" prop="prodUrl"></el-table-column>
-      <el-table-column label="Mock Hash" prop="_id"></el-table-column>
+      <el-table-column label="线上地址" prop="prodUrl"></el-table-column>
+      <el-table-column label="测试地址" prop="devUrl"></el-table-column>
       <el-table-column label="创建者">
         <template slot-scope="{row}">
           {{ row.manager ? row.manager.name : '未知' }}
@@ -21,6 +25,7 @@
           <el-button v-if="actions.includes('doc')" type="text" @click="showDoc(row)">查看文档</el-button>
           <el-button v-if="actions.includes('edit')" type="text" @click="editDoc(row)">编辑</el-button>
           <el-button v-if="actions.includes('copy')" type="text" @click="confirmCopy(row)">复制</el-button>
+          <el-button v-if="actions.includes('export')" type="text" @click="exportSingleApi(row)">导出</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -33,6 +38,8 @@
  * 列表字段：接口名称、manager、method、path
  */
 import R from 'ramda'
+import { mapActions } from 'vuex'
+import download from '@/util/download'
 
 export default {
   props: {
@@ -42,7 +49,7 @@ export default {
     },
     actions: {
       type: Array,
-      default: () => ['doc', 'edit', 'copy']
+      default: () => ['doc', 'edit', 'copy', 'export']
     }
   },
   data () {
@@ -51,6 +58,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['exportApi']),
     sortChange (column) {
       let {prop, order} = column
       let sortObject = {}
@@ -68,6 +76,14 @@ export default {
       this.$store.commit('doc/CHANGE_MODE', 'edit')
       const url = `${this.rootDomain}#/edit/${api.group}/${api._id}`
       window.open(url, '_blank')
+    },
+    selectApi (list) {
+      let idList = list.map((api) => api._id)
+      this.$emit('selectApis', idList)
+    },
+    async exportSingleApi (row) {
+      let res = await this.exportApi([row._id])
+      download(res, row.name)
     },
     getApiCopyData (data) {
       const api = R.clone(data)
@@ -93,9 +109,13 @@ export default {
     },
     copyApi (api) {
       const copyApi = this.getApiCopyData(api)
-      this.$store.dispatch('copyApi', copyApi).then(() => {
-        this.$message.success('复制成功')
-      }).catch(err => this.$message.error(err.msg))
+      this.$router.push({
+        name: 'Create',
+        query: {
+          groupId: copyApi.group
+        },
+        params: copyApi
+      })
     }
   }
 }

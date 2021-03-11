@@ -2,5 +2,5 @@ test/fixtures
 test/app/controller
 coverage
 sql-scripts/
-config/core.js
-config/manager.js
+config/core.default.js
+config/manager.default.js

@@ -1,6 +1,6 @@
 <template>
 <el-dialog class="import-json-check"
-     title="解析Json成功，请核对"
+     title="解析JSON成功，请核对"
      :visible.sync="dialogVisible"
      size="small">
   <div class="import-apis">
@@ -12,8 +12,8 @@
         <ul>
           <li v-for="(api, idx) in item.apis" :key="idx" class="api">
             <span class="name">{{api.name}}</span>
-            <span class="control preview" @click="preview(index, idx)">预览</span>
-            <span class="control delete" @click="deleteApi(index, idx)">删除</span>
+            <el-button size="mini" type="primary" @click="preview(index, idx)">预览</el-button>
+            <el-button size="mini" type="danger" @click="deleteApi(index, idx)">删除</el-button>
           </li>
         </ul>
       </el-tab-pane>
@@ -27,13 +27,17 @@
 </template>
 
 <script>
+import { Loading } from 'element-ui'
+
 export default {
   props: {
     visible: Boolean,
-    apisData: Array
+    apisData: Array,
+    importType: Number
   },
   data () {
     return {
+      fullscreenLoading: false,
       activeGroup: this.apisData[0] ? this.apisData[0].groupName : ''
     }
   },
@@ -63,22 +67,34 @@ export default {
       // 因为splice删除的是数组里的数组，所以得手动set触发视图更新
       this.$set(this.apisData, groupIndex, this.apisData[groupIndex])
     },
-    handleConfirm () {
-      const data = this.apisData[0]
-      this.$store.dispatch('createApis', {
-        groupId: data.groupId,
-        apis: data.apis
-      }).then(rs => {
-        if (rs.data.apis.length > 0) {
-          this.$message.success('保存成功')
+    importApis () {
+      let loadingInstance = Loading.service({text: '导入中', spinner: 'el-icon-loading', background: 'rgba(0, 0, 0, 0.7)'})
+      let apis = []
+      this.apisData.forEach((data) => { apis = apis.concat(data.apis) })
+      apis.forEach((api) => { api._id && delete api._id })
+
+      if (apis.length) {
+        this.$store.dispatch('createApis', { groupId: apis[0].group, apis, importType: this.importType }).then(rs => {
+          loadingInstance.close()
+          this.$message.success('导入成功')
           this.dialogVisible = false
-        } else {
-          this.$message.success('保存失败')
-        }
-      }).catch(err => {
-        const message = err.msg || err.response.data.message
-        this.$message.error(`保存失败:${message}`)
-      })
+          this.$emit('refresh')
+        }).catch(err => {
+          loadingInstance.close()
+          const message = err.msg || err.response.data.message
+          this.$message.error(`保存失败:${message}`)
+        })
+      }
+    },
+    handleConfirm () {
+      let {importType} = this
+      if (importType === 1) {
+        this.$confirm('覆盖导入会覆盖掉该分组内全部接口数据，建议先导出分组备份数据, 确定要覆盖导入吗？', '提示', {type: 'warning'}).then(() => {
+          this.importApis()
+        }).catch(() => { this.dialogVisible = false })
+      } else {
+        this.importApis()
+      }
     }
   }
 }

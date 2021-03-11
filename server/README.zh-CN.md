@@ -12,8 +12,11 @@ api-mocker-server
 ```bash
 $ npm install
 $ npm run dev
-$ open http://localhost:7001/news
+$ open http://localhost:7001/
 ```
+
+### 本地调试
+$ npm run debug
 
 ### 部署
 

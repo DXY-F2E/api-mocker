@@ -4,10 +4,10 @@
       <label>{{title}}</label>
       <div class="api-selector"
            v-if="apis.length">
-        修改于：
-        <el-select :value="api" @input="selectApi">
-          <el-option v-for="api in apis"
-                     :key="api.id"
+        {{api.operatorName}} 修改于：
+        <el-select :value="api" @input="selectApi" value-key="modifiedTime" class="select-option">
+          <el-option v-for="(api, index) in apis"
+                     :key="index"
                      :value="api"
                      :label="getApiLabel(api)"></el-option>
         </el-select>

@@ -25,6 +25,11 @@ export default {
   components: {
     ApiParam
   },
+  data () {
+    return {
+      randomKey: Math.random()
+    }
+  },
   props: {
     level: {
       type: Number,

@@ -3,7 +3,7 @@
   <el-form label-position="left" :model="loginForm" ref="loginForm" :rules="loginRules" @keyup.enter.native="validate">
     <p class="app-name">接口管理系统</p>
     <el-form-item prop="email">
-      <el-input placeholder="email" v-model="loginForm.email" ></el-input>
+      <el-input auto-complete="on" placeholder="email" v-model="loginForm.email" ></el-input>
     </el-form-item>
     <el-form-item prop="password">
       <el-input type="password" placeholder="password" v-model="loginForm.password"></el-input>
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { getUrlAllParams } from '@/util'
 export default {
   data () {
     return {
@@ -55,9 +56,19 @@ export default {
       this.$store.dispatch('login', this.loginForm).then(() => {
         this.$message.success('登录成功, 即将跳转')
         window.setTimeout(() => {
-          this.$router.push({
-            name: 'GlobalSearch'
-          })
+          let {hash} = location
+          let queryString = decodeURIComponent(hash).split('#/login?')[1] || ''
+          if (queryString) {
+            let urlParams = getUrlAllParams(queryString)
+            let {url} = urlParams
+            if (url && url.indexOf('#/login') === -1) {
+              window.location.href = urlParams.url
+            } else {
+              this.$router.push({ name: 'GlobalSearch' })
+            }
+          } else {
+            this.$router.push({ name: 'GlobalSearch' })
+          }
         }, 1000)
       }).catch(err => this.$message.error(`登录失败：${err.msg}`))
     }

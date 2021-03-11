@@ -32,8 +32,12 @@ module.exports = app => {
     },
     name: {
       type: String,
-      required: true,
-      unique: true
+      required: true
+      // unique: true
+    },
+    token: {
+      type: String,
+      default: ''
     },
     level: { // 分组的层级，默认第一级，预留字段，暂时无用。
       type: Number,
@@ -47,6 +51,15 @@ module.exports = app => {
     modifiedTime: {
       type: String,
       default: Date.now
+    },
+    // prefix: String,
+    devPrefix: String,
+    prodPrefix: String,
+    // 父group
+    pGroup: {
+      type: ObjectId,
+      ref: 'group',
+      index: true
     },
     desc: String, // 分组描述，预留字段，暂时无用。
     isDeleted: {

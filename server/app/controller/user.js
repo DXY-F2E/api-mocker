@@ -107,35 +107,6 @@ class UserController extends AbstractController {
     this.service.cookie.setUser(rs)
     this.success(rs)
   }
-  async dxyLogin () {
-    // 此功能仅为丁香园内部授权登录有关，非丁香园人员不用关心
-    const { ticket } = this.ctx.request.body
-    if (!ticket) {
-      this.error('ticket缺失')
-    }
-    const { errorCode, success, results: email, message } = await this.service.dxy.login(ticket)
-    if (!success || !email) {
-      this.error({
-        code: errorCode,
-        msg: message
-      })
-    }
-    const user = await this.service.user.getByEmail(email)
-    if (user) {
-      delete user.password
-      this.service.cookie.setUser(user)
-      this.success(user)
-    } else {
-      const rs = await this.service.user.create({
-        email,
-        password: email,
-        name: email.split('@')[0]
-      })
-      delete rs.password
-      this.service.cookie.setUser(rs)
-      this.success(rs)
-    }
-  }
   async login () {
     const info = this.ctx.request.body
     const user = await this.service.user.getByEmail(info.email)

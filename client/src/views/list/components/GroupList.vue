@@ -2,6 +2,11 @@
   <div>
     <el-table style="width: 100%" :data="data" size="medium">
       <el-table-column label="分组名称" prop="name"></el-table-column>
+      <el-table-column prop="level" label="所属分组层级">
+           <template slot-scope="scope">
+             {{getParent(scope.row.parent)}}
+           </template>
+        </el-table-column>
       <el-table-column label="创建者">
         <template slot-scope="{row}">
           {{ row.creator ? row.creator.name : '未知' }}
@@ -35,6 +40,10 @@ export default {
     }
   },
   methods: {
+    getParent (parents) {
+      if (parents.length === 0) return ''
+      return parents.map(g => g.name).join(' / ')
+    },
     goApiList (group) {
       this.$router.push({name: 'GruopList', params: { groupId: group._id }})
     },

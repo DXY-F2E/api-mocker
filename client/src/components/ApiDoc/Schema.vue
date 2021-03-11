@@ -17,6 +17,7 @@
       </a>
     </div>
     <params-table :params="schema.params"
+                  :name="name"
                   v-show="!isShowExample"
                   :diff-mode="diffMode"
                   :diff-stack="diffStack"

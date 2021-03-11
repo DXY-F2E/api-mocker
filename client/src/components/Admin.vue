@@ -44,7 +44,8 @@ export default {
     this.$store.dispatch('getUser').then(() => {
       this.$store.dispatch('getAllGroups')
     }).catch(() => {
-      window.location.href = '#/login'
+      let {href, hash} = window.location
+      window.location.href = hash.indexOf('#/login') > -1 ? '#/login' : `#/login?url=${href}`
     })
   }
 }

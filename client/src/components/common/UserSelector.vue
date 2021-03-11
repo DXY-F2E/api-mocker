@@ -34,11 +34,11 @@ export default {
     },
     value: {
       type: Array,
-      default: []
+      default: () => []
     },
     options: {
       type: Array,
-      default: []
+      default: () => []
     }
   },
   data () {
@@ -54,7 +54,7 @@ export default {
       this.$emit('itemClick', val)
     },
     itemRemove (val) {
-      this.$emit('itemRemove', val.value)
+      this.$emit('itemRemove', val)
     }
   }
 }

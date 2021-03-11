@@ -1,5 +1,5 @@
 <template>
-  <el-input :value="value" :readonly="true" v-on:focus="handleCopy" ref="copyInput" :placeholder="placeholder">
+  <el-input :value="value" :readonly="true" ref="copyInput" :placeholder="placeholder">
     <template slot="prepend" v-on:click.stop.prevent="() => {}" v-if="prepend">
       <slot name="prepend"></slot>
     </template>

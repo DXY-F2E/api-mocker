@@ -9,6 +9,7 @@ const state = {
   // 搜索结果
   search: {
     keyword: '',
+    searchHistoryList: [],
     groupList: {
       resources: []
     },
@@ -17,12 +18,14 @@ const state = {
     }
   },
   groups: [],
+  curGroup: null,
   apiList: [],
   apiListLoading: false,
   apiListSuccess: true,
   serverRoot: domain,
   windowWidth: 0,
-  allUsers: []
+  allUsers: [],
+  groupDetail: {}
 }
 
 export default state

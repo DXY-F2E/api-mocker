@@ -22,6 +22,14 @@ export default {
     resActive: {
       type: String,
       required: true
+    },
+    data: {
+      type: Object,
+      default: () => ({})
+    },
+    dataFromLocal: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -29,7 +37,7 @@ export default {
       return this.getResponseData()
     },
     response () {
-      return this.$store.state.response
+      return this.dataFromLocal ? this.data : this.$store.state.doc.response
     }
   },
   methods: {

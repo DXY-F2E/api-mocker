@@ -15,7 +15,7 @@ class AbstractController extends Controller {
     if (typeof data === 'string') {
       this.ctx.throw(code, data)
     } else {
-      this.ctx.throw(data.code, data.msg)
+      this.ctx.throw(data.code || 403, data.msg || data.message)
     }
   }
   notFound (msg) {

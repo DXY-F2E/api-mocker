@@ -45,6 +45,7 @@ export default {
       const data = R.clone(record.data)
       data.history = this.history
       this.$store.commit('doc/UPDATE_API', data)
+      this.$store.commit('doc/SET_API_CHANGED')
       // apiUnsaved -> false
       this.$store.commit('doc/SAVE_API')
       this.$message.info('加载成功，再保存将会覆盖最新值')

@@ -19,7 +19,7 @@ module.exports = {
     // 取消promise必须返回error类型
     'prefer-promise-reject-errors': 'off',
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'no-debugger': process.env.NODE_ENV === 'development' ? 0 : 2,
     // 'linebreak-style': ['error', process.env.NODE_ENV === 'prod' ? 'unix' : 'windows'], // windows机器eslint换行问题，得加该行
     'arrow-body-style': ['error', 'as-needed']
   }

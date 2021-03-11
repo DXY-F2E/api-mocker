@@ -1,0 +1,6 @@
+@import './reset.css';
+@import './material-icons/index.css';
+
+.line-through {
+  text-decoration: line-through;
+}

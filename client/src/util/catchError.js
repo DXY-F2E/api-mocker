@@ -1,6 +1,6 @@
 export default (err) => {
   if (err.response && err.response.status === 401) {
-    window.location.href = '#/login'
+    // window.location.href = '#/login'
   }
   if (!err.response) {
     return Promise.reject({

@@ -1,7 +1,10 @@
 <template>
   <el-dialog :visible.sync="value" center title="Api mocker 更新说明">
     <div class="dialog-body">
-      <div class="log-item" v-for="(item, i) in changeLogs" :key="i">{{ item.label }}</div>
+      <div class="log-item" v-for="(item, i) in changeLogs" :key="i">
+        <strong>{{item.type}}: </strong>
+        {{ item.label }}
+      </div>
     </div>
     <span slot="footer" class="dialog-footer">
       <el-checkbox v-model="notTip" class="not-tip">不再提示</el-checkbox>
@@ -20,13 +23,14 @@ export default {
   },
   data () {
     return {
-      version: '1.3.3',
-      endTime: '2018-12-31',
+      version: '1.4.3',
+      endTime: '2020-11-19',
       current: localStorage.getItem('change-log-version'),
       changeLogs: [
-        { label: 'feat: 添加了 example 的验证，在创建/更新接口时，example 必须按照 schema 规则书写！！！' },
-        { label: '注意: example 中的多余字段也不允许！' },
-        { label: 'feat: 添加组管理移交到其他人下。' }
+        { type: 'feat', label: '强化了接口路径的概念及使用，创建接口时路径调整为必填项（编辑时选填，兼容老数据），从而解决了mock api与真实接口路径不一致问题，便于（主要是前端同学）对同组接口做统一配置和管理（理论上不同环境的api只需要切换baseUrl）；同时解决了hash模式api语义丢失问题' },
+        { type: 'feat', label: '基于接口路径的强化，实现了健壮的RESTful风格api的创建与解析' },
+        { type: 'feat', label: '组维度添加了各环境接口的统一前缀配置，方便后端同学创建api时进行接口路径的自动拼接，减少大量重复配置' },
+        { type: 'fix', label: '修复首页搜索框输入内容自动删除、抖动问题' }
       ]
     }
   },

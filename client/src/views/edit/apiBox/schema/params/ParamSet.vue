@@ -1,12 +1,14 @@
 <template>
   <div class="param set" :class="name">
-    <el-row type="flex" class="row-bg" >
+    <el-row type="flex" class="row-bg">
       <el-col class="key">
-        <el-input placeholder="key" v-model="param.key" @input.native="lazyUpdate"></el-input>
+        <el-select v-model="param.key" allow-create filterable placeholder="key" @change="update" v-if="name === 'headers'">
+          <el-option v-for="(item, index) in requestheadersList" :key="index" :label="item" :value="item"></el-option>
+        </el-select>
+        <el-input placeholder="key" v-model="param.key" @input="lazyUpdate" v-else></el-input>
       </el-col>
-      <el-col class="config">
+      <el-col class="config" v-if="name !== 'headers'">
         <el-cascader
-          v-if="name !== 'headers'"
           popper-class="type-cascader"
           @change="changeParamType"
           :options="tpyeList"
@@ -14,18 +16,23 @@
         </el-cascader>
         <el-checkbox v-model="param.required" @change="update">必填</el-checkbox>
       </el-col>
+      <el-col class="max-length" v-if="name !== 'headers'">
+        <el-input placeholder="最大长度" type="number" :disabled="param.type !== 'string'" v-model.number="param.maxLength" :min=1 @input="lazyUpdate"></el-input>
+      </el-col>
       <el-col class="comment">
-        <el-input placeholder="备注" v-model="param.comment" @input.native="lazyUpdate"></el-input>
+        <el-input placeholder="备注" v-model="param.comment" @input="lazyUpdate"></el-input>
       </el-col>
       <el-col class="example">
-        <el-input placeholder="example" v-model="exampleInput" @input.native="lazyUpdate"></el-input>
+        <el-input placeholder="example" v-model="exampleInput"></el-input>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import { debounce } from '@/util'
+// import { debounce } from '@/util'
+import headersList from '@/util/requestHeaders'
+
 export default {
   props: {
     param: {
@@ -51,14 +58,23 @@ export default {
   },
   data () {
     return {
+      timer: null,
+      isFirstTime: true,
       exampleInput: '',
       selectedOptions: [],
-      lazyUpdate: debounce(this.update, 600),
-      exampleUpdate: false
+      lazyUpdate: this.update.bind(this, true),
+      exampleUpdate: false,
+      requestheadersList: headersList
     }
   },
   created () {
     this.setExampleInput()
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.isFirstTime = false
+      this.setExampleInput()
+    })
   },
   watch: {
     'param.example': {
@@ -68,9 +84,6 @@ export default {
     'exampleInput': 'setExample'
   },
   methods: {
-    lazy (fn) {
-      return debounce(fn, 300)
-    },
     changeParamType (val) {
       this.$set(this.param, 'type', val[0])
       if (val[0] === 'object') {
@@ -86,7 +99,6 @@ export default {
         this.setArrayType(val[1])
       }
       this.setExample()
-      this.update()
     },
     setArrayType (type) {
       this.$set(this.param, 'items', {
@@ -101,8 +113,22 @@ export default {
         this.$emit('buildObject', this.param)
       }
     },
-    update () {
-      this.$emit('change', this.param)
+    update (immediately) {
+      // 这里第一次给各输入框赋值时不应该触发change
+      if (!this.isFirstTime) {
+        this.timer = null
+        if (immediately) {
+          this.$emit('change', this.param)
+        } else {
+          // debounce
+          if (this.timer) {
+            clearTimeout(this.timer)
+          }
+          this.timer = setTimeout(() => {
+            this.$emit('change', this.param)
+          }, 100)
+        }
+      }
     },
     getDefaultType () {
       const type = [this.param.type]
@@ -158,6 +184,7 @@ export default {
           this.param.example = value
         }
       }
+      this.update()
     }
   }
 }
@@ -180,7 +207,7 @@ export default {
     max-width: 80px;
     text-align: center;
   }
-  .example {
+  .value, .max-length, .example {
     min-width: 145px;
     max-width: 220px;
   }

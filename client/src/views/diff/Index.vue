@@ -37,7 +37,12 @@ export default {
       if (!api.history) {
         return this.buildDiff(api, null)
       }
-      this.apis = api.history.records.map(r => R.clone(r.data))
+      this.apis = api.history.records.map(r => {
+        let rlt = R.clone(r.data)
+        rlt.operatorName = r.operatorName
+        rlt.author = api.author
+        return rlt
+      })
       delete api.history
       // 历史原因：1.2.1版本之前，保存接口是把当前保存的接口推入历史记录
       // 所以判断此接口与上一次接口modifiedTime一致时，就没必要再使用它了

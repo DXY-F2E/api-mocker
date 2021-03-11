@@ -4,19 +4,24 @@
   "description": "api-mocker-server",
   "private": true,
   "dependencies": {
+    "axios": "^0.21.0",
     "blueimp-md5": "^2.10.0",
     "egg": "^2.0.0",
     "egg-cors": "^2.0.0",
     "egg-mongoose": "2.2.1",
+    "egg-multipart": "^2.10.1",
     "egg-validate": "^1.0.0",
+    "egg-view-nunjucks": "^2.2.0",
     "http-assert": "^1.3.0",
+    "lodash": "^4.17.14",
     "lru-cache": "^4.1.1",
     "mocker-dsl-core": "^0.1.2",
     "moment": "^2.21.0",
-    "mongoose": "^5.7.7",
+    "mongoose": "^4.13.5",
     "nodemailer": "^4.4.0",
     "path-to-regexp": "^2.1.0",
-    "ramda": "^0.25.0"
+    "ramda": "^0.25.0",
+    "stream-wormhole": "^1.1.0"
   },
   "devDependencies": {
     "autod": "^3.0.1",
@@ -38,16 +43,18 @@
     "node": ">=8.0.0"
   },
   "scripts": {
-    "start": "node index.js",
-    "pm2": "pm2 start index.js",
     "dev": "egg-bin dev",
+    "pm2": "pm2 start ecosystem.config.js",
+    "pm2-test": "pm2 start ecosystem.config.js --env test",
+    "start": "node index.js",
     "test": "npm run test-local",
     "fix": "npm run lint -- --fix",
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
-    "autod": "autod"
+    "autod": "autod",
+    "debug": "egg-bin debug"
   },
   "ci": {
     "version": "8"

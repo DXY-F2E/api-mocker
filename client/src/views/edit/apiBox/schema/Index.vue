@@ -6,14 +6,6 @@
                 :name="name"
                 @updateParams="paramsChanged"></params>
       </el-tab-pane>
-      <!-- schema的真正json格式，暂时废弃 -->
-      <!-- <el-tab-pane class="tab-item" label="Schema" name="schema">
-        <json-editor v-if="activeTab === 'schema'"
-              v-model="localSchema"
-              :resize-act="fullscreen"
-              :fullscreentool="false"
-              @change="schemaChanged"></json-editor>
-      </el-tab-pane> -->
       <el-tab-pane class="tab-item" :label="exampleName" name="example">
         <Example :schema="localSchema"
                  :fullscreen="fullscreen"

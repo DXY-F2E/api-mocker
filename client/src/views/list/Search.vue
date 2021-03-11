@@ -2,9 +2,23 @@
   <div>
     <div class="search-wrap">
       <div class="search-title">统一搜索<small>（分组、接口）</small></div>
-      <el-input @keyup.native.enter="searchActions" placeholder="可搜索名称、接口路径、管理员" v-model="keyword" class="input-with-select">
-        <el-button slot="append" icon="el-icon-search" @click="searchActions"></el-button>
-      </el-input>
+      <el-popover placement="bottom-start" trigger="click" v-model="visible">
+        <div class="result-block">
+          <div class="block-title">历史搜索列表(最多20个)</div>
+          <ul class="block-list">
+            <li
+              class="list-item"
+              v-for="(keyword, index) in searchHistoryList"
+              :key="index"
+              @click="searchHistory(keyword, index)"
+            >{{ keyword }}<i class="el-icon-delete delete-icon" @click.stop="deleteHistoryItem(index)" /></li>
+          </ul>
+        </div>
+        <el-input slot="reference" @keyup.native.enter="searchActions" placeholder="支持分词搜索, 根据空格进行分词 (可搜索名称、接口路径、管理员)"
+                  v-model="keyword" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="searchActions"></el-button>
+        </el-input>
+      </el-popover>
     </div>
     <div v-if="searched && keyword">
       <div class="result-title">分组</div>
@@ -45,17 +59,35 @@ export default {
   },
   data () {
     return {
+      visible: false,
       searched: false,
       searchActions: debounce(this.handleSearch, 300)
     }
   },
   methods: {
     ...mapActions(['searchGroup', 'searchApi']),
-    ...mapMutations(['SEARCH_KEYWORD']),
+    ...mapMutations(['SEARCH_KEYWORD', 'SEARCH_HISTORY_LIST_ADD', 'SEARCH_HISTORY_LIST_DELETE', 'SET_SEARCH_HISTORY_LIST']),
     async handleSearch () {
+      if (this.keyword) {
+        if (this.searchHistoryList.indexOf(this.keyword) < 0) {
+          this.SEARCH_HISTORY_LIST_ADD(this.keyword)
+          window.localStorage.setItem('historySearchList', JSON.stringify(this.searchHistoryList))
+        }
+      }
       this.searched = true
       await this.searchGroup({ q: this.keyword })
       await this.searchApi({ q: this.keyword })
+    },
+    searchHistory (keyword, index) {
+      if (this.keyword !== keyword) {
+        this.keyword = keyword
+        this.SEARCH_HISTORY_LIST_DELETE(index)
+      }
+      this.visible = false
+    },
+    deleteHistoryItem (index) {
+      this.SEARCH_HISTORY_LIST_DELETE(index)
+      window.localStorage.setItem('historySearchList', JSON.stringify(this.searchHistoryList))
     }
   },
   computed: {
@@ -65,6 +97,9 @@ export default {
     },
     apiList () {
       return this.search.apiList
+    },
+    searchHistoryList () {
+      return this.search.searchHistoryList
     },
     keyword: {
       get () {
@@ -103,6 +138,25 @@ export default {
     margin-bottom: 20px;
     small {
       font-size: 18px;
+    }
+  }
+}
+
+.result-block {
+  max-height: 432px;
+  overflow-y: auto;
+  width: 600px;
+  .list-item {
+    padding: 10px 20px 10px 10px;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    &:hover {
+      background-color: #f5f7fa;
+    }
+    .delete-icon {
+      float: right;
     }
   }
 }

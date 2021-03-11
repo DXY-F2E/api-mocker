@@ -1,6 +1,6 @@
 <template>
   <div class="param-wrap" :class="[expanded ? 'unfold' : 'fold']">
-    <div class="expand" v-show="isShowExpand" @click="expandParam">
+    <div class="expand" v-if="isShowExpand" @click="expandParam">
       <i class="el-icon-caret-bottom" v-if="expanded"></i>
       <i class="el-icon-caret-right" v-else></i>
     </div>
@@ -13,10 +13,9 @@
     </div>
     <param-set :param="param"
                :name="name"
-               @keydown.native.enter="addParam"
                @buildObject="buildObject"
                @change="updateParam"></param-set>
-    <slot name="params"></slot>
+    <slot v-if="expanded" name="params"></slot>
   </div>
 </template>
 

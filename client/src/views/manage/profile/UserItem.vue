@@ -2,10 +2,14 @@
   <el-form-item :label="item.label" class="profile-item">
     <template v-if="mode === 'read'">
       <span class="value">{{user[item.key]}}</span>
-      <el-button type="text" class="edit" icon="el-icon-edit" @click="mode = 'edit'">修改</el-button>
+      <el-button type="text" class="edit" icon="el-icon-edit" @click="handleEdit">修改</el-button>
     </template>
     <template v-else>
-      <el-input :value="user[item.key]"
+      <!-- <el-input :value="user[item.key]"
+           size="small"
+           @change="handleValueChange" />
+      <span> -->
+        <el-input v-model="userCopy[item.key]"
            size="small"
            @change="handleValueChange" />
       <span>
@@ -27,6 +31,7 @@ export default {
   },
   data () {
     return {
+      userCopy: null,
       mode: 'read',
       tempValue: this.item.value
     }
@@ -37,6 +42,10 @@ export default {
     }
   },
   methods: {
+    handleEdit () {
+      this.userCopy = R.clone(this.user)
+      this.mode = 'edit'
+    },
     validateEmail () {
       const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       if (!reg.test(this.tempValue)) {
