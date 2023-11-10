@@ -13,7 +13,7 @@
     "build:test": "NODE_ENV=test node build/build.js"
   },
   "dependencies": {
-    "axios": "0.15.3",
+    "axios": "1.6.0",
     "brace": "0.10.0",
     "deepmerge": "^3.1.0",
     "echarts": "3.6.1",
